@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import TheWelcome from "../components/TheWelcome.vue";
+import GameSettings from "../components/GameSettings.vue";
 </script>
 
 <template>
   <div class="main">
-    <h1>This is the main page</h1>
-    <TheWelcome />
+    <GameSettings />
   </div>
 </template>
 

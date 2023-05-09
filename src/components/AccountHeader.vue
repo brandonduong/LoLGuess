@@ -7,8 +7,8 @@ const auth = useAuthenticator();
   <div class="account-header">
     <div class="account-header-contents">
       <RouterLink to="/" class="title">LoLGuess</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-      <h1>
+      <RouterLink to="/leaderboard">Leaderboard</RouterLink>
+      <h1 class="account">
         {{
           auth.user.username.charAt(0).toUpperCase() +
           auth.user.username.slice(1)
@@ -19,6 +19,10 @@ const auth = useAuthenticator();
 </template>
 
 <style scoped>
+.account {
+  margin: 0;
+}
+
 #app
   > div.account-header
   > div
