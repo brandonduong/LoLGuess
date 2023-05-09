@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lolguess-dev-100049-authRole",
+      "UnauthRoleArn": "arn:aws:iam::467265973161:role/amplify-lolguess-dev-100049-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::467265973161:role/amplify-lolguess-dev-100049-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-lolguess-dev-100049-deployment",
+      "UnauthRoleName": "amplify-lolguess-dev-100049-unauthRole",
+      "StackName": "amplify-lolguess-dev-100049",
+      "StackId": "arn:aws:cloudformation:us-east-1:467265973161:stack/amplify-lolguess-dev-100049/e89509b0-ee71-11ed-bd16-0e677ca7f475",
+      "AmplifyAppId": "d2x4h3lxfrhyud"
+    },
+    "categories": {
+      "auth": {
+        "lolguess53815c1c": {}
+      }
+    }
+  }
+}
