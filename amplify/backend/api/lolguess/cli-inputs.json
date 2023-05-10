@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "paths": {
+    "/getMatch": {
+      "name": "/getMatch",
+      "lambdaFunction": "getMatch",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "read"
+        ]
+      }
+    }
+  }
+}

@@ -1,15 +1,25 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { message } from "ant-design-vue";
-import RegionSettings from "../components/RegionSettings.vue";
+import http from "../common/http-common";
+import GroupSettings from "./GroupSettings.vue";
 
 const current = ref<number>(0);
-const next = () => {
-  current.value++;
+const next = async () => {
+  if (current.value === 1) {
+    console.log("request for match");
+    await getMatch();
+  } else {
+    current.value++;
+  }
 };
 const prev = () => {
   current.value--;
 };
+async function getMatch() {
+  await http.get("/getMatch").then((res) => {
+    console.log(res);
+  });
+}
 const steps = [
   {
     title: "Regions",
@@ -21,6 +31,40 @@ const steps = [
     title: "Guess",
   },
 ];
+
+const regions: string[] = [
+  "BR",
+  "EUNE",
+  "EUW",
+  "JP",
+  "KR",
+  "LAN",
+  "LAS",
+  "NA",
+  "OCE",
+  "TR",
+  "RU",
+  "PH",
+  "SG",
+  "TH",
+  "TW",
+  "VN",
+];
+
+const ranks: string[] = [
+  "Iron",
+  "Bronze",
+  "Silver",
+  "Gold",
+  "Platinum",
+  "Diamond",
+  "Master",
+  "Grandmaster",
+  "Challenger",
+];
+const selectedRegions = ref([]);
+const selectedRanks = ref([]);
+const selectedGuess = ref([]);
 </script>
 
 <template>
@@ -29,22 +73,40 @@ const steps = [
       <a-step v-for="item in steps" :key="item.title" :title="item.title" />
     </a-steps>
     <div class="steps-content">
-      <div v-if="current === 0"><RegionSettings /></div>
-      <div v-if="current === 1">hey</div>
+      <div v-if="current === 0">
+        <GroupSettings
+          :options="regions"
+          :selected-options="selectedRegions"
+          @update-selected-options="selectedRegions = $event"
+        />
+      </div>
+      <div v-if="current === 1">
+        <GroupSettings
+          :options="ranks"
+          :selected-options="selectedRanks"
+          @update-selected-options="selectedRanks = $event"
+        />
+      </div>
       <div v-if="current === 2">hey</div>
     </div>
     <div class="steps-action">
-      <a-button v-if="current < steps.length - 1" type="primary" @click="next"
-        >Next</a-button
+      <a-button
+        v-if="current < steps.length"
+        type="primary"
+        @click="next"
+        :disabled="
+          (selectedRegions.length === 0 && current === 0) ||
+          (selectedRanks.length === 0 && current === 1) ||
+          (selectedGuess.length === 0 && current === 2)
+        "
+        >{{
+          current === 0 ? "Next" : current === 1 ? "Play" : "Guess"
+        }}</a-button
       >
       <a-button
-        v-if="current == steps.length - 1"
-        type="primary"
-        @click="message.success('Processing complete!')"
-      >
-        Done
-      </a-button>
-      <a-button v-if="current > 0" style="margin-left: 8px" @click="prev"
+        v-if="current > 0 && current < steps.length - 1"
+        style="margin-left: 8px"
+        @click="prev"
         >Previous</a-button
       >
     </div>

@@ -1,0 +1,11 @@
+{
+  "httpMethod": "GET",
+  "path": "/getMatch",
+  "queryStringParameters": {
+    "regions": "NA",
+    "ranks": "Diamond, Gold"
+  },
+  "headers": {
+    "Content-Type": "application/json"
+  }
+}

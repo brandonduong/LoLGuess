@@ -1,4 +1,20 @@
 {
+  "api": {
+    "lolguess": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getMatch"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
   "auth": {
     "lolguess53815c1c": {
       "customAuth": false,
@@ -23,6 +39,31 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    }
+  },
+  "function": {
+    "getMatch": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_getMatch_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getMatch"
+        }
+      ]
+    },
+    "AMPLIFY_function_getMatch_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getMatch"
+        }
+      ]
     }
   }
 }

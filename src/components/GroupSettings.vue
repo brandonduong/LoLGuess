@@ -1,8 +1,8 @@
 <template>
   <a-checkbox-group
-    class="regions"
+    class="options"
     v-model:value="checkedList"
-    :options="regions"
+    :options="options"
   />
   <a-divider />
   <div class="all">
@@ -18,56 +18,44 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs, watch } from "vue";
-const regions = [
-  "BR",
-  "EUNE",
-  "EUW",
-  "JP",
-  "KR",
-  "LAN",
-  "LAS",
-  "NA",
-  "OCE",
-  "TR",
-  "RU",
-  "PH",
-  "SG",
-  "TH",
-  "TW",
-  "VN",
-];
+
 export default defineComponent({
-  setup() {
+  props: { options: Array<String>, selectedOptions: Array<String> },
+  emits: ["updateSelectedOptions"],
+  setup(props, { emit }) {
     const state = reactive({
-      indeterminate: true,
-      checkAll: false,
-      checkedList: ["NA"],
+      indeterminate:
+        props.selectedOptions!.length &&
+        props.selectedOptions!.length < props.options!.length,
+      checkAll: props.selectedOptions!.length === props.options!.length,
+      checkedList: props.selectedOptions,
     });
 
     const onCheckAllChange = (e: any) => {
       Object.assign(state, {
-        checkedList: e.target.checked ? regions : [],
+        checkedList: e.target.checked ? props.options : [],
         indeterminate: false,
       });
     };
     watch(
       () => state.checkedList,
       (val) => {
-        state.indeterminate = !!val.length && val.length < regions.length;
-        state.checkAll = val.length === regions.length;
+        state.indeterminate =
+          !!val!.length && val!.length < props.options!.length;
+        state.checkAll = val!.length === props.options!.length;
+        emit("updateSelectedOptions", state.checkedList);
       }
     );
 
     return {
       ...toRefs(state),
-      regions,
       onCheckAllChange,
     };
   },
 });
 </script>
 <style scoped>
-.regions {
+.options {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 0fr;
   padding: 0 2rem;
