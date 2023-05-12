@@ -27,7 +27,7 @@ async function getMatch() {
     url += `ranks[]=${selectedRanks.value[i]}&`;
   }
   console.log(url);
-  await http.get(url).then((res) => {
+  await http.api.get(url).then((res) => {
     console.log(res);
     rankedMatch = res.data.rankedMatch;
   });

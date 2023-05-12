@@ -1,0 +1,102 @@
+<script lang="ts">
+interface StaticTrait {
+  trait_id: string;
+  icon_path: string;
+}
+
+interface APITrait {
+  name: string;
+  tier_current: number;
+  style: number;
+}
+
+interface TraitStyle {
+  path: string;
+  style: number;
+}
+</script>
+
+<script setup lang="ts">
+import { ref } from "vue";
+
+const props = defineProps<{
+  traits: APITrait[];
+  staticTFTTraitData: StaticTrait[];
+}>();
+
+// Get trait icon styles
+const traitStyles = ref<TraitStyle[]>([]);
+props.traits.forEach((trait) => {
+  const traitInfo = props.staticTFTTraitData.filter((t) => {
+    return t.trait_id === trait.name && trait.tier_current > 0;
+  })[0];
+
+  console.log(traitInfo);
+  console.log(trait);
+  // If trait is activated, get image
+  if (traitInfo) {
+    const path = traitInfo.icon_path.split("/");
+    traitStyles.value.push({
+      path: path[path.length - 1].toLowerCase(),
+      style: trait.style,
+    });
+  }
+});
+
+// Sort trait icons by style
+traitStyles.value.sort(function (a, b) {
+  if (a.style === 0) {
+    a.style = 3;
+  } else if (b.style === 0) {
+    b.style = 3;
+  }
+  return b.style - a.style;
+});
+</script>
+<template>
+  <div class="traits">
+    <div v-for="trait in traitStyles" :class="`trait style${trait.style}`">
+      <img
+        class="trait-icon"
+        :src="`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/ux/traiticons/${trait.path}`"
+        :alt="trait.path"
+        width="16"
+        height="16"
+      />
+    </div>
+  </div>
+</template>
+<style scoped>
+.traits {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.trait {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trait-icon {
+  filter: brightness(0%);
+}
+
+.style1 {
+  background-image: url(https://cdn.lolchess.gg/images/tft/traits/background/bronze.svg);
+}
+
+.style2 {
+  background-image: url(https://cdn.lolchess.gg/images/tft/traits/background/silver.svg);
+}
+
+.style3 {
+  background-image: url(https://cdn.lolchess.gg/images/tft/traits/background/gold.svg);
+}
+
+.style4 {
+  background-image: url(https://cdn.lolchess.gg/images/tft/traits/background/chromatic.svg);
+}
+</style>

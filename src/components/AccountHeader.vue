@@ -41,6 +41,7 @@ const auth = useAuthenticator();
   right: 0;
   top: 0;
   background-color: lightslategray;
+  z-index: 1;
 }
 
 .account-header-contents {
