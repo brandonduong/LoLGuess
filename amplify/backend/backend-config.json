@@ -57,6 +57,14 @@
         }
       ]
     },
+    "AMPLIFY_function_getMatch_riotApi": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getMatch"
+        }
+      ]
+    },
     "AMPLIFY_function_getMatch_s3Key": {
       "usedBy": [
         {

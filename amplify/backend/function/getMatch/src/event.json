@@ -1,9 +1,9 @@
 {
   "httpMethod": "GET",
   "path": "/getMatch",
-  "queryStringParameters": {
-    "regions": "NA",
-    "ranks": "Diamond, Gold"
+  "multiValueQueryStringParameters": {
+    "regions[]": ["EUW"],
+    "ranks[]": ["Challenger", "Diamond"]
   },
   "headers": {
     "Content-Type": "application/json"

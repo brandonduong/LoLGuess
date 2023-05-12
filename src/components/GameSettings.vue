@@ -7,7 +7,9 @@ const current = ref<number>(0);
 const next = async () => {
   if (current.value === 1) {
     console.log("request for match");
-    await getMatch();
+    await getMatch().then(() => {
+      current.value++;
+    });
   } else {
     current.value++;
   }
@@ -16,7 +18,15 @@ const prev = () => {
   current.value--;
 };
 async function getMatch() {
-  await http.get("/getMatch").then((res) => {
+  let url = "/getMatch?";
+  for (let i = 0; i < selectedRegions.value.length; i++) {
+    url += `regions[]=${selectedRegions.value[i]}&`;
+  }
+  for (let i = 0; i < selectedRanks.value.length; i++) {
+    url += `ranks[]=${selectedRanks.value[i]}&`;
+  }
+  console.log(url);
+  await http.get(url).then((res) => {
     console.log(res);
   });
 }
@@ -62,9 +72,9 @@ const ranks: string[] = [
   "Grandmaster",
   "Challenger",
 ];
-const selectedRegions = ref([]);
-const selectedRanks = ref([]);
-const selectedGuess = ref([]);
+const selectedRegions = ref<string[]>([]);
+const selectedRanks = ref<string[]>([]);
+const selectedGuess = ref<string[]>([]);
 </script>
 
 <template>

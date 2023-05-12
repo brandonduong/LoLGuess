@@ -19,7 +19,8 @@
       "function": {
         "getMatch": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getMatch-53414561376a6a492b39-build.zip"
+          "s3Key": "amplify-builds/getMatch-2b7a62667a6e496f7559-build.zip",
+          "riotApi": "RGAPI-f686f51b-c501-4613-bd6f-3f6c5a2036af"
         }
       },
       "api": {
