@@ -64,6 +64,6 @@ export default defineComponent({
 
 .all {
   text-align: start;
-  padding-left: 2rem;
+  padding: 0 2rem 1rem;
 }
 </style>

@@ -10,6 +10,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 const axios = require("axios");
+const CryptoJS = require("crypto-js");
 
 // declare a new express app
 const app = express();
@@ -191,12 +192,24 @@ app.get("/getMatch", async function (req, res) {
         // console.log(res.data);
         if (res.data.info.queue_id === 1100) {
           console.log("found ranked match");
-          rankedMatch = res.data;
+          rankedMatch = res.data.info.participants;
           foundRanked = true;
         }
       })
       .catch((err) => console.log(err));
   }
+
+  // Remove info that would allow someone to cheat
+  rankedMatch = rankedMatch.map(
+    ({ augments, level, traits, placement, units, gold_left }) => ({
+      augments,
+      level,
+      traits,
+      placement: CryptoJS.AES.encrypt(`${placement}`, RIOT_TOKEN).toString(),
+      units,
+      gold_left,
+    })
+  );
 
   res.json({ rankedMatch });
 });

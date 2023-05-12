@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import http from "../common/http-common";
 import GroupSettings from "./GroupSettings.vue";
+import DragAndDropTable from "./DragAndDropTable.vue";
 
 const current = ref<number>(0);
 const next = async () => {
@@ -28,6 +29,7 @@ async function getMatch() {
   console.log(url);
   await http.get(url).then((res) => {
     console.log(res);
+    rankedMatch = res.data.rankedMatch;
   });
 }
 const steps = [
@@ -75,6 +77,7 @@ const ranks: string[] = [
 const selectedRegions = ref<string[]>([]);
 const selectedRanks = ref<string[]>([]);
 const selectedGuess = ref<string[]>([]);
+var rankedMatch = ref<object[]>([]);
 </script>
 
 <template>
@@ -84,6 +87,7 @@ const selectedGuess = ref<string[]>([]);
     </a-steps>
     <div class="steps-content">
       <div v-if="current === 0">
+        <h1>Pick Possible Regions</h1>
         <GroupSettings
           :options="regions"
           :selected-options="selectedRegions"
@@ -91,13 +95,17 @@ const selectedGuess = ref<string[]>([]);
         />
       </div>
       <div v-if="current === 1">
+        <h1>Pick Possible Ranks</h1>
         <GroupSettings
           :options="ranks"
           :selected-options="selectedRanks"
           @update-selected-options="selectedRanks = $event"
         />
       </div>
-      <div v-if="current === 2">hey</div>
+      <div v-if="current === 2">
+        <h1>Guess</h1>
+        <DragAndDropTable :rankedMatch="rankedMatch" />
+      </div>
     </div>
     <div class="steps-action">
       <a-button
