@@ -31,8 +31,6 @@ props.traits.forEach((trait) => {
     return t.trait_id === trait.name && trait.tier_current > 0;
   })[0];
 
-  console.log(traitInfo);
-  console.log(trait);
   // If trait is activated, get image
   if (traitInfo) {
     const path = traitInfo.icon_path.split("/");

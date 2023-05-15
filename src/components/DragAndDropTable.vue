@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import draggable from "vuedraggable";
 import TraitIcons from "./TraitIcons.vue";
+import AugmentIcons from "./AugmentIcons.vue";
 import { onMounted, ref } from "vue";
 import http from "../common/http-common";
+import { Sortable } from "sortablejs-vue3";
 const props = defineProps<{
   rankedMatch: Array<object>;
 }>();
@@ -12,13 +13,19 @@ interface StaticTrait {
   icon_path: string;
 }
 
+interface StaticAugment {
+  nameId: string;
+  loadoutsIcon: string;
+  name: string;
+}
+
 var list = ref(props.rankedMatch);
 var loading = ref(true);
 var staticTFTTraitData = ref<StaticTrait[]>([]);
+var staticTFTAugmentData = ref<StaticAugment[]>([]);
 
 onMounted(async () => {
   await getStaticTFTData().then(() => {
-    console.log(loading);
     loading.value = false;
   });
 });
@@ -27,8 +34,13 @@ async function getStaticTFTData() {
   await http.dragon
     .get("/plugins/rcp-be-lol-game-data/global/default/v1/tfttraits.json")
     .then((res) => {
-      console.log(res);
       staticTFTTraitData = res.data;
+    });
+
+  await http.dragon
+    .get("/plugins/rcp-be-lol-game-data/global/default/v1/tftitems.json")
+    .then((res) => {
+      staticTFTAugmentData = res.data;
     });
 }
 </script>
@@ -50,7 +62,13 @@ async function getStaticTFTData() {
       <h3>7</h3>
       <h3>8</h3>
     </div>
-    <draggable v-model="list" tag="tbody" item-key="name" class="draggable">
+    <Sortable
+      :list="list"
+      tag="tbody"
+      item-key="name"
+      class="draggable"
+      :options="{ animation: 150 }"
+    >
       <template #item="{ element }">
         <tr class="draggable-row">
           <h3>{{ element.level }}</h3>
@@ -60,12 +78,17 @@ async function getStaticTFTData() {
               :traits="element.traits"
             />
           </h3>
-          <h3>placeholder augments</h3>
+          <h3>
+            <AugmentIcons
+              :staticTFTAugmentData="staticTFTAugmentData"
+              :augments="element.augments"
+            />
+          </h3>
           <h3>placeholder units</h3>
           <h3>{{ element.gold_left }}</h3>
         </tr>
       </template>
-    </draggable>
+    </Sortable>
   </table>
 </template>
 <style scoped>

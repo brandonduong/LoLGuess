@@ -13,9 +13,10 @@
     "@aws-amplify/ui-vue": "^3.1.15",
     "ant-design-vue": "^3.2.20",
     "aws-amplify": "^5.2.0",
+    "sortablejs": "^1.15.0",
+    "sortablejs-vue3": "^1.2.9",
     "vue": "^3.2.47",
-    "vue-router": "^4.1.6",
-    "vuedraggable": "^4.1.0"
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@tsconfig/node18": "^2.0.0",
