@@ -20,7 +20,12 @@ const props = defineProps<{
 }>();
 
 // Get augment icon styles
-const augmentStyles = ref<AugmentStyle[]>([]);
+const defaultStyles = { path: "", title: "" };
+const augmentStyles = ref<AugmentStyle[]>([
+  defaultStyles,
+  defaultStyles,
+  defaultStyles,
+]);
 props.augments.forEach((aug) => {
   const augmentInfo = props.staticTFTAugmentData.filter((a) => {
     return a.nameId === aug;
@@ -30,24 +35,39 @@ props.augments.forEach((aug) => {
   const path = augmentInfo.loadoutsIcon.split("/");
   const fileName = path[path.length - 1].toLowerCase();
   const augmentPath = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/maps/tft/icons/augments/hexcore/${fileName}`;
-  checkIfImageExists(augmentPath, (exists: boolean) => {
-    const ind = props.augments.indexOf(augmentInfo.nameId);
-    if (exists) {
-      augmentStyles.value.splice(ind, 0, {
-        path: augmentPath,
-        title: augmentInfo.name,
-      });
-    } else {
-      augmentStyles.value.splice(ind, 0, {
-        path: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${path[
-          path.length - 3
-        ].toLowerCase()}/${path[path.length - 2].toLowerCase()}/${path[
-          path.length - 1
-        ].toLowerCase()}`,
-        title: augmentInfo.name,
-      });
-    }
-  });
+
+  const ind = props.augments.indexOf(augmentInfo.nameId);
+  if (
+    augmentInfo.nameId.includes("Carry") ||
+    augmentInfo.nameId.includes("Support")
+  ) {
+    augmentStyles.value.splice(ind, 1, {
+      path: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${path[
+        path.length - 3
+      ].toLowerCase()}/${path[path.length - 2].toLowerCase()}/${path[
+        path.length - 1
+      ].toLowerCase()}`,
+      title: augmentInfo.name,
+    });
+  } else {
+    checkIfImageExists(augmentPath, (exists: boolean) => {
+      if (exists) {
+        augmentStyles.value.splice(ind, 1, {
+          path: augmentPath,
+          title: augmentInfo.name,
+        });
+      } else {
+        augmentStyles.value.splice(ind, 1, {
+          path: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${path[
+            path.length - 3
+          ].toLowerCase()}/${path[path.length - 2].toLowerCase()}/${path[
+            path.length - 1
+          ].toLowerCase()}`,
+          title: augmentInfo.name,
+        });
+      }
+    });
+  }
 });
 
 function checkIfImageExists(url: string, callback: Function) {
@@ -74,8 +94,8 @@ function checkIfImageExists(url: string, callback: Function) {
         class="augment-icon"
         :src="augment.path"
         :alt="augment.title"
-        width="16"
-        height="16"
+        width="24"
+        height="24"
         :title="augment.title"
       />
     </div>

@@ -7,10 +7,11 @@ import DragAndDropTable from "./DragAndDropTable.vue";
 const current = ref<number>(0);
 const next = async () => {
   if (current.value === 1) {
-    console.log("request for match");
     await getMatch().then(() => {
       current.value++;
     });
+  } else if (current.value === 2) {
+    console.log(selectedGuess.value);
   } else {
     current.value++;
   }
@@ -87,7 +88,6 @@ var rankedMatch = ref<object[]>([]);
     </a-steps>
     <div class="steps-content">
       <div v-if="current === 0">
-        <h1>Pick Possible Regions</h1>
         <GroupSettings
           :options="regions"
           :selected-options="selectedRegions"
@@ -95,7 +95,6 @@ var rankedMatch = ref<object[]>([]);
         />
       </div>
       <div v-if="current === 1">
-        <h1>Pick Possible Ranks</h1>
         <GroupSettings
           :options="ranks"
           :selected-options="selectedRanks"
@@ -103,8 +102,10 @@ var rankedMatch = ref<object[]>([]);
         />
       </div>
       <div v-if="current === 2">
-        <h1>Guess</h1>
-        <DragAndDropTable :rankedMatch="rankedMatch" />
+        <DragAndDropTable
+          :rankedMatch="rankedMatch"
+          @update-selected-guess="selectedGuess = $event"
+        />
       </div>
     </div>
     <div class="steps-action">
@@ -114,8 +115,7 @@ var rankedMatch = ref<object[]>([]);
         @click="next"
         :disabled="
           (selectedRegions.length === 0 && current === 0) ||
-          (selectedRanks.length === 0 && current === 1) ||
-          (selectedGuess.length === 0 && current === 2)
+          (selectedRanks.length === 0 && current === 1)
         "
         >{{
           current === 0 ? "Next" : current === 1 ? "Play" : "Guess"
@@ -139,7 +139,7 @@ var rankedMatch = ref<object[]>([]);
   background-color: #fafafa;
   min-height: 200px;
   text-align: center;
-  padding-top: 1.5rem;
+  padding: 1.5rem 1rem 0;
 }
 
 .steps-action {

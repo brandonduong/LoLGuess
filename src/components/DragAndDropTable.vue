@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import TraitIcons from "./TraitIcons.vue";
 import AugmentIcons from "./AugmentIcons.vue";
+import UnitIcons from "./UnitIcons.vue";
 import { onMounted, ref } from "vue";
 import http from "../common/http-common";
 import { Sortable } from "sortablejs-vue3";
 const props = defineProps<{
   rankedMatch: Array<object>;
 }>();
+
+const emit = defineEmits(["updateSelectedGuess"]);
 
 interface StaticTrait {
   trait_id: string;
@@ -19,14 +22,34 @@ interface StaticAugment {
   name: string;
 }
 
+interface StaticUnit {
+  character_id: string;
+  squareIconPath: string;
+  display_name: string;
+}
+
+interface StaticItem {
+  name: string;
+  nameId: string;
+  loadoutsIcon: string;
+}
+
+interface SortableEvent {
+  oldIndex: number;
+  newIndex: number;
+}
+
 var list = ref(props.rankedMatch);
 var loading = ref(true);
 var staticTFTTraitData = ref<StaticTrait[]>([]);
 var staticTFTAugmentData = ref<StaticAugment[]>([]);
+var staticTFTUnitData = ref<StaticUnit[]>([]);
+var staticTFTItemData = ref<StaticItem[]>([]);
 
 onMounted(async () => {
   await getStaticTFTData().then(() => {
     loading.value = false;
+    updateGuess();
   });
 });
 
@@ -42,16 +65,42 @@ async function getStaticTFTData() {
     .then((res) => {
       staticTFTAugmentData = res.data;
     });
+
+  await http.dragon
+    .get("/plugins/rcp-be-lol-game-data/global/default/v1/tftchampions.json")
+    .then((res) => {
+      staticTFTUnitData = res.data;
+    });
+
+  await http.dragon
+    .get("/plugins/rcp-be-lol-game-data/global/default/v1/tftitems.json")
+    .then((res) => {
+      staticTFTItemData = res.data;
+    });
+}
+
+function onChange(event: SortableEvent) {
+  const item = list.value.splice(event.oldIndex, 1)[0];
+  list.value.splice(event.newIndex, 0, item);
+  updateGuess();
+}
+
+function updateGuess() {
+  emit(
+    "updateSelectedGuess",
+    list.value.map((player: any) => player.placement)
+  );
 }
 </script>
 <template>
+  {{ list }}
   <table class="table-header" v-if="!loading">
-    <h2>Placement</h2>
+    <h2></h2>
     <h2>Level</h2>
     <h2>Traits</h2>
     <h2>Augments</h2>
     <h2>Units</h2>
-    <h2>Left Gold</h2>
+    <h2>Gold</h2>
     <div class="placements">
       <h3>1</h3>
       <h3>2</h3>
@@ -68,6 +117,7 @@ async function getStaticTFTData() {
       item-key="name"
       class="draggable"
       :options="{ animation: 150 }"
+      @end="onChange"
     >
       <template #item="{ element }">
         <tr class="draggable-row">
@@ -84,7 +134,13 @@ async function getStaticTFTData() {
               :augments="element.augments"
             />
           </h3>
-          <h3>placeholder units</h3>
+          <h3>
+            <UnitIcons
+              :units="element.units"
+              :staticTFTUnitData="staticTFTUnitData"
+              :staticTFTItemData="staticTFTItemData"
+            />
+          </h3>
           <h3>{{ element.gold_left }}</h3>
         </tr>
       </template>
@@ -98,7 +154,7 @@ async function getStaticTFTData() {
 
 .table-header {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 0.15fr 0.15fr 0.3fr 0.3fr 1fr 0.15fr;
 }
 
 .draggable {
@@ -107,13 +163,13 @@ async function getStaticTFTData() {
 
 .draggable-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 0.15fr 0.3fr 0.3fr 1fr 0.15fr;
   align-items: center;
 }
 
 .placements {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 </style>
