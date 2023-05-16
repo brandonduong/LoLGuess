@@ -9,6 +9,14 @@
           ],
           "category": "function",
           "resourceName": "getMatch"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "verifyGuess"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -46,6 +54,11 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "verifyGuess": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -70,6 +83,22 @@
         {
           "category": "function",
           "resourceName": "getMatch"
+        }
+      ]
+    },
+    "AMPLIFY_function_verifyGuess_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifyGuess"
+        }
+      ]
+    },
+    "AMPLIFY_function_verifyGuess_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifyGuess"
         }
       ]
     }

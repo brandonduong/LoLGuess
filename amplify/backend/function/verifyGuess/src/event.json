@@ -1,0 +1,8 @@
+{
+  "httpMethod": "POST",
+  "path": "/verifyGuess",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": "{\"guess\":[\"U2FsdGVkX1+MLoz4aeVJPoEij00eehYPee7opSAVflU=\",\"U2FsdGVkX1/qqbY+/zs5ewGH5JKAOSKANYfzwTz1wZs=\",\"U2FsdGVkX19Dd23uoHqpRxLuHxP4atNfZWvE/ZTyyM0=\",\"U2FsdGVkX1+TP1ZDfeG3iFpwVMOTsGDOwarSUUbIXvo=\",\"U2FsdGVkX1+dG027b49qOChOb5ZdbCnGxk7C1o1X/0g=\",\"U2FsdGVkX1+NAURAmM83OlCRQGtRfhp0VJXrOmw1x9M=\",\"U2FsdGVkX1+UXwomI+AfnwgKAiZKjW3ZCpj++dzWS2g=\",\"U2FsdGVkX1+KgG4W2+5pMUqL4zr2ev5ISekpUArt8lM=\"]}"
+}

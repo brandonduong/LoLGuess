@@ -2,6 +2,7 @@
 interface StaticTrait {
   trait_id: string;
   icon_path: string;
+  display_name: string;
 }
 
 interface APITrait {
@@ -13,6 +14,7 @@ interface APITrait {
 interface TraitStyle {
   path: string;
   style: number;
+  title: string;
 }
 </script>
 
@@ -37,6 +39,7 @@ props.traits.forEach((trait) => {
     traitStyles.value.push({
       path: path[path.length - 1].toLowerCase(),
       style: trait.style,
+      title: traitInfo.display_name,
     });
   }
 });
@@ -60,6 +63,7 @@ traitStyles.value.sort(function (a, b) {
         :alt="trait.path"
         width="16"
         height="16"
+        :title="trait.title"
       />
     </div>
   </div>

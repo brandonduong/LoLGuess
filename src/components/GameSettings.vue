@@ -12,6 +12,7 @@ const next = async () => {
     });
   } else if (current.value === 2) {
     console.log(selectedGuess.value);
+    await verifyGuess();
   } else {
     current.value++;
   }
@@ -31,6 +32,12 @@ async function getMatch() {
   await http.api.get(url).then((res) => {
     console.log(res);
     rankedMatch = res.data.rankedMatch;
+  });
+}
+async function verifyGuess() {
+  let url = "/verifyGuess";
+  await http.api.post(url, { guess: selectedGuess.value }).then((res) => {
+    console.log(res);
   });
 }
 const steps = [

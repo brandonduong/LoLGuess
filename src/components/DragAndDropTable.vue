@@ -2,6 +2,7 @@
 import TraitIcons from "./TraitIcons.vue";
 import AugmentIcons from "./AugmentIcons.vue";
 import UnitIcons from "./UnitIcons.vue";
+import GoldIcons from "./GoldIcons.vue";
 import { onMounted, ref } from "vue";
 import http from "../common/http-common";
 import { Sortable } from "sortablejs-vue3";
@@ -14,6 +15,7 @@ const emit = defineEmits(["updateSelectedGuess"]);
 interface StaticTrait {
   trait_id: string;
   icon_path: string;
+  display_name: string;
 }
 
 interface StaticAugment {
@@ -93,7 +95,6 @@ function updateGuess() {
 }
 </script>
 <template>
-  {{ list }}
   <table class="table-header" v-if="!loading">
     <h2></h2>
     <h2>Level</h2>
@@ -141,7 +142,7 @@ function updateGuess() {
               :staticTFTItemData="staticTFTItemData"
             />
           </h3>
-          <h3>{{ element.gold_left }}</h3>
+          <h3><GoldIcons :goldLeft="element.gold_left" /></h3>
         </tr>
       </template>
     </Sortable>

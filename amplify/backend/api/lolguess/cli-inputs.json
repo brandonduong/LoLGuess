@@ -10,6 +10,13 @@
           "read"
         ]
       }
+    },
+    "/verifyGuess": {
+      "name": "/verifyGuess",
+      "lambdaFunction": "verifyGuess",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }
