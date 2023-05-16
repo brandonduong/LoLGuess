@@ -8,6 +8,7 @@ import http from "../common/http-common";
 import { Sortable } from "sortablejs-vue3";
 const props = defineProps<{
   rankedMatch: Array<object>;
+  verifiedGuess: string[];
 }>();
 
 const emit = defineEmits(["updateSelectedGuess"]);
@@ -41,7 +42,6 @@ interface SortableEvent {
   newIndex: number;
 }
 
-var list = ref(props.rankedMatch);
 var loading = ref(true);
 var staticTFTTraitData = ref<StaticTrait[]>([]);
 var staticTFTAugmentData = ref<StaticAugment[]>([]);
@@ -82,16 +82,24 @@ async function getStaticTFTData() {
 }
 
 function onChange(event: SortableEvent) {
-  const item = list.value.splice(event.oldIndex, 1)[0];
-  list.value.splice(event.newIndex, 0, item);
+  const item = props.rankedMatch.splice(event.oldIndex, 1)[0];
+  props.rankedMatch.splice(event.newIndex, 0, item);
   updateGuess();
 }
 
 function updateGuess() {
   emit(
     "updateSelectedGuess",
-    list.value.map((player: any) => player.placement)
+    props.rankedMatch.map((player: any) => player.placement)
   );
+}
+
+function checkIfCorrect(placement: number) {
+  if (placement.toString() !== props.verifiedGuess[placement - 1]) {
+    return false;
+  } else {
+    return true;
+  }
 }
 </script>
 <template>
@@ -103,21 +111,40 @@ function updateGuess() {
     <h2>Units</h2>
     <h2>Gold</h2>
     <div class="placements">
-      <h3>1</h3>
-      <h3>2</h3>
-      <h3>3</h3>
-      <h3>4</h3>
-      <h3>5</h3>
-      <h3>6</h3>
-      <h3>7</h3>
-      <h3>8</h3>
+      <div
+        v-for="placement in 8"
+        :class="
+          props.verifiedGuess.length !== 0
+            ? checkIfCorrect(placement)
+              ? `placement correct`
+              : `placement incorrect`
+            : ``
+        "
+      >
+        <h3
+          :class="
+            props.verifiedGuess.length !== 0 && !checkIfCorrect(placement)
+              ? `strike`
+              : ``
+          "
+        >
+          {{ placement }}
+        </h3>
+        <h3 class="correction">
+          {{
+            props.verifiedGuess.length !== 0 && !checkIfCorrect(placement)
+              ? `-->${verifiedGuess[placement - 1]}`
+              : ""
+          }}
+        </h3>
+      </div>
     </div>
     <Sortable
-      :list="list"
+      :list="props.rankedMatch"
       tag="tbody"
       item-key="name"
       class="draggable"
-      :options="{ animation: 150 }"
+      :options="{ animation: 150, disabled: props.verifiedGuess.length !== 0 }"
       @end="onChange"
     >
       <template #item="{ element }">
@@ -172,5 +199,26 @@ function updateGuess() {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+}
+
+.incorrect {
+  background-color: rgb(223, 88, 88);
+}
+
+.correct {
+  background-color: rgb(115, 207, 115);
+}
+
+.strike {
+  text-decoration: line-through;
+}
+
+.correction {
+  text-decoration: none;
+}
+
+.placement {
+  display: flex;
+  justify-content: center;
 }
 </style>

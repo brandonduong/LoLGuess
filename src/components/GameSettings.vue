@@ -12,7 +12,12 @@ const next = async () => {
     });
   } else if (current.value === 2) {
     console.log(selectedGuess.value);
-    await verifyGuess();
+    await verifyGuess().then(() => {
+      current.value++;
+    });
+  } else if (current.value === 3) {
+    verifiedGuess = ref<string[]>([]);
+    current.value = 0;
   } else {
     current.value++;
   }
@@ -38,6 +43,8 @@ async function verifyGuess() {
   let url = "/verifyGuess";
   await http.api.post(url, { guess: selectedGuess.value }).then((res) => {
     console.log(res);
+    console.log(res.data.unencrypted);
+    verifiedGuess = res.data.unencrypted;
   });
 }
 const steps = [
@@ -50,6 +57,7 @@ const steps = [
   {
     title: "Guess",
   },
+  { title: "Review" },
 ];
 
 const regions: string[] = [
@@ -86,6 +94,9 @@ const selectedRegions = ref<string[]>([]);
 const selectedRanks = ref<string[]>([]);
 const selectedGuess = ref<string[]>([]);
 var rankedMatch = ref<object[]>([]);
+var verifiedGuess = ref<string[]>([]);
+
+const buttonText = ["Next", "Play", "Guess", "Play Again"];
 </script>
 
 <template>
@@ -108,10 +119,11 @@ var rankedMatch = ref<object[]>([]);
           @update-selected-options="selectedRanks = $event"
         />
       </div>
-      <div v-if="current === 2">
+      <div v-if="current === 2 || current === 3">
         <DragAndDropTable
           :rankedMatch="rankedMatch"
           @update-selected-guess="selectedGuess = $event"
+          :verifiedGuess="verifiedGuess"
         />
       </div>
     </div>
@@ -124,9 +136,7 @@ var rankedMatch = ref<object[]>([]);
           (selectedRegions.length === 0 && current === 0) ||
           (selectedRanks.length === 0 && current === 1)
         "
-        >{{
-          current === 0 ? "Next" : current === 1 ? "Play" : "Guess"
-        }}</a-button
+        >{{ buttonText[current] }}</a-button
       >
       <a-button
         v-if="current > 0 && current < steps.length - 1"
