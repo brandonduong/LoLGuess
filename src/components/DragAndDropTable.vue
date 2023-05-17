@@ -3,6 +3,7 @@ import TraitIcons from "./TraitIcons.vue";
 import AugmentIcons from "./AugmentIcons.vue";
 import UnitIcons from "./UnitIcons.vue";
 import GoldIcons from "./GoldIcons.vue";
+import LevelIcons from "./LevelIcons.vue";
 import { onMounted, ref } from "vue";
 import http from "../common/http-common";
 import { Sortable } from "sortablejs-vue3";
@@ -149,7 +150,7 @@ function checkIfCorrect(placement: number) {
     >
       <template #item="{ element }">
         <tr class="draggable-row">
-          <h3>{{ element.level }}</h3>
+          <h3><LevelIcons :level="element.level" /></h3>
           <h3>
             <TraitIcons
               :staticTFTTraitData="staticTFTTraitData"
