@@ -30,7 +30,7 @@ app.use(function (req, res, next) {
 
 app.get("/getMatch", async function (req, res) {
   // Add your code here
-  const RIOT_TOKEN = "RGAPI-553bdee7-a5e4-4045-a214-a74ad7edd083"; //process.env.RIOT_TOKEN;
+  const RIOT_TOKEN = "RGAPI-3db6a2d0-a1a8-46fd-97fb-2ee94fdb68ce"; //process.env.RIOT_TOKEN;
   console.log(`EVENT: ${JSON.stringify(req.apiGateway.event)}`);
 
   const param = req.apiGateway.event.multiValueQueryStringParameters;
