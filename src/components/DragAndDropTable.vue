@@ -204,8 +204,16 @@ function checkIfCorrect(placement: number) {
   grid-template-columns: 0.15fr 0.15fr 0.3fr 0.3fr 1fr 0.15fr;
 }
 
+.table-header > h2 {
+  margin: 0;
+}
+
 .draggable {
   grid-column: span 5;
+}
+
+.draggable-row > h3 {
+  margin: 0;
 }
 
 .draggable-row {
@@ -218,6 +226,7 @@ function checkIfCorrect(placement: number) {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  margin: 0 0.75rem;
 }
 
 .incorrect {
@@ -239,5 +248,10 @@ function checkIfCorrect(placement: number) {
 .placement {
   display: flex;
   justify-content: center;
+  border-radius: 1rem;
+}
+
+.placement > h3 {
+  margin: 0;
 }
 </style>

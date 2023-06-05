@@ -181,9 +181,8 @@ const buttonText = ["Next", "Play", "Guess", "Play Again"];
   border: 1px dashed #e9e9e9;
   border-radius: 6px;
   background-color: #fafafa;
-  min-height: 200px;
   text-align: center;
-  padding: 1.5rem 1rem 0;
+  padding: 0.5rem 1rem 1rem;
 }
 
 .steps-action {

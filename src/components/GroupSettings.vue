@@ -4,7 +4,7 @@
     v-model:value="checkedList"
     :options="options"
   />
-  <a-divider />
+  <a-divider class="divider" />
   <div class="all">
     <a-checkbox
       v-model:checked="checkAll"
@@ -58,12 +58,16 @@ export default defineComponent({
 .options {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 0fr;
-  padding: 0 2rem;
+  padding: 1rem 2rem 0;
   font-size: 2rem;
 }
 
 .all {
   text-align: start;
-  padding: 0 2rem 1rem;
+  padding: 0 2rem;
+}
+
+.divider {
+  margin: 1rem 0;
 }
 </style>

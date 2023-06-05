@@ -35,17 +35,17 @@ onMounted(async () => {
         :value="rank"
       ></a-select-option>
     </a-select>
-    <h3
+    <div
       v-if="props.verifiedRank"
       :class="checkIfCorrect() ? `rank correct` : `rank incorrect`"
     >
-      <span class="original">
+      <h3 :class="checkIfCorrect() ? `original` : `original strike`">
         {{ props.selectedRank }}
-      </span>
-      <span class="correction" v-if="!checkIfCorrect()">
+      </h3>
+      <h3 class="correction" v-if="!checkIfCorrect()">
         {{ `-->${props.verifiedRank}` }}
-      </span>
-    </h3>
+      </h3>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -57,6 +57,23 @@ onMounted(async () => {
 
 .rank {
   padding: 0 0.75rem;
+  border-radius: 1rem;
+  margin: 0;
+}
+
+div.rank > h3 {
+  margin: 0;
+}
+
+.original {
+  display: inline-block;
+}
+.correction {
+  display: inline-block;
+}
+
+.strike {
+  text-decoration: line-through;
 }
 
 .incorrect {
