@@ -208,6 +208,7 @@ app.get("/getMatch", async function (req, res) {
       placement: CryptoJS.AES.encrypt(`${placement}`, RIOT_TOKEN).toString(),
       units,
       gold_left,
+      rank: CryptoJS.AES.encrypt(`${rank}`, RIOT_TOKEN).toString(),
     })
   );
 

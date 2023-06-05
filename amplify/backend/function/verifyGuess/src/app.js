@@ -43,7 +43,11 @@ app.post("/verifyGuess", function (req, res) {
       CryptoJS.AES.decrypt(g, RIOT_TOKEN).toString(CryptoJS.enc.Utf8)
     );
   });
-  res.json({ unencrypted });
+  const rank = req.body.rank;
+  res.json({
+    unencrypted,
+    rank: CryptoJS.AES.decrypt(rank, RIOT_TOKEN).toString(CryptoJS.enc.Utf8),
+  });
 });
 
 app.listen(3000, function () {

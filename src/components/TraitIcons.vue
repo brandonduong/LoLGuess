@@ -30,7 +30,6 @@ const props = defineProps<{
 // Get trait icon styles
 const traitStyles = ref<TraitStyle[]>([]);
 props.traits.forEach((trait) => {
-  console.log(trait);
   const traitInfo = props.staticTFTTraitData.filter((t) => {
     return t.trait_id === trait.name && trait.tier_current > 0;
   })[0];

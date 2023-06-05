@@ -4,6 +4,7 @@ import http from "../common/http-common";
 import GroupSettings from "./GroupSettings.vue";
 import DragAndDropTable from "./DragAndDropTable.vue";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
+import GuessRank from "./GuessRank.vue";
 
 const auth = useAuthenticator();
 
@@ -51,7 +52,7 @@ async function getMatch() {
 async function verifyGuess() {
   let url = "/verifyGuess";
   await http.api
-    .post(url, { guess: selectedGuess.value }, header)
+    .post(url, { guess: selectedGuess.value, rank: selectedRank.value }, header)
     .then((res) => {
       console.log(res);
       console.log(res.data.unencrypted);
@@ -104,8 +105,10 @@ const ranks: string[] = [
 const selectedRegions = ref<string[]>([]);
 const selectedRanks = ref<string[]>([]);
 const selectedGuess = ref<string[]>([]);
+const selectedRank = ref<string>("");
 var rankedMatch = ref<object[]>([]);
 var verifiedGuess = ref<string[]>([]);
+var verifiedRank = ref<string>("");
 
 const buttonText = ["Next", "Play", "Guess", "Play Again"];
 </script>
@@ -135,25 +138,33 @@ const buttonText = ["Next", "Play", "Guess", "Play Again"];
           :rankedMatch="rankedMatch"
           @update-selected-guess="selectedGuess = $event"
           :verifiedGuess="verifiedGuess"
+          :selectedRanks="selectedRanks"
         />
       </div>
     </div>
     <div class="steps-action">
+      <GuessRank
+        v-if="current === 2 || current === 3"
+        :selectedRanks="selectedRanks"
+        @update-selected-rank="selectedRank = $event"
+        :verifiedRank="verifiedRank"
+      />
+      <div v-else></div>
+      <a-button
+        :disabled="!(current > 0 && current < steps.length - 1)"
+        @click="prev"
+        >Previous</a-button
+      >
       <a-button
         v-if="current < steps.length"
         type="primary"
         @click="next"
         :disabled="
           (selectedRegions.length === 0 && current === 0) ||
-          (selectedRanks.length === 0 && current === 1)
+          (selectedRanks.length === 0 && current === 1) ||
+          (current === 2 && !selectedRank)
         "
         >{{ buttonText[current] }}</a-button
-      >
-      <a-button
-        v-if="current > 0 && current < steps.length - 1"
-        style="margin-left: 8px"
-        @click="prev"
-        >Previous</a-button
       >
     </div>
   </div>
@@ -171,7 +182,10 @@ const buttonText = ["Next", "Play", "Guess", "Play Again"];
 }
 
 .steps-action {
-  margin-top: 24px;
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 4fr 1fr 1fr;
+  align-items: center;
 }
 
 [data-theme="dark"] .steps-content {

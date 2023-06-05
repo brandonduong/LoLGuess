@@ -91,6 +91,7 @@ function checkIfImageExists(url: string, callback: Function) {
   <div class="augments">
     <div v-for="augment in augmentStyles" :class="`augment`">
       <img
+        v-if="augment.path"
         class="augment-icon"
         :src="augment.path"
         :alt="augment.title"
