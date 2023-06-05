@@ -9,6 +9,7 @@ interface APITrait {
   name: string;
   tier_current: number;
   style: number;
+  num_units: number;
 }
 
 interface TraitStyle {
@@ -29,6 +30,7 @@ const props = defineProps<{
 // Get trait icon styles
 const traitStyles = ref<TraitStyle[]>([]);
 props.traits.forEach((trait) => {
+  console.log(trait);
   const traitInfo = props.staticTFTTraitData.filter((t) => {
     return t.trait_id === trait.name && trait.tier_current > 0;
   })[0];
@@ -39,7 +41,7 @@ props.traits.forEach((trait) => {
     traitStyles.value.push({
       path: path[path.length - 1].toLowerCase(),
       style: trait.style,
-      title: traitInfo.display_name,
+      title: `${trait.num_units} ${traitInfo.display_name}`,
     });
   }
 });
