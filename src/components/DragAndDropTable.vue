@@ -50,10 +50,28 @@ var staticTFTUnitData = ref<StaticUnit[]>([]);
 var staticTFTItemData = ref<StaticItem[]>([]);
 
 onMounted(async () => {
-  await getStaticTFTData().then(() => {
+  const staticData = window.localStorage.getItem("staticTFTData");
+  if (staticData) {
+    staticTFTTraitData = JSON.parse(staticData).traitData;
+    staticTFTAugmentData = JSON.parse(staticData).augmentData;
+    staticTFTUnitData = JSON.parse(staticData).unitData;
+    staticTFTItemData = JSON.parse(staticData).itemData;
     loading.value = false;
-    updateGuess();
-  });
+  } else {
+    await getStaticTFTData().then(() => {
+      loading.value = false;
+      localStorage.setItem(
+        "staticTFTData",
+        JSON.stringify({
+          traitData: staticTFTTraitData,
+          augmentData: staticTFTAugmentData,
+          unitData: staticTFTUnitData,
+          itemData: staticTFTItemData,
+        })
+      );
+    });
+  }
+  updateGuess();
 });
 
 async function getStaticTFTData() {

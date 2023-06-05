@@ -29,7 +29,7 @@ app.use(function (req, res, next) {
 
 app.post("/verifyGuess", function (req, res) {
   // Add your code here
-  const RIOT_TOKEN = "RGAPI-3db6a2d0-a1a8-46fd-97fb-2ee94fdb68ce"; //process.env.RIOT_TOKEN;
+  const RIOT_TOKEN = process.env.RIOT_TOKEN;
   console.log(req.body);
   const guess = req.body.guess;
   console.log("guess", guess);

@@ -3,6 +3,9 @@ import { ref } from "vue";
 import http from "../common/http-common";
 import GroupSettings from "./GroupSettings.vue";
 import DragAndDropTable from "./DragAndDropTable.vue";
+import { useAuthenticator } from "@aws-amplify/ui-vue";
+
+const auth = useAuthenticator();
 
 const current = ref<number>(0);
 const next = async () => {
@@ -25,6 +28,12 @@ const next = async () => {
 const prev = () => {
   current.value--;
 };
+const header = {
+  headers: {
+    "Content-type": "application/json",
+    Authorization: `Bearer ${auth.user.signInUserSession.idToken.jwtToken}`,
+  },
+};
 async function getMatch() {
   let url = "/getMatch?";
   for (let i = 0; i < selectedRegions.value.length; i++) {
@@ -34,18 +43,20 @@ async function getMatch() {
     url += `ranks[]=${selectedRanks.value[i]}&`;
   }
   console.log(url);
-  await http.api.get(url).then((res) => {
+  await http.api.get(url, header).then((res) => {
     console.log(res);
     rankedMatch = res.data.rankedMatch;
   });
 }
 async function verifyGuess() {
   let url = "/verifyGuess";
-  await http.api.post(url, { guess: selectedGuess.value }).then((res) => {
-    console.log(res);
-    console.log(res.data.unencrypted);
-    verifiedGuess = res.data.unencrypted;
-  });
+  await http.api
+    .post(url, { guess: selectedGuess.value }, header)
+    .then((res) => {
+      console.log(res);
+      console.log(res.data.unencrypted);
+      verifiedGuess = res.data.unencrypted;
+    });
 }
 const steps = [
   {
