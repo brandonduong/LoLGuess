@@ -21,6 +21,7 @@ const next = async () => {
     });
   } else if (current.value === 3) {
     verifiedGuess = ref<string[]>([]);
+    verifiedRank = ref<string>("");
     current.value = 0;
   } else {
     current.value++;
@@ -47,16 +48,18 @@ async function getMatch() {
   await http.api.get(url, header).then((res) => {
     console.log(res);
     rankedMatch = res.data.rankedMatch;
+    encryptedRank = res.data.rank;
   });
 }
 async function verifyGuess() {
   let url = "/verifyGuess";
   await http.api
-    .post(url, { guess: selectedGuess.value, rank: selectedRank.value }, header)
+    .post(url, { guess: selectedGuess.value, encryptedRank }, header)
     .then((res) => {
       console.log(res);
       console.log(res.data.unencrypted);
       verifiedGuess = res.data.unencrypted;
+      verifiedRank = res.data.rank;
     });
 }
 const steps = [
@@ -107,6 +110,7 @@ const selectedRanks = ref<string[]>([]);
 const selectedGuess = ref<string[]>([]);
 const selectedRank = ref<string>("");
 var rankedMatch = ref<object[]>([]);
+var encryptedRank = ref<string>("");
 var verifiedGuess = ref<string[]>([]);
 var verifiedRank = ref<string>("");
 
@@ -147,6 +151,7 @@ const buttonText = ["Next", "Play", "Guess", "Play Again"];
         v-if="current === 2 || current === 3"
         :selectedRanks="selectedRanks"
         @update-selected-rank="selectedRank = $event"
+        :selectedRank="selectedRank"
         :verifiedRank="verifiedRank"
       />
       <div v-else></div>

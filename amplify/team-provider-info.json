@@ -19,12 +19,12 @@
       "function": {
         "getMatch": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getMatch-434b70387a4753775131-build.zip",
+          "s3Key": "amplify-builds/getMatch-32716f6137347773796f-build.zip",
           "riotApi": "RGAPI-f686f51b-c501-4613-bd6f-3f6c5a2036af"
         },
         "verifyGuess": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/verifyGuess-3673435641452f6b4f34-build.zip"
+          "s3Key": "amplify-builds/verifyGuess-596c756a765635435568-build.zip"
         }
       },
       "api": {

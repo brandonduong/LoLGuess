@@ -44,6 +44,7 @@ app.get("/getMatch", async function (req, res) {
 
   // Get random rank
   var rank = ranks[Math.floor(Math.random() * ranks.length)];
+  const rankDivision = rank;
   const regTranslate = [
     "br1",
     "eun1",
@@ -208,11 +209,13 @@ app.get("/getMatch", async function (req, res) {
       placement: CryptoJS.AES.encrypt(`${placement}`, RIOT_TOKEN).toString(),
       units,
       gold_left,
-      rank: CryptoJS.AES.encrypt(`${rank}`, RIOT_TOKEN).toString(),
     })
   );
 
-  res.json({ rankedMatch });
+  res.json({
+    rankedMatch,
+    rank: CryptoJS.AES.encrypt(`${rankDivision}`, RIOT_TOKEN).toString(),
+  });
 });
 
 app.listen(3000, function () {
