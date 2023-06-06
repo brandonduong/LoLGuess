@@ -158,6 +158,7 @@ const buttonText = ["Next", "Play", "Guess", "Play Again"];
         />
         <GuessScore
           :selectedRank="selectedRank"
+          :selectedRanks="selectedRanks"
           :verifiedRank="verifiedRank"
           :verifiedGuess="verifiedGuess"
           v-if="current === 3"
