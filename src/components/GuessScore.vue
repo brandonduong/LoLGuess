@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { InfoCircleOutlined } from "@ant-design/icons-vue";
+
 const props = defineProps<{
   verifiedRank: string;
   selectedRank: string;
@@ -8,9 +10,15 @@ const props = defineProps<{
 
 function calculateScore() {
   var score = 0;
-  const MAX_POINTS = 8; // For each correct placement (subtract depending on how far guess was)
+  const MAX_POINTS = 8; // For each correct placement (divide depending on how far guess was)
   for (let i = 0; i < props.verifiedGuess.length; i++) {
-    score += MAX_POINTS - Math.abs(parseInt(props.verifiedGuess[i]) - (i + 1));
+    if (parseInt(props.verifiedGuess[i]) - (i + 1) !== 0) {
+      score +=
+        MAX_POINTS / Math.abs(parseInt(props.verifiedGuess[i]) - (i + 1));
+    } else {
+      score += MAX_POINTS;
+    }
+    console.log(score);
   }
 
   var MAX_RANK_POOL = 9; // 9 ranks in total
@@ -20,19 +28,35 @@ function calculateScore() {
   const verifiedRankInd = props.selectedRanks.indexOf(props.verifiedRank);
   const currentMax =
     MAX_RANK_POINTS * (props.selectedRanks.length / MAX_RANK_POOL); // Depends on # of ranks in pool
-  score +=
-    currentMax -
-    (currentMax / props.selectedRanks.length) *
-      Math.abs(selectedRankInd - verifiedRankInd);
 
-  return Math.round(score * 100) / 100;
+  if (Math.abs(selectedRankInd - verifiedRankInd) === 0) {
+    score += currentMax;
+  }
+
+  return `${Math.round(score * 100) / 100} / ${MAX_POINTS * 8 + currentMax}`;
 }
 </script>
 <template>
-  <h2 class="score">Score: {{ calculateScore() }}</h2>
+  <div class="score-div">
+    <h2 class="score">Score: {{ calculateScore() }}</h2>
+    <InfoCircleOutlined class="info" />
+  </div>
 </template>
 <style scoped>
+.score-div {
+  display: grid;
+  grid-template-columns: 0.1fr 1fr;
+  justify-items: start;
+  align-items: center;
+}
+
 .score {
   margin: 0;
+  white-space: nowrap;
+  padding: 0 0.75rem;
+}
+
+.info {
+  font-size: 1.2rem;
 }
 </style>
