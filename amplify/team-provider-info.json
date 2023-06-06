@@ -19,16 +19,21 @@
       "function": {
         "getMatch": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getMatch-32716f6137347773796f-build.zip",
+          "s3Key": "amplify-builds/getMatch-79774f4d756863457949-build.zip",
           "riotApi": "RGAPI-f686f51b-c501-4613-bd6f-3f6c5a2036af"
         },
         "verifyGuess": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/verifyGuess-596c756a765635435568-build.zip"
+          "s3Key": "amplify-builds/verifyGuess-792b6d746a6378675a4d-build.zip"
+        },
+        "lolguesssignup": {
+          "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
+          "s3Key": "amplify-builds/lolguesssignup-354d6656396e564e7672-build.zip"
         }
       },
       "api": {
-        "lolguess": {}
+        "lolguess": {},
+        "lolguessdatastore": {}
       }
     }
   }

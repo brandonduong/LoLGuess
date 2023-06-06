@@ -18,7 +18,6 @@ function calculateScore() {
     } else {
       score += MAX_POINTS;
     }
-    console.log(score);
   }
 
   var MAX_RANK_POOL = 9; // 9 ranks in total
@@ -39,7 +38,26 @@ function calculateScore() {
 <template>
   <div class="score-div">
     <h2 class="score">Score: {{ calculateScore() }}</h2>
-    <InfoCircleOutlined class="info" />
+    <a-popover title="Scoring Information">
+      <template #content>
+        <div class="score-info">
+          <h4>
+            <b>Placements: </b>Guessing a player's placement correctly gives a
+            maximum of 8 points. For every 1 position a guess is off by will
+            decrease those 8 points following the equation (8 / # of positions
+            off + 1).
+
+            <br />
+
+            <b>Rank: </b>Guessing the rank correctly gives a maximum of 36
+            points. For every 1 rank that isn't included in the full pool of 9
+            ranks will decrease those 36 points following the equation (36 * #
+            of ranks in pool / 9).
+          </h4>
+        </div>
+      </template>
+      <InfoCircleOutlined class="info" />
+    </a-popover>
   </div>
 </template>
 <style scoped>
@@ -58,5 +76,9 @@ function calculateScore() {
 
 .info {
   font-size: 1.2rem;
+}
+
+.score-info {
+  max-width: 20rem;
 }
 </style>

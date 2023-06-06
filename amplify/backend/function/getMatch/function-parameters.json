@@ -5,5 +5,13 @@
       "cloudFormationParameterName": "riotApi",
       "environmentVariableName": "RIOT_API"
     }
-  ]
+  ],
+  "permissions": {
+    "api": {
+      "lolguessdatastore": [
+        "Query",
+        "Mutation"
+      ]
+    }
+  }
 }

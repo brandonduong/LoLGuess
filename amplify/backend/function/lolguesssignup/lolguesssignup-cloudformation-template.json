@@ -59,12 +59,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "verifyGuess",
+            "lolguesssignup",
             {
               "Fn::Join": [
                 "",
                 [
-                  "verifyGuess",
+                  "lolguesssignup",
                   "-",
                   {
                     "Ref": "env"
@@ -110,12 +110,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "lolguessLambdaRole170228a8",
+            "lolguessLambdaRoleb3335f2e",
             {
               "Fn::Join": [
                 "",
                 [
-                  "lolguessLambdaRole170228a8",
+                  "lolguessLambdaRoleb3335f2e",
                   "-",
                   {
                     "Ref": "env"

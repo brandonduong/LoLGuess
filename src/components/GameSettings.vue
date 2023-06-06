@@ -7,6 +7,16 @@ import { useAuthenticator } from "@aws-amplify/ui-vue";
 import GuessRank from "./GuessRank.vue";
 import GuessScore from "./GuessScore.vue";
 
+/*
+import { API, graphqlOperation } from 'aws-amplify';
+import { createTodo} from '../graphql/mutations';
+import type { CreateTodoInput, CreateTodoMutation } from "@/API";
+import type { GraphQLQuery } from "@aws-amplify/api";
+
+const todo: CreateTodoInput = { name: "My first todo", description: "Hello world!" };
+
+await API.graphql<GraphQLQuery<CreateTodoMutation>>(graphqlOperation(createTodo, {input: todo}));
+*/
 const auth = useAuthenticator();
 
 const current = ref<number>(0);
