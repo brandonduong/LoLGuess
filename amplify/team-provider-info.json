@@ -19,7 +19,7 @@
       "function": {
         "getMatch": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getMatch-79774f4d756863457949-build.zip",
+          "s3Key": "amplify-builds/getMatch-42634770346d61596f79-build.zip",
           "riotApi": "RGAPI-f686f51b-c501-4613-bd6f-3f6c5a2036af"
         },
         "verifyGuess": {

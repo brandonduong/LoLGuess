@@ -34,17 +34,20 @@ const GRAPHQL_API_KEY = process.env.API_LOLGUESSDATASTORE_GRAPHQLAPIKEYOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 
 const query = /* GraphQL */ `
-  query LIST_USERS {
-    listUsers {
-      items {
-        id
-        score
-        guesses
-        correctPlacements
-        correctRank
-        rankPool
-        unfinished
-      }
+  query GET_USER($id: ID!) {
+    getUser(id: $id) {
+      id
+      unfinished
+    }
+  }
+`;
+
+const mutation = /* GraphQL */ `
+  mutation UPDATE_USER($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      id
+      unfinished
+      updatedAt
     }
   }
 `;
@@ -61,7 +64,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-async function incrementUnfinished() {
+async function incrementUnfinished(sub) {
   const endpoint = new URL(GRAPHQL_ENDPOINT);
 
   const signer = new SignatureV4({
@@ -71,39 +74,66 @@ async function incrementUnfinished() {
     sha256: Sha256,
   });
 
-  const requestToBeSigned = new HttpRequest({
+  var variables = {
+    id: sub,
+  };
+
+  var requestToBeSigned = new HttpRequest({
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       host: endpoint.host,
     },
     hostname: endpoint.host,
-    body: JSON.stringify({ query }),
+    body: JSON.stringify({ query, variables }),
     path: endpoint.pathname,
   });
 
-  const signed = await signer.sign(requestToBeSigned);
-  const request = new Request(GRAPHQL_ENDPOINT, signed);
+  var signed = await signer.sign(requestToBeSigned);
+  var request = new Request(GRAPHQL_ENDPOINT, signed);
 
-  let statusCode = 200;
   let body;
   let response;
 
+  // Get current unfinished value
   try {
     response = await node_fetch(request);
     body = await response.json();
     console.log(body);
-    if (body.errors) statusCode = 400;
+
+    // Increment unfinished value
+    const unf = body.data.getUser.unfinished;
+    variables = {
+      input: {
+        id: sub,
+        unfinished: unf + 1,
+      },
+    };
+    requestToBeSigned = new HttpRequest({
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        host: endpoint.host,
+      },
+      hostname: endpoint.host,
+      body: JSON.stringify({ query: mutation, variables }),
+      path: endpoint.pathname,
+    });
+
+    signed = await signer.sign(requestToBeSigned);
+    request = new Request(GRAPHQL_ENDPOINT, signed);
+
+    try {
+      response = await node_fetch(request);
+      body = await response.json();
+      console.log(body);
+    } catch (error) {
+      statusCode = 500;
+      console.log(error);
+    }
   } catch (error) {
     statusCode = 500;
     console.log(error);
-    body = {
-      errors: [
-        {
-          message: error.message,
-        },
-      ],
-    };
   }
 }
 
@@ -296,7 +326,9 @@ app.get("/getMatch", async function (req, res) {
   );
 
   // Increment Unfinished Games for User
-  await incrementUnfinished();
+  await incrementUnfinished(
+    req.apiGateway.event.requestContext.authorizer.claims.sub
+  );
 
   res.json({
     rankedMatch,
