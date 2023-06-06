@@ -23,7 +23,7 @@ onMounted(async () => {
 </script>
 <template>
   <div class="rank-guess">
-    <h3 class="rank">Rank:</h3>
+    <h2 class="rank">Rank:</h2>
     <a-select
       @change="updateRank"
       placeholder="Guess Rank"
@@ -39,12 +39,12 @@ onMounted(async () => {
       v-if="props.verifiedRank"
       :class="checkIfCorrect() ? `rank correct` : `rank incorrect`"
     >
-      <h3 :class="checkIfCorrect() ? `original` : `original strike`">
+      <h2 :class="checkIfCorrect() ? `original` : `original strike`">
         {{ props.selectedRank }}
-      </h3>
-      <h3 class="correction" v-if="!checkIfCorrect()">
+      </h2>
+      <h2 class="correction" v-if="!checkIfCorrect()">
         {{ `-->${props.verifiedRank}` }}
-      </h3>
+      </h2>
     </div>
   </div>
 </template>
@@ -59,9 +59,10 @@ onMounted(async () => {
   padding: 0 0.75rem;
   border-radius: 1rem;
   margin: 0;
+  white-space: nowrap;
 }
 
-div.rank > h3 {
+div.rank > h2 {
   margin: 0;
 }
 

@@ -10,14 +10,7 @@ const auth = useAuthenticator();
 </script>
 
 <template>
-  <img
-    alt="Vue logo"
-    class="logo"
-    src="@/assets/logo.svg"
-    width="125"
-    height="125"
-    v-if="auth.authStatus !== 'authenticated'"
-  />
+  <h1 v-if="auth.authStatus !== 'authenticated'" class="logo">LoLGuess</h1>
   <Authenticator>
     <template v-if="auth.authStatus === 'configuring'">
       <button @click="auth.signOut">Loading...</button>
@@ -34,6 +27,9 @@ const auth = useAuthenticator();
 .logo {
   display: block;
   margin: 0 auto 2rem;
+  color: hsl(51, 100%, 50%);
+  font-size: 5rem;
+  text-shadow: 0 0 black;
 }
 
 nav {

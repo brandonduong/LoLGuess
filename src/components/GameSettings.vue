@@ -5,6 +5,7 @@ import GroupSettings from "./GroupSettings.vue";
 import DragAndDropTable from "./DragAndDropTable.vue";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
 import GuessRank from "./GuessRank.vue";
+import GuessScore from "./GuessScore.vue";
 
 const auth = useAuthenticator();
 
@@ -72,7 +73,7 @@ const steps = [
   {
     title: "Guess",
   },
-  { title: "Review" },
+  { title: "Results" },
 ];
 
 const regions: string[] = [
@@ -147,13 +148,21 @@ const buttonText = ["Next", "Play", "Guess", "Play Again"];
       </div>
     </div>
     <div class="steps-action">
-      <GuessRank
-        v-if="current === 2 || current === 3"
-        :selectedRanks="selectedRanks"
-        @update-selected-rank="selectedRank = $event"
-        :selectedRank="selectedRank"
-        :verifiedRank="verifiedRank"
-      />
+      <div class="extra" v-if="current === 2 || current === 3">
+        <GuessRank
+          v-if="current === 2 || current === 3"
+          :selectedRanks="selectedRanks"
+          @update-selected-rank="selectedRank = $event"
+          :selectedRank="selectedRank"
+          :verifiedRank="verifiedRank"
+        />
+        <GuessScore
+          :selectedRank="selectedRank"
+          :verifiedRank="verifiedRank"
+          :verifiedGuess="verifiedGuess"
+          v-if="current === 3"
+        />
+      </div>
       <div v-else></div>
       <a-button
         :disabled="!(current > 0 && current < steps.length - 1)"
@@ -195,5 +204,10 @@ const buttonText = ["Next", "Play", "Guess", "Play Again"];
 [data-theme="dark"] .steps-content {
   background-color: #2f2f2f;
   border: 1px dashed #404040;
+}
+
+.extra {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 </style>

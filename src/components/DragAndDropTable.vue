@@ -216,6 +216,10 @@ function checkIfCorrect(placement: number) {
   margin: 0;
 }
 
+.draggable-row > h3 > h3 {
+  margin: 0;
+}
+
 .draggable-row {
   display: grid;
   grid-template-columns: 0.15fr 0.3fr 0.3fr 1fr 0.15fr;
@@ -249,9 +253,13 @@ function checkIfCorrect(placement: number) {
   display: flex;
   justify-content: center;
   border-radius: 1rem;
+  white-space: nowrap;
+  padding: 0 0.5rem;
 }
 
-.placement > h3 {
+.placements > div > h3 {
   margin: 0;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 </style>
