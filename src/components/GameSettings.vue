@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, h } from "vue";
+import { LoadingOutlined } from "@ant-design/icons-vue";
 import http from "../common/http-common";
 import GroupSettings from "./GroupSettings.vue";
 import DragAndDropTable from "./DragAndDropTable.vue";
@@ -19,6 +20,7 @@ await API.graphql<GraphQLQuery<CreateTodoMutation>>(graphqlOperation(createTodo,
 */
 const auth = useAuthenticator();
 
+const loading = ref<boolean>(false);
 const current = ref<number>(0);
 const next = async () => {
   if (current.value === 1) {
@@ -56,15 +58,19 @@ async function getMatch() {
     url += `ranks[]=${selectedRanks.value[i]}&`;
   }
   console.log(url);
+
+  loading.value = true;
   await http.api.get(url, header).then((res) => {
     console.log(res);
     rankedMatch = res.data.rankedMatch;
     encryptedRank = res.data.rank;
     encryptedRanks = res.data.ranks;
+    loading.value = false;
   });
 }
 async function verifyGuess() {
   let url = "/verifyGuess";
+  loading.value = true;
   await http.api
     .post(
       url,
@@ -81,6 +87,7 @@ async function verifyGuess() {
       console.log(res.data.unencrypted);
       verifiedGuess = res.data.unencrypted;
       verifiedRank = res.data.rank;
+      loading.value = false;
     });
 }
 const steps = [
@@ -137,6 +144,14 @@ var verifiedGuess = ref<string[]>([]);
 var verifiedRank = ref<string>("");
 
 const buttonText = ["Next", "Play", "Guess", "Play Again"];
+
+const indicator = h(LoadingOutlined, {
+  style: {
+    fontSize: "24px",
+    margin: "5rem 0 4.5rem 0",
+  },
+  spin: true,
+});
 </script>
 
 <template>
@@ -145,28 +160,31 @@ const buttonText = ["Next", "Play", "Guess", "Play Again"];
       <a-step v-for="item in steps" :key="item.title" :title="item.title" />
     </a-steps>
     <div class="steps-content">
-      <div v-if="current === 0">
-        <GroupSettings
-          :options="regions"
-          :selected-options="selectedRegions"
-          @update-selected-options="selectedRegions = $event"
-        />
+      <div v-if="!loading">
+        <div v-if="current === 0">
+          <GroupSettings
+            :options="regions"
+            :selected-options="selectedRegions"
+            @update-selected-options="selectedRegions = $event"
+          />
+        </div>
+        <div v-if="current === 1">
+          <GroupSettings
+            :options="ranks"
+            :selected-options="selectedRanks"
+            @update-selected-options="selectedRanks = $event"
+          />
+        </div>
+        <div v-if="current === 2 || current === 3">
+          <DragAndDropTable
+            :rankedMatch="rankedMatch"
+            @update-selected-guess="selectedGuess = $event"
+            :verifiedGuess="verifiedGuess"
+            :selectedRanks="selectedRanks"
+          />
+        </div>
       </div>
-      <div v-if="current === 1">
-        <GroupSettings
-          :options="ranks"
-          :selected-options="selectedRanks"
-          @update-selected-options="selectedRanks = $event"
-        />
-      </div>
-      <div v-if="current === 2 || current === 3">
-        <DragAndDropTable
-          :rankedMatch="rankedMatch"
-          @update-selected-guess="selectedGuess = $event"
-          :verifiedGuess="verifiedGuess"
-          :selectedRanks="selectedRanks"
-        />
-      </div>
+      <div v-else><a-spin :indicator="indicator"></a-spin></div>
     </div>
     <div class="steps-action">
       <div class="extra" v-if="current === 2 || current === 3">

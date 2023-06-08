@@ -14,6 +14,7 @@ import {
   Popover,
   Dropdown,
   Menu,
+  Spin,
 } from "ant-design-vue";
 Amplify.configure(awsExports);
 
@@ -26,5 +27,6 @@ app.use(Checkbox);
 app.use(Divider);
 app.use(Select);
 app.use(Popover);
+app.use(Spin);
 
 app.mount("#app");
