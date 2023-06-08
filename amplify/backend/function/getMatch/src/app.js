@@ -33,24 +33,14 @@ const GRAPHQL_ENDPOINT =
 const GRAPHQL_API_KEY = process.env.API_LOLGUESSDATASTORE_GRAPHQLAPIKEYOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 
-const query = /* GraphQL */ `
-  query GET_USER($id: ID!) {
-    getUser(id: $id) {
-      id
-      unfinished
-    }
-  }
-`;
+const endpoint = new URL(GRAPHQL_ENDPOINT);
 
-const mutation = /* GraphQL */ `
-  mutation UPDATE_USER($input: UpdateUserInput!) {
-    updateUser(input: $input) {
-      id
-      unfinished
-      updatedAt
-    }
-  }
-`;
+const signer = new SignatureV4({
+  credentials: defaultProvider(),
+  region: AWS_REGION,
+  service: "appsync",
+  sha256: Sha256,
+});
 
 // declare a new express app
 const app = express();
@@ -64,21 +54,21 @@ app.use(function (req, res, next) {
   next();
 });
 
-async function incrementUnfinished(sub) {
-  const endpoint = new URL(GRAPHQL_ENDPOINT);
+async function getUser(sub) {
+  const query = /* GraphQL */ `
+    query GET_USER($id: ID!) {
+      getUser(id: $id) {
+        id
+        unfinished
+      }
+    }
+  `;
 
-  const signer = new SignatureV4({
-    credentials: defaultProvider(),
-    region: AWS_REGION,
-    service: "appsync",
-    sha256: Sha256,
-  });
-
-  var variables = {
+  const variables = {
     id: sub,
   };
 
-  var requestToBeSigned = new HttpRequest({
+  const requestToBeSigned = new HttpRequest({
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -89,8 +79,8 @@ async function incrementUnfinished(sub) {
     path: endpoint.pathname,
   });
 
-  var signed = await signer.sign(requestToBeSigned);
-  var request = new Request(GRAPHQL_ENDPOINT, signed);
+  const signed = await signer.sign(requestToBeSigned);
+  const request = new Request(GRAPHQL_ENDPOINT, signed);
 
   let body;
   let response;
@@ -100,40 +90,56 @@ async function incrementUnfinished(sub) {
     response = await node_fetch(request);
     body = await response.json();
     console.log(body);
-
-    // Increment unfinished value
-    const unf = body.data.getUser.unfinished;
-    variables = {
-      input: {
-        id: sub,
-        unfinished: unf + 1,
-      },
-    };
-    requestToBeSigned = new HttpRequest({
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        host: endpoint.host,
-      },
-      hostname: endpoint.host,
-      body: JSON.stringify({ query: mutation, variables }),
-      path: endpoint.pathname,
-    });
-
-    signed = await signer.sign(requestToBeSigned);
-    request = new Request(GRAPHQL_ENDPOINT, signed);
-
-    try {
-      response = await node_fetch(request);
-      body = await response.json();
-      console.log(body);
-    } catch (error) {
-      statusCode = 500;
-      console.log(error);
-    }
   } catch (error) {
     statusCode = 500;
     console.log(error);
+    body = { error };
+  }
+  return body;
+}
+
+async function incrementUnfinished(sub) {
+  const mutation = /* GraphQL */ `
+    mutation UPDATE_USER($input: UpdateUserInput!) {
+      updateUser(input: $input) {
+        id
+        unfinished
+        updatedAt
+      }
+    }
+  `;
+
+  // Increment unfinished value
+  const user = await getUser(sub);
+  const unf = user.data.getUser.unfinished;
+  const variables = {
+    input: {
+      id: sub,
+      unfinished: unf + 1,
+    },
+  };
+  const requestToBeSigned = new HttpRequest({
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      host: endpoint.host,
+    },
+    hostname: endpoint.host,
+    body: JSON.stringify({ query: mutation, variables }),
+    path: endpoint.pathname,
+  });
+
+  const signed = await signer.sign(requestToBeSigned);
+  const request = new Request(GRAPHQL_ENDPOINT, signed);
+
+  try {
+    response = await node_fetch(request);
+    body = await response.json();
+    console.log(body);
+  } catch (error) {
+    statusCode = 500;
+    console.log(error);
+    body = { error };
   }
 }
 

@@ -14,10 +14,11 @@ function calculateScore() {
   for (let i = 0; i < props.verifiedGuess.length; i++) {
     if (parseInt(props.verifiedGuess[i]) - (i + 1) !== 0) {
       score +=
-        MAX_POINTS / Math.abs(parseInt(props.verifiedGuess[i]) - (i + 1));
+        MAX_POINTS / (Math.abs(parseInt(props.verifiedGuess[i]) - (i + 1)) + 1);
     } else {
       score += MAX_POINTS;
     }
+    console.log(score);
   }
 
   var MAX_RANK_POOL = 9; // 9 ranks in total
@@ -26,7 +27,7 @@ function calculateScore() {
   const selectedRankInd = props.selectedRanks.indexOf(props.selectedRank);
   const verifiedRankInd = props.selectedRanks.indexOf(props.verifiedRank);
   const currentMax =
-    MAX_RANK_POINTS * (props.selectedRanks.length / MAX_RANK_POOL); // Depends on # of ranks in pool
+    MAX_RANK_POINTS * ((props.selectedRanks.length - 1) / (MAX_RANK_POOL - 1)); // Depends on # of ranks in pool
 
   if (Math.abs(selectedRankInd - verifiedRankInd) === 0) {
     score += currentMax;
@@ -51,8 +52,8 @@ function calculateScore() {
 
             <b>Rank: </b>Guessing the rank correctly gives a maximum of 36
             points. For every 1 rank that isn't included in the full pool of 9
-            ranks will decrease those 36 points following the equation (36 * #
-            of ranks in pool / 9).
+            ranks will decrease those 36 points following the equation (36 * (#
+            of ranks in pool - 1) / 8).
           </h4>
         </div>
       </template>
