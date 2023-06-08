@@ -95,11 +95,11 @@ async function getUser(sub) {
     console.log(error);
     body = { error };
   }
-  return body;
+  return body.data.getUser;
 }
 
-async function incrementUnfinished(sub) {
-  const mutation = /* GraphQL */ `
+async function incrementUnfinished(user) {
+  const query = /* GraphQL */ `
     mutation UPDATE_USER($input: UpdateUserInput!) {
       updateUser(input: $input) {
         id
@@ -110,12 +110,10 @@ async function incrementUnfinished(sub) {
   `;
 
   // Increment unfinished value
-  const user = await getUser(sub);
-  const unf = user.data.getUser.unfinished;
   const variables = {
     input: {
-      id: sub,
-      unfinished: unf + 1,
+      id: user.id,
+      unfinished: user.unfinished + 1,
     },
   };
   const requestToBeSigned = new HttpRequest({
@@ -125,7 +123,7 @@ async function incrementUnfinished(sub) {
       host: endpoint.host,
     },
     hostname: endpoint.host,
-    body: JSON.stringify({ query: mutation, variables }),
+    body: JSON.stringify({ query, variables }),
     path: endpoint.pathname,
   });
 
@@ -332,13 +330,15 @@ app.get("/getMatch", async function (req, res) {
   );
 
   // Increment Unfinished Games for User
-  await incrementUnfinished(
+  const user = await getUser(
     req.apiGateway.event.requestContext.authorizer.claims.sub
   );
+  await incrementUnfinished(user);
 
   res.json({
     rankedMatch,
     rank: CryptoJS.AES.encrypt(`${rankDivision}`, RIOT_TOKEN).toString(),
+    ranks: CryptoJS.AES.encrypt(`${ranks.toString()}`, RIOT_TOKEN).toString(),
   });
 });
 

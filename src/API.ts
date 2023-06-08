@@ -86,7 +86,7 @@ export type CreateUserInput = {
 };
 
 export type ModelUserConditionInput = {
-  score?: ModelIntInput | null,
+  score?: ModelFloatInput | null,
   guesses?: ModelIntInput | null,
   correctPlacements?: ModelIntInput | null,
   correctRank?: ModelIntInput | null,
@@ -95,6 +95,18 @@ export type ModelUserConditionInput = {
   and?: Array< ModelUserConditionInput | null > | null,
   or?: Array< ModelUserConditionInput | null > | null,
   not?: ModelUserConditionInput | null,
+};
+
+export type ModelFloatInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
 };
 
 export type ModelIntInput = {
@@ -169,7 +181,7 @@ export type ModelTodoConnection = {
 
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
-  score?: ModelIntInput | null,
+  score?: ModelFloatInput | null,
   guesses?: ModelIntInput | null,
   correctPlacements?: ModelIntInput | null,
   correctRank?: ModelIntInput | null,
@@ -226,7 +238,7 @@ export type ModelSubscriptionStringInput = {
 
 export type ModelSubscriptionUserFilterInput = {
   id?: ModelSubscriptionIDInput | null,
-  score?: ModelSubscriptionIntInput | null,
+  score?: ModelSubscriptionFloatInput | null,
   guesses?: ModelSubscriptionIntInput | null,
   correctPlacements?: ModelSubscriptionIntInput | null,
   correctRank?: ModelSubscriptionIntInput | null,
@@ -234,6 +246,18 @@ export type ModelSubscriptionUserFilterInput = {
   unfinished?: ModelSubscriptionIntInput | null,
   and?: Array< ModelSubscriptionUserFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserFilterInput | null > | null,
+};
+
+export type ModelSubscriptionFloatInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  in?: Array< number | null > | null,
+  notIn?: Array< number | null > | null,
 };
 
 export type ModelSubscriptionIntInput = {

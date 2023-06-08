@@ -60,12 +60,22 @@ async function getMatch() {
     console.log(res);
     rankedMatch = res.data.rankedMatch;
     encryptedRank = res.data.rank;
+    encryptedRanks = res.data.ranks;
   });
 }
 async function verifyGuess() {
   let url = "/verifyGuess";
   await http.api
-    .post(url, { guess: selectedGuess.value, encryptedRank }, header)
+    .post(
+      url,
+      {
+        guess: selectedGuess.value,
+        encryptedRank,
+        encryptedRanks,
+        selectedRank: selectedRank.value,
+      },
+      header
+    )
     .then((res) => {
       console.log(res);
       console.log(res.data.unencrypted);
@@ -122,6 +132,7 @@ const selectedGuess = ref<string[]>([]);
 const selectedRank = ref<string>("");
 var rankedMatch = ref<object[]>([]);
 var encryptedRank = ref<string>("");
+var encryptedRanks = ref<string>("");
 var verifiedGuess = ref<string[]>([]);
 var verifiedRank = ref<string>("");
 

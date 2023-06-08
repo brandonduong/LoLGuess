@@ -59,6 +59,11 @@ async function getUser(sub) {
       getUser(id: $id) {
         id
         unfinished
+        score
+        guesses
+        correctPlacements
+        correctRank
+        rankPool
       }
     }
   `;
@@ -94,27 +99,78 @@ async function getUser(sub) {
     console.log(error);
     body = { error };
   }
-  return body;
+  return body.data.getUser;
 }
 
-async function decrementUnfinished(sub) {
-  const mutation = /* GraphQL */ `
+function calculateScore(unencrypted, rank, ranks, selectedRank) {
+  // Same as frontend at GuessScore.vue
+  var score = 0;
+  const MAX_POINTS = [8, 6, 3]; // For each correct placement (depending on how far guess was)
+  for (let i = 0; i < unencrypted.length; i++) {
+    const distance = Math.abs(parseInt(unencrypted[i]) - (i + 1));
+    if (distance <= 2) {
+      score += MAX_POINTS[distance];
+    }
+  }
+
+  var MAX_RANK_POOL = 9; // 9 ranks in total
+  var MAX_RANK_POINTS = [36, 27, 13.5]; // If rank pool had all 9 ranks
+
+  const selectedRankInd = ranks.indexOf(selectedRank);
+  const verifiedRankInd = ranks.indexOf(rank);
+  const currentMax = MAX_RANK_POINTS.map((x) => {
+    if (ranks.length >= 4) {
+      return Math.round(x * (ranks.length / MAX_RANK_POOL) * 100) / 100;
+    } else {
+      return 0;
+    }
+  }); // Depends on # of ranks in pool
+  const distanceRank = Math.abs(selectedRankInd - verifiedRankInd);
+  if (distanceRank <= 2 && ranks.length >= 4) {
+    score += currentMax[distanceRank];
+  }
+
+  return Math.round(score * 100) / 100;
+}
+
+function calculateCorrectPlacements(unencrypted) {
+  var correct = 0;
+  for (let i = 0; i < unencrypted.length; i++) {
+    if (parseInt(unencrypted[i]) - (i + 1) === 0) {
+      correct += 1;
+    }
+  }
+  return correct;
+}
+
+async function updateGuessStats(user, unencrypted, rank, ranks, selectedRank) {
+  const query = /* GraphQL */ `
     mutation UPDATE_USER($input: UpdateUserInput!) {
       updateUser(input: $input) {
         id
         unfinished
-        updatedAt
+        score
+        guesses
+        correctPlacements
+        correctRank
+        rankPool
       }
     }
   `;
 
-  // Increment unfinished value
-  const user = await getUser(sub);
-  const unf = user.data.getUser.unfinished;
+  const score = calculateScore(unencrypted, rank, ranks, selectedRank);
+  const correct = calculateCorrectPlacements(unencrypted);
+
   const variables = {
     input: {
-      id: sub,
-      unfinished: unf - 1,
+      id: user.id,
+      unfinished: user.unfinished - 1,
+      score: user.score + score,
+      guesses: user.guesses + 1,
+      correctPlacements: user.correctPlacements + correct,
+      correctRank:
+        rank === selectedRank ? user.correctRank + 1 : user.correctRank,
+      rankPool: user.rankPool + ranks.length,
     },
   };
   const requestToBeSigned = new HttpRequest({
@@ -124,7 +180,7 @@ async function decrementUnfinished(sub) {
       host: endpoint.host,
     },
     hostname: endpoint.host,
-    body: JSON.stringify({ query: mutation, variables }),
+    body: JSON.stringify({ query, variables }),
     path: endpoint.pathname,
   });
 
@@ -154,26 +210,31 @@ app.post("/verifyGuess", async function (req, res) {
   console.log("guess", guess);
   const unencrypted = [];
   guess.forEach((g) => {
-    console.log(g);
-    console.log(
-      CryptoJS.AES.decrypt(g, RIOT_TOKEN).toString(CryptoJS.enc.Utf8)
-    );
     unencrypted.push(
       CryptoJS.AES.decrypt(g, RIOT_TOKEN).toString(CryptoJS.enc.Utf8)
     );
   });
+  console.log("unecrypted", unencrypted);
   const encryptedRank = req.body.encryptedRank;
+  const encryptedRanks = req.body.encryptedRanks;
+  const selectedRank = req.body.selectedRank;
 
   // Increment Unfinished Games for User
-  await decrementUnfinished(
+  const user = await getUser(
     req.apiGateway.event.requestContext.authorizer.claims.sub
   );
+  const rank = CryptoJS.AES.decrypt(encryptedRank, RIOT_TOKEN).toString(
+    CryptoJS.enc.Utf8
+  );
+  const ranks = CryptoJS.AES.decrypt(encryptedRanks, RIOT_TOKEN)
+    .toString(CryptoJS.enc.Utf8)
+    .split(",");
+  console.log(rank, ranks, selectedRank);
+  await updateGuessStats(user, unencrypted, rank, ranks, selectedRank);
 
   res.json({
     unencrypted,
-    rank: CryptoJS.AES.decrypt(encryptedRank, RIOT_TOKEN).toString(
-      CryptoJS.enc.Utf8
-    ),
+    rank,
   });
 });
 

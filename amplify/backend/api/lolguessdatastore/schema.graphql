@@ -29,7 +29,7 @@ type User
     ]
   ) {
   id: ID!
-  score: Int!
+  score: Float!
   guesses: Int!
   correctPlacements: Int!
   correctRank: Int!
