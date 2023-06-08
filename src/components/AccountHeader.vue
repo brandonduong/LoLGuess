@@ -8,21 +8,29 @@ const auth = useAuthenticator();
   <div class="account-header">
     <div class="account-header-contents">
       <RouterLink to="/" class="title">LoLGuess</RouterLink>
-      <RouterLink to="/leaderboard">Leaderboard</RouterLink>
-      <a-popover placement="bottomRight" visible>
+      <a-popover placement="bottomRight" trigger="click">
         <template #content>
-          <a-button type="primary" class="signout" @click="auth.signOut"
-            >Sign Out</a-button
-          >
+          <div class="dropdown-content">
+            <h3 class="username">
+              {{
+                auth.user.username.charAt(0).toUpperCase() +
+                auth.user.username.slice(1)
+              }}
+            </h3>
+            <a-divider class="divider" />
+            <RouterLink to="/profile" class="dropdown-link">Profile</RouterLink>
+            <RouterLink to="/leaderboard" class="dropdown-link"
+              >Leaderboard</RouterLink
+            >
+            <a-divider class="divider" />
+            <div class="signout-div">
+              <a-button type="primary" class="signout" @click="auth.signOut"
+                >Sign Out</a-button
+              >
+            </div>
+          </div>
         </template>
-        <template #title>
-          <h3 class="username">
-            {{
-              auth.user.username.charAt(0).toUpperCase() +
-              auth.user.username.slice(1)
-            }}
-          </h3>
-        </template>
+
         <UserOutlined class="user" style="font-size: 2rem; color: white" />
       </a-popover>
     </div>
@@ -83,15 +91,44 @@ const auth = useAuthenticator();
   transition: 0.4s;
 }
 
-.user:hover {
+.user:hover,
+.user:focus {
   color: hsl(51, 100%, 50%) !important;
 }
 
 .signout {
   width: 100%;
+  margin-top: 0.25rem;
+}
+
+.signout-div {
+  padding: 0 0.25rem;
 }
 
 .username {
   margin: 0;
+  padding: 0 0.25rem;
+}
+
+.dropdown-link {
+  color: black;
+  display: inline-block;
+  width: 100%;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: 0.4s;
+  padding: 0 0.25rem;
+}
+
+.dropdown-link:hover {
+  background-color: rgb(228, 228, 228);
+}
+
+.divider {
+  margin: 0.2rem 0;
+}
+
+.dropdown-content {
+  margin: -0.25rem -0.75rem;
 }
 </style>
