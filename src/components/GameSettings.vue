@@ -147,7 +147,7 @@ const buttonText = ["Next", "Play", "Guess", "Play Again"];
 
 const indicator = h(LoadingOutlined, {
   style: {
-    fontSize: "24px",
+    fontSize: "4rem",
     margin: "5rem 0 4.5rem 0",
   },
   spin: true,

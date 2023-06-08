@@ -88,18 +88,18 @@ traitStyles.value.sort(function (a, b) {
 }
 
 .style1 {
-  background-image: url(https://cdn.lolchess.gg/images/tft/traits/background/bronze.svg);
+  background-image: url("/bronzetrait.svg");
 }
 
 .style2 {
-  background-image: url(https://cdn.lolchess.gg/images/tft/traits/background/silver.svg);
+  background-image: url("/silvertrait.svg");
 }
 
 .style3 {
-  background-image: url(https://cdn.lolchess.gg/images/tft/traits/background/gold.svg);
+  background-image: url("/goldtrait.svg");
 }
 
 .style4 {
-  background-image: url(https://cdn.lolchess.gg/images/tft/traits/background/chromatic.svg);
+  background-image: url("/chromatictrait.svg");
 }
 </style>
