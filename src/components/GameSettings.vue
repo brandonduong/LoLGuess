@@ -157,7 +157,13 @@ const indicator = h(LoadingOutlined, {
 <template>
   <div>
     <a-steps :current="current">
-      <a-step v-for="item in steps" :key="item.title" :title="item.title" />
+      <a-step
+        v-for="item in steps"
+        :key="item.title"
+        :title="item.title"
+        disabled
+        class="step"
+      />
     </a-steps>
     <div class="steps-content">
       <div v-if="!loading">
@@ -249,5 +255,9 @@ const indicator = h(LoadingOutlined, {
 .extra {
   display: grid;
   grid-template-columns: 1fr 1fr;
+}
+
+.step {
+  cursor: context-menu;
 }
 </style>
