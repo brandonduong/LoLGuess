@@ -35,11 +35,19 @@ export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
       id
-      score
-      guesses
-      correctPlacements
-      correctRank
-      rankPool
+      guesses {
+        items {
+          id
+          placements
+          guessedRank
+          rank
+          ranks
+          createdAt
+          updatedAt
+          userGuessesId
+        }
+        nextToken
+      }
       unfinished
       createdAt
       updatedAt
@@ -55,14 +63,47 @@ export const listUsers = /* GraphQL */ `
     listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        score
-        guesses
-        correctPlacements
-        correctRank
-        rankPool
+        guesses {
+          nextToken
+        }
         unfinished
         createdAt
         updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getGuess = /* GraphQL */ `
+  query GetGuess($id: ID!) {
+    getGuess(id: $id) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      createdAt
+      updatedAt
+      userGuessesId
+    }
+  }
+`;
+export const listGuesses = /* GraphQL */ `
+  query ListGuesses(
+    $filter: ModelGuessFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listGuesses(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        placements
+        guessedRank
+        rank
+        ranks
+        createdAt
+        updatedAt
+        userGuessesId
       }
       nextToken
     }

@@ -24,7 +24,7 @@
         },
         "verifyGuess": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/verifyGuess-446e6477353461345266-build.zip"
+          "s3Key": "amplify-builds/verifyGuess-4a49334e665364676232-build.zip"
         },
         "lolguesssignup": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",

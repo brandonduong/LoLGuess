@@ -39,11 +39,19 @@ export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
     onCreateUser(filter: $filter) {
       id
-      score
-      guesses
-      correctPlacements
-      correctRank
-      rankPool
+      guesses {
+        items {
+          id
+          placements
+          guessedRank
+          rank
+          ranks
+          createdAt
+          updatedAt
+          userGuessesId
+        }
+        nextToken
+      }
       unfinished
       createdAt
       updatedAt
@@ -54,11 +62,19 @@ export const onUpdateUser = /* GraphQL */ `
   subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
     onUpdateUser(filter: $filter) {
       id
-      score
-      guesses
-      correctPlacements
-      correctRank
-      rankPool
+      guesses {
+        items {
+          id
+          placements
+          guessedRank
+          rank
+          ranks
+          createdAt
+          updatedAt
+          userGuessesId
+        }
+        nextToken
+      }
       unfinished
       createdAt
       updatedAt
@@ -69,14 +85,64 @@ export const onDeleteUser = /* GraphQL */ `
   subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
     onDeleteUser(filter: $filter) {
       id
-      score
-      guesses
-      correctPlacements
-      correctRank
-      rankPool
+      guesses {
+        items {
+          id
+          placements
+          guessedRank
+          rank
+          ranks
+          createdAt
+          updatedAt
+          userGuessesId
+        }
+        nextToken
+      }
       unfinished
       createdAt
       updatedAt
+    }
+  }
+`;
+export const onCreateGuess = /* GraphQL */ `
+  subscription OnCreateGuess($filter: ModelSubscriptionGuessFilterInput) {
+    onCreateGuess(filter: $filter) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      createdAt
+      updatedAt
+      userGuessesId
+    }
+  }
+`;
+export const onUpdateGuess = /* GraphQL */ `
+  subscription OnUpdateGuess($filter: ModelSubscriptionGuessFilterInput) {
+    onUpdateGuess(filter: $filter) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      createdAt
+      updatedAt
+      userGuessesId
+    }
+  }
+`;
+export const onDeleteGuess = /* GraphQL */ `
+  subscription OnDeleteGuess($filter: ModelSubscriptionGuessFilterInput) {
+    onDeleteGuess(filter: $filter) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      createdAt
+      updatedAt
+      userGuessesId
     }
   }
 `;

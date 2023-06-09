@@ -59,11 +59,6 @@ async function getUser(sub) {
       getUser(id: $id) {
         id
         unfinished
-        score
-        guesses
-        correctPlacements
-        correctRank
-        rankPool
       }
     }
   `;
@@ -89,7 +84,6 @@ async function getUser(sub) {
   let body;
   let response;
 
-  // Get current unfinished value
   try {
     response = await node_fetch(request);
     body = await response.json();
@@ -102,75 +96,67 @@ async function getUser(sub) {
   return body.data.getUser;
 }
 
-function calculateScore(unencrypted, rank, ranks, selectedRank) {
-  // Same as frontend at GuessScore.vue
-  var score = 0;
-  const MAX_POINTS = [8, 6, 3]; // For each correct placement (depending on how far guess was)
-  for (let i = 0; i < unencrypted.length; i++) {
-    const distance = Math.abs(parseInt(unencrypted[i]) - (i + 1));
-    if (distance <= 2) {
-      score += MAX_POINTS[distance];
+async function createGuess(user, unencrypted, rank, ranks, selectedRank) {
+  const query = /* GraphQL */ `
+    mutation CREATE_GUESS($input: CreateGuessInput!) {
+      createGuess(input: $input) {
+        id
+        placements
+        guessedRank
+        rank
+        ranks
+        userGuessesId
+      }
     }
+  `;
+  const variables = {
+    input: {
+      placements: unencrypted,
+      guessedRank: selectedRank,
+      rank,
+      ranks,
+      userGuessesId: user.id,
+    },
+  };
+  const requestToBeSigned = new HttpRequest({
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      host: endpoint.host,
+    },
+    hostname: endpoint.host,
+    body: JSON.stringify({ query, variables }),
+    path: endpoint.pathname,
+  });
+
+  const signed = await signer.sign(requestToBeSigned);
+  const request = new Request(GRAPHQL_ENDPOINT, signed);
+
+  try {
+    response = await node_fetch(request);
+    body = await response.json();
+    console.log(body);
+  } catch (error) {
+    statusCode = 500;
+    console.log(error);
+    body = { error };
   }
-
-  var MAX_RANK_POOL = 9; // 9 ranks in total
-  var MAX_RANK_POINTS = [36, 27, 13.5]; // If rank pool had all 9 ranks
-
-  const selectedRankInd = ranks.indexOf(selectedRank);
-  const verifiedRankInd = ranks.indexOf(rank);
-  const currentMax = MAX_RANK_POINTS.map((x) => {
-    if (ranks.length >= 4) {
-      return Math.round(x * (ranks.length / MAX_RANK_POOL) * 100) / 100;
-    } else {
-      return 0;
-    }
-  }); // Depends on # of ranks in pool
-  const distanceRank = Math.abs(selectedRankInd - verifiedRankInd);
-  if (distanceRank <= 2 && ranks.length >= 4) {
-    score += currentMax[distanceRank];
-  }
-
-  return Math.round(score * 100) / 100;
 }
 
-function calculateCorrectPlacements(unencrypted) {
-  var correct = 0;
-  for (let i = 0; i < unencrypted.length; i++) {
-    if (parseInt(unencrypted[i]) - (i + 1) === 0) {
-      correct += 1;
-    }
-  }
-  return correct;
-}
-
-async function updateGuessStats(user, unencrypted, rank, ranks, selectedRank) {
+async function decrementUnfinished(user) {
   const query = /* GraphQL */ `
     mutation UPDATE_USER($input: UpdateUserInput!) {
       updateUser(input: $input) {
         id
         unfinished
-        score
-        guesses
-        correctPlacements
-        correctRank
-        rankPool
       }
     }
   `;
-
-  const score = calculateScore(unencrypted, rank, ranks, selectedRank);
-  const correct = calculateCorrectPlacements(unencrypted);
 
   const variables = {
     input: {
       id: user.id,
       unfinished: user.unfinished - 1,
-      score: user.score + score,
-      guesses: user.guesses + 1,
-      correctPlacements: user.correctPlacements + correct,
-      correctRank:
-        rank === selectedRank ? user.correctRank + 1 : user.correctRank,
-      rankPool: user.rankPool + ranks.length,
     },
   };
   const requestToBeSigned = new HttpRequest({
@@ -230,7 +216,8 @@ app.post("/verifyGuess", async function (req, res) {
     .toString(CryptoJS.enc.Utf8)
     .split(",");
   console.log(rank, ranks, selectedRank);
-  await updateGuessStats(user, unencrypted, rank, ranks, selectedRank);
+  await createGuess(user, unencrypted, rank, ranks, selectedRank);
+  await decrementUnfinished(user);
 
   res.json({
     unencrypted,

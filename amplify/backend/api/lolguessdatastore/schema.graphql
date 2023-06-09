@@ -29,10 +29,21 @@ type User
     ]
   ) {
   id: ID!
-  score: Float!
-  guesses: Int!
-  correctPlacements: Int!
-  correctRank: Int!
-  rankPool: Int!
+  guesses: [Guess] @hasMany
   unfinished: Int!
+}
+
+type Guess
+  @model
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: private, provider: iam }
+    ]
+  ) {
+  id: ID!
+  placements: [String]
+  guessedRank: String
+  rank: String
+  ranks: [String]
 }

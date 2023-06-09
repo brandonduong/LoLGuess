@@ -65,6 +65,7 @@ async function getMatch() {
     rankedMatch = res.data.rankedMatch;
     encryptedRank = res.data.rank;
     encryptedRanks = res.data.ranks;
+    updateStaticProfileUnfinished(1);
     loading.value = false;
   });
 }
@@ -87,9 +88,37 @@ async function verifyGuess() {
       console.log(res.data.unencrypted);
       verifiedGuess = res.data.unencrypted;
       verifiedRank = res.data.rank;
+      updateStaticProfileUnfinished(-1);
+      updateStaticProfileGuesses();
       loading.value = false;
     });
 }
+
+function updateStaticProfileUnfinished(change: number) {
+  const staticData = window.localStorage.getItem("staticProfileData");
+  if (staticData) {
+    const old = JSON.parse(staticData);
+    old.unfinished = old.unfinished + change;
+    localStorage.setItem("staticProfileData", JSON.stringify(old));
+  }
+}
+
+function updateStaticProfileGuesses() {
+  const staticData = window.localStorage.getItem("staticProfileData");
+  if (staticData) {
+    const old = JSON.parse(staticData);
+    const guess = {
+      placements: verifiedGuess,
+      guessedRank: selectedRank.value,
+      rank: verifiedRank,
+      ranks: selectedRanks.value,
+    };
+    console.log(guess);
+    old.guesses.items.push(guess);
+    localStorage.setItem("staticProfileData", JSON.stringify(old));
+  }
+}
+
 const steps = [
   {
     title: "Regions",
