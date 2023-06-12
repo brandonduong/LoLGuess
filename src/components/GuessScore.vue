@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { InfoCircleOutlined } from "@ant-design/icons-vue";
-
-const MAX_POINTS = [8, 6, 3]; // For each correct placement (depending on how far guess was)
-const MAX_RANK_POOL = 9; // 9 ranks in total
-const MAX_RANK_POINTS = [36, 27, 13.5]; // If rank pool had all 9 ranks
-
-const currentMax = ref<number[]>();
+import { calculateScore } from "../common/helper";
 
 const props = defineProps<{
   verifiedRank: string;
@@ -15,44 +10,16 @@ const props = defineProps<{
   verifiedGuess: string[];
 }>();
 
-function calculateScore() {
-  var score = 0;
-
-  // Score for placement guesses
-  for (let i = 0; i < props.verifiedGuess.length; i++) {
-    const distance = Math.abs(parseInt(props.verifiedGuess[i]) - (i + 1));
-    if (distance <= 2) {
-      score += MAX_POINTS[distance];
-    }
-    console.log(score);
-  }
-
-  // Score for rank guess
-  const selectedRankInd = props.selectedRanks.indexOf(props.selectedRank);
-  const verifiedRankInd = props.selectedRanks.indexOf(props.verifiedRank);
-  currentMax.value = MAX_RANK_POINTS.map((x) => {
-    if (props.selectedRanks.length >= 4) {
-      return (
-        Math.round(x * (props.selectedRanks.length / MAX_RANK_POOL) * 100) / 100
-      );
-    } else {
-      return 0;
-    }
-  }); // Depends on # of ranks in pool
-  const distanceRank = Math.abs(selectedRankInd - verifiedRankInd);
-  if (distanceRank <= 2 && props.selectedRanks.length >= 4) {
-    score += currentMax.value[distanceRank];
-  }
-  console.log(score);
-
-  return Math.round(score * 100) / 100;
-}
+const [scored, maxScore] = calculateScore(
+  props.verifiedGuess,
+  props.selectedRank,
+  props.verifiedRank,
+  props.selectedRanks
+);
 </script>
 <template>
   <div class="score-div">
-    <h2 class="score">
-      Score: {{ `${calculateScore()}/ ${MAX_POINTS[0] * 8 + currentMax![0]}` }}
-    </h2>
+    <h2 class="score">Score: {{ `${scored}/ ${maxScore}` }}</h2>
     <a-popover title="Scoring Information">
       <template #content>
         <div class="score-info">

@@ -42,8 +42,8 @@ type Guess
     ]
   ) {
   id: ID!
-  placements: [String]
-  guessedRank: String
-  rank: String
-  ranks: [String]
+  placements: [String!]!
+  guessedRank: String!
+  rank: String!
+  ranks: [String!]!
 }

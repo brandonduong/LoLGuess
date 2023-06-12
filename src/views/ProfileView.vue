@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import ProfileStats from "../components/ProfileStats.vue";
+import ProfileStats from "../components/Profile/ProfileStats.vue";
 </script>
 
 <template>
   <div class="main">
-    This is profile view
-
     <ProfileStats />
   </div>
 </template>

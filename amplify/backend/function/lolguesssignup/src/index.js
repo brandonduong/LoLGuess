@@ -21,11 +21,7 @@ const query = /* GraphQL */ `
   mutation CREATE_USER($input: CreateUserInput!) {
     createUser(input: $input) {
       id
-      score
       guesses
-      correctPlacements
-      correctRank
-      rankPool
       unfinished
     }
   }
@@ -50,11 +46,7 @@ export const handler = async (event, context, callback) => {
   const variables = {
     input: {
       id: event.request.userAttributes.sub,
-      score: 0,
-      guesses: 0,
-      correctPlacements: 0,
-      correctRank: 0,
-      rankPool: 0,
+      guesses: [],
       unfinished: 0,
     },
   };
