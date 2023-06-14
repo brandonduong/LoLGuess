@@ -108,6 +108,7 @@ function getAverageRankPool() {
   column-gap: 2rem;
   border: solid 1px lightslategray;
   padding: 1rem 1.5rem;
+  align-items: center;
 }
 
 .stats-title {
@@ -117,6 +118,5 @@ function getAverageRankPool() {
 
 .stats-divider {
   grid-column: span 2;
-  margin: 0.75rem 0;
 }
 </style>

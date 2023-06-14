@@ -59,15 +59,23 @@ const data = {
   datasets: [
     {
       label: "Max Score",
-      borderColor: "#4da6ff",
-      backgroundColor: "#4da6ff",
+      borderColor: "#99c2ff",
+      backgroundColor: "#66a3ff",
       data: maxScoreData.value,
     },
     {
       label: "Score",
-      borderColor: "#f87979",
-      backgroundColor: "#f87979",
+      borderColor: "#ff9999",
+      backgroundColor: "#ff6666",
       data: scoreData.value,
+    },
+    {
+      label: "Deficit",
+      borderColor: "#cc99ff",
+      backgroundColor: "#b366ff",
+      data: maxScoreData.value.map(
+        (item, index) => item - scoreData.value[index]
+      ),
     },
   ],
 };
