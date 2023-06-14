@@ -27,9 +27,13 @@ const augmentStyles = ref<AugmentStyle[]>([
   defaultStyles,
 ]);
 props.augments.forEach((aug) => {
+  console.log(aug);
   const augmentInfo = props.staticTFTAugmentData.filter((a) => {
-    return a.nameId === aug;
+    // For set 8.5 return a.nameId === aug;
+    // For set 9, new return as some ids are messy (Galio Carry Augment / Winds of War)
+    return a.nameId === aug || a.name === aug;
   })[0];
+  console.log(augmentInfo);
 
   // Check if hero augment or normal augment, then get path to image
   const path = augmentInfo.loadoutsIcon.split("/");

@@ -47,7 +47,7 @@ function updateScore() {
       Rank:
       <RankIcon :rank="guess.rank" />
     </h3>
-    <h3>Score: {{ score }} / {{ maxScore }}</h3>
+    <h3>{{ score }} / {{ maxScore }}</h3>
     <h3>Placements: {{ guess.placements.map((place) => parseInt(place)) }}</h3>
     <h3>Guessed Rank: <RankIcon :rank="guess.guessedRank" /></h3>
   </div>

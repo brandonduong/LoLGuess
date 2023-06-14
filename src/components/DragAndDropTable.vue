@@ -30,6 +30,7 @@ interface StaticUnit {
   character_id: string;
   squareIconPath: string;
   display_name: string;
+  path: string;
 }
 
 interface StaticItem {

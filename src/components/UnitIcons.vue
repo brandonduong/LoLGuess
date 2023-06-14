@@ -16,6 +16,7 @@ interface StaticUnit {
   character_id: string;
   squareIconPath: string;
   display_name: string;
+  path: string;
 }
 
 interface APIUnit {
@@ -45,7 +46,9 @@ const unitStyles = ref<UnitStyle[]>([]);
 
 props.units.forEach((unit) => {
   const unitInfo = props.staticTFTUnitData.filter((u) => {
-    return u.character_id === unit.character_id;
+    // For set 8.5 return u.character_id === unit.character_id;
+    // For set 9, new return as some ids are messy (Ryze, Reksai)
+    return u.path.toLowerCase().includes(unit.character_id.toLowerCase());
   })[0];
 
   const itemPaths: ItemStyle[] = [];
