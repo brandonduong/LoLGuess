@@ -52,7 +52,7 @@ onMounted(async () => {
   <div v-if="!loading" class="main profile">
     <ProfileStats :staticProfileData="staticProfileData!" />
     <ProfileGraph :guesses="(staticProfileData! as any).guesses.items" />
-    <ProfileHistory />
+    <ProfileHistory :guesses="(staticProfileData! as any).guesses.items" />
   </div>
   <div v-else><a-spin :indicator="indicator"></a-spin></div>
 </template>

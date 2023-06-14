@@ -28,7 +28,7 @@ ChartJS.register(
   Legend
 );
 
-function sortByDate(a: Guess, b: Guess) {
+function sortByDateAsc(a: Guess, b: Guess) {
   return a.createdAt < b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0;
 }
 
@@ -37,7 +37,7 @@ const maxScoreData = ref<number[]>([]);
 const labels = ref<string[]>([]);
 
 // Initialize data for graph
-props.guesses.sort(sortByDate).forEach((x: Guess) => {
+props.guesses.sort(sortByDateAsc).forEach((x: Guess) => {
   const [score, maxScore] = calculateScore(
     x.placements,
     x.guessedRank,

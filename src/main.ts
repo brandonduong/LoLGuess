@@ -15,6 +15,7 @@ import {
   Dropdown,
   Menu,
   Spin,
+  Pagination,
 } from "ant-design-vue";
 Amplify.configure(awsExports);
 
@@ -28,5 +29,6 @@ app.use(Divider);
 app.use(Select);
 app.use(Popover);
 app.use(Spin);
+app.use(Pagination);
 
 app.mount("#app");

@@ -1,8 +1,34 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from "vue";
+import type { Guess } from "@/API";
+import HistoryItem from "./HistoryItem.vue";
+
+const props = defineProps<{
+  guesses: Guess[];
+}>();
+
+const current = ref<number>(1);
+
+function sortByDateDesc(a: Guess, b: Guess) {
+  return a.createdAt > b.createdAt ? -1 : a.createdAt < b.createdAt ? 1 : 0;
+}
+</script>
 
 <template>
   <div class="history">
-    <h3>placeholder history</h3>
+    <HistoryItem
+      v-for="guess in guesses
+        .sort(sortByDateDesc)
+        .slice(5 * (current - 1), 5 * current)"
+      :guess="guess"
+    />
+    <div class="pages">
+      <a-pagination
+        v-model:current="current"
+        :total="guesses.length"
+        :defaultPageSize="5"
+      />
+    </div>
   </div>
 </template>
 
@@ -11,5 +37,12 @@
   grid-column: span 2;
   border: solid 1px lightslategray;
   padding: 1rem;
+  display: grid;
+  row-gap: 1rem;
+}
+
+.pages {
+  display: flex;
+  justify-content: center;
 }
 </style>

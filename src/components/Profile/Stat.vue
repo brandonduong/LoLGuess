@@ -22,7 +22,7 @@ const props = defineProps<{
   margin: 0;
 }
 .stat > h4 {
-  white-space: nowrap;
   margin: 0;
+  white-space: nowrap;
 }
 </style>
