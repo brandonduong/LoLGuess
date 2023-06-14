@@ -28,31 +28,44 @@ ChartJS.register(
   Legend
 );
 
+function sortByDate(a: Guess, b: Guess) {
+  return a.createdAt < b.createdAt ? -1 : a.createdAt > b.createdAt ? 1 : 0;
+}
+
 const scoreData = ref<number[]>([]);
 const maxScoreData = ref<number[]>([]);
 const labels = ref<string[]>([]);
 
 // Initialize data for graph
-props.guesses.forEach((x: Guess) => {
+props.guesses.sort(sortByDate).forEach((x: Guess) => {
   const [score, maxScore] = calculateScore(
     x.placements,
     x.guessedRank,
     x.rank,
     x.ranks
   );
-  labels.value.push(x.createdAt.substring(0, 10));
+  labels.value.push(
+    new Date(x.createdAt).toLocaleString("default", {
+      month: "short",
+      day: "numeric",
+    })
+  );
   scoreData.value.push(score);
   maxScoreData.value.push(maxScore);
 });
-
-console.log(scoreData.value);
-console.log(labels.value);
 
 const data = {
   labels: labels.value,
   datasets: [
     {
+      label: "Max Score",
+      borderColor: "#4da6ff",
+      backgroundColor: "#4da6ff",
+      data: maxScoreData.value,
+    },
+    {
       label: "Score",
+      borderColor: "#f87979",
       backgroundColor: "#f87979",
       data: scoreData.value,
     },
@@ -60,6 +73,7 @@ const data = {
 };
 const options = {
   responsive: true,
+  maintainAspectRatio: true,
 };
 </script>
 
