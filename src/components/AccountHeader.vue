@@ -19,7 +19,11 @@ const auth = useAuthenticator();
             </h3>
             <a-divider class="divider" />
             <RouterLink to="/" class="dropdown-link">Play</RouterLink>
-            <RouterLink to="/profile" class="dropdown-link">Profile</RouterLink>
+            <RouterLink
+              :to="`/profile/${auth.user.attributes.sub}`"
+              class="dropdown-link"
+              >Profile</RouterLink
+            >
             <RouterLink to="/leaderboard" class="dropdown-link"
               >Leaderboard</RouterLink
             >

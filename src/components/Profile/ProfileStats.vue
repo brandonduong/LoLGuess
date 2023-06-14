@@ -81,7 +81,8 @@ function getAverageRankPool() {
   <div class="stats">
     <h2 class="stats-title">
       {{
-        auth.user.username.charAt(0).toUpperCase() + auth.user.username.slice(1)
+        staticProfileData.username.charAt(0).toUpperCase() +
+        staticProfileData.username.slice(1)
       }}
     </h2>
     <hr class="stats-divider" />

@@ -77,10 +77,12 @@ export type DeleteTodoInput = {
 
 export type CreateUserInput = {
   id?: string | null,
+  username: string,
   unfinished: number,
 };
 
 export type ModelUserConditionInput = {
+  username?: ModelStringInput | null,
   unfinished?: ModelIntInput | null,
   and?: Array< ModelUserConditionInput | null > | null,
   or?: Array< ModelUserConditionInput | null > | null,
@@ -102,6 +104,7 @@ export type ModelIntInput = {
 export type User = {
   __typename: "User",
   id: string,
+  username: string,
   guesses?: ModelGuessConnection | null,
   unfinished: number,
   createdAt: string,
@@ -128,6 +131,7 @@ export type Guess = {
 
 export type UpdateUserInput = {
   id: string,
+  username?: string | null,
   unfinished?: number | null,
 };
 
@@ -201,6 +205,7 @@ export type ModelTodoConnection = {
 
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
+  username?: ModelStringInput | null,
   unfinished?: ModelIntInput | null,
   and?: Array< ModelUserFilterInput | null > | null,
   or?: Array< ModelUserFilterInput | null > | null,
@@ -265,6 +270,7 @@ export type ModelSubscriptionStringInput = {
 
 export type ModelSubscriptionUserFilterInput = {
   id?: ModelSubscriptionIDInput | null,
+  username?: ModelSubscriptionStringInput | null,
   unfinished?: ModelSubscriptionIntInput | null,
   and?: Array< ModelSubscriptionUserFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserFilterInput | null > | null,
@@ -349,6 +355,7 @@ export type CreateUserMutation = {
   createUser?:  {
     __typename: "User",
     id: string,
+    username: string,
     guesses?:  {
       __typename: "ModelGuessConnection",
       items:  Array< {
@@ -379,6 +386,7 @@ export type UpdateUserMutation = {
   updateUser?:  {
     __typename: "User",
     id: string,
+    username: string,
     guesses?:  {
       __typename: "ModelGuessConnection",
       items:  Array< {
@@ -409,6 +417,7 @@ export type DeleteUserMutation = {
   deleteUser?:  {
     __typename: "User",
     id: string,
+    username: string,
     guesses?:  {
       __typename: "ModelGuessConnection",
       items:  Array< {
@@ -531,6 +540,7 @@ export type GetUserQuery = {
   getUser?:  {
     __typename: "User",
     id: string,
+    username: string,
     guesses?:  {
       __typename: "ModelGuessConnection",
       items:  Array< {
@@ -564,6 +574,7 @@ export type ListUsersQuery = {
     items:  Array< {
       __typename: "User",
       id: string,
+      username: string,
       guesses?:  {
         __typename: "ModelGuessConnection",
         nextToken?: string | null,
@@ -671,6 +682,7 @@ export type OnCreateUserSubscription = {
   onCreateUser?:  {
     __typename: "User",
     id: string,
+    username: string,
     guesses?:  {
       __typename: "ModelGuessConnection",
       items:  Array< {
@@ -700,6 +712,7 @@ export type OnUpdateUserSubscription = {
   onUpdateUser?:  {
     __typename: "User",
     id: string,
+    username: string,
     guesses?:  {
       __typename: "ModelGuessConnection",
       items:  Array< {
@@ -729,6 +742,7 @@ export type OnDeleteUserSubscription = {
   onDeleteUser?:  {
     __typename: "User",
     id: string,
+    username: string,
     guesses?:  {
       __typename: "ModelGuessConnection",
       items:  Array< {

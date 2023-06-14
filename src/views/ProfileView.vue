@@ -13,11 +13,12 @@ const auth = useAuthenticator();
 
 var staticProfileData = ref<User>();
 const loading = ref<boolean>(true);
+const props = defineProps<{ sub: string }>();
 
 async function getStaticProfileData() {
   const getUser = await API.graphql<GraphQLQuery<GetUserQuery>>({
     query: queries.getUser,
-    variables: { id: auth.user.attributes.sub },
+    variables: { id: props.sub },
   });
   staticProfileData.value = getUser.data!.getUser!;
 }
@@ -31,16 +32,24 @@ const indicator = h(LoadingOutlined, {
 });
 
 onMounted(async () => {
-  const staticData = window.localStorage.getItem("staticProfileData");
-  if (staticData) {
-    staticProfileData.value = JSON.parse(staticData);
+  console.log(auth);
+  // If looking at own profile put in cache
+  if (auth.user.attributes.sub === props.sub) {
+    const staticData = window.localStorage.getItem("staticProfileData");
+
+    // Must check staticData.id in case someone has 2 accounts
+    if (staticData && JSON.parse(staticData).id === auth.user.attributes.sub) {
+      staticProfileData.value = JSON.parse(staticData);
+    } else {
+      await getStaticProfileData().then(() => {
+        localStorage.setItem(
+          "staticProfileData",
+          JSON.stringify(staticProfileData.value)
+        );
+      });
+    }
   } else {
-    await getStaticProfileData().then(() => {
-      localStorage.setItem(
-        "staticProfileData",
-        JSON.stringify(staticProfileData.value)
-      );
-    });
+    await getStaticProfileData();
   }
   console.log(staticProfileData.value);
 

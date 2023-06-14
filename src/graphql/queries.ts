@@ -35,6 +35,7 @@ export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
       id
+      username
       guesses {
         items {
           id
@@ -63,6 +64,7 @@ export const listUsers = /* GraphQL */ `
     listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        username
         guesses {
           nextToken
         }

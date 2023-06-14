@@ -29,6 +29,7 @@ type User
     ]
   ) {
   id: ID!
+  username: String!
   guesses: [Guess] @hasMany
   unfinished: Int!
 }

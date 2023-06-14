@@ -21,8 +21,8 @@ const query = /* GraphQL */ `
   mutation CREATE_USER($input: CreateUserInput!) {
     createUser(input: $input) {
       id
-      guesses
       unfinished
+      username
     }
   }
 `;
@@ -46,8 +46,8 @@ export const handler = async (event, context, callback) => {
   const variables = {
     input: {
       id: event.request.userAttributes.sub,
-      guesses: [],
       unfinished: 0,
+      username: event.userName,
     },
   };
 
