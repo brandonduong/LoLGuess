@@ -55,11 +55,25 @@ onMounted(async () => {
 
   loading.value = false;
 });
+
+async function forceUpdate() {
+  loading.value = true;
+  await getStaticProfileData().then(() => {
+    localStorage.setItem(
+      "staticProfileData",
+      JSON.stringify(staticProfileData.value)
+    );
+  });
+  loading.value = false;
+}
 </script>
 
 <template>
   <div v-if="!loading" class="main profile">
-    <ProfileStats :staticProfileData="staticProfileData!" />
+    <ProfileStats
+      :staticProfileData="staticProfileData!"
+      @getStaticProfileData="forceUpdate()"
+    />
     <ProfileGraph :guesses="(staticProfileData! as any).guesses.items" />
     <ProfileHistory :guesses="(staticProfileData! as any).guesses.items" />
   </div>

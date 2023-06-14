@@ -4,8 +4,9 @@ import { type User, type Guess } from "../../API";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
 import Stat from "./Stat.vue";
 import { calculateScore, roundToTwo } from "../../common/helper";
+import { RedoOutlined } from "@ant-design/icons-vue";
 
-const auth = useAuthenticator();
+const emit = defineEmits(["getStaticProfileData"]);
 
 const props = defineProps<{
   staticProfileData: User;
@@ -76,6 +77,10 @@ function getAverageRankPool() {
   });
   return pool / (props.staticProfileData as any).guesses.items.length;
 }
+
+function refresh() {
+  emit("getStaticProfileData");
+}
 </script>
 <template>
   <div class="stats">
@@ -85,6 +90,11 @@ function getAverageRankPool() {
         staticProfileData.username.slice(1)
       }}
     </h2>
+    <div class="refresh">
+      <a-button class="refresh-btn" type="primary" @click="refresh"
+        ><RedoOutlined style="font-size: 1.5rem; color: white"
+      /></a-button>
+    </div>
     <hr class="stats-divider" />
     <Stat title="Guesses" :value="`${guesses}`" />
     <Stat
@@ -113,11 +123,19 @@ function getAverageRankPool() {
 }
 
 .stats-title {
-  grid-column: span 2;
   margin: 0;
 }
 
 .stats-divider {
   grid-column: span 2;
+}
+
+.refresh {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.refresh-btn {
+  padding: 0.18rem 0.5rem 0;
 }
 </style>

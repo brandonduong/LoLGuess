@@ -58,7 +58,7 @@ function updateScore() {
   display: grid;
   grid-template-columns: 0.45fr 0.75fr auto;
   border: solid 1px lightslategray;
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   align-items: center;
 }
 
