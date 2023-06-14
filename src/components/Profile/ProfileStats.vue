@@ -7,14 +7,21 @@ import { type GraphQLQuery } from "@aws-amplify/api";
 import { type User, type GetUserQuery, type Guess } from "../../API";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
 import Stat from "./Stat.vue";
-import { calculateScore } from "../../common/helper";
+import { calculateScore, roundToTwo } from "../../common/helper";
 
 const auth = useAuthenticator();
 
 var staticProfileData = ref<User>();
 const loading = ref<boolean>(true);
+
+// Stats
+const guesses = ref<number>(0);
 const score = ref<number>(0);
 const maxScore = ref<number>(0);
+const correct = ref<number>(0);
+const maxCorrect = ref<number>(0);
+const correctRank = ref<number>(0);
+const averageRankPool = ref<number>(0);
 
 async function getStaticProfileData() {
   const getUser = await API.graphql<GraphQLQuery<GetUserQuery>>({
@@ -37,7 +44,14 @@ onMounted(async () => {
     });
   }
   console.log(staticProfileData.value);
+
+  // Initialize stats
+  guesses.value = (staticProfileData.value as any).guesses.items.length;
   [score.value, maxScore.value] = getTotalScore();
+  [correct.value, maxCorrect.value] = getTotalCorrectPlacements();
+  correctRank.value = getTotalCorrectRanks();
+  averageRankPool.value = getAverageRankPool();
+
   loading.value = false;
 });
 
@@ -64,18 +78,80 @@ function getTotalScore() {
   });
   return [score, maxScore];
 }
+
+function getTotalCorrectPlacements() {
+  var correct = 0;
+  (staticProfileData as any).value.guesses.items.forEach((guess: Guess) => {
+    for (let i = 0; i < guess.placements.length; i++) {
+      if (parseInt(guess.placements[i]) === i + 1) {
+        correct += 1;
+      }
+    }
+  });
+
+  const maxCorrect = (staticProfileData as any).value.guesses.items.length * 8;
+  return [correct, maxCorrect];
+}
+
+function getTotalCorrectRanks() {
+  var correct = 0;
+  (staticProfileData as any).value.guesses.items.forEach((guess: Guess) => {
+    if (guess.rank === guess.guessedRank) {
+      correct += 1;
+    }
+  });
+  return correct;
+}
+
+function getAverageRankPool() {
+  var pool = 0;
+  (staticProfileData as any).value.guesses.items.forEach((guess: Guess) => {
+    pool += guess.ranks.length;
+  });
+  return pool / (staticProfileData as any).value.guesses.items.length;
+}
 </script>
 <template>
   <div v-if="!loading" class="stats">
+    <h2 class="stats-title">
+      {{
+        auth.user.username.charAt(0).toUpperCase() + auth.user.username.slice(1)
+      }}
+    </h2>
+    <hr class="stats-divider" />
+    <Stat title="Guesses" :value="`${guesses}`" />
     <Stat
-      title="Total Guesses"
-      :value="(staticProfileData as any).guesses.items.length"
+      title="Unfinished Guesses"
+      :value="`${staticProfileData?.unfinished}`"
     />
-    <Stat title="Total Score" :value="`${score}/${maxScore}`" />
+    <Stat title="Score" :value="`${score} / ${maxScore}`" />
+    <Stat title="Avg. Score" :value="`${roundToTwo(score / guesses)}`" />
+    <Stat title="Correct Placements" :value="`${correct} / ${maxCorrect}`" />
+    <Stat
+      title="Avg. Correct Placements"
+      :value="`${roundToTwo(correct / guesses)}`"
+    />
+    <Stat title="Correct Ranks" :value="`${correctRank}`" />
+    <Stat title="Average Rank Pool" :value="`${roundToTwo(averageRankPool)}`" />
   </div>
   <div v-else><a-spin :indicator="indicator"></a-spin></div>
 </template>
 <style scoped>
 .stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 2rem;
+  border: solid 1px lightslategray;
+  padding: 1rem;
+}
+
+.stats-title {
+  grid-column: span 2;
+  margin: 0;
+}
+
+.stats-divider {
+  grid-column: span 2;
+  margin: 0.75rem 0;
 }
 </style>

@@ -33,5 +33,9 @@ export function calculateScore(
     score += currentMax[distanceRank];
   }
 
-  return [Math.round(score * 100) / 100, MAX_POINTS[0] * 8 + currentMax![0]];
+  return [roundToTwo(score), MAX_POINTS[0] * 8 + currentMax![0]];
+}
+
+export function roundToTwo(round: number) {
+  return Math.round(round * 100) / 100;
 }
