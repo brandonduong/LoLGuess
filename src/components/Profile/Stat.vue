@@ -18,8 +18,11 @@ const props = defineProps<{
   align-items: center;
 }
 
-.stat > h3,
+.stat > h3 {
+  margin: 0;
+}
 .stat > h4 {
+  white-space: nowrap;
   margin: 0;
 }
 </style>
