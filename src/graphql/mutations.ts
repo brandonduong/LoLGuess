@@ -44,87 +44,6 @@ export const deleteTodo = /* GraphQL */ `
     }
   }
 `;
-export const createUser = /* GraphQL */ `
-  mutation CreateUser(
-    $input: CreateUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    createUser(input: $input, condition: $condition) {
-      id
-      username
-      guesses {
-        items {
-          id
-          placements
-          guessedRank
-          rank
-          ranks
-          createdAt
-          updatedAt
-          userGuessesId
-        }
-        nextToken
-      }
-      unfinished
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateUser = /* GraphQL */ `
-  mutation UpdateUser(
-    $input: UpdateUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    updateUser(input: $input, condition: $condition) {
-      id
-      username
-      guesses {
-        items {
-          id
-          placements
-          guessedRank
-          rank
-          ranks
-          createdAt
-          updatedAt
-          userGuessesId
-        }
-        nextToken
-      }
-      unfinished
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteUser = /* GraphQL */ `
-  mutation DeleteUser(
-    $input: DeleteUserInput!
-    $condition: ModelUserConditionInput
-  ) {
-    deleteUser(input: $input, condition: $condition) {
-      id
-      username
-      guesses {
-        items {
-          id
-          placements
-          guessedRank
-          rank
-          ranks
-          createdAt
-          updatedAt
-          userGuessesId
-        }
-        nextToken
-      }
-      unfinished
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const createGuess = /* GraphQL */ `
   mutation CreateGuess(
     $input: CreateGuessInput!
@@ -173,6 +92,108 @@ export const deleteGuess = /* GraphQL */ `
       createdAt
       updatedAt
       userGuessesId
+    }
+  }
+`;
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
+      id
+      username
+      guesses {
+        items {
+          id
+          placements
+          guessedRank
+          rank
+          ranks
+          createdAt
+          updatedAt
+          userGuessesId
+        }
+        nextToken
+      }
+      unfinished
+      stats {
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    updateUser(input: $input, condition: $condition) {
+      id
+      username
+      guesses {
+        items {
+          id
+          placements
+          guessedRank
+          rank
+          ranks
+          createdAt
+          updatedAt
+          userGuessesId
+        }
+        nextToken
+      }
+      unfinished
+      stats {
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser(
+    $input: DeleteUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    deleteUser(input: $input, condition: $condition) {
+      id
+      username
+      guesses {
+        items {
+          id
+          placements
+          guessedRank
+          rank
+          ranks
+          createdAt
+          updatedAt
+          userGuessesId
+        }
+        nextToken
+      }
+      unfinished
+      stats {
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+      }
+      createdAt
+      updatedAt
     }
   }
 `;

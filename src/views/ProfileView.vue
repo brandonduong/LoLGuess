@@ -32,7 +32,6 @@ const indicator = h(LoadingOutlined, {
 });
 
 onMounted(async () => {
-  console.log(auth);
   // If looking at own profile put in cache
   if (auth.user.attributes.sub === props.sub) {
     const staticData = window.localStorage.getItem("staticProfileData");

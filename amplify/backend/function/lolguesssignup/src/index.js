@@ -23,6 +23,13 @@ const query = /* GraphQL */ `
       id
       unfinished
       username
+      stats {
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+      }
     }
   }
 `;
@@ -48,6 +55,13 @@ export const handler = async (event, context, callback) => {
       id: event.request.userAttributes.sub,
       unfinished: 0,
       username: event.userName,
+      stats: {
+        score: 0,
+        maxScore: 0,
+        correctPlacements: 0,
+        correctRanks: 0,
+        totalRanks: 0,
+      },
     },
   };
 

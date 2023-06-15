@@ -50,6 +50,13 @@ export const getUser = /* GraphQL */ `
         nextToken
       }
       unfinished
+      stats {
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+      }
       createdAt
       updatedAt
     }
@@ -69,6 +76,13 @@ export const listUsers = /* GraphQL */ `
           nextToken
         }
         unfinished
+        stats {
+          score
+          maxScore
+          correctPlacements
+          correctRanks
+          totalRanks
+        }
         createdAt
         updatedAt
       }

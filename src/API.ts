@@ -75,70 +75,6 @@ export type DeleteTodoInput = {
   id: string,
 };
 
-export type CreateUserInput = {
-  id?: string | null,
-  username: string,
-  unfinished: number,
-};
-
-export type ModelUserConditionInput = {
-  username?: ModelStringInput | null,
-  unfinished?: ModelIntInput | null,
-  and?: Array< ModelUserConditionInput | null > | null,
-  or?: Array< ModelUserConditionInput | null > | null,
-  not?: ModelUserConditionInput | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
-export type User = {
-  __typename: "User",
-  id: string,
-  username: string,
-  guesses?: ModelGuessConnection | null,
-  unfinished: number,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type ModelGuessConnection = {
-  __typename: "ModelGuessConnection",
-  items:  Array<Guess | null >,
-  nextToken?: string | null,
-};
-
-export type Guess = {
-  __typename: "Guess",
-  id: string,
-  placements: Array< string >,
-  guessedRank: string,
-  rank: string,
-  ranks: Array< string >,
-  createdAt: string,
-  updatedAt: string,
-  userGuessesId?: string | null,
-};
-
-export type UpdateUserInput = {
-  id: string,
-  username?: string | null,
-  unfinished?: number | null,
-};
-
-export type DeleteUserInput = {
-  id: string,
-};
-
 export type CreateGuessInput = {
   id?: string | null,
   placements: Array< string >,
@@ -175,6 +111,18 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
+export type Guess = {
+  __typename: "Guess",
+  id: string,
+  placements: Array< string >,
+  guessedRank: string,
+  rank: string,
+  ranks: Array< string >,
+  createdAt: string,
+  updatedAt: string,
+  userGuessesId?: string | null,
+};
+
 export type UpdateGuessInput = {
   id: string,
   placements?: Array< string > | null,
@@ -185,6 +133,78 @@ export type UpdateGuessInput = {
 };
 
 export type DeleteGuessInput = {
+  id: string,
+};
+
+export type CreateUserInput = {
+  id?: string | null,
+  username: string,
+  unfinished: number,
+  stats: StatsInput,
+};
+
+export type StatsInput = {
+  score: number,
+  maxScore: number,
+  correctPlacements: number,
+  correctRanks: number,
+  totalRanks: number,
+};
+
+export type ModelUserConditionInput = {
+  username?: ModelStringInput | null,
+  unfinished?: ModelIntInput | null,
+  and?: Array< ModelUserConditionInput | null > | null,
+  or?: Array< ModelUserConditionInput | null > | null,
+  not?: ModelUserConditionInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type User = {
+  __typename: "User",
+  id: string,
+  username: string,
+  guesses?: ModelGuessConnection | null,
+  unfinished: number,
+  stats: Stats,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type ModelGuessConnection = {
+  __typename: "ModelGuessConnection",
+  items:  Array<Guess | null >,
+  nextToken?: string | null,
+};
+
+export type Stats = {
+  __typename: "Stats",
+  score: number,
+  maxScore: number,
+  correctPlacements: number,
+  correctRanks: number,
+  totalRanks: number,
+};
+
+export type UpdateUserInput = {
+  id: string,
+  username?: string | null,
+  unfinished?: number | null,
+  stats?: StatsInput | null,
+};
+
+export type DeleteUserInput = {
   id: string,
 };
 
@@ -346,99 +366,6 @@ export type DeleteTodoMutation = {
   } | null,
 };
 
-export type CreateUserMutationVariables = {
-  input: CreateUserInput,
-  condition?: ModelUserConditionInput | null,
-};
-
-export type CreateUserMutation = {
-  createUser?:  {
-    __typename: "User",
-    id: string,
-    username: string,
-    guesses?:  {
-      __typename: "ModelGuessConnection",
-      items:  Array< {
-        __typename: "Guess",
-        id: string,
-        placements: Array< string >,
-        guessedRank: string,
-        rank: string,
-        ranks: Array< string >,
-        createdAt: string,
-        updatedAt: string,
-        userGuessesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    unfinished: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdateUserMutationVariables = {
-  input: UpdateUserInput,
-  condition?: ModelUserConditionInput | null,
-};
-
-export type UpdateUserMutation = {
-  updateUser?:  {
-    __typename: "User",
-    id: string,
-    username: string,
-    guesses?:  {
-      __typename: "ModelGuessConnection",
-      items:  Array< {
-        __typename: "Guess",
-        id: string,
-        placements: Array< string >,
-        guessedRank: string,
-        rank: string,
-        ranks: Array< string >,
-        createdAt: string,
-        updatedAt: string,
-        userGuessesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    unfinished: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteUserMutationVariables = {
-  input: DeleteUserInput,
-  condition?: ModelUserConditionInput | null,
-};
-
-export type DeleteUserMutation = {
-  deleteUser?:  {
-    __typename: "User",
-    id: string,
-    username: string,
-    guesses?:  {
-      __typename: "ModelGuessConnection",
-      items:  Array< {
-        __typename: "Guess",
-        id: string,
-        placements: Array< string >,
-        guessedRank: string,
-        rank: string,
-        ranks: Array< string >,
-        createdAt: string,
-        updatedAt: string,
-        userGuessesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    unfinished: number,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
 export type CreateGuessMutationVariables = {
   input: CreateGuessInput,
   condition?: ModelGuessConditionInput | null,
@@ -493,6 +420,123 @@ export type DeleteGuessMutation = {
     createdAt: string,
     updatedAt: string,
     userGuessesId?: string | null,
+  } | null,
+};
+
+export type CreateUserMutationVariables = {
+  input: CreateUserInput,
+  condition?: ModelUserConditionInput | null,
+};
+
+export type CreateUserMutation = {
+  createUser?:  {
+    __typename: "User",
+    id: string,
+    username: string,
+    guesses?:  {
+      __typename: "ModelGuessConnection",
+      items:  Array< {
+        __typename: "Guess",
+        id: string,
+        placements: Array< string >,
+        guessedRank: string,
+        rank: string,
+        ranks: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+        userGuessesId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    unfinished: number,
+    stats:  {
+      __typename: "Stats",
+      score: number,
+      maxScore: number,
+      correctPlacements: number,
+      correctRanks: number,
+      totalRanks: number,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateUserMutationVariables = {
+  input: UpdateUserInput,
+  condition?: ModelUserConditionInput | null,
+};
+
+export type UpdateUserMutation = {
+  updateUser?:  {
+    __typename: "User",
+    id: string,
+    username: string,
+    guesses?:  {
+      __typename: "ModelGuessConnection",
+      items:  Array< {
+        __typename: "Guess",
+        id: string,
+        placements: Array< string >,
+        guessedRank: string,
+        rank: string,
+        ranks: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+        userGuessesId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    unfinished: number,
+    stats:  {
+      __typename: "Stats",
+      score: number,
+      maxScore: number,
+      correctPlacements: number,
+      correctRanks: number,
+      totalRanks: number,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteUserMutationVariables = {
+  input: DeleteUserInput,
+  condition?: ModelUserConditionInput | null,
+};
+
+export type DeleteUserMutation = {
+  deleteUser?:  {
+    __typename: "User",
+    id: string,
+    username: string,
+    guesses?:  {
+      __typename: "ModelGuessConnection",
+      items:  Array< {
+        __typename: "Guess",
+        id: string,
+        placements: Array< string >,
+        guessedRank: string,
+        rank: string,
+        ranks: Array< string >,
+        createdAt: string,
+        updatedAt: string,
+        userGuessesId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
+    unfinished: number,
+    stats:  {
+      __typename: "Stats",
+      score: number,
+      maxScore: number,
+      correctPlacements: number,
+      correctRanks: number,
+      totalRanks: number,
+    },
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -557,6 +601,14 @@ export type GetUserQuery = {
       nextToken?: string | null,
     } | null,
     unfinished: number,
+    stats:  {
+      __typename: "Stats",
+      score: number,
+      maxScore: number,
+      correctPlacements: number,
+      correctRanks: number,
+      totalRanks: number,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -580,6 +632,14 @@ export type ListUsersQuery = {
         nextToken?: string | null,
       } | null,
       unfinished: number,
+      stats:  {
+        __typename: "Stats",
+        score: number,
+        maxScore: number,
+        correctPlacements: number,
+        correctRanks: number,
+        totalRanks: number,
+      },
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -699,6 +759,14 @@ export type OnCreateUserSubscription = {
       nextToken?: string | null,
     } | null,
     unfinished: number,
+    stats:  {
+      __typename: "Stats",
+      score: number,
+      maxScore: number,
+      correctPlacements: number,
+      correctRanks: number,
+      totalRanks: number,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -729,6 +797,14 @@ export type OnUpdateUserSubscription = {
       nextToken?: string | null,
     } | null,
     unfinished: number,
+    stats:  {
+      __typename: "Stats",
+      score: number,
+      maxScore: number,
+      correctPlacements: number,
+      correctRanks: number,
+      totalRanks: number,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -759,6 +835,14 @@ export type OnDeleteUserSubscription = {
       nextToken?: string | null,
     } | null,
     unfinished: number,
+    stats:  {
+      __typename: "Stats",
+      score: number,
+      maxScore: number,
+      correctPlacements: number,
+      correctRanks: number,
+      totalRanks: number,
+    },
     createdAt: string,
     updatedAt: string,
   } | null,

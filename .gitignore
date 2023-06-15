@@ -48,3 +48,6 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+../../../mnt/d/PycharmProjects/LoLGuess/LoLGuess/amplify/mock-data
+../../../mnt/d/PycharmProjects/LoLGuess/LoLGuess/amplify/mock-api-resources

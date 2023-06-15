@@ -339,6 +339,10 @@ app.get("/getMatch", async function (req, res) {
     rankedMatch,
     rank: CryptoJS.AES.encrypt(`${rankDivision}`, RIOT_TOKEN).toString(),
     ranks: CryptoJS.AES.encrypt(`${ranks.toString()}`, RIOT_TOKEN).toString(),
+    unfinished: CryptoJS.AES.encrypt(
+      `${user.unfinished.toString()}`,
+      RIOT_TOKEN
+    ).toString(),
   });
 });
 

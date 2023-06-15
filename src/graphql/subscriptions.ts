@@ -54,6 +54,13 @@ export const onCreateUser = /* GraphQL */ `
         nextToken
       }
       unfinished
+      stats {
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+      }
       createdAt
       updatedAt
     }
@@ -78,6 +85,13 @@ export const onUpdateUser = /* GraphQL */ `
         nextToken
       }
       unfinished
+      stats {
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+      }
       createdAt
       updatedAt
     }
@@ -102,6 +116,13 @@ export const onDeleteUser = /* GraphQL */ `
         nextToken
       }
       unfinished
+      stats {
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+      }
       createdAt
       updatedAt
     }

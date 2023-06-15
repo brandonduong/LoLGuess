@@ -20,18 +20,15 @@ type Todo
   description: String
 }
 
+# , operations: [read]
 type User
   @model
-  @auth(
-    rules: [
-      { allow: public, operations: [read] }
-      { allow: private, provider: iam }
-    ]
-  ) {
+  @auth(rules: [{ allow: public }, { allow: private, provider: iam }]) {
   id: ID!
   username: String!
   guesses: [Guess] @hasMany
   unfinished: Int!
+  stats: Stats!
 }
 
 type Guess
@@ -47,4 +44,12 @@ type Guess
   guessedRank: String!
   rank: String!
   ranks: [String!]!
+}
+
+type Stats {
+  score: Float!
+  maxScore: Float!
+  correctPlacements: Int!
+  correctRanks: Int!
+  totalRanks: Int!
 }

@@ -59,6 +59,13 @@ async function getUser(sub) {
       getUser(id: $id) {
         id
         unfinished
+        stats {
+          correctPlacements
+          correctRanks
+          maxScore
+          score
+          totalRanks
+        }
       }
     }
   `;
@@ -143,12 +150,19 @@ async function createGuess(user, unencrypted, rank, ranks, selectedRank) {
   }
 }
 
-async function decrementUnfinished(user) {
+async function updateUserStats(user, stats) {
   const query = /* GraphQL */ `
     mutation UPDATE_USER($input: UpdateUserInput!) {
       updateUser(input: $input) {
         id
         unfinished
+        stats {
+          correctPlacements
+          correctRanks
+          maxScore
+          score
+          totalRanks
+        }
       }
     }
   `;
@@ -157,8 +171,10 @@ async function decrementUnfinished(user) {
     input: {
       id: user.id,
       unfinished: user.unfinished - 1,
+      stats,
     },
   };
+
   const requestToBeSigned = new HttpRequest({
     method: "POST",
     headers: {
@@ -184,6 +200,72 @@ async function decrementUnfinished(user) {
   }
 }
 
+// Same as from helper.ts
+function calculateScore(placements, guessedRank, rank, ranks) {
+  // Returns scored points and max score
+  const MAX_POINTS = [8, 6, 3]; // For each correct placement (depending on how far guess was)
+  const MAX_RANK_POOL = 9; // 9 ranks in total
+  const MAX_RANK_POINTS = [36, 27, 13.5]; // If rank pool had all 9 ranks
+  var score = 0;
+
+  // Score for placement guesses
+  for (let i = 0; i < placements.length; i++) {
+    const distance = Math.abs(parseInt(placements[i]) - (i + 1));
+    if (distance <= 2) {
+      score += MAX_POINTS[distance];
+    }
+  }
+
+  // Score for rank guess
+  const selectedRankInd = ranks.indexOf(guessedRank);
+  const verifiedRankInd = ranks.indexOf(rank);
+  const currentMax = MAX_RANK_POINTS.map((x) => {
+    if (ranks.length >= 4) {
+      return Math.round(x * (ranks.length / MAX_RANK_POOL) * 100) / 100;
+    } else {
+      return 0;
+    }
+  }); // Depends on # of ranks in pool
+  const distanceRank = Math.abs(selectedRankInd - verifiedRankInd);
+  if (distanceRank <= 2 && ranks.length >= 4) {
+    score += currentMax[distanceRank];
+  }
+
+  return [roundToTwo(score), MAX_POINTS[0] * 8 + currentMax[0]];
+}
+
+function roundToTwo(round) {
+  return Math.round(round * 100) / 100;
+}
+
+function calculateCorrectPlacements(placements) {
+  var correct = 0;
+  for (let i = 0; i < placements.length; i++) {
+    if (parseInt(placements[i]) === i + 1) {
+      correct += 1;
+    }
+  }
+  return correct;
+}
+
+function calculateStats(stats, placements, guessedRank, rank, ranks) {
+  const copy = stats;
+  const [score, maxScore] = calculateScore(
+    placements,
+    guessedRank,
+    rank,
+    ranks
+  );
+  copy.score = copy.score + score;
+  copy.maxScore = copy.maxScore + maxScore;
+  copy.totalRanks = copy.totalRanks + ranks.length;
+  copy.correctRanks = copy.correctRanks + (rank === guessedRank ? 1 : 0);
+
+  const correctPlacements = calculateCorrectPlacements(placements);
+  copy.correctPlacements = copy.correctPlacements + correctPlacements;
+  return copy;
+}
+
 /****************************
  * Example post method *
  ****************************/
@@ -205,7 +287,7 @@ app.post("/verifyGuess", async function (req, res) {
   const encryptedRanks = req.body.encryptedRanks;
   const selectedRank = req.body.selectedRank;
 
-  // Increment Unfinished Games for User
+  // Decrement Unfinished Games for User
   const user = await getUser(
     req.apiGateway.event.requestContext.authorizer.claims.sub
   );
@@ -217,7 +299,14 @@ app.post("/verifyGuess", async function (req, res) {
     .split(",");
   console.log(rank, ranks, selectedRank);
   await createGuess(user, unencrypted, rank, ranks, selectedRank);
-  await decrementUnfinished(user);
+  const stats = calculateStats(
+    user.stats,
+    unencrypted,
+    selectedRank,
+    rank,
+    ranks
+  );
+  await updateUserStats(user, stats);
 
   res.json({
     unencrypted,
