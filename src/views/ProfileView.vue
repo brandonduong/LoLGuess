@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, h } from "vue";
+import { ref, onMounted, h, watch, onUpdated } from "vue";
 import { API } from "aws-amplify";
 import * as queries from "../graphql/queries";
 import { type GraphQLQuery } from "@aws-amplify/api";
@@ -20,6 +20,7 @@ const staticProfileGuesses = ref<SearchGuessesQuery | null>();
 const staticProfileData = ref<User>();
 const loading = ref<boolean>(true);
 const props = defineProps<{ sub: string }>();
+const oldSub = ref<string>();
 
 async function getStaticProfileData() {
   const getUser = await API.graphql<GraphQLQuery<GetUserQuery>>({
@@ -50,6 +51,19 @@ const indicator = h(LoadingOutlined, {
 });
 
 onMounted(async () => {
+  update();
+  oldSub.value = props.sub;
+});
+
+onUpdated(async () => {
+  if (oldSub.value !== props.sub) {
+    oldSub.value = props.sub;
+    update();
+  }
+});
+
+async function update() {
+  loading.value = true;
   // If looking at own profile put in cache
   if (auth.user.attributes.sub === props.sub) {
     const staticData = window.localStorage.getItem("staticProfileData");
@@ -86,7 +100,7 @@ onMounted(async () => {
   console.log(staticProfileGuesses.value);
 
   loading.value = false;
-});
+}
 
 async function forceUpdate() {
   loading.value = true;
