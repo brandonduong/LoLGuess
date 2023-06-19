@@ -116,13 +116,13 @@ export const createUser = /* GraphQL */ `
         }
         nextToken
       }
-      unfinished
       stats {
         score
         maxScore
         correctPlacements
         correctRanks
         totalRanks
+        unfinished
       }
       createdAt
       updatedAt
@@ -150,13 +150,13 @@ export const updateUser = /* GraphQL */ `
         }
         nextToken
       }
-      unfinished
       stats {
         score
         maxScore
         correctPlacements
         correctRanks
         totalRanks
+        unfinished
       }
       createdAt
       updatedAt
@@ -184,13 +184,13 @@ export const deleteUser = /* GraphQL */ `
         }
         nextToken
       }
-      unfinished
       stats {
         score
         maxScore
         correctPlacements
         correctRanks
         totalRanks
+        unfinished
       }
       createdAt
       updatedAt

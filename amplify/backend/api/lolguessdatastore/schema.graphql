@@ -23,16 +23,17 @@ type Todo
 # , operations: [read]
 type User
   @model
+  @searchable
   @auth(rules: [{ allow: public }, { allow: private, provider: iam }]) {
   id: ID!
   username: String!
   guesses: [Guess] @hasMany
-  unfinished: Int!
   stats: Stats!
 }
 
 type Guess
   @model
+  @searchable
   @auth(
     rules: [
       { allow: public, operations: [read] }
@@ -52,4 +53,5 @@ type Stats {
   correctPlacements: Int!
   correctRanks: Int!
   totalRanks: Int!
+  unfinished: Int!
 }

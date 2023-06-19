@@ -59,7 +59,14 @@ async function getUser(sub) {
     query GET_USER($id: ID!) {
       getUser(id: $id) {
         id
-        unfinished
+        stats {
+          totalRanks
+          score
+          maxScore
+          correctRanks
+          correctPlacements
+          unfinished
+        }
       }
     }
   `;
@@ -103,8 +110,14 @@ async function incrementUnfinished(user) {
     mutation UPDATE_USER($input: UpdateUserInput!) {
       updateUser(input: $input) {
         id
-        unfinished
-        updatedAt
+        stats {
+          unfinished
+          totalRanks
+          score
+          maxScore
+          correctRanks
+          correctPlacements
+        }
       }
     }
   `;
@@ -113,7 +126,10 @@ async function incrementUnfinished(user) {
   const variables = {
     input: {
       id: user.id,
-      unfinished: user.unfinished + 1,
+      stats: {
+        ...user.stats,
+        unfinished: user.stats.unfinished + 1,
+      },
     },
   };
   const requestToBeSigned = new HttpRequest({
@@ -340,7 +356,7 @@ app.get("/getMatch", async function (req, res) {
     rank: CryptoJS.AES.encrypt(`${rankDivision}`, RIOT_TOKEN).toString(),
     ranks: CryptoJS.AES.encrypt(`${ranks.toString()}`, RIOT_TOKEN).toString(),
     unfinished: CryptoJS.AES.encrypt(
-      `${user.unfinished.toString()}`,
+      `${user.stats.unfinished.toString()}`,
       RIOT_TOKEN
     ).toString(),
   });

@@ -139,7 +139,6 @@ export type DeleteGuessInput = {
 export type CreateUserInput = {
   id?: string | null,
   username: string,
-  unfinished: number,
   stats: StatsInput,
 };
 
@@ -149,26 +148,14 @@ export type StatsInput = {
   correctPlacements: number,
   correctRanks: number,
   totalRanks: number,
+  unfinished: number,
 };
 
 export type ModelUserConditionInput = {
   username?: ModelStringInput | null,
-  unfinished?: ModelIntInput | null,
   and?: Array< ModelUserConditionInput | null > | null,
   or?: Array< ModelUserConditionInput | null > | null,
   not?: ModelUserConditionInput | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
 };
 
 export type User = {
@@ -176,7 +163,6 @@ export type User = {
   id: string,
   username: string,
   guesses?: ModelGuessConnection | null,
-  unfinished: number,
   stats: Stats,
   createdAt: string,
   updatedAt: string,
@@ -195,12 +181,12 @@ export type Stats = {
   correctPlacements: number,
   correctRanks: number,
   totalRanks: number,
+  unfinished: number,
 };
 
 export type UpdateUserInput = {
   id: string,
   username?: string | null,
-  unfinished?: number | null,
   stats?: StatsInput | null,
 };
 
@@ -226,7 +212,6 @@ export type ModelTodoConnection = {
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   username?: ModelStringInput | null,
-  unfinished?: ModelIntInput | null,
   and?: Array< ModelUserFilterInput | null > | null,
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
@@ -236,6 +221,125 @@ export type ModelUserConnection = {
   __typename: "ModelUserConnection",
   items:  Array<User | null >,
   nextToken?: string | null,
+};
+
+export type SearchableUserFilterInput = {
+  id?: SearchableIDFilterInput | null,
+  username?: SearchableStringFilterInput | null,
+  createdAt?: SearchableStringFilterInput | null,
+  updatedAt?: SearchableStringFilterInput | null,
+  and?: Array< SearchableUserFilterInput | null > | null,
+  or?: Array< SearchableUserFilterInput | null > | null,
+  not?: SearchableUserFilterInput | null,
+};
+
+export type SearchableIDFilterInput = {
+  ne?: string | null,
+  gt?: string | null,
+  lt?: string | null,
+  gte?: string | null,
+  lte?: string | null,
+  eq?: string | null,
+  match?: string | null,
+  matchPhrase?: string | null,
+  matchPhrasePrefix?: string | null,
+  multiMatch?: string | null,
+  exists?: boolean | null,
+  wildcard?: string | null,
+  regexp?: string | null,
+  range?: Array< string | null > | null,
+};
+
+export type SearchableStringFilterInput = {
+  ne?: string | null,
+  gt?: string | null,
+  lt?: string | null,
+  gte?: string | null,
+  lte?: string | null,
+  eq?: string | null,
+  match?: string | null,
+  matchPhrase?: string | null,
+  matchPhrasePrefix?: string | null,
+  multiMatch?: string | null,
+  exists?: boolean | null,
+  wildcard?: string | null,
+  regexp?: string | null,
+  range?: Array< string | null > | null,
+};
+
+export type SearchableUserSortInput = {
+  field?: SearchableUserSortableFields | null,
+  direction?: SearchableSortDirection | null,
+};
+
+export enum SearchableUserSortableFields {
+  id = "id",
+  username = "username",
+  createdAt = "createdAt",
+  updatedAt = "updatedAt",
+}
+
+
+export enum SearchableSortDirection {
+  asc = "asc",
+  desc = "desc",
+}
+
+
+export type SearchableUserAggregationInput = {
+  name: string,
+  type: SearchableAggregateType,
+  field: SearchableUserAggregateField,
+};
+
+export enum SearchableAggregateType {
+  terms = "terms",
+  avg = "avg",
+  min = "min",
+  max = "max",
+  sum = "sum",
+}
+
+
+export enum SearchableUserAggregateField {
+  id = "id",
+  username = "username",
+  createdAt = "createdAt",
+  updatedAt = "updatedAt",
+}
+
+
+export type SearchableUserConnection = {
+  __typename: "SearchableUserConnection",
+  items:  Array<User | null >,
+  nextToken?: string | null,
+  total?: number | null,
+  aggregateItems:  Array<SearchableAggregateResult | null >,
+};
+
+export type SearchableAggregateResult = {
+  __typename: "SearchableAggregateResult",
+  name: string,
+  result?: SearchableAggregateGenericResult | null,
+};
+
+export type SearchableAggregateGenericResult = SearchableAggregateScalarResult | SearchableAggregateBucketResult
+
+
+export type SearchableAggregateScalarResult = {
+  __typename: "SearchableAggregateScalarResult",
+  value: number,
+};
+
+export type SearchableAggregateBucketResult = {
+  __typename: "SearchableAggregateBucketResult",
+  buckets?:  Array<SearchableAggregateBucketResultItem | null > | null,
+};
+
+export type SearchableAggregateBucketResultItem = {
+  __typename: "SearchableAggregateBucketResultItem",
+  key: string,
+  doc_count: number,
 };
 
 export type ModelGuessFilterInput = {
@@ -248,6 +352,63 @@ export type ModelGuessFilterInput = {
   or?: Array< ModelGuessFilterInput | null > | null,
   not?: ModelGuessFilterInput | null,
   userGuessesId?: ModelIDInput | null,
+};
+
+export type SearchableGuessFilterInput = {
+  id?: SearchableIDFilterInput | null,
+  placements?: SearchableStringFilterInput | null,
+  guessedRank?: SearchableStringFilterInput | null,
+  rank?: SearchableStringFilterInput | null,
+  ranks?: SearchableStringFilterInput | null,
+  createdAt?: SearchableStringFilterInput | null,
+  updatedAt?: SearchableStringFilterInput | null,
+  userGuessesId?: SearchableIDFilterInput | null,
+  and?: Array< SearchableGuessFilterInput | null > | null,
+  or?: Array< SearchableGuessFilterInput | null > | null,
+  not?: SearchableGuessFilterInput | null,
+};
+
+export type SearchableGuessSortInput = {
+  field?: SearchableGuessSortableFields | null,
+  direction?: SearchableSortDirection | null,
+};
+
+export enum SearchableGuessSortableFields {
+  id = "id",
+  placements = "placements",
+  guessedRank = "guessedRank",
+  rank = "rank",
+  ranks = "ranks",
+  createdAt = "createdAt",
+  updatedAt = "updatedAt",
+  userGuessesId = "userGuessesId",
+}
+
+
+export type SearchableGuessAggregationInput = {
+  name: string,
+  type: SearchableAggregateType,
+  field: SearchableGuessAggregateField,
+};
+
+export enum SearchableGuessAggregateField {
+  id = "id",
+  placements = "placements",
+  guessedRank = "guessedRank",
+  rank = "rank",
+  ranks = "ranks",
+  createdAt = "createdAt",
+  updatedAt = "updatedAt",
+  userGuessesId = "userGuessesId",
+}
+
+
+export type SearchableGuessConnection = {
+  __typename: "SearchableGuessConnection",
+  items:  Array<Guess | null >,
+  nextToken?: string | null,
+  total?: number | null,
+  aggregateItems:  Array<SearchableAggregateResult | null >,
 };
 
 export type ModelSubscriptionTodoFilterInput = {
@@ -291,21 +452,8 @@ export type ModelSubscriptionStringInput = {
 export type ModelSubscriptionUserFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   username?: ModelSubscriptionStringInput | null,
-  unfinished?: ModelSubscriptionIntInput | null,
   and?: Array< ModelSubscriptionUserFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserFilterInput | null > | null,
-};
-
-export type ModelSubscriptionIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  in?: Array< number | null > | null,
-  notIn?: Array< number | null > | null,
 };
 
 export type ModelSubscriptionGuessFilterInput = {
@@ -448,7 +596,6 @@ export type CreateUserMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    unfinished: number,
     stats:  {
       __typename: "Stats",
       score: number,
@@ -456,6 +603,7 @@ export type CreateUserMutation = {
       correctPlacements: number,
       correctRanks: number,
       totalRanks: number,
+      unfinished: number,
     },
     createdAt: string,
     updatedAt: string,
@@ -487,7 +635,6 @@ export type UpdateUserMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    unfinished: number,
     stats:  {
       __typename: "Stats",
       score: number,
@@ -495,6 +642,7 @@ export type UpdateUserMutation = {
       correctPlacements: number,
       correctRanks: number,
       totalRanks: number,
+      unfinished: number,
     },
     createdAt: string,
     updatedAt: string,
@@ -526,7 +674,6 @@ export type DeleteUserMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    unfinished: number,
     stats:  {
       __typename: "Stats",
       score: number,
@@ -534,6 +681,7 @@ export type DeleteUserMutation = {
       correctPlacements: number,
       correctRanks: number,
       totalRanks: number,
+      unfinished: number,
     },
     createdAt: string,
     updatedAt: string,
@@ -600,7 +748,6 @@ export type GetUserQuery = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    unfinished: number,
     stats:  {
       __typename: "Stats",
       score: number,
@@ -608,6 +755,7 @@ export type GetUserQuery = {
       correctPlacements: number,
       correctRanks: number,
       totalRanks: number,
+      unfinished: number,
     },
     createdAt: string,
     updatedAt: string,
@@ -631,7 +779,6 @@ export type ListUsersQuery = {
         __typename: "ModelGuessConnection",
         nextToken?: string | null,
       } | null,
-      unfinished: number,
       stats:  {
         __typename: "Stats",
         score: number,
@@ -639,11 +786,65 @@ export type ListUsersQuery = {
         correctPlacements: number,
         correctRanks: number,
         totalRanks: number,
+        unfinished: number,
       },
       createdAt: string,
       updatedAt: string,
     } | null >,
     nextToken?: string | null,
+  } | null,
+};
+
+export type SearchUsersQueryVariables = {
+  filter?: SearchableUserFilterInput | null,
+  sort?: Array< SearchableUserSortInput | null > | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  from?: number | null,
+  aggregates?: Array< SearchableUserAggregationInput | null > | null,
+};
+
+export type SearchUsersQuery = {
+  searchUsers?:  {
+    __typename: "SearchableUserConnection",
+    items:  Array< {
+      __typename: "User",
+      id: string,
+      username: string,
+      guesses?:  {
+        __typename: "ModelGuessConnection",
+        nextToken?: string | null,
+      } | null,
+      stats:  {
+        __typename: "Stats",
+        score: number,
+        maxScore: number,
+        correctPlacements: number,
+        correctRanks: number,
+        totalRanks: number,
+        unfinished: number,
+      },
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+    total?: number | null,
+    aggregateItems:  Array< {
+      __typename: "SearchableAggregateResult",
+      name: string,
+      result: ( {
+          __typename: "SearchableAggregateScalarResult",
+          value: number,
+        } | {
+          __typename: "SearchableAggregateBucketResult",
+          buckets?:  Array< {
+            __typename: string,
+            key: string,
+            doc_count: number,
+          } | null > | null,
+        }
+      ) | null,
+    } | null >,
   } | null,
 };
 
@@ -686,6 +887,50 @@ export type ListGuessesQuery = {
       userGuessesId?: string | null,
     } | null >,
     nextToken?: string | null,
+  } | null,
+};
+
+export type SearchGuessesQueryVariables = {
+  filter?: SearchableGuessFilterInput | null,
+  sort?: Array< SearchableGuessSortInput | null > | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  from?: number | null,
+  aggregates?: Array< SearchableGuessAggregationInput | null > | null,
+};
+
+export type SearchGuessesQuery = {
+  searchGuesses?:  {
+    __typename: "SearchableGuessConnection",
+    items:  Array< {
+      __typename: "Guess",
+      id: string,
+      placements: Array< string >,
+      guessedRank: string,
+      rank: string,
+      ranks: Array< string >,
+      createdAt: string,
+      updatedAt: string,
+      userGuessesId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    total?: number | null,
+    aggregateItems:  Array< {
+      __typename: "SearchableAggregateResult",
+      name: string,
+      result: ( {
+          __typename: "SearchableAggregateScalarResult",
+          value: number,
+        } | {
+          __typename: "SearchableAggregateBucketResult",
+          buckets?:  Array< {
+            __typename: string,
+            key: string,
+            doc_count: number,
+          } | null > | null,
+        }
+      ) | null,
+    } | null >,
   } | null,
 };
 
@@ -758,7 +1003,6 @@ export type OnCreateUserSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    unfinished: number,
     stats:  {
       __typename: "Stats",
       score: number,
@@ -766,6 +1010,7 @@ export type OnCreateUserSubscription = {
       correctPlacements: number,
       correctRanks: number,
       totalRanks: number,
+      unfinished: number,
     },
     createdAt: string,
     updatedAt: string,
@@ -796,7 +1041,6 @@ export type OnUpdateUserSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    unfinished: number,
     stats:  {
       __typename: "Stats",
       score: number,
@@ -804,6 +1048,7 @@ export type OnUpdateUserSubscription = {
       correctPlacements: number,
       correctRanks: number,
       totalRanks: number,
+      unfinished: number,
     },
     createdAt: string,
     updatedAt: string,
@@ -834,7 +1079,6 @@ export type OnDeleteUserSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    unfinished: number,
     stats:  {
       __typename: "Stats",
       score: number,
@@ -842,6 +1086,7 @@ export type OnDeleteUserSubscription = {
       correctPlacements: number,
       correctRanks: number,
       totalRanks: number,
+      unfinished: number,
     },
     createdAt: string,
     updatedAt: string,

@@ -49,13 +49,13 @@ export const getUser = /* GraphQL */ `
         }
         nextToken
       }
-      unfinished
       stats {
         score
         maxScore
         correctPlacements
         correctRanks
         totalRanks
+        unfinished
       }
       createdAt
       updatedAt
@@ -75,18 +75,71 @@ export const listUsers = /* GraphQL */ `
         guesses {
           nextToken
         }
-        unfinished
         stats {
           score
           maxScore
           correctPlacements
           correctRanks
           totalRanks
+          unfinished
         }
         createdAt
         updatedAt
       }
       nextToken
+    }
+  }
+`;
+export const searchUsers = /* GraphQL */ `
+  query SearchUsers(
+    $filter: SearchableUserFilterInput
+    $sort: [SearchableUserSortInput]
+    $limit: Int
+    $nextToken: String
+    $from: Int
+    $aggregates: [SearchableUserAggregationInput]
+  ) {
+    searchUsers(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+      aggregates: $aggregates
+    ) {
+      items {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        stats {
+          score
+          maxScore
+          correctPlacements
+          correctRanks
+          totalRanks
+          unfinished
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+      aggregateItems {
+        name
+        result {
+          ... on SearchableAggregateScalarResult {
+            value
+          }
+          ... on SearchableAggregateBucketResult {
+            buckets {
+              key
+              doc_count
+            }
+          }
+        }
+      }
     }
   }
 `;
@@ -122,6 +175,52 @@ export const listGuesses = /* GraphQL */ `
         userGuessesId
       }
       nextToken
+    }
+  }
+`;
+export const searchGuesses = /* GraphQL */ `
+  query SearchGuesses(
+    $filter: SearchableGuessFilterInput
+    $sort: [SearchableGuessSortInput]
+    $limit: Int
+    $nextToken: String
+    $from: Int
+    $aggregates: [SearchableGuessAggregationInput]
+  ) {
+    searchGuesses(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+      aggregates: $aggregates
+    ) {
+      items {
+        id
+        placements
+        guessedRank
+        rank
+        ranks
+        createdAt
+        updatedAt
+        userGuessesId
+      }
+      nextToken
+      total
+      aggregateItems {
+        name
+        result {
+          ... on SearchableAggregateScalarResult {
+            value
+          }
+          ... on SearchableAggregateBucketResult {
+            buckets {
+              key
+              doc_count
+            }
+          }
+        }
+      }
     }
   }
 `;

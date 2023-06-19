@@ -58,13 +58,13 @@ async function getUser(sub) {
     query GET_USER($id: ID!) {
       getUser(id: $id) {
         id
-        unfinished
         stats {
           correctPlacements
           correctRanks
           maxScore
           score
           totalRanks
+          unfinished
         }
       }
     }
@@ -155,13 +155,13 @@ async function updateUserStats(user, stats) {
     mutation UPDATE_USER($input: UpdateUserInput!) {
       updateUser(input: $input) {
         id
-        unfinished
         stats {
           correctPlacements
           correctRanks
           maxScore
           score
           totalRanks
+          unfinished
         }
       }
     }
@@ -170,7 +170,6 @@ async function updateUserStats(user, stats) {
   const variables = {
     input: {
       id: user.id,
-      unfinished: user.unfinished - 1,
       stats,
     },
   };
@@ -256,6 +255,7 @@ function calculateStats(stats, placements, guessedRank, rank, ranks) {
     rank,
     ranks
   );
+  copy.unfinished = copy.unfinished - 1;
   copy.score = copy.score + score;
   copy.maxScore = copy.maxScore + maxScore;
   copy.totalRanks = copy.totalRanks + ranks.length;

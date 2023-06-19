@@ -24,37 +24,20 @@ const indicator = h(LoadingOutlined, {
 });
 
 onMounted(async () => {
-  // If looking at own profile put in cache
-  const staticLeaderboard = window.localStorage.getItem("staticLeaderboard");
-
-  // Must check staticData.id in case someone has 2 accounts
-  if (staticLeaderboard) {
-    users.value = JSON.parse(staticLeaderboard);
-  } else {
-    await listUsers().then(() => {
-      localStorage.setItem("staticLeaderboard", JSON.stringify(users.value));
-    });
-  }
+  await listUsers();
   console.log(users.value);
 
   loading.value = false;
 });
-
-async function forceUpdate() {
-  loading.value = true;
-  await listUsers().then(() => {
-    localStorage.setItem("staticLeaderboard", JSON.stringify(users.value));
-  });
-  loading.value = false;
-}
 </script>
 
 <template>
-  <div class="leaderboard">
+  <div v-if="!loading" class="leaderboard">
     <h1>This is an about page</h1>
     <h1>This is an about page</h1>
     {{ users }}
   </div>
+  <div v-else><a-spin :indicator="indicator"></a-spin></div>
 </template>
 
 <style>

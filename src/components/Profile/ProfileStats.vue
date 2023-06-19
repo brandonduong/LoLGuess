@@ -1,82 +1,15 @@
 <script setup lang="ts">
-import { onMounted, ref, h } from "vue";
 import { type User, type Guess } from "../../API";
-import { useAuthenticator } from "@aws-amplify/ui-vue";
 import Stat from "./Stat.vue";
-import { calculateScore, roundToTwo } from "../../common/helper";
+import { roundToTwo } from "../../common/helper";
 import { RedoOutlined } from "@ant-design/icons-vue";
 
 const emit = defineEmits(["getStaticProfileData"]);
 
 const props = defineProps<{
   staticProfileData: User;
+  totalGuesses: number;
 }>();
-
-// Stats
-const guesses = ref<number>(0);
-const score = ref<number>(0);
-const maxScore = ref<number>(0);
-const correct = ref<number>(0);
-const maxCorrect = ref<number>(0);
-const correctRank = ref<number>(0);
-const averageRankPool = ref<number>(0);
-
-onMounted(async () => {
-  // Initialize stats
-  guesses.value = (props.staticProfileData as any).guesses.items.length;
-  [score.value, maxScore.value] = getTotalScore();
-  [correct.value, maxCorrect.value] = getTotalCorrectPlacements();
-  correctRank.value = getTotalCorrectRanks();
-  averageRankPool.value = getAverageRankPool();
-});
-
-function getTotalScore() {
-  var score = 0;
-  var maxScore = 0;
-  (props.staticProfileData as any).guesses.items.forEach((guess: Guess) => {
-    const calc = calculateScore(
-      guess.placements,
-      guess.guessedRank,
-      guess.rank,
-      guess.ranks
-    );
-    score += calc[0];
-    maxScore += calc[1];
-  });
-  return [score, maxScore];
-}
-
-function getTotalCorrectPlacements() {
-  var correct = 0;
-  (props.staticProfileData as any).guesses.items.forEach((guess: Guess) => {
-    for (let i = 0; i < guess.placements.length; i++) {
-      if (parseInt(guess.placements[i]) === i + 1) {
-        correct += 1;
-      }
-    }
-  });
-
-  const maxCorrect = (props.staticProfileData as any).guesses.items.length * 8;
-  return [correct, maxCorrect];
-}
-
-function getTotalCorrectRanks() {
-  var correct = 0;
-  (props.staticProfileData as any).guesses.items.forEach((guess: Guess) => {
-    if (guess.rank === guess.guessedRank) {
-      correct += 1;
-    }
-  });
-  return correct;
-}
-
-function getAverageRankPool() {
-  var pool = 0;
-  (props.staticProfileData as any).guesses.items.forEach((guess: Guess) => {
-    pool += guess.ranks.length;
-  });
-  return pool / (props.staticProfileData as any).guesses.items.length;
-}
 
 function refresh() {
   emit("getStaticProfileData");
@@ -96,20 +29,41 @@ function refresh() {
       /></a-button>
     </div>
     <hr class="stats-divider" />
-    <Stat title="Guesses" :value="`${guesses}`" />
+    <Stat title="Guesses" :value="`${totalGuesses}`" />
     <Stat
       title="Unfinished Guesses"
-      :value="`${staticProfileData?.unfinished}`"
+      :value="`${staticProfileData.stats.unfinished}`"
     />
-    <Stat title="Score" :value="`${score} / ${maxScore}`" />
-    <Stat title="Avg. Score" :value="`${roundToTwo(score / guesses)}`" />
-    <Stat title="Correct Placements" :value="`${correct} / ${maxCorrect}`" />
+    <Stat
+      title="Score"
+      :value="`${staticProfileData.stats.score} / ${staticProfileData.stats.maxScore}`"
+    />
+    <Stat
+      title="Avg. Score"
+      :value="`${roundToTwo(staticProfileData.stats.score / totalGuesses)}`"
+    />
+    <Stat
+      title="Correct Placements"
+      :value="`${staticProfileData.stats.correctPlacements} / ${
+        totalGuesses * 8
+      }`"
+    />
     <Stat
       title="Avg. Cor. Placements"
-      :value="`${roundToTwo(correct / guesses)}`"
+      :value="`${roundToTwo(
+        staticProfileData.stats.correctPlacements / totalGuesses
+      )}`"
     />
-    <Stat title="Correct Ranks" :value="`${correctRank}`" />
-    <Stat title="Average Rank Pool" :value="`${roundToTwo(averageRankPool)}`" />
+    <Stat
+      title="Correct Ranks"
+      :value="`${staticProfileData.stats.correctRanks}`"
+    />
+    <Stat
+      title="Average Rank Pool"
+      :value="`${roundToTwo(
+        staticProfileData.stats.totalRanks / totalGuesses
+      )}`"
+    />
   </div>
 </template>
 <style scoped>
