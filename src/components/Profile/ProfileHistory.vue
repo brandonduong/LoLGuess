@@ -8,18 +8,12 @@ const props = defineProps<{
 }>();
 
 const current = ref<number>(1);
-
-function sortByDateDesc(a: Guess, b: Guess) {
-  return a.createdAt > b.createdAt ? -1 : a.createdAt < b.createdAt ? 1 : 0;
-}
 </script>
 
 <template>
   <div class="history">
     <HistoryItem
-      v-for="guess in guesses
-        .sort(sortByDateDesc)
-        .slice(5 * (current - 1), 5 * current)"
+      v-for="guess in guesses.slice(5 * (current - 1), 5 * current)"
       :guess="guess"
     />
     <div class="pages">

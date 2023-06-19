@@ -129,6 +129,7 @@ async function forceUpdate() {
     />
     <ProfileGraph
       :guesses="(staticProfileGuesses!.searchGuesses!.items as [Guess])"
+      :key="staticProfileGuesses!.searchGuesses!.items[0]?.id"
     />
     <ProfileHistory
       :guesses="(staticProfileGuesses!.searchGuesses!.items as [Guess])"
