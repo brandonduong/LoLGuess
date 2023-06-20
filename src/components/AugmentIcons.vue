@@ -17,6 +17,7 @@ import { ref } from "vue";
 const props = defineProps<{
   augments: string[];
   staticTFTAugmentData: StaticAugment[];
+  augmentAmount: number;
 }>();
 
 // Get augment icon styles
@@ -39,37 +40,23 @@ props.augments.forEach((aug) => {
   const augmentPath = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/maps/tft/icons/augments/hexcore/${fileName}`;
 
   const ind = props.augments.indexOf(augmentInfo.nameId);
-  if (
-    augmentInfo.nameId.includes("Carry") ||
-    augmentInfo.nameId.includes("Support")
-  ) {
-    augmentStyles.value.splice(ind, 1, {
-      path: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${path[
-        path.length - 3
-      ].toLowerCase()}/${path[path.length - 2].toLowerCase()}/${path[
-        path.length - 1
-      ].toLowerCase()}`,
-      title: augmentInfo.name,
-    });
-  } else {
-    checkIfImageExists(augmentPath, (exists: boolean) => {
-      if (exists) {
-        augmentStyles.value.splice(ind, 1, {
-          path: augmentPath,
-          title: augmentInfo.name,
-        });
-      } else {
-        augmentStyles.value.splice(ind, 1, {
-          path: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${path[
-            path.length - 3
-          ].toLowerCase()}/${path[path.length - 2].toLowerCase()}/${path[
-            path.length - 1
-          ].toLowerCase()}`,
-          title: augmentInfo.name,
-        });
-      }
-    });
-  }
+  checkIfImageExists(augmentPath, (exists: boolean) => {
+    if (exists) {
+      augmentStyles.value.splice(ind, 1, {
+        path: augmentPath,
+        title: augmentInfo.name,
+      });
+    } else {
+      augmentStyles.value.splice(ind, 1, {
+        path: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${path[
+          path.length - 3
+        ].toLowerCase()}/${path[path.length - 2].toLowerCase()}/${path[
+          path.length - 1
+        ].toLowerCase()}`,
+        title: augmentInfo.name,
+      });
+    }
+  });
 });
 
 function checkIfImageExists(url: string, callback: Function) {
@@ -90,18 +77,31 @@ function checkIfImageExists(url: string, callback: Function) {
 }
 </script>
 <template>
-  <div class="augments">
-    <div v-for="augment in augmentStyles" :class="`augment`">
-      <img
-        v-if="augment.path"
-        class="augment-icon"
-        :src="augment.path"
-        :alt="augment.title"
-        width="24"
-        height="24"
-        :title="augment.title"
-      />
+  <div class="augment-div">
+    <div class="augments">
+      <div v-for="augment in augmentStyles" :class="`augment`">
+        <img
+          v-if="augment.path"
+          class="augment-icon"
+          :src="augment.path"
+          :alt="augment.title"
+          width="24"
+          height="24"
+          :title="augment.title"
+        />
+      </div>
     </div>
+    <h3 class="augment-amount">({{ props.augmentAmount }})</h3>
   </div>
 </template>
-<style scoped></style>
+<style scoped>
+.augment-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.augment-amount {
+  margin: 0 0 0 0.5rem;
+}
+</style>

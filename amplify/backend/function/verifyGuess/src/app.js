@@ -58,14 +58,13 @@ async function getUser(sub) {
     query GET_USER($id: ID!) {
       getUser(id: $id) {
         id
-        stats {
-          correctPlacements
-          correctRanks
-          maxScore
-          score
-          totalRanks
-          unfinished
-        }
+        correctPlacements
+        correctRanks
+        maxScore
+        score
+        totalRanks
+        unfinished
+        totalGuesses
       }
     }
   `;
@@ -155,14 +154,13 @@ async function updateUserStats(user, stats) {
     mutation UPDATE_USER($input: UpdateUserInput!) {
       updateUser(input: $input) {
         id
-        stats {
-          correctPlacements
-          correctRanks
-          maxScore
-          score
-          totalRanks
-          unfinished
-        }
+        correctPlacements
+        correctRanks
+        maxScore
+        score
+        totalRanks
+        unfinished
+        totalGuesses
       }
     }
   `;
@@ -170,7 +168,13 @@ async function updateUserStats(user, stats) {
   const variables = {
     input: {
       id: user.id,
-      stats,
+      correctPlacements: stats.correctPlacements,
+      correctRanks: stats.correctRanks,
+      maxScore: stats.maxScore,
+      score: stats.score,
+      totalRanks: stats.totalRanks,
+      unfinished: stats.unfinished,
+      totalGuesses: stats.totalGuesses,
     },
   };
 
@@ -249,6 +253,7 @@ function calculateCorrectPlacements(placements) {
 
 function calculateStats(stats, placements, guessedRank, rank, ranks) {
   const copy = stats;
+  console.log(copy);
   const [score, maxScore] = calculateScore(
     placements,
     guessedRank,
@@ -260,9 +265,11 @@ function calculateStats(stats, placements, guessedRank, rank, ranks) {
   copy.maxScore = copy.maxScore + maxScore;
   copy.totalRanks = copy.totalRanks + ranks.length;
   copy.correctRanks = copy.correctRanks + (rank === guessedRank ? 1 : 0);
+  copy.totalGuesses = copy.totalGuesses + 1;
 
   const correctPlacements = calculateCorrectPlacements(placements);
   copy.correctPlacements = copy.correctPlacements + correctPlacements;
+  console.log(copy);
   return copy;
 }
 
@@ -298,15 +305,24 @@ app.post("/verifyGuess", async function (req, res) {
     .toString(CryptoJS.enc.Utf8)
     .split(",");
   console.log(rank, ranks, selectedRank);
-  await createGuess(user, unencrypted, rank, ranks, selectedRank);
-  const stats = calculateStats(
-    user.stats,
-    unencrypted,
-    selectedRank,
-    rank,
-    ranks
+  console.log(
+    user.unfinished.toString() ===
+      CryptoJS.AES.decrypt(req.body.encryptedUnfinished, RIOT_TOKEN).toString(
+        CryptoJS.enc.Utf8
+      )
   );
-  await updateUserStats(user, stats);
+  if (
+    user.unfinished.toString() ===
+    CryptoJS.AES.decrypt(req.body.encryptedUnfinished, RIOT_TOKEN).toString(
+      CryptoJS.enc.Utf8
+    )
+  ) {
+    await createGuess(user, unencrypted, rank, ranks, selectedRank);
+    const stats = calculateStats(user, unencrypted, selectedRank, rank, ranks);
+    await updateUserStats(user, stats);
+  } else {
+    res.status = 500;
+  }
 
   res.json({
     unencrypted,

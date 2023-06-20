@@ -180,6 +180,7 @@ function checkIfCorrect(placement: number) {
             <AugmentIcons
               :staticTFTAugmentData="staticTFTAugmentData"
               :augments="element.augments"
+              :augmentAmount="element.augmentNum"
             />
           </h3>
           <h3>

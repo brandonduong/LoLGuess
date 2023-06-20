@@ -55,6 +55,7 @@ async function getMatch() {
     rankedMatch = res.data.rankedMatch;
     encryptedRank = res.data.rank;
     encryptedRanks = res.data.ranks;
+    encryptedUnfinished = res.data.unfinished;
     loading.value = false;
   });
 }
@@ -69,6 +70,7 @@ async function verifyGuess() {
         encryptedRank,
         encryptedRanks,
         selectedRank: selectedRank.value,
+        encryptedUnfinished,
       },
       header
     )
@@ -131,6 +133,7 @@ const selectedRank = ref<string>("");
 var rankedMatch = ref<object[]>([]);
 var encryptedRank = ref<string>("");
 var encryptedRanks = ref<string>("");
+var encryptedUnfinished = ref<string>("");
 var verifiedGuess = ref<string[]>([]);
 var verifiedRank = ref<string>("");
 

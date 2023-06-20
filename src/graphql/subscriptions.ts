@@ -2,39 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateTodo = /* GraphQL */ `
-  subscription OnCreateTodo($filter: ModelSubscriptionTodoFilterInput) {
-    onCreateTodo(filter: $filter) {
-      id
-      name
-      description
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateTodo = /* GraphQL */ `
-  subscription OnUpdateTodo($filter: ModelSubscriptionTodoFilterInput) {
-    onUpdateTodo(filter: $filter) {
-      id
-      name
-      description
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteTodo = /* GraphQL */ `
-  subscription OnDeleteTodo($filter: ModelSubscriptionTodoFilterInput) {
-    onDeleteTodo(filter: $filter) {
-      id
-      name
-      description
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
     onCreateUser(filter: $filter) {
@@ -47,20 +14,19 @@ export const onCreateUser = /* GraphQL */ `
           guessedRank
           rank
           ranks
+          userGuessesId
           createdAt
           updatedAt
-          userGuessesId
         }
         nextToken
       }
-      stats {
-        score
-        maxScore
-        correctPlacements
-        correctRanks
-        totalRanks
-        unfinished
-      }
+      score
+      maxScore
+      correctPlacements
+      correctRanks
+      totalRanks
+      unfinished
+      totalGuesses
       createdAt
       updatedAt
     }
@@ -78,20 +44,19 @@ export const onUpdateUser = /* GraphQL */ `
           guessedRank
           rank
           ranks
+          userGuessesId
           createdAt
           updatedAt
-          userGuessesId
         }
         nextToken
       }
-      stats {
-        score
-        maxScore
-        correctPlacements
-        correctRanks
-        totalRanks
-        unfinished
-      }
+      score
+      maxScore
+      correctPlacements
+      correctRanks
+      totalRanks
+      unfinished
+      totalGuesses
       createdAt
       updatedAt
     }
@@ -109,20 +74,19 @@ export const onDeleteUser = /* GraphQL */ `
           guessedRank
           rank
           ranks
+          userGuessesId
           createdAt
           updatedAt
-          userGuessesId
         }
         nextToken
       }
-      stats {
-        score
-        maxScore
-        correctPlacements
-        correctRanks
-        totalRanks
-        unfinished
-      }
+      score
+      maxScore
+      correctPlacements
+      correctRanks
+      totalRanks
+      unfinished
+      totalGuesses
       createdAt
       updatedAt
     }
@@ -136,9 +100,9 @@ export const onCreateGuess = /* GraphQL */ `
       guessedRank
       rank
       ranks
+      userGuessesId
       createdAt
       updatedAt
-      userGuessesId
     }
   }
 `;
@@ -150,9 +114,9 @@ export const onUpdateGuess = /* GraphQL */ `
       guessedRank
       rank
       ranks
+      userGuessesId
       createdAt
       updatedAt
-      userGuessesId
     }
   }
 `;
@@ -164,9 +128,282 @@ export const onDeleteGuess = /* GraphQL */ `
       guessedRank
       rank
       ranks
+      userGuessesId
       createdAt
       updatedAt
-      userGuessesId
+    }
+  }
+`;
+export const onCreateLeaderboard = /* GraphQL */ `
+  subscription OnCreateLeaderboard(
+    $filter: ModelSubscriptionLeaderboardFilterInput
+  ) {
+    onCreateLeaderboard(filter: $filter) {
+      byCorrectPlacements {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byCorrectRanks {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byScore {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byAverageCorrectPlacements {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byAverageScore {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      date
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateLeaderboard = /* GraphQL */ `
+  subscription OnUpdateLeaderboard(
+    $filter: ModelSubscriptionLeaderboardFilterInput
+  ) {
+    onUpdateLeaderboard(filter: $filter) {
+      byCorrectPlacements {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byCorrectRanks {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byScore {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byAverageCorrectPlacements {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byAverageScore {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      date
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteLeaderboard = /* GraphQL */ `
+  subscription OnDeleteLeaderboard(
+    $filter: ModelSubscriptionLeaderboardFilterInput
+  ) {
+    onDeleteLeaderboard(filter: $filter) {
+      byCorrectPlacements {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byCorrectRanks {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byScore {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byAverageCorrectPlacements {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byAverageScore {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      date
+      createdAt
+      updatedAt
     }
   }
 `;

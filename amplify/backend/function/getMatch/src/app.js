@@ -59,14 +59,7 @@ async function getUser(sub) {
     query GET_USER($id: ID!) {
       getUser(id: $id) {
         id
-        stats {
-          totalRanks
-          score
-          maxScore
-          correctRanks
-          correctPlacements
-          unfinished
-        }
+        unfinished
       }
     }
   `;
@@ -110,14 +103,7 @@ async function incrementUnfinished(user) {
     mutation UPDATE_USER($input: UpdateUserInput!) {
       updateUser(input: $input) {
         id
-        stats {
-          unfinished
-          totalRanks
-          score
-          maxScore
-          correctRanks
-          correctPlacements
-        }
+        unfinished
       }
     }
   `;
@@ -126,10 +112,7 @@ async function incrementUnfinished(user) {
   const variables = {
     input: {
       id: user.id,
-      stats: {
-        ...user.stats,
-        unfinished: user.stats.unfinished + 1,
-      },
+      unfinished: user.unfinished + 1,
     },
   };
   const requestToBeSigned = new HttpRequest({
@@ -335,13 +318,15 @@ app.get("/getMatch", async function (req, res) {
 
   // Remove info that would allow someone to cheat
   rankedMatch = rankedMatch.map(
-    ({ augments, level, traits, placement, units, gold_left }) => ({
+    ({ augments, level, traits, placement, units, gold_left, last_round }) => ({
       augments,
       level,
       traits,
       placement: CryptoJS.AES.encrypt(`${placement}`, RIOT_TOKEN).toString(),
       units,
       gold_left,
+      augmentNum:
+        last_round >= 20 ? 3 : last_round >= 13 ? 2 : last_round >= 5 ? 1 : 0,
     })
   );
 
@@ -356,7 +341,7 @@ app.get("/getMatch", async function (req, res) {
     rank: CryptoJS.AES.encrypt(`${rankDivision}`, RIOT_TOKEN).toString(),
     ranks: CryptoJS.AES.encrypt(`${ranks.toString()}`, RIOT_TOKEN).toString(),
     unfinished: CryptoJS.AES.encrypt(
-      `${user.stats.unfinished.toString()}`,
+      `${(user.unfinished + 1).toString()}`,
       RIOT_TOKEN
     ).toString(),
   });

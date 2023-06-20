@@ -22,14 +22,13 @@ const query = /* GraphQL */ `
     createUser(input: $input) {
       id
       username
-      stats {
-        score
-        maxScore
-        correctPlacements
-        correctRanks
-        totalRanks
-        unfinished
-      }
+      score
+      maxScore
+      correctPlacements
+      correctRanks
+      totalRanks
+      unfinished
+      totalGuesses
     }
   }
 `;
@@ -54,14 +53,13 @@ export const handler = async (event, context, callback) => {
     input: {
       id: event.request.userAttributes.sub,
       username: event.userName,
-      stats: {
-        score: 0,
-        maxScore: 0,
-        correctPlacements: 0,
-        correctRanks: 0,
-        totalRanks: 0,
-        unfinished: 0,
-      },
+      score: 0,
+      maxScore: 0,
+      correctPlacements: 0,
+      correctRanks: 0,
+      totalRanks: 0,
+      unfinished: 0,
+      totalGuesses: 0,
     },
   };
 

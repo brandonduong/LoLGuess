@@ -8,7 +8,6 @@ const emit = defineEmits(["getStaticProfileData"]);
 
 const props = defineProps<{
   staticProfileData: User;
-  totalGuesses: number;
 }>();
 
 function refresh() {
@@ -29,39 +28,38 @@ function refresh() {
       /></a-button>
     </div>
     <hr class="stats-divider" />
-    <Stat title="Guesses" :value="`${totalGuesses}`" />
+    <Stat title="Guesses" :value="`${staticProfileData.totalGuesses}`" />
     <Stat
       title="Unfinished Guesses"
-      :value="`${staticProfileData.stats.unfinished}`"
+      :value="`${staticProfileData.unfinished}`"
     />
     <Stat
       title="Score"
-      :value="`${staticProfileData.stats.score} / ${staticProfileData.stats.maxScore}`"
+      :value="`${staticProfileData.score} / ${staticProfileData.maxScore}`"
     />
     <Stat
       title="Avg. Score"
-      :value="`${roundToTwo(staticProfileData.stats.score / totalGuesses)}`"
+      :value="`${roundToTwo(
+        staticProfileData.score / staticProfileData.totalGuesses
+      )}`"
     />
     <Stat
       title="Correct Placements"
-      :value="`${staticProfileData.stats.correctPlacements} / ${
-        totalGuesses * 8
+      :value="`${staticProfileData.correctPlacements} / ${
+        staticProfileData.totalGuesses * 8
       }`"
     />
     <Stat
       title="Avg. Cor. Placements"
       :value="`${roundToTwo(
-        staticProfileData.stats.correctPlacements / totalGuesses
+        staticProfileData.correctPlacements / staticProfileData.totalGuesses
       )}`"
     />
-    <Stat
-      title="Correct Ranks"
-      :value="`${staticProfileData.stats.correctRanks}`"
-    />
+    <Stat title="Correct Ranks" :value="`${staticProfileData.correctRanks}`" />
     <Stat
       title="Average Rank Pool"
       :value="`${roundToTwo(
-        staticProfileData.stats.totalRanks / totalGuesses
+        staticProfileData.totalRanks / staticProfileData.totalGuesses
       )}`"
     />
   </div>

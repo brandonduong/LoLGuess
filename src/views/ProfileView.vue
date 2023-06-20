@@ -3,11 +3,12 @@ import { ref, onMounted, h, watch, onUpdated } from "vue";
 import { API } from "aws-amplify";
 import * as queries from "../graphql/queries";
 import { type GraphQLQuery } from "@aws-amplify/api";
+import http from "../common/http-common";
 import {
   type User,
   type GetUserQuery,
   type Guess,
-  type SearchGuessesQuery,
+  type GuessesByDateQuery,
 } from "../API";
 import ProfileGraph from "@/components/Profile/ProfileGraph.vue";
 import ProfileStats from "../components/Profile/ProfileStats.vue";
@@ -16,30 +17,36 @@ import { useAuthenticator } from "@aws-amplify/ui-vue";
 import { LoadingOutlined } from "@ant-design/icons-vue";
 const auth = useAuthenticator();
 
-const staticProfileGuesses = ref<SearchGuessesQuery | null>();
+const staticProfileGuesses = ref<GuessesByDateQuery | null>();
 const staticProfileData = ref<User>();
 const loading = ref<boolean>(true);
 const props = defineProps<{ sub: string }>();
 const oldSub = ref<string>();
 
 async function getStaticProfileData() {
-  const getUser = await API.graphql<GraphQLQuery<GetUserQuery>>({
-    query: queries.getUser,
-    variables: { id: props.sub },
+  const header = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${auth.user.signInUserSession.idToken.jwtToken}`,
+    },
+  };
+  let url = `/getProfile?sub=${props.sub}`;
+
+  await http.api.get(url, header).then((res) => {
+    console.log(res);
+    staticProfileData.value = res.data.user;
   });
-  staticProfileData.value = getUser.data!.getUser!;
 }
 
 async function getStaticProfileGuesses() {
-  const searchGuesses = await API.graphql<GraphQLQuery<SearchGuessesQuery>>({
-    query: queries.searchGuesses,
+  const guesses = await API.graphql<GraphQLQuery<GuessesByDateQuery>>({
+    query: queries.guessesByDate,
     variables: {
-      filter: { userGuessesId: { eq: props.sub } },
-      sort: { direction: "desc", field: "updatedAt" },
-      from: 0,
+      userGuessesId: props.sub,
+      sortDirection: "DESC",
     },
   });
-  staticProfileGuesses.value = searchGuesses.data!;
+  staticProfileGuesses.value = guesses.data!;
 }
 
 const indicator = h(LoadingOutlined, {
@@ -124,15 +131,14 @@ async function forceUpdate() {
   <div v-if="!loading" class="main profile">
     <ProfileStats
       :staticProfileData="staticProfileData!"
-      :totalGuesses="(staticProfileGuesses!.searchGuesses!.total as number)"
       @getStaticProfileData="forceUpdate()"
     />
     <ProfileGraph
-      :guesses="(staticProfileGuesses!.searchGuesses!.items as [Guess])"
-      :key="staticProfileGuesses!.searchGuesses!.items[0]?.id"
+      :guesses="(staticProfileGuesses!.guessesByDate!.items as [Guess])"
+      :key="staticProfileGuesses!.guessesByDate!.items[0]?.id"
     />
     <ProfileHistory
-      :guesses="(staticProfileGuesses!.searchGuesses!.items as [Guess])"
+      :guesses="(staticProfileGuesses!.guessesByDate!.items as [Guess])"
     />
   </div>
   <div v-else><a-spin :indicator="indicator"></a-spin></div>

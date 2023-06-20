@@ -17,6 +17,14 @@
           ],
           "category": "function",
           "resourceName": "verifyGuess"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getProfile"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -88,6 +96,22 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getProfile": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "lolguessdatastore"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "lolguesssignup": {
       "build": true,
       "dependsOn": [
@@ -143,6 +167,22 @@
         {
           "category": "function",
           "resourceName": "getMatch"
+        }
+      ]
+    },
+    "AMPLIFY_function_getProfile_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getProfile"
+        }
+      ]
+    },
+    "AMPLIFY_function_getProfile_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getProfile"
         }
       ]
     },

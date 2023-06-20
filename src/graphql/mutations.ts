@@ -2,99 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createTodo = /* GraphQL */ `
-  mutation CreateTodo(
-    $input: CreateTodoInput!
-    $condition: ModelTodoConditionInput
-  ) {
-    createTodo(input: $input, condition: $condition) {
-      id
-      name
-      description
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateTodo = /* GraphQL */ `
-  mutation UpdateTodo(
-    $input: UpdateTodoInput!
-    $condition: ModelTodoConditionInput
-  ) {
-    updateTodo(input: $input, condition: $condition) {
-      id
-      name
-      description
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteTodo = /* GraphQL */ `
-  mutation DeleteTodo(
-    $input: DeleteTodoInput!
-    $condition: ModelTodoConditionInput
-  ) {
-    deleteTodo(input: $input, condition: $condition) {
-      id
-      name
-      description
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createGuess = /* GraphQL */ `
-  mutation CreateGuess(
-    $input: CreateGuessInput!
-    $condition: ModelGuessConditionInput
-  ) {
-    createGuess(input: $input, condition: $condition) {
-      id
-      placements
-      guessedRank
-      rank
-      ranks
-      createdAt
-      updatedAt
-      userGuessesId
-    }
-  }
-`;
-export const updateGuess = /* GraphQL */ `
-  mutation UpdateGuess(
-    $input: UpdateGuessInput!
-    $condition: ModelGuessConditionInput
-  ) {
-    updateGuess(input: $input, condition: $condition) {
-      id
-      placements
-      guessedRank
-      rank
-      ranks
-      createdAt
-      updatedAt
-      userGuessesId
-    }
-  }
-`;
-export const deleteGuess = /* GraphQL */ `
-  mutation DeleteGuess(
-    $input: DeleteGuessInput!
-    $condition: ModelGuessConditionInput
-  ) {
-    deleteGuess(input: $input, condition: $condition) {
-      id
-      placements
-      guessedRank
-      rank
-      ranks
-      createdAt
-      updatedAt
-      userGuessesId
-    }
-  }
-`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser(
     $input: CreateUserInput!
@@ -110,20 +17,19 @@ export const createUser = /* GraphQL */ `
           guessedRank
           rank
           ranks
+          userGuessesId
           createdAt
           updatedAt
-          userGuessesId
         }
         nextToken
       }
-      stats {
-        score
-        maxScore
-        correctPlacements
-        correctRanks
-        totalRanks
-        unfinished
-      }
+      score
+      maxScore
+      correctPlacements
+      correctRanks
+      totalRanks
+      unfinished
+      totalGuesses
       createdAt
       updatedAt
     }
@@ -144,20 +50,19 @@ export const updateUser = /* GraphQL */ `
           guessedRank
           rank
           ranks
+          userGuessesId
           createdAt
           updatedAt
-          userGuessesId
         }
         nextToken
       }
-      stats {
-        score
-        maxScore
-        correctPlacements
-        correctRanks
-        totalRanks
-        unfinished
-      }
+      score
+      maxScore
+      correctPlacements
+      correctRanks
+      totalRanks
+      unfinished
+      totalGuesses
       createdAt
       updatedAt
     }
@@ -178,20 +83,346 @@ export const deleteUser = /* GraphQL */ `
           guessedRank
           rank
           ranks
+          userGuessesId
           createdAt
           updatedAt
-          userGuessesId
         }
         nextToken
       }
-      stats {
+      score
+      maxScore
+      correctPlacements
+      correctRanks
+      totalRanks
+      unfinished
+      totalGuesses
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createGuess = /* GraphQL */ `
+  mutation CreateGuess(
+    $input: CreateGuessInput!
+    $condition: ModelGuessConditionInput
+  ) {
+    createGuess(input: $input, condition: $condition) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      userGuessesId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateGuess = /* GraphQL */ `
+  mutation UpdateGuess(
+    $input: UpdateGuessInput!
+    $condition: ModelGuessConditionInput
+  ) {
+    updateGuess(input: $input, condition: $condition) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      userGuessesId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteGuess = /* GraphQL */ `
+  mutation DeleteGuess(
+    $input: DeleteGuessInput!
+    $condition: ModelGuessConditionInput
+  ) {
+    deleteGuess(input: $input, condition: $condition) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      userGuessesId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createLeaderboard = /* GraphQL */ `
+  mutation CreateLeaderboard(
+    $input: CreateLeaderboardInput!
+    $condition: ModelLeaderboardConditionInput
+  ) {
+    createLeaderboard(input: $input, condition: $condition) {
+      byCorrectPlacements {
+        id
+        username
+        guesses {
+          nextToken
+        }
         score
         maxScore
         correctPlacements
         correctRanks
         totalRanks
         unfinished
+        totalGuesses
+        createdAt
+        updatedAt
       }
+      byCorrectRanks {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byScore {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byAverageCorrectPlacements {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byAverageScore {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      date
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateLeaderboard = /* GraphQL */ `
+  mutation UpdateLeaderboard(
+    $input: UpdateLeaderboardInput!
+    $condition: ModelLeaderboardConditionInput
+  ) {
+    updateLeaderboard(input: $input, condition: $condition) {
+      byCorrectPlacements {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byCorrectRanks {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byScore {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byAverageCorrectPlacements {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byAverageScore {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      date
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteLeaderboard = /* GraphQL */ `
+  mutation DeleteLeaderboard(
+    $input: DeleteLeaderboardInput!
+    $condition: ModelLeaderboardConditionInput
+  ) {
+    deleteLeaderboard(input: $input, condition: $condition) {
+      byCorrectPlacements {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byCorrectRanks {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byScore {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byAverageCorrectPlacements {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byAverageScore {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      date
       createdAt
       updatedAt
     }

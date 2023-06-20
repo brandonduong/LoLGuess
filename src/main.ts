@@ -12,10 +12,10 @@ import {
   Divider,
   Select,
   Popover,
-  Dropdown,
-  Menu,
   Spin,
   Pagination,
+  Radio,
+  Input,
 } from "ant-design-vue";
 Amplify.configure(awsExports);
 
@@ -30,5 +30,7 @@ app.use(Select);
 app.use(Popover);
 app.use(Spin);
 app.use(Pagination);
+app.use(Radio);
+app.use(Input);
 
 app.mount("#app");

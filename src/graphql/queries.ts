@@ -2,94 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getTodo = /* GraphQL */ `
-  query GetTodo($id: ID!) {
-    getTodo(id: $id) {
-      id
-      name
-      description
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listTodos = /* GraphQL */ `
-  query ListTodos(
-    $filter: ModelTodoFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        description
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getUser = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
-      id
-      username
-      guesses {
-        items {
-          id
-          placements
-          guessedRank
-          rank
-          ranks
-          createdAt
-          updatedAt
-          userGuessesId
-        }
-        nextToken
-      }
-      stats {
-        score
-        maxScore
-        correctPlacements
-        correctRanks
-        totalRanks
-        unfinished
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listUsers = /* GraphQL */ `
-  query ListUsers(
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        username
-        guesses {
-          nextToken
-        }
-        stats {
-          score
-          maxScore
-          correctPlacements
-          correctRanks
-          totalRanks
-          unfinished
-        }
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
 export const searchUsers = /* GraphQL */ `
   query SearchUsers(
     $filter: SearchableUserFilterInput
@@ -113,14 +25,13 @@ export const searchUsers = /* GraphQL */ `
         guesses {
           nextToken
         }
-        stats {
-          score
-          maxScore
-          correctPlacements
-          correctRanks
-          totalRanks
-          unfinished
-        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
         createdAt
         updatedAt
       }
@@ -143,6 +54,63 @@ export const searchUsers = /* GraphQL */ `
     }
   }
 `;
+export const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      id
+      username
+      guesses {
+        items {
+          id
+          placements
+          guessedRank
+          rank
+          ranks
+          userGuessesId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      score
+      maxScore
+      correctPlacements
+      correctRanks
+      totalRanks
+      unfinished
+      totalGuesses
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getGuess = /* GraphQL */ `
   query GetGuess($id: ID!) {
     getGuess(id: $id) {
@@ -151,9 +119,9 @@ export const getGuess = /* GraphQL */ `
       guessedRank
       rank
       ranks
+      userGuessesId
       createdAt
       updatedAt
-      userGuessesId
     }
   }
 `;
@@ -170,30 +138,208 @@ export const listGuesses = /* GraphQL */ `
         guessedRank
         rank
         ranks
+        userGuessesId
         createdAt
         updatedAt
-        userGuessesId
       }
       nextToken
     }
   }
 `;
-export const searchGuesses = /* GraphQL */ `
-  query SearchGuesses(
-    $filter: SearchableGuessFilterInput
-    $sort: [SearchableGuessSortInput]
+export const getLeaderboard = /* GraphQL */ `
+  query GetLeaderboard($date: String!) {
+    getLeaderboard(date: $date) {
+      byCorrectPlacements {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byCorrectRanks {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byScore {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byAverageCorrectPlacements {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      byAverageScore {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        createdAt
+        updatedAt
+      }
+      date
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listLeaderboards = /* GraphQL */ `
+  query ListLeaderboards(
+    $date: String
+    $filter: ModelLeaderboardFilterInput
     $limit: Int
     $nextToken: String
-    $from: Int
-    $aggregates: [SearchableGuessAggregationInput]
+    $sortDirection: ModelSortDirection
   ) {
-    searchGuesses(
+    listLeaderboards(
+      date: $date
       filter: $filter
-      sort: $sort
       limit: $limit
       nextToken: $nextToken
-      from: $from
-      aggregates: $aggregates
+      sortDirection: $sortDirection
+    ) {
+      items {
+        byCorrectPlacements {
+          id
+          username
+          score
+          maxScore
+          correctPlacements
+          correctRanks
+          totalRanks
+          unfinished
+          totalGuesses
+          createdAt
+          updatedAt
+        }
+        byCorrectRanks {
+          id
+          username
+          score
+          maxScore
+          correctPlacements
+          correctRanks
+          totalRanks
+          unfinished
+          totalGuesses
+          createdAt
+          updatedAt
+        }
+        byScore {
+          id
+          username
+          score
+          maxScore
+          correctPlacements
+          correctRanks
+          totalRanks
+          unfinished
+          totalGuesses
+          createdAt
+          updatedAt
+        }
+        byAverageCorrectPlacements {
+          id
+          username
+          score
+          maxScore
+          correctPlacements
+          correctRanks
+          totalRanks
+          unfinished
+          totalGuesses
+          createdAt
+          updatedAt
+        }
+        byAverageScore {
+          id
+          username
+          score
+          maxScore
+          correctPlacements
+          correctRanks
+          totalRanks
+          unfinished
+          totalGuesses
+          createdAt
+          updatedAt
+        }
+        date
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const guessesByDate = /* GraphQL */ `
+  query GuessesByDate(
+    $userGuessesId: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelGuessFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    guessesByDate(
+      userGuessesId: $userGuessesId
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
     ) {
       items {
         id
@@ -201,26 +347,11 @@ export const searchGuesses = /* GraphQL */ `
         guessedRank
         rank
         ranks
+        userGuessesId
         createdAt
         updatedAt
-        userGuessesId
       }
       nextToken
-      total
-      aggregateItems {
-        name
-        result {
-          ... on SearchableAggregateScalarResult {
-            value
-          }
-          ... on SearchableAggregateBucketResult {
-            buckets {
-              key
-              doc_count
-            }
-          }
-        }
-      }
     }
   }
 `;

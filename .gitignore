@@ -27,6 +27,10 @@ coverage
 *.sln
 *.sw?
 
+
+../../../mnt/d/PycharmProjects/LoLGuess/LoLGuess/amplify/mock-data
+../../../mnt/d/PycharmProjects/LoLGuess/LoLGuess/amplify/mock-api-resources
+
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -48,6 +52,3 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
-
-../../../mnt/d/PycharmProjects/LoLGuess/LoLGuess/amplify/mock-data
-../../../mnt/d/PycharmProjects/LoLGuess/LoLGuess/amplify/mock-api-resources
