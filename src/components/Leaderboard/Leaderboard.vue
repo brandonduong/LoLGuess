@@ -59,12 +59,14 @@ async function update() {
   if (!staticLeaderboard) {
     staticLeaderboard = "{}";
   }
-  const parsed = JSON.parse(staticLeaderboard);
+  var parsed = JSON.parse(staticLeaderboard);
 
-  if (
-    parsed.date === new Date().toISOString().split("T")[0] &&
-    parsed[sorted.value]
-  ) {
+  if (parsed.date !== new Date().toISOString().split("T")[0]) {
+    window.localStorage.removeItem("staticLeaderboard");
+    parsed = {};
+  }
+
+  if (parsed[sorted.value]) {
     leaderboard.value = parsed[sorted.value];
   } else {
     await getLeaderboard().then(() => {
@@ -75,7 +77,6 @@ async function update() {
       localStorage.setItem("staticLeaderboard", JSON.stringify(cpy));
     });
   }
-
   loading.value = false;
 }
 </script>
