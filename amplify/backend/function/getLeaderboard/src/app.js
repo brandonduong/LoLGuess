@@ -118,6 +118,8 @@ async function getLeaderboardUsers(leaderboard, sort) {
         totalRanks
         unfinished
         totalGuesses
+        averageCorrectPlacements
+        averageScore
         createdAt
         updatedAt
       }

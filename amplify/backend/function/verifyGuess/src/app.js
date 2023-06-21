@@ -161,6 +161,8 @@ async function updateUserStats(user, stats) {
         totalRanks
         unfinished
         totalGuesses
+        averageCorrectPlacements
+        averageScore
       }
     }
   `;
@@ -175,6 +177,8 @@ async function updateUserStats(user, stats) {
       totalRanks: stats.totalRanks,
       unfinished: stats.unfinished,
       totalGuesses: stats.totalGuesses,
+      averageCorrectPlacements: stats.correctPlacements / stats.totalGuesses,
+      averageScore: stats.score / stats.totalGuesses,
     },
   };
 

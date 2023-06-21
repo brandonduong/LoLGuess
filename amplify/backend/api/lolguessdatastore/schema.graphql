@@ -5,7 +5,12 @@
 type User
   @model
   @searchable
-  @auth(rules: [{ allow: private, operations: [], provider: iam }]) {
+  @auth(
+    rules: [
+      { allow: public }
+      { allow: private, operations: [], provider: iam }
+    ]
+  ) {
   id: ID!
   username: String!
   guesses: [Guess] @hasMany
@@ -16,6 +21,8 @@ type User
   totalRanks: Int!
   unfinished: Int!
   totalGuesses: Int!
+  averageCorrectPlacements: Float!
+  averageScore: Float!
 }
 
 type Guess

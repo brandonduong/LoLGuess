@@ -68,6 +68,9 @@ async function getUser(sub) {
         totalRanks
         unfinished
         totalGuesses
+        averageCorrectPlacements
+        averageScore
+        createdAt
       }
     }
   `;

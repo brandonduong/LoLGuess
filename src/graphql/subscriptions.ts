@@ -2,96 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
-    onCreateUser(filter: $filter) {
-      id
-      username
-      guesses {
-        items {
-          id
-          placements
-          guessedRank
-          rank
-          ranks
-          userGuessesId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      score
-      maxScore
-      correctPlacements
-      correctRanks
-      totalRanks
-      unfinished
-      totalGuesses
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
-    onUpdateUser(filter: $filter) {
-      id
-      username
-      guesses {
-        items {
-          id
-          placements
-          guessedRank
-          rank
-          ranks
-          userGuessesId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      score
-      maxScore
-      correctPlacements
-      correctRanks
-      totalRanks
-      unfinished
-      totalGuesses
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
-    onDeleteUser(filter: $filter) {
-      id
-      username
-      guesses {
-        items {
-          id
-          placements
-          guessedRank
-          rank
-          ranks
-          userGuessesId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      score
-      maxScore
-      correctPlacements
-      correctRanks
-      totalRanks
-      unfinished
-      totalGuesses
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const onCreateGuess = /* GraphQL */ `
   subscription OnCreateGuess($filter: ModelSubscriptionGuessFilterInput) {
     onCreateGuess(filter: $filter) {
@@ -177,6 +87,102 @@ export const onDeleteLeaderboard = /* GraphQL */ `
       byAverageCorrectPlacements
       byAverageScore
       date
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
+    onCreateUser(filter: $filter) {
+      id
+      username
+      guesses {
+        items {
+          id
+          placements
+          guessedRank
+          rank
+          ranks
+          userGuessesId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      score
+      maxScore
+      correctPlacements
+      correctRanks
+      totalRanks
+      unfinished
+      totalGuesses
+      averageCorrectPlacements
+      averageScore
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
+    onUpdateUser(filter: $filter) {
+      id
+      username
+      guesses {
+        items {
+          id
+          placements
+          guessedRank
+          rank
+          ranks
+          userGuessesId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      score
+      maxScore
+      correctPlacements
+      correctRanks
+      totalRanks
+      unfinished
+      totalGuesses
+      averageCorrectPlacements
+      averageScore
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
+    onDeleteUser(filter: $filter) {
+      id
+      username
+      guesses {
+        items {
+          id
+          placements
+          guessedRank
+          rank
+          ranks
+          userGuessesId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      score
+      maxScore
+      correctPlacements
+      correctRanks
+      totalRanks
+      unfinished
+      totalGuesses
+      averageCorrectPlacements
+      averageScore
       createdAt
       updatedAt
     }

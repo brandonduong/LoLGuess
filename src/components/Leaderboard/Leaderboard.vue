@@ -10,10 +10,17 @@ const auth = useAuthenticator();
 
 const current = ref<number>(1);
 const sorted = ref<string>("byScore");
-const oldSorted = ref<string>();
-const minRankPool = ref<number>(1);
-const minGuesses = ref<number>(1);
-const maxUnfinished = ref<number>(100);
+const oldSorted = ref<string>("byScore");
+const now = new Date();
+const updateUTC = Date.UTC(
+  now.getUTCFullYear(),
+  now.getUTCMonth(),
+  now.getUTCDate() + 1,
+  4,
+  0,
+  0
+);
+const timer = ref<number>(updateUTC);
 
 const loading = ref<boolean>(true);
 const leaderboard = ref<User[]>([]);
@@ -93,15 +100,9 @@ async function update() {
       >
     </a-radio-group>
     <div class="filters">
-      <a-input-number
-        v-model:value="minRankPool"
-        addon-before="Min. Avg. Rank Pool"
-      />
-      <a-input-number v-model:value="minGuesses" addon-before="Min. Guesses" />
-      <a-input-number
-        v-model:value="maxUnfinished"
-        addon-before="Max Unfinished"
-      />
+      Updates in: {{ timer }}
+      <a-statistic-countdown :value="timer" @finish="update()" />
+      Last updated:
     </div>
   </div>
   <div class="leaderboard-header">

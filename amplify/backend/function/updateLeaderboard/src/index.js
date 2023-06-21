@@ -26,7 +26,13 @@ const signer = new SignatureV4({
   sha256: Sha256,
 });
 
-async function createLeaderboard(byScore, byCorrectPlacements, byCorrectRanks) {
+async function createLeaderboard(
+  byScore,
+  byCorrectPlacements,
+  byCorrectRanks,
+  byAverageCorrectPlacements,
+  byAverageScore
+) {
   const query = /* GraphQL */ `
     mutation CREATE_LEADERBOARD($input: CreateLeaderboardInput!) {
       createLeaderboard(input: $input) {
@@ -49,8 +55,8 @@ async function createLeaderboard(byScore, byCorrectPlacements, byCorrectRanks) {
       byCorrectPlacements,
       byCorrectRanks,
       byScore,
-      byAverageCorrectPlacements: [],
-      byAverageScore: [],
+      byAverageCorrectPlacements,
+      byAverageScore,
     },
   };
   console.log(variables);
@@ -92,6 +98,8 @@ async function searchUsers(sortField) {
           totalRanks
           unfinished
           totalGuesses
+          averageCorrectPlacements
+          averageScore
         }
         nextToken
         total
@@ -164,10 +172,20 @@ export const handler = async (event, context, callback) => {
   const byScore = await searchUsers("score");
   const byCorrectPlacements = await searchUsers("correctPlacements");
   const byCorrectRanks = await searchUsers("correctRanks");
+  const byAverageCorrectPlacements = await searchUsers(
+    "averageCorrectPlacements"
+  );
+  const byAverageScore = await searchUsers("averageScore");
 
   let statusCode = 200;
   try {
-    await createLeaderboard(byScore, byCorrectPlacements, byCorrectRanks);
+    await createLeaderboard(
+      byScore,
+      byCorrectPlacements,
+      byCorrectRanks,
+      byAverageCorrectPlacements,
+      byAverageScore
+    );
   } catch (error) {
     statusCode = 500;
   }

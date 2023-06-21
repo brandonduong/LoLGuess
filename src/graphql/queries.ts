@@ -27,117 +27,10 @@ export const batchFetchUser = /* GraphQL */ `
       totalRanks
       unfinished
       totalGuesses
+      averageCorrectPlacements
+      averageScore
       createdAt
       updatedAt
-    }
-  }
-`;
-export const searchUsers = /* GraphQL */ `
-  query SearchUsers(
-    $filter: SearchableUserFilterInput
-    $sort: [SearchableUserSortInput]
-    $limit: Int
-    $nextToken: String
-    $from: Int
-    $aggregates: [SearchableUserAggregationInput]
-  ) {
-    searchUsers(
-      filter: $filter
-      sort: $sort
-      limit: $limit
-      nextToken: $nextToken
-      from: $from
-      aggregates: $aggregates
-    ) {
-      items {
-        id
-        username
-        guesses {
-          nextToken
-        }
-        score
-        maxScore
-        correctPlacements
-        correctRanks
-        totalRanks
-        unfinished
-        totalGuesses
-        createdAt
-        updatedAt
-      }
-      nextToken
-      total
-      aggregateItems {
-        name
-        result {
-          ... on SearchableAggregateScalarResult {
-            value
-          }
-          ... on SearchableAggregateBucketResult {
-            buckets {
-              key
-              doc_count
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-export const getUser = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
-      id
-      username
-      guesses {
-        items {
-          id
-          placements
-          guessedRank
-          rank
-          ranks
-          userGuessesId
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      score
-      maxScore
-      correctPlacements
-      correctRanks
-      totalRanks
-      unfinished
-      totalGuesses
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listUsers = /* GraphQL */ `
-  query ListUsers(
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        username
-        guesses {
-          nextToken
-        }
-        score
-        maxScore
-        correctPlacements
-        correctRanks
-        totalRanks
-        unfinished
-        totalGuesses
-        createdAt
-        updatedAt
-      }
-      nextToken
     }
   }
 `;
@@ -247,6 +140,121 @@ export const guessesByDate = /* GraphQL */ `
         updatedAt
       }
       nextToken
+    }
+  }
+`;
+export const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      id
+      username
+      guesses {
+        items {
+          id
+          placements
+          guessedRank
+          rank
+          ranks
+          userGuessesId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      score
+      maxScore
+      correctPlacements
+      correctRanks
+      totalRanks
+      unfinished
+      totalGuesses
+      averageCorrectPlacements
+      averageScore
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        averageCorrectPlacements
+        averageScore
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const searchUsers = /* GraphQL */ `
+  query SearchUsers(
+    $filter: SearchableUserFilterInput
+    $sort: [SearchableUserSortInput]
+    $limit: Int
+    $nextToken: String
+    $from: Int
+    $aggregates: [SearchableUserAggregationInput]
+  ) {
+    searchUsers(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+      aggregates: $aggregates
+    ) {
+      items {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        averageCorrectPlacements
+        averageScore
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+      aggregateItems {
+        name
+        result {
+          ... on SearchableAggregateScalarResult {
+            value
+          }
+          ... on SearchableAggregateBucketResult {
+            buckets {
+              key
+              doc_count
+            }
+          }
+        }
+      }
     }
   }
 `;

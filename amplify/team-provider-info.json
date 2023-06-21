@@ -24,23 +24,23 @@
         },
         "verifyGuess": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/verifyGuess-34424f50753751796265-build.zip"
+          "s3Key": "amplify-builds/verifyGuess-37593171714d73396a4f-build.zip"
         },
         "lolguesssignup": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/lolguesssignup-692b6169443954747344-build.zip"
+          "s3Key": "amplify-builds/lolguesssignup-59696f316b65702b4d46-build.zip"
         },
         "getProfile": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getProfile-656f524a5659592f5231-build.zip"
+          "s3Key": "amplify-builds/getProfile-466f416c2f4332596b76-build.zip"
         },
         "updateLeaderboard": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/updateLeaderboard-554d3945595a65353832-build.zip"
+          "s3Key": "amplify-builds/updateLeaderboard-78307755775351316d47-build.zip"
         },
         "getLeaderboard": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getLeaderboard-665849627879767a7551-build.zip"
+          "s3Key": "amplify-builds/getLeaderboard-38433870502b42566745-build.zip"
         }
       },
       "api": {

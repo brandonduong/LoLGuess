@@ -29,6 +29,8 @@ const query = /* GraphQL */ `
       totalRanks
       unfinished
       totalGuesses
+      averageCorrectPlacements
+      averageScore
     }
   }
 `;
@@ -60,6 +62,8 @@ export const handler = async (event, context, callback) => {
       totalRanks: 0,
       unfinished: 0,
       totalGuesses: 0,
+      averageCorrectPlacements: 0,
+      averageScore: 0,
     },
   };
 
