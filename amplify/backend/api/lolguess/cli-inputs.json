@@ -27,6 +27,13 @@
           "read"
         ]
       }
+    },
+    "/getLeaderboard": {
+      "name": "/getLeaderboard",
+      "lambdaFunction": "getLeaderboard",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

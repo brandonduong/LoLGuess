@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { h, onMounted, ref } from "vue";
-import { type SearchUsersQuery, type User } from "../../API";
+import { type GetLeaderboardQuery, type Leaderboard } from "../../API";
 import LeaderboardItem from "./LeaderboardItem.vue";
 import { LoadingOutlined } from "@ant-design/icons-vue";
 import type { GraphQLQuery } from "@aws-amplify/api";
@@ -14,18 +14,16 @@ const minGuesses = ref<number>(1);
 const maxUnfinished = ref<number>(100);
 
 const loading = ref<boolean>(true);
-const users = ref<User[]>([]);
-async function listUsers() {
-  const listUsers = await API.graphql<GraphQLQuery<SearchUsersQuery>>({
-    query: queries.searchUsers,
+const leaderboard = ref<Leaderboard>();
+async function getLeaderboard() {
+  const getLeaderboard = await API.graphql<GraphQLQuery<GetLeaderboardQuery>>({
+    query: queries.getLeaderboard,
     variables: {
-      sort: {
-        direction: "desc",
-        field: "maxScore",
-      },
+      date: new Date().toISOString().split("T")[0],
     },
   });
-  users.value = listUsers.data!.searchUsers!.items as User[];
+  console.log(getLeaderboard);
+  leaderboard.value = getLeaderboard.data!.getLeaderboard! as Leaderboard;
 }
 
 const indicator = h(LoadingOutlined, {
@@ -37,8 +35,8 @@ const indicator = h(LoadingOutlined, {
 });
 
 onMounted(async () => {
-  await listUsers();
-  console.log(users.value);
+  await getLeaderboard();
+  console.log(leaderboard.value);
 
   loading.value = false;
 });
@@ -76,8 +74,8 @@ onMounted(async () => {
   </div>
   <div v-if="!loading" class="leaderboard-items">
     <LeaderboardItem
-      v-for="(user, index) in users.slice(100 * (current - 1), 100 * current)"
-      :user="user"
+      v-for="(sub, index) in leaderboard!.byScore!.slice(100 * (current - 1), 100 * current)"
+      :sub="sub!"
       :rank="100 * (current - 1) + index + 1"
     />
   </div>
@@ -85,7 +83,7 @@ onMounted(async () => {
   <div class="pages">
     <a-pagination
       v-model:current="current"
-      :total="users.length"
+      :total="leaderboard?.byScore!.length"
       :defaultPageSize="100"
       :showSizeChanger="false"
     />

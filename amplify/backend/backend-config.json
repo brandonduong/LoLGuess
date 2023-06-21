@@ -25,6 +25,14 @@
           ],
           "category": "function",
           "resourceName": "getProfile"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getLeaderboard"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -80,6 +88,22 @@
     }
   },
   "function": {
+    "getLeaderboard": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "lolguessdatastore"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getMatch": {
       "build": true,
       "dependsOn": [
@@ -128,6 +152,22 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "updateLeaderboard": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "lolguessdatastore"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "verifyGuess": {
       "build": true,
       "dependsOn": [
@@ -146,6 +186,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_getLeaderboard_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getLeaderboard"
+        }
+      ]
+    },
+    "AMPLIFY_function_getLeaderboard_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getLeaderboard"
+        }
+      ]
+    },
     "AMPLIFY_function_getMatch_deploymentBucketName": {
       "usedBy": [
         {
@@ -199,6 +255,22 @@
         {
           "category": "function",
           "resourceName": "lolguesssignup"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateLeaderboard_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateLeaderboard"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateLeaderboard_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateLeaderboard"
         }
       ]
     },

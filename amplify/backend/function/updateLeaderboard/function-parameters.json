@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "api": {
+      "lolguessdatastore": [
+        "Query",
+        "Mutation",
+        "Subscription"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

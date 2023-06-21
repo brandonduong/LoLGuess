@@ -2,19 +2,19 @@
 import type { User } from "@/API";
 
 const props = defineProps<{
-  user: User;
+  sub: string;
   rank: number;
 }>();
 </script>
 
 <template>
-  <RouterLink :to="`/profile/${user.id}`">
+  <RouterLink :to="`/profile/${sub}`">
     <div class="leaderboard-item">
       <h3>{{ rank }}</h3>
-      <h3>{{ user.username }}</h3>
-      <h3>{{ user.score }} / {{ user.maxScore }}</h3>
-      <h3>{{ user.correctPlacements }}</h3>
-      <h3>{{ user.correctRanks }}</h3>
+      <h3>{{ sub }}</h3>
+      <h3>{{ sub }} / {{ sub }}</h3>
+      <h3>{{ sub }}</h3>
+      <h3>{{ sub }}</h3>
     </div>
   </RouterLink>
 </template>

@@ -1,8 +1,6 @@
 # This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-#input AMPLIFY {
-#  globalAuthRule: AuthRule = { allow: public }
-#} # FOR TESTING ONLY!
+# FOR TESTING ONLY!
 # , operations: [read]
 type User
   @model
@@ -40,10 +38,14 @@ type Guess
 type Leaderboard
   @model
   @auth(rules: [{ allow: private, operations: [read], provider: iam }]) {
-  byCorrectPlacements: [User]
-  byCorrectRanks: [User]
-  byScore: [User]
-  byAverageCorrectPlacements: [User]
-  byAverageScore: [User]
-  date: String! @primaryKey
+  byCorrectPlacements: [String]
+  byCorrectRanks: [String]
+  byScore: [String]
+  byAverageCorrectPlacements: [String]
+  byAverageScore: [String]
+  date: ID! @primaryKey
+}
+
+type Query {
+  batchFetchUser(ids: [ID]): [User]
 }
