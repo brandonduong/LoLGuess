@@ -2,57 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createGuess = /* GraphQL */ `
-  mutation CreateGuess(
-    $input: CreateGuessInput!
-    $condition: ModelGuessConditionInput
-  ) {
-    createGuess(input: $input, condition: $condition) {
-      id
-      placements
-      guessedRank
-      rank
-      ranks
-      userGuessesId
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateGuess = /* GraphQL */ `
-  mutation UpdateGuess(
-    $input: UpdateGuessInput!
-    $condition: ModelGuessConditionInput
-  ) {
-    updateGuess(input: $input, condition: $condition) {
-      id
-      placements
-      guessedRank
-      rank
-      ranks
-      userGuessesId
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteGuess = /* GraphQL */ `
-  mutation DeleteGuess(
-    $input: DeleteGuessInput!
-    $condition: ModelGuessConditionInput
-  ) {
-    deleteGuess(input: $input, condition: $condition) {
-      id
-      placements
-      guessedRank
-      rank
-      ranks
-      userGuessesId
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser(
     $input: CreateUserInput!
@@ -147,6 +96,57 @@ export const deleteUser = /* GraphQL */ `
       totalRanks
       unfinished
       totalGuesses
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createGuess = /* GraphQL */ `
+  mutation CreateGuess(
+    $input: CreateGuessInput!
+    $condition: ModelGuessConditionInput
+  ) {
+    createGuess(input: $input, condition: $condition) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      userGuessesId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateGuess = /* GraphQL */ `
+  mutation UpdateGuess(
+    $input: UpdateGuessInput!
+    $condition: ModelGuessConditionInput
+  ) {
+    updateGuess(input: $input, condition: $condition) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      userGuessesId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteGuess = /* GraphQL */ `
+  mutation DeleteGuess(
+    $input: DeleteGuessInput!
+    $condition: ModelGuessConditionInput
+  ) {
+    deleteGuess(input: $input, condition: $condition) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      userGuessesId
       createdAt
       updatedAt
     }

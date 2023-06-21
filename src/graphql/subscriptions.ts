@@ -2,48 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateGuess = /* GraphQL */ `
-  subscription OnCreateGuess($filter: ModelSubscriptionGuessFilterInput) {
-    onCreateGuess(filter: $filter) {
-      id
-      placements
-      guessedRank
-      rank
-      ranks
-      userGuessesId
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateGuess = /* GraphQL */ `
-  subscription OnUpdateGuess($filter: ModelSubscriptionGuessFilterInput) {
-    onUpdateGuess(filter: $filter) {
-      id
-      placements
-      guessedRank
-      rank
-      ranks
-      userGuessesId
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteGuess = /* GraphQL */ `
-  subscription OnDeleteGuess($filter: ModelSubscriptionGuessFilterInput) {
-    onDeleteGuess(filter: $filter) {
-      id
-      placements
-      guessedRank
-      rank
-      ranks
-      userGuessesId
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
     onCreateUser(filter: $filter) {
@@ -129,6 +87,48 @@ export const onDeleteUser = /* GraphQL */ `
       totalRanks
       unfinished
       totalGuesses
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateGuess = /* GraphQL */ `
+  subscription OnCreateGuess($filter: ModelSubscriptionGuessFilterInput) {
+    onCreateGuess(filter: $filter) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      userGuessesId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateGuess = /* GraphQL */ `
+  subscription OnUpdateGuess($filter: ModelSubscriptionGuessFilterInput) {
+    onUpdateGuess(filter: $filter) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      userGuessesId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteGuess = /* GraphQL */ `
+  subscription OnDeleteGuess($filter: ModelSubscriptionGuessFilterInput) {
+    onDeleteGuess(filter: $filter) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      userGuessesId
       createdAt
       updatedAt
     }

@@ -105,7 +105,7 @@ async function getLeaderboard() {
   }
 }
 
-async function getLeaderboardUsers(leaderboard) {
+async function getLeaderboardUsers(leaderboard, sort) {
   const query = /* GraphQL */ `
     query BatchFetchUser($ids: [ID]) {
       batchFetchUser(ids: $ids) {
@@ -124,8 +124,10 @@ async function getLeaderboardUsers(leaderboard) {
     }
   `;
 
+  var sortedUsers = leaderboard[sort];
+
   const variables = {
-    ids: leaderboard.byScore,
+    ids: sortedUsers,
   };
   console.log(variables);
 
@@ -156,8 +158,9 @@ app.use(function (req, res, next) {
 app.get("/getLeaderboard", async function (req, res) {
   // Add your code here
   console.log(`EVENT: ${JSON.stringify(req.apiGateway.event)}`);
+  const param = req.apiGateway.event.queryStringParameters;
   const leaderboard = await getLeaderboard();
-  const users = await getLeaderboardUsers(leaderboard);
+  const users = await getLeaderboardUsers(leaderboard, param.sort);
   res.json({ users });
 });
 

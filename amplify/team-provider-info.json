@@ -40,7 +40,7 @@
         },
         "getLeaderboard": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getLeaderboard-347256384d346f4f6443-build.zip"
+          "s3Key": "amplify-builds/getLeaderboard-665849627879767a7551-build.zip"
         }
       },
       "api": {

@@ -2,26 +2,30 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type CreateGuessInput = {
+export type CreateUserInput = {
   id?: string | null,
-  placements: Array< string >,
-  guessedRank: string,
-  rank: string,
-  ranks: Array< string >,
-  userGuessesId: string,
-  createdAt?: string | null,
+  username: string,
+  score: number,
+  maxScore: number,
+  correctPlacements: number,
+  correctRanks: number,
+  totalRanks: number,
+  unfinished: number,
+  totalGuesses: number,
 };
 
-export type ModelGuessConditionInput = {
-  placements?: ModelStringInput | null,
-  guessedRank?: ModelStringInput | null,
-  rank?: ModelStringInput | null,
-  ranks?: ModelStringInput | null,
-  userGuessesId?: ModelIDInput | null,
-  createdAt?: ModelStringInput | null,
-  and?: Array< ModelGuessConditionInput | null > | null,
-  or?: Array< ModelGuessConditionInput | null > | null,
-  not?: ModelGuessConditionInput | null,
+export type ModelUserConditionInput = {
+  username?: ModelStringInput | null,
+  score?: ModelFloatInput | null,
+  maxScore?: ModelFloatInput | null,
+  correctPlacements?: ModelIntInput | null,
+  correctRanks?: ModelIntInput | null,
+  totalRanks?: ModelIntInput | null,
+  unfinished?: ModelIntInput | null,
+  totalGuesses?: ModelIntInput | null,
+  and?: Array< ModelUserConditionInput | null > | null,
+  or?: Array< ModelUserConditionInput | null > | null,
+  not?: ModelUserConditionInput | null,
 };
 
 export type ModelStringInput = {
@@ -62,74 +66,6 @@ export type ModelSizeInput = {
   ge?: number | null,
   gt?: number | null,
   between?: Array< number | null > | null,
-};
-
-export type ModelIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
-};
-
-export type Guess = {
-  __typename: "Guess",
-  id: string,
-  placements: Array< string >,
-  guessedRank: string,
-  rank: string,
-  ranks: Array< string >,
-  userGuessesId: string,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type UpdateGuessInput = {
-  id: string,
-  placements?: Array< string > | null,
-  guessedRank?: string | null,
-  rank?: string | null,
-  ranks?: Array< string > | null,
-  userGuessesId?: string | null,
-  createdAt?: string | null,
-};
-
-export type DeleteGuessInput = {
-  id: string,
-};
-
-export type CreateUserInput = {
-  id?: string | null,
-  username: string,
-  score: number,
-  maxScore: number,
-  correctPlacements: number,
-  correctRanks: number,
-  totalRanks: number,
-  unfinished: number,
-  totalGuesses: number,
-};
-
-export type ModelUserConditionInput = {
-  username?: ModelStringInput | null,
-  score?: ModelFloatInput | null,
-  maxScore?: ModelFloatInput | null,
-  correctPlacements?: ModelIntInput | null,
-  correctRanks?: ModelIntInput | null,
-  totalRanks?: ModelIntInput | null,
-  unfinished?: ModelIntInput | null,
-  totalGuesses?: ModelIntInput | null,
-  and?: Array< ModelUserConditionInput | null > | null,
-  or?: Array< ModelUserConditionInput | null > | null,
-  not?: ModelUserConditionInput | null,
 };
 
 export type ModelFloatInput = {
@@ -178,6 +114,18 @@ export type ModelGuessConnection = {
   nextToken?: string | null,
 };
 
+export type Guess = {
+  __typename: "Guess",
+  id: string,
+  placements: Array< string >,
+  guessedRank: string,
+  rank: string,
+  ranks: Array< string >,
+  userGuessesId: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
 export type UpdateUserInput = {
   id: string,
   username?: string | null,
@@ -191,6 +139,58 @@ export type UpdateUserInput = {
 };
 
 export type DeleteUserInput = {
+  id: string,
+};
+
+export type CreateGuessInput = {
+  id?: string | null,
+  placements: Array< string >,
+  guessedRank: string,
+  rank: string,
+  ranks: Array< string >,
+  userGuessesId: string,
+  createdAt?: string | null,
+};
+
+export type ModelGuessConditionInput = {
+  placements?: ModelStringInput | null,
+  guessedRank?: ModelStringInput | null,
+  rank?: ModelStringInput | null,
+  ranks?: ModelStringInput | null,
+  userGuessesId?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelGuessConditionInput | null > | null,
+  or?: Array< ModelGuessConditionInput | null > | null,
+  not?: ModelGuessConditionInput | null,
+};
+
+export type ModelIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
+};
+
+export type UpdateGuessInput = {
+  id: string,
+  placements?: Array< string > | null,
+  guessedRank?: string | null,
+  rank?: string | null,
+  ranks?: Array< string > | null,
+  userGuessesId?: string | null,
+  createdAt?: string | null,
+};
+
+export type DeleteGuessInput = {
   id: string,
 };
 
@@ -237,56 +237,6 @@ export type UpdateLeaderboardInput = {
 
 export type DeleteLeaderboardInput = {
   date: string,
-};
-
-export type ModelGuessFilterInput = {
-  id?: ModelIDInput | null,
-  placements?: ModelStringInput | null,
-  guessedRank?: ModelStringInput | null,
-  rank?: ModelStringInput | null,
-  ranks?: ModelStringInput | null,
-  userGuessesId?: ModelIDInput | null,
-  createdAt?: ModelStringInput | null,
-  and?: Array< ModelGuessFilterInput | null > | null,
-  or?: Array< ModelGuessFilterInput | null > | null,
-  not?: ModelGuessFilterInput | null,
-};
-
-export type ModelStringKeyConditionInput = {
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-};
-
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
-}
-
-
-export type ModelUserFilterInput = {
-  id?: ModelIDInput | null,
-  username?: ModelStringInput | null,
-  score?: ModelFloatInput | null,
-  maxScore?: ModelFloatInput | null,
-  correctPlacements?: ModelIntInput | null,
-  correctRanks?: ModelIntInput | null,
-  totalRanks?: ModelIntInput | null,
-  unfinished?: ModelIntInput | null,
-  totalGuesses?: ModelIntInput | null,
-  and?: Array< ModelUserFilterInput | null > | null,
-  or?: Array< ModelUserFilterInput | null > | null,
-  not?: ModelUserFilterInput | null,
-};
-
-export type ModelUserConnection = {
-  __typename: "ModelUserConnection",
-  items:  Array<User | null >,
-  nextToken?: string | null,
 };
 
 export type SearchableUserFilterInput = {
@@ -449,6 +399,40 @@ export type SearchableAggregateBucketResultItem = {
   doc_count: number,
 };
 
+export type ModelUserFilterInput = {
+  id?: ModelIDInput | null,
+  username?: ModelStringInput | null,
+  score?: ModelFloatInput | null,
+  maxScore?: ModelFloatInput | null,
+  correctPlacements?: ModelIntInput | null,
+  correctRanks?: ModelIntInput | null,
+  totalRanks?: ModelIntInput | null,
+  unfinished?: ModelIntInput | null,
+  totalGuesses?: ModelIntInput | null,
+  and?: Array< ModelUserFilterInput | null > | null,
+  or?: Array< ModelUserFilterInput | null > | null,
+  not?: ModelUserFilterInput | null,
+};
+
+export type ModelUserConnection = {
+  __typename: "ModelUserConnection",
+  items:  Array<User | null >,
+  nextToken?: string | null,
+};
+
+export type ModelGuessFilterInput = {
+  id?: ModelIDInput | null,
+  placements?: ModelStringInput | null,
+  guessedRank?: ModelStringInput | null,
+  rank?: ModelStringInput | null,
+  ranks?: ModelStringInput | null,
+  userGuessesId?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelGuessFilterInput | null > | null,
+  or?: Array< ModelGuessFilterInput | null > | null,
+  not?: ModelGuessFilterInput | null,
+};
+
 export type ModelLeaderboardFilterInput = {
   byCorrectPlacements?: ModelStringInput | null,
   byCorrectRanks?: ModelStringInput | null,
@@ -461,22 +445,40 @@ export type ModelLeaderboardFilterInput = {
   not?: ModelLeaderboardFilterInput | null,
 };
 
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
 export type ModelLeaderboardConnection = {
   __typename: "ModelLeaderboardConnection",
   items:  Array<Leaderboard | null >,
   nextToken?: string | null,
 };
 
-export type ModelSubscriptionGuessFilterInput = {
+export type ModelStringKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
+export type ModelSubscriptionUserFilterInput = {
   id?: ModelSubscriptionIDInput | null,
-  placements?: ModelSubscriptionStringInput | null,
-  guessedRank?: ModelSubscriptionStringInput | null,
-  rank?: ModelSubscriptionStringInput | null,
-  ranks?: ModelSubscriptionStringInput | null,
-  userGuessesId?: ModelSubscriptionIDInput | null,
-  createdAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionGuessFilterInput | null > | null,
-  or?: Array< ModelSubscriptionGuessFilterInput | null > | null,
+  username?: ModelSubscriptionStringInput | null,
+  score?: ModelSubscriptionFloatInput | null,
+  maxScore?: ModelSubscriptionFloatInput | null,
+  correctPlacements?: ModelSubscriptionIntInput | null,
+  correctRanks?: ModelSubscriptionIntInput | null,
+  totalRanks?: ModelSubscriptionIntInput | null,
+  unfinished?: ModelSubscriptionIntInput | null,
+  totalGuesses?: ModelSubscriptionIntInput | null,
+  and?: Array< ModelSubscriptionUserFilterInput | null > | null,
+  or?: Array< ModelSubscriptionUserFilterInput | null > | null,
 };
 
 export type ModelSubscriptionIDInput = {
@@ -509,20 +511,6 @@ export type ModelSubscriptionStringInput = {
   notIn?: Array< string | null > | null,
 };
 
-export type ModelSubscriptionUserFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  username?: ModelSubscriptionStringInput | null,
-  score?: ModelSubscriptionFloatInput | null,
-  maxScore?: ModelSubscriptionFloatInput | null,
-  correctPlacements?: ModelSubscriptionIntInput | null,
-  correctRanks?: ModelSubscriptionIntInput | null,
-  totalRanks?: ModelSubscriptionIntInput | null,
-  unfinished?: ModelSubscriptionIntInput | null,
-  totalGuesses?: ModelSubscriptionIntInput | null,
-  and?: Array< ModelSubscriptionUserFilterInput | null > | null,
-  or?: Array< ModelSubscriptionUserFilterInput | null > | null,
-};
-
 export type ModelSubscriptionFloatInput = {
   ne?: number | null,
   eq?: number | null,
@@ -547,6 +535,18 @@ export type ModelSubscriptionIntInput = {
   notIn?: Array< number | null > | null,
 };
 
+export type ModelSubscriptionGuessFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  placements?: ModelSubscriptionStringInput | null,
+  guessedRank?: ModelSubscriptionStringInput | null,
+  rank?: ModelSubscriptionStringInput | null,
+  ranks?: ModelSubscriptionStringInput | null,
+  userGuessesId?: ModelSubscriptionIDInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionGuessFilterInput | null > | null,
+  or?: Array< ModelSubscriptionGuessFilterInput | null > | null,
+};
+
 export type ModelSubscriptionLeaderboardFilterInput = {
   byCorrectPlacements?: ModelSubscriptionStringInput | null,
   byCorrectRanks?: ModelSubscriptionStringInput | null,
@@ -556,63 +556,6 @@ export type ModelSubscriptionLeaderboardFilterInput = {
   date?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionLeaderboardFilterInput | null > | null,
   or?: Array< ModelSubscriptionLeaderboardFilterInput | null > | null,
-};
-
-export type CreateGuessMutationVariables = {
-  input: CreateGuessInput,
-  condition?: ModelGuessConditionInput | null,
-};
-
-export type CreateGuessMutation = {
-  createGuess?:  {
-    __typename: "Guess",
-    id: string,
-    placements: Array< string >,
-    guessedRank: string,
-    rank: string,
-    ranks: Array< string >,
-    userGuessesId: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdateGuessMutationVariables = {
-  input: UpdateGuessInput,
-  condition?: ModelGuessConditionInput | null,
-};
-
-export type UpdateGuessMutation = {
-  updateGuess?:  {
-    __typename: "Guess",
-    id: string,
-    placements: Array< string >,
-    guessedRank: string,
-    rank: string,
-    ranks: Array< string >,
-    userGuessesId: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteGuessMutationVariables = {
-  input: DeleteGuessInput,
-  condition?: ModelGuessConditionInput | null,
-};
-
-export type DeleteGuessMutation = {
-  deleteGuess?:  {
-    __typename: "Guess",
-    id: string,
-    placements: Array< string >,
-    guessedRank: string,
-    rank: string,
-    ranks: Array< string >,
-    userGuessesId: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
 };
 
 export type CreateUserMutationVariables = {
@@ -726,6 +669,63 @@ export type DeleteUserMutation = {
   } | null,
 };
 
+export type CreateGuessMutationVariables = {
+  input: CreateGuessInput,
+  condition?: ModelGuessConditionInput | null,
+};
+
+export type CreateGuessMutation = {
+  createGuess?:  {
+    __typename: "Guess",
+    id: string,
+    placements: Array< string >,
+    guessedRank: string,
+    rank: string,
+    ranks: Array< string >,
+    userGuessesId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateGuessMutationVariables = {
+  input: UpdateGuessInput,
+  condition?: ModelGuessConditionInput | null,
+};
+
+export type UpdateGuessMutation = {
+  updateGuess?:  {
+    __typename: "Guess",
+    id: string,
+    placements: Array< string >,
+    guessedRank: string,
+    rank: string,
+    ranks: Array< string >,
+    userGuessesId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteGuessMutationVariables = {
+  input: DeleteGuessInput,
+  condition?: ModelGuessConditionInput | null,
+};
+
+export type DeleteGuessMutation = {
+  deleteGuess?:  {
+    __typename: "Guess",
+    id: string,
+    placements: Array< string >,
+    guessedRank: string,
+    rank: string,
+    ranks: Array< string >,
+    userGuessesId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type CreateLeaderboardMutationVariables = {
   input: CreateLeaderboardInput,
   condition?: ModelLeaderboardConditionInput | null,
@@ -819,72 +819,54 @@ export type BatchFetchUserQuery = {
   } | null > | null,
 };
 
-export type GetGuessQueryVariables = {
-  id: string,
-};
-
-export type GetGuessQuery = {
-  getGuess?:  {
-    __typename: "Guess",
-    id: string,
-    placements: Array< string >,
-    guessedRank: string,
-    rank: string,
-    ranks: Array< string >,
-    userGuessesId: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type ListGuessesQueryVariables = {
-  filter?: ModelGuessFilterInput | null,
+export type SearchUsersQueryVariables = {
+  filter?: SearchableUserFilterInput | null,
+  sort?: Array< SearchableUserSortInput | null > | null,
   limit?: number | null,
   nextToken?: string | null,
+  from?: number | null,
+  aggregates?: Array< SearchableUserAggregationInput | null > | null,
 };
 
-export type ListGuessesQuery = {
-  listGuesses?:  {
-    __typename: "ModelGuessConnection",
+export type SearchUsersQuery = {
+  searchUsers?:  {
+    __typename: "SearchableUserConnection",
     items:  Array< {
-      __typename: "Guess",
+      __typename: "User",
       id: string,
-      placements: Array< string >,
-      guessedRank: string,
-      rank: string,
-      ranks: Array< string >,
-      userGuessesId: string,
+      username: string,
+      guesses?:  {
+        __typename: "ModelGuessConnection",
+        nextToken?: string | null,
+      } | null,
+      score: number,
+      maxScore: number,
+      correctPlacements: number,
+      correctRanks: number,
+      totalRanks: number,
+      unfinished: number,
+      totalGuesses: number,
       createdAt: string,
       updatedAt: string,
     } | null >,
     nextToken?: string | null,
-  } | null,
-};
-
-export type GuessesByDateQueryVariables = {
-  userGuessesId: string,
-  createdAt?: ModelStringKeyConditionInput | null,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelGuessFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type GuessesByDateQuery = {
-  guessesByDate?:  {
-    __typename: "ModelGuessConnection",
-    items:  Array< {
-      __typename: "Guess",
-      id: string,
-      placements: Array< string >,
-      guessedRank: string,
-      rank: string,
-      ranks: Array< string >,
-      userGuessesId: string,
-      createdAt: string,
-      updatedAt: string,
+    total?: number | null,
+    aggregateItems:  Array< {
+      __typename: "SearchableAggregateResult",
+      name: string,
+      result: ( {
+          __typename: "SearchableAggregateScalarResult",
+          value: number,
+        } | {
+          __typename: "SearchableAggregateBucketResult",
+          buckets?:  Array< {
+            __typename: string,
+            key: string,
+            doc_count: number,
+          } | null > | null,
+        }
+      ) | null,
     } | null >,
-    nextToken?: string | null,
   } | null,
 };
 
@@ -955,54 +937,45 @@ export type ListUsersQuery = {
   } | null,
 };
 
-export type SearchUsersQueryVariables = {
-  filter?: SearchableUserFilterInput | null,
-  sort?: Array< SearchableUserSortInput | null > | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  from?: number | null,
-  aggregates?: Array< SearchableUserAggregationInput | null > | null,
+export type GetGuessQueryVariables = {
+  id: string,
 };
 
-export type SearchUsersQuery = {
-  searchUsers?:  {
-    __typename: "SearchableUserConnection",
+export type GetGuessQuery = {
+  getGuess?:  {
+    __typename: "Guess",
+    id: string,
+    placements: Array< string >,
+    guessedRank: string,
+    rank: string,
+    ranks: Array< string >,
+    userGuessesId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListGuessesQueryVariables = {
+  filter?: ModelGuessFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListGuessesQuery = {
+  listGuesses?:  {
+    __typename: "ModelGuessConnection",
     items:  Array< {
-      __typename: "User",
+      __typename: "Guess",
       id: string,
-      username: string,
-      guesses?:  {
-        __typename: "ModelGuessConnection",
-        nextToken?: string | null,
-      } | null,
-      score: number,
-      maxScore: number,
-      correctPlacements: number,
-      correctRanks: number,
-      totalRanks: number,
-      unfinished: number,
-      totalGuesses: number,
+      placements: Array< string >,
+      guessedRank: string,
+      rank: string,
+      ranks: Array< string >,
+      userGuessesId: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
     nextToken?: string | null,
-    total?: number | null,
-    aggregateItems:  Array< {
-      __typename: "SearchableAggregateResult",
-      name: string,
-      result: ( {
-          __typename: "SearchableAggregateScalarResult",
-          value: number,
-        } | {
-          __typename: "SearchableAggregateBucketResult",
-          buckets?:  Array< {
-            __typename: string,
-            key: string,
-            doc_count: number,
-          } | null > | null,
-        }
-      ) | null,
-    } | null >,
   } | null,
 };
 
@@ -1050,57 +1023,30 @@ export type ListLeaderboardsQuery = {
   } | null,
 };
 
-export type OnCreateGuessSubscriptionVariables = {
-  filter?: ModelSubscriptionGuessFilterInput | null,
+export type GuessesByDateQueryVariables = {
+  userGuessesId: string,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelGuessFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
 };
 
-export type OnCreateGuessSubscription = {
-  onCreateGuess?:  {
-    __typename: "Guess",
-    id: string,
-    placements: Array< string >,
-    guessedRank: string,
-    rank: string,
-    ranks: Array< string >,
-    userGuessesId: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateGuessSubscriptionVariables = {
-  filter?: ModelSubscriptionGuessFilterInput | null,
-};
-
-export type OnUpdateGuessSubscription = {
-  onUpdateGuess?:  {
-    __typename: "Guess",
-    id: string,
-    placements: Array< string >,
-    guessedRank: string,
-    rank: string,
-    ranks: Array< string >,
-    userGuessesId: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteGuessSubscriptionVariables = {
-  filter?: ModelSubscriptionGuessFilterInput | null,
-};
-
-export type OnDeleteGuessSubscription = {
-  onDeleteGuess?:  {
-    __typename: "Guess",
-    id: string,
-    placements: Array< string >,
-    guessedRank: string,
-    rank: string,
-    ranks: Array< string >,
-    userGuessesId: string,
-    createdAt: string,
-    updatedAt: string,
+export type GuessesByDateQuery = {
+  guessesByDate?:  {
+    __typename: "ModelGuessConnection",
+    items:  Array< {
+      __typename: "Guess",
+      id: string,
+      placements: Array< string >,
+      guessedRank: string,
+      rank: string,
+      ranks: Array< string >,
+      userGuessesId: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -1207,6 +1153,60 @@ export type OnDeleteUserSubscription = {
     totalRanks: number,
     unfinished: number,
     totalGuesses: number,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateGuessSubscriptionVariables = {
+  filter?: ModelSubscriptionGuessFilterInput | null,
+};
+
+export type OnCreateGuessSubscription = {
+  onCreateGuess?:  {
+    __typename: "Guess",
+    id: string,
+    placements: Array< string >,
+    guessedRank: string,
+    rank: string,
+    ranks: Array< string >,
+    userGuessesId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateGuessSubscriptionVariables = {
+  filter?: ModelSubscriptionGuessFilterInput | null,
+};
+
+export type OnUpdateGuessSubscription = {
+  onUpdateGuess?:  {
+    __typename: "Guess",
+    id: string,
+    placements: Array< string >,
+    guessedRank: string,
+    rank: string,
+    ranks: Array< string >,
+    userGuessesId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteGuessSubscriptionVariables = {
+  filter?: ModelSubscriptionGuessFilterInput | null,
+};
+
+export type OnDeleteGuessSubscription = {
+  onDeleteGuess?:  {
+    __typename: "Guess",
+    id: string,
+    placements: Array< string >,
+    guessedRank: string,
+    rank: string,
+    ranks: Array< string >,
+    userGuessesId: string,
     createdAt: string,
     updatedAt: string,
   } | null,

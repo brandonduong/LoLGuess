@@ -1,29 +1,36 @@
 <script setup lang="ts">
-import { h, onMounted, ref } from "vue";
-import { type GetLeaderboardQuery, type Leaderboard } from "../../API";
+import { h, onMounted, onUpdated, ref } from "vue";
+import { type User } from "../../API";
 import LeaderboardItem from "./LeaderboardItem.vue";
 import { LoadingOutlined } from "@ant-design/icons-vue";
-import type { GraphQLQuery } from "@aws-amplify/api";
-import * as queries from "../../graphql/queries";
 import { API } from "aws-amplify";
+import { useAuthenticator } from "@aws-amplify/ui-vue";
+import http from "../../common/http-common";
+const auth = useAuthenticator();
 
 const current = ref<number>(1);
-const sorted = ref<string>("small");
+const sorted = ref<string>("byScore");
+const oldSorted = ref<string>();
 const minRankPool = ref<number>(1);
 const minGuesses = ref<number>(1);
 const maxUnfinished = ref<number>(100);
 
 const loading = ref<boolean>(true);
-const leaderboard = ref<Leaderboard>();
+const leaderboard = ref<User[]>([]);
+
 async function getLeaderboard() {
-  const getLeaderboard = await API.graphql<GraphQLQuery<GetLeaderboardQuery>>({
-    query: queries.getLeaderboard,
-    variables: {
-      date: new Date().toISOString().split("T")[0],
+  const header = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${auth.user.signInUserSession.idToken.jwtToken}`,
     },
+  };
+  let url = `/getLeaderboard?sort=${sorted.value}`;
+
+  await http.api.get(url, header).then((res) => {
+    console.log(res);
+    leaderboard.value = res.data.users;
   });
-  console.log(getLeaderboard);
-  leaderboard.value = getLeaderboard.data!.getLeaderboard! as Leaderboard;
 }
 
 const indicator = h(LoadingOutlined, {
@@ -35,21 +42,52 @@ const indicator = h(LoadingOutlined, {
 });
 
 onMounted(async () => {
-  await getLeaderboard();
+  await update();
   console.log(leaderboard.value);
+});
+
+onUpdated(async () => {
+  if (oldSorted.value !== sorted.value) {
+    oldSorted.value = sorted.value;
+    await update();
+  }
+});
+
+async function update() {
+  loading.value = true;
+  var staticLeaderboard = window.localStorage.getItem("staticLeaderboard");
+  if (!staticLeaderboard) {
+    staticLeaderboard = "{}";
+  }
+  const parsed = JSON.parse(staticLeaderboard);
+
+  if (
+    parsed.date === new Date().toISOString().split("T")[0] &&
+    parsed[sorted.value]
+  ) {
+    leaderboard.value = parsed[sorted.value];
+  } else {
+    await getLeaderboard().then(() => {
+      const cpy = parsed;
+      cpy[sorted.value] = leaderboard.value;
+      cpy.date = new Date().toISOString().split("T")[0];
+
+      localStorage.setItem("staticLeaderboard", JSON.stringify(cpy));
+    });
+  }
 
   loading.value = false;
-});
+}
 </script>
 
 <template>
   <div class="options">
     <a-radio-group v-model:value="sorted">
-      <a-radio-button class="sorter" value="small">By Score</a-radio-button>
-      <a-radio-button class="sorter" value="default"
+      <a-radio-button class="sorter" value="byScore">By Score</a-radio-button>
+      <a-radio-button class="sorter" value="byCorrectPlacements"
         >By Correct Placements</a-radio-button
       >
-      <a-radio-button class="sorter" value="large"
+      <a-radio-button class="sorter" value="byCorrectRanks"
         >By Correct Ranks</a-radio-button
       >
     </a-radio-group>
@@ -74,8 +112,11 @@ onMounted(async () => {
   </div>
   <div v-if="!loading" class="leaderboard-items">
     <LeaderboardItem
-      v-for="(sub, index) in leaderboard!.byScore!.slice(100 * (current - 1), 100 * current)"
-      :sub="sub!"
+      v-for="(user, index) in leaderboard.slice(
+        100 * (current - 1),
+        100 * current
+      )"
+      :user="user"
       :rank="100 * (current - 1) + index + 1"
     />
   </div>
@@ -83,7 +124,7 @@ onMounted(async () => {
   <div class="pages">
     <a-pagination
       v-model:current="current"
-      :total="leaderboard?.byScore!.length"
+      :total="leaderboard.length"
       :defaultPageSize="100"
       :showSizeChanger="false"
     />
