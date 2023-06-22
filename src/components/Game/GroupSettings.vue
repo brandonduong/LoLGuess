@@ -27,7 +27,7 @@
       @change="onCheckAllChange"
       class="check-all"
     >
-      Check all
+      <span class="check-all-text"> Check all </span>
     </a-checkbox>
   </div>
 </template>
@@ -60,16 +60,41 @@ export default defineComponent({
 
     const checkBox = (option: String) => {
       if (!state.checkedList!.includes(option)) {
-        state.checkedList!.push(option);
+        const cpy = [...state.checkedList!];
+        cpy.push(option);
+        // Sort checked list
+        cpy.sort((a, b) =>
+          props.options!.indexOf(a) > props.options!.indexOf(b)
+            ? 1
+            : props.options!.indexOf(a) < props.options!.indexOf(b)
+            ? -1
+            : 0
+        );
+        const indet =
+          props.selectedOptions!.length &&
+          props.selectedOptions!.length < props.options!.length;
+        Object.assign(state, {
+          checkedList: cpy,
+          indeterminate: indet,
+        });
       } else {
         const ind = state.checkedList!.indexOf(option);
-        state.checkedList!.splice(ind, 1);
+        const cpy = [...state.checkedList!];
+        cpy.splice(ind, 1);
+        const indet =
+          props.selectedOptions!.length &&
+          props.selectedOptions!.length < props.options!.length;
+        Object.assign(state, {
+          checkedList: cpy,
+          indeterminate: indet,
+        });
       }
     };
 
     watch(
       () => state.checkedList,
       (val) => {
+        console.log(val);
         state.indeterminate =
           !!val!.length && val!.length < props.options!.length;
         state.checkAll = val!.length === props.options!.length;
@@ -114,6 +139,10 @@ export default defineComponent({
   align-items: center;
 }
 
+.check-all-text {
+  font-weight: 500;
+}
+
 .icon {
   height: 1.75rem;
   padding-left: 0.25rem;
@@ -122,5 +151,6 @@ export default defineComponent({
 .option-div {
   display: flex;
   align-items: center;
+  font-weight: 500;
 }
 </style>

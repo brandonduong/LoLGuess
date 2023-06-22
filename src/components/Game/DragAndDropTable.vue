@@ -7,6 +7,7 @@ import LevelIcons from "./LevelIcons.vue";
 import { onMounted, ref } from "vue";
 import http from "../../common/http-common";
 import { Sortable } from "sortablejs-vue3";
+import { DragOutlined } from "@ant-design/icons-vue";
 const props = defineProps<{
   rankedMatch: Array<object>;
   verifiedGuess: string[];
@@ -125,6 +126,7 @@ function checkIfCorrect(placement: number) {
 <template>
   <table class="table-header" v-if="!loading">
     <h2></h2>
+    <h2></h2>
     <h2>Level</h2>
     <h2>Traits</h2>
     <h2>Augments</h2>
@@ -169,6 +171,11 @@ function checkIfCorrect(placement: number) {
     >
       <template #item="{ element }">
         <tr class="draggable-row">
+          <DragOutlined
+            style="color: black; font-size: 1rem"
+            v-if="props.verifiedGuess.length === 0"
+          />
+          <div v-else></div>
           <h3><LevelIcons :level="element.level" /></h3>
           <h3>
             <TraitIcons
@@ -203,7 +210,7 @@ function checkIfCorrect(placement: number) {
 
 .table-header {
   display: grid;
-  grid-template-columns: 0.15fr 0.15fr 0.3fr 0.3fr 1fr 0.15fr;
+  grid-template-columns: 0.15fr 0.05fr 0.15fr 0.3fr 0.3fr 1fr 0.15fr;
 }
 
 .table-header > h2 {
@@ -211,7 +218,9 @@ function checkIfCorrect(placement: number) {
 }
 
 .draggable {
-  grid-column: span 5;
+  grid-column: span 6;
+  display: grid;
+  row-gap: 0.5rem;
 }
 
 .draggable-row > h3 {
@@ -224,8 +233,9 @@ function checkIfCorrect(placement: number) {
 
 .draggable-row {
   display: grid;
-  grid-template-columns: 0.15fr 0.3fr 0.3fr 1fr 0.15fr;
+  grid-template-columns: 0.05fr 0.15fr 0.3fr 0.3fr 1fr 0.15fr;
   align-items: center;
+  border: 1px solid lightslategray;
 }
 
 .placements {
@@ -262,6 +272,6 @@ function checkIfCorrect(placement: number) {
 .placements > div > h3 {
   margin: 0;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 </style>

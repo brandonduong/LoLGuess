@@ -25,3 +25,7 @@
 h3 {
   margin: 0;
 }
+
+.ant-steps-item-title {
+  font-weight: 500;
+}

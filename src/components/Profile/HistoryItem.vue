@@ -60,7 +60,6 @@ function updateScore() {
   border: solid 1px lightslategray;
   padding: 0.5rem 1rem;
   align-items: center;
-  border-radius: 0.25rem;
 }
 
 .history-item > h3 {

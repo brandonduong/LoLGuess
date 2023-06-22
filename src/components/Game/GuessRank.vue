@@ -33,6 +33,7 @@ onMounted(async () => {
       :hidden="props.verifiedRank.length !== 0"
       :disabled="props.loading"
       :loading="props.loading"
+      class="rank-select"
     >
       <a-select-option v-for="rank in props.selectedRanks" :value="rank">
         <div class="option">
@@ -83,6 +84,7 @@ onMounted(async () => {
   display: grid;
   grid-template-columns: 0.1fr 1fr;
   justify-items: start;
+  align-items: center;
 }
 
 .rank {
@@ -90,6 +92,10 @@ onMounted(async () => {
   border-radius: 1rem;
   margin: 0;
   display: flex;
+}
+
+.rank-select {
+  border: 1px solid lightslategray;
 }
 
 div.rank-div > h2 {

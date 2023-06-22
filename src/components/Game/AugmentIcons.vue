@@ -104,4 +104,8 @@ function checkIfImageExists(url: string, callback: Function) {
 .augment-amount {
   margin: 0 0 0 0.5rem;
 }
+
+.augment {
+  display: flex;
+}
 </style>

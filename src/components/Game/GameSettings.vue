@@ -246,7 +246,7 @@ const indicator = h(LoadingOutlined, {
 }
 
 .steps-action {
-  margin-top: 12px;
+  margin-top: 0.5rem;
   display: grid;
   grid-template-columns: 4fr 1fr 1fr;
   align-items: center;
