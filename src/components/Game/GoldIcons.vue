@@ -10,7 +10,7 @@ const goldLeft = ref<number>(props.goldLeft);
 <template>
   <div class="gold">
     <h3>{{ goldLeft }}</h3>
-    <img class="gold-icon" width="20" height="16" src="money.png" />
+    <img class="gold-icon" width="20" height="16" src="/money.png" />
   </div>
 </template>
 <style scoped>
