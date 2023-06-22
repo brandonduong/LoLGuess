@@ -32,10 +32,15 @@ async function getStaticProfileData() {
   };
   let url = `/getProfile?sub=${props.sub}`;
 
-  await http.api.get(url, header).then((res) => {
-    console.log(res);
-    staticProfileData.value = res.data.user;
-  });
+  await http.api
+    .get(url, header)
+    .then((res) => {
+      console.log(res);
+      staticProfileData.value = res.data.user;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 async function getStaticProfileGuesses() {

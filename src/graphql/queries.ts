@@ -16,6 +16,8 @@ export const batchFetchUser = /* GraphQL */ `
           ranks
           userGuessesId
           createdAt
+          region
+          regions
           updatedAt
         }
         nextToken
@@ -102,6 +104,8 @@ export const getUser = /* GraphQL */ `
           ranks
           userGuessesId
           createdAt
+          region
+          regions
           updatedAt
         }
         nextToken
@@ -159,6 +163,8 @@ export const getGuess = /* GraphQL */ `
       ranks
       userGuessesId
       createdAt
+      region
+      regions
       updatedAt
     }
   }
@@ -178,6 +184,8 @@ export const listGuesses = /* GraphQL */ `
         ranks
         userGuessesId
         createdAt
+        region
+        regions
         updatedAt
       }
       nextToken
@@ -252,6 +260,8 @@ export const guessesByDate = /* GraphQL */ `
         ranks
         userGuessesId
         createdAt
+        region
+        regions
         updatedAt
       }
       nextToken

@@ -16,6 +16,8 @@ export const onCreateUser = /* GraphQL */ `
           ranks
           userGuessesId
           createdAt
+          region
+          regions
           updatedAt
         }
         nextToken
@@ -48,6 +50,8 @@ export const onUpdateUser = /* GraphQL */ `
           ranks
           userGuessesId
           createdAt
+          region
+          regions
           updatedAt
         }
         nextToken
@@ -80,6 +84,8 @@ export const onDeleteUser = /* GraphQL */ `
           ranks
           userGuessesId
           createdAt
+          region
+          regions
           updatedAt
         }
         nextToken
@@ -108,6 +114,8 @@ export const onCreateGuess = /* GraphQL */ `
       ranks
       userGuessesId
       createdAt
+      region
+      regions
       updatedAt
     }
   }
@@ -122,6 +130,8 @@ export const onUpdateGuess = /* GraphQL */ `
       ranks
       userGuessesId
       createdAt
+      region
+      regions
       updatedAt
     }
   }
@@ -136,6 +146,8 @@ export const onDeleteGuess = /* GraphQL */ `
       ranks
       userGuessesId
       createdAt
+      region
+      regions
       updatedAt
     }
   }

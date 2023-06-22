@@ -7,6 +7,7 @@ import DragAndDropTable from "./DragAndDropTable.vue";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
 import GuessRank from "./GuessRank.vue";
 import GuessScore from "./GuessScore.vue";
+import GuessRegion from "./GuessRegion.vue";
 
 const auth = useAuthenticator();
 
@@ -27,6 +28,7 @@ const next = async () => {
   } else if (current.value === 3) {
     verifiedGuess = ref<string[]>([]);
     verifiedRank = ref<string>("");
+    verifiedRegion = ref<string>("");
     current.value = 0;
   } else {
     current.value++;
@@ -60,6 +62,8 @@ async function getMatch() {
       encryptedRank = res.data.rank;
       encryptedRanks = res.data.ranks;
       encryptedUnfinished = res.data.unfinished;
+      encryptedRegion = res.data.region;
+      encryptedRegions = res.data.regions;
     })
     .catch(() => {
       alert("Error finding ranked match. Please try again.");
@@ -79,6 +83,8 @@ async function verifyGuess() {
         encryptedRanks,
         selectedRank: selectedRank.value,
         encryptedUnfinished,
+        encryptedRegion,
+        encryptedRegions,
       },
       header
     )
@@ -87,6 +93,7 @@ async function verifyGuess() {
       console.log(res.data.unencrypted);
       verifiedGuess = res.data.unencrypted;
       verifiedRank = res.data.rank;
+      verifiedRegion = res.data.region;
       loading.value = false;
     });
 }
@@ -142,8 +149,11 @@ var rankedMatch = ref<object[]>([]);
 var encryptedRank = ref<string>("");
 var encryptedRanks = ref<string>("");
 var encryptedUnfinished = ref<string>("");
+var encryptedRegion = ref<string>("");
+var encryptedRegions = ref<string>("");
 var verifiedGuess = ref<string[]>([]);
 var verifiedRank = ref<string>("");
+var verifiedRegion = ref<string>("");
 
 const buttonText = ["Next", "Play", "Guess", "Play Again"];
 
@@ -212,6 +222,7 @@ const indicator = h(LoadingOutlined, {
           :verifiedGuess="verifiedGuess"
           v-if="current === 3"
         />
+        <GuessRegion :region="verifiedRegion" v-if="current === 3" />
       </div>
       <div v-else></div>
       <a-button
@@ -253,8 +264,8 @@ const indicator = h(LoadingOutlined, {
 }
 
 .extra {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  justify-content: space-between;
 }
 
 .step {

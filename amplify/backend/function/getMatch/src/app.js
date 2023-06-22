@@ -157,6 +157,10 @@ app.get("/getMatch", async function (req, res) {
 
   // Get random region
   var region = regions[Math.floor(Math.random() * regions.length)];
+  const encryptedRegion = CryptoJS.AES.encrypt(
+    `${region}`,
+    RIOT_TOKEN
+  ).toString();
 
   // Get random rank
   var rank = ranks[Math.floor(Math.random() * ranks.length)];
@@ -279,7 +283,7 @@ app.get("/getMatch", async function (req, res) {
 
   const baseRegionalUrl = `https://${matchesRegion}.api.riotgames.com/tft`;
   const count = 100;
-  const startTime = Math.floor(new Date("2023.05.3").getTime() / 1000); // Only get matches from current patch
+  const startTime = Math.floor(new Date("2023.06.7").getTime() / 1000); // Only get matches from current patch
   const matchesUrl = `/match/v1/matches/by-puuid/${puuid}/ids?count=${count}&startTime=${startTime}`;
   console.log(baseRegionalUrl + matchesUrl);
 
@@ -342,6 +346,11 @@ app.get("/getMatch", async function (req, res) {
     ranks: CryptoJS.AES.encrypt(`${ranks.toString()}`, RIOT_TOKEN).toString(),
     unfinished: CryptoJS.AES.encrypt(
       `${(user.unfinished + 1).toString()}`,
+      RIOT_TOKEN
+    ).toString(),
+    region: encryptedRegion,
+    regions: CryptoJS.AES.encrypt(
+      `${regions.toString()}`,
       RIOT_TOKEN
     ).toString(),
   });

@@ -8,7 +8,8 @@ import Supporters from "../components/Supporter/Supporters.vue";
     <h3>
       If you mistakingly supported me on
       <a href="https://ko-fi.com/brandonduong" target="_blank">Ko-fi</a>, no
-      matter the amount, I will put your name and message here!
+      matter the amount, I will put your name/username, profile, and message
+      here!
     </h3>
     <Supporters />
   </div>

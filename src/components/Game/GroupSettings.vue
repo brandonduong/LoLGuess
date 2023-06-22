@@ -94,7 +94,6 @@ export default defineComponent({
     watch(
       () => state.checkedList,
       (val) => {
-        console.log(val);
         state.indeterminate =
           !!val!.length && val!.length < props.options!.length;
         state.checkAll = val!.length === props.options!.length;

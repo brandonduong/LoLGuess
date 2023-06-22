@@ -40,5 +40,6 @@ const current = ref<number>(1);
 .pages {
   display: flex;
   justify-content: center;
+  padding-top: 0.25rem;
 }
 </style>

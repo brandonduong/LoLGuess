@@ -102,7 +102,15 @@ async function getUser(sub) {
   return body.data.getUser;
 }
 
-async function createGuess(user, unencrypted, rank, ranks, selectedRank) {
+async function createGuess(
+  user,
+  unencrypted,
+  rank,
+  ranks,
+  selectedRank,
+  region,
+  regions
+) {
   const query = /* GraphQL */ `
     mutation CREATE_GUESS($input: CreateGuessInput!) {
       createGuess(input: $input) {
@@ -112,6 +120,8 @@ async function createGuess(user, unencrypted, rank, ranks, selectedRank) {
         rank
         ranks
         userGuessesId
+        region
+        regions
       }
     }
   `;
@@ -122,6 +132,8 @@ async function createGuess(user, unencrypted, rank, ranks, selectedRank) {
       rank,
       ranks,
       userGuessesId: user.id,
+      region,
+      regions,
     },
   };
   const requestToBeSigned = new HttpRequest({
@@ -297,11 +309,14 @@ app.post("/verifyGuess", async function (req, res) {
   const encryptedRank = req.body.encryptedRank;
   const encryptedRanks = req.body.encryptedRanks;
   const selectedRank = req.body.selectedRank;
+  const encryptedRegion = req.body.encryptedRegion;
+  const encryptedRegions = req.body.encryptedRegions;
 
   // Decrement Unfinished Games for User
   const user = await getUser(
     req.apiGateway.event.requestContext.authorizer.claims.sub
   );
+
   const rank = CryptoJS.AES.decrypt(encryptedRank, RIOT_TOKEN).toString(
     CryptoJS.enc.Utf8
   );
@@ -315,13 +330,29 @@ app.post("/verifyGuess", async function (req, res) {
         CryptoJS.enc.Utf8
       )
   );
+  const region = CryptoJS.AES.decrypt(encryptedRegion, RIOT_TOKEN).toString(
+    CryptoJS.enc.Utf8
+  );
+  const regions = CryptoJS.AES.decrypt(encryptedRegions, RIOT_TOKEN)
+    .toString(CryptoJS.enc.Utf8)
+    .split(",");
+
+  // Check that user did not cheat
   if (
     user.unfinished.toString() ===
     CryptoJS.AES.decrypt(req.body.encryptedUnfinished, RIOT_TOKEN).toString(
       CryptoJS.enc.Utf8
     )
   ) {
-    await createGuess(user, unencrypted, rank, ranks, selectedRank);
+    await createGuess(
+      user,
+      unencrypted,
+      rank,
+      ranks,
+      selectedRank,
+      region,
+      regions
+    );
     const stats = calculateStats(user, unencrypted, selectedRank, rank, ranks);
     await updateUserStats(user, stats);
   } else {
@@ -331,6 +362,7 @@ app.post("/verifyGuess", async function (req, res) {
   res.json({
     unencrypted,
     rank,
+    region,
   });
 });
 

@@ -34,20 +34,20 @@ const [scored, maxScore] = calculateScore(
             guess is and how many ranks were included in the pool. A maximum 36,
             27, or 13.5 points are awarded if the guess is off by 0, 1, or 2
             positions. For every 1 rank that isn't included in the full pool of
-            9 ranks will decrease those maximum points following the equation
+            9 ranks, those maximum points will decrease following the equation
             (maximum * # of ranks in pool / 9). If the pool size is smaller than
             4, 0 points are awarded.
           </h4>
         </div>
       </template>
-      <InfoCircleOutlined class="info" />
+      <InfoCircleOutlined class="info" style="color: black" />
     </a-popover>
   </div>
 </template>
 <style scoped>
 .score-div {
   display: grid;
-  grid-template-columns: 0.1fr 1fr;
+  grid-template-columns: auto auto;
   justify-items: start;
   align-items: center;
 }

@@ -35,6 +35,8 @@ type Guess
       sortKeyFields: ["createdAt"]
     )
   createdAt: String!
+  region: String
+  regions: [String]
 }
 
 type Leaderboard
