@@ -18,3 +18,10 @@
 .ant-checkbox {
   top: 0;
 }
+.ant-statistic-content-value {
+  font-weight: 500;
+}
+
+h3 {
+  margin: 0;
+}

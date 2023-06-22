@@ -126,11 +126,11 @@ const filters = [
 <template>
   <div class="options">
     <div class="timer">
-      Updates in:
+      <h3>Updates in:</h3>
       <a-statistic-countdown
         :value="timer"
         @finish="update()"
-        valueStyle="font-size: 1.25rem"
+        valueStyle="font-size: 1.17em;"
       />
     </div>
   </div>
@@ -193,10 +193,9 @@ const filters = [
 
 .timer {
   display: grid;
-  align-items: center;
+  align-items: end;
   grid-template-columns: auto auto;
   column-gap: 0.5rem;
-  font-size: 1.25rem;
   color: rgba(0, 0, 0, 0.85);
 }
 

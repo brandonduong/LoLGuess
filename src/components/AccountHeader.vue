@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { useAuthenticator } from "@aws-amplify/ui-vue";
-import { UserOutlined } from "@ant-design/icons-vue";
+import {
+  CoffeeOutlined,
+  HeartOutlined,
+  UserOutlined,
+} from "@ant-design/icons-vue";
 const auth = useAuthenticator();
 </script>
 
@@ -27,7 +31,25 @@ const auth = useAuthenticator();
             <RouterLink to="/leaderboard" class="dropdown-link"
               >Leaderboard</RouterLink
             >
+            <RouterLink to="/supporters" class="dropdown-link"
+              >Supporters</RouterLink
+            >
             <a-divider class="divider" />
+            <div class="kofi-div">
+              <a-button
+                type="primary"
+                class="kofi"
+                href="https://ko-fi.com/brandonduong"
+                target="_blank"
+                ><HeartOutlined
+                  style="font-size: 1.25rem; color: white" /><CoffeeOutlined
+                  style="font-size: 1.25rem; color: white" /><HeartOutlined
+                  style="font-size: 1.25rem; color: white" />
+                <CoffeeOutlined
+                  style="font-size: 1.25rem; color: white" /><HeartOutlined
+                  style="font-size: 1.25rem; color: white"
+              /></a-button>
+            </div>
             <div class="signout-div">
               <a-button type="primary" class="signout" @click="auth.signOut"
                 >Sign Out</a-button
@@ -101,12 +123,26 @@ const auth = useAuthenticator();
   color: hsl(51, 100%, 50%) !important;
 }
 
-.signout {
+.signout,
+.kofi {
   width: 100%;
   margin-top: 0.25rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
-.signout-div {
+.kofi {
+  border: #cc93ce;
+  transition: 0.3s;
+}
+.kofi-div :hover {
+  background-color: #d2b0d3;
+}
+
+.signout-div,
+.kofi-div {
   padding: 0 0.25rem;
 }
 
@@ -135,5 +171,11 @@ const auth = useAuthenticator();
 
 .dropdown-content {
   margin: -0.25rem -0.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.kofi {
+  background-color: #cc93ce;
 }
 </style>

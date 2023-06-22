@@ -26,6 +26,8 @@ const signer = new SignatureV4({
   sha256: Sha256,
 });
 
+const MIN_NUMBER_OF_GUESSES = 10;
+
 async function createLeaderboard(
   byScore,
   byCorrectPlacements,
@@ -111,6 +113,11 @@ async function searchUsers(sortField) {
     sort: {
       direction: "desc",
       field: sortField,
+    },
+    filter: {
+      totalGuesses: {
+        gt: MIN_NUMBER_OF_GUESSES,
+      },
     },
     limit: 100,
   };
