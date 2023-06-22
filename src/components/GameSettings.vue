@@ -150,7 +150,7 @@ const indicator = h(LoadingOutlined, {
 
 <template>
   <div>
-    <a-steps :current="current">
+    <a-steps :current="current" class="steps">
       <a-step
         v-for="item in steps"
         :key="item.title"
@@ -205,7 +205,7 @@ const indicator = h(LoadingOutlined, {
       </div>
       <div v-else></div>
       <a-button
-        :disabled="!(current > 0 && current < steps.length - 1)"
+        :disabled="!(current > 0 && current < steps.length - 1) || loading"
         @click="prev"
         >Previous</a-button
       >
@@ -216,7 +216,8 @@ const indicator = h(LoadingOutlined, {
         :disabled="
           (selectedRegions.length === 0 && current === 0) ||
           (selectedRanks.length === 0 && current === 1) ||
-          (current === 2 && !selectedRank)
+          (current === 2 && !selectedRank) ||
+          loading
         "
         >{{ buttonText[current] }}</a-button
       >
@@ -227,11 +228,11 @@ const indicator = h(LoadingOutlined, {
 <style scoped>
 .steps-content {
   margin-top: 16px;
-  border: 1px dashed #e9e9e9;
-  border-radius: 6px;
-  background-color: #fafafa;
+  border: 1px solid lightslategray;
+  border-radius: 0.25rem;
+  background-color: white;
   text-align: center;
-  padding: 0.5rem 1rem 1rem;
+  padding: 0.25rem 0.5rem 0.5rem;
 }
 
 .steps-action {
@@ -241,11 +242,6 @@ const indicator = h(LoadingOutlined, {
   align-items: center;
 }
 
-[data-theme="dark"] .steps-content {
-  background-color: #2f2f2f;
-  border: 1px dashed #404040;
-}
-
 .extra {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -253,5 +249,12 @@ const indicator = h(LoadingOutlined, {
 
 .step {
   cursor: context-menu;
+}
+
+.steps {
+  border: 1px solid lightslategray;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  background-color: white;
 }
 </style>

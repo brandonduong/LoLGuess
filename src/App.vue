@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
+import { RouterView } from "vue-router";
 import AccountHeader from "./components/AccountHeader.vue";
 
 import { Authenticator, useAuthenticator } from "@aws-amplify/ui-vue";
-import "@aws-amplify/ui-vue/styles.css";
-import "ant-design-vue/dist/antd.css";
 const auth = useAuthenticator();
 </script>
 

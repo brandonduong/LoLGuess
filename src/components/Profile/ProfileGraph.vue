@@ -92,6 +92,10 @@ const options = {
 <style scoped>
 .graph {
   border: solid 1px lightslategray;
-  padding: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  background-color: white;
+  display: flex;
+  align-items: center;
 }
 </style>

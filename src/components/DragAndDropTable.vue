@@ -190,7 +190,7 @@ function checkIfCorrect(placement: number) {
               :staticTFTItemData="staticTFTItemData"
             />
           </h3>
-          <h3><GoldIcons :goldLeft="element.gold_left" /></h3>
+          <GoldIcons :goldLeft="element.gold_left" />
         </tr>
       </template>
     </Sortable>

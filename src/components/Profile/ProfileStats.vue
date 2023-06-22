@@ -70,7 +70,9 @@ function refresh() {
   grid-template-columns: 1fr 1fr;
   column-gap: 2rem;
   border: solid 1px lightslategray;
-  padding: 1rem 1.5rem;
+  border-radius: 0.25rem;
+  background-color: white;
+  padding: 0.5rem 1.5rem;
   align-items: center;
 }
 

@@ -32,7 +32,9 @@ const current = ref<number>(1);
   border: solid 1px lightslategray;
   padding: 1rem;
   display: grid;
-  row-gap: 1rem;
+  row-gap: 0.5rem;
+  border-radius: 0.25rem;
+  background-color: white;
 }
 
 .pages {

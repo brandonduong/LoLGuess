@@ -3,20 +3,28 @@ import { h, onMounted, onUpdated, ref } from "vue";
 import { type User } from "../../API";
 import LeaderboardItem from "./LeaderboardItem.vue";
 import { LoadingOutlined } from "@ant-design/icons-vue";
-import { API } from "aws-amplify";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
 import http from "../../common/http-common";
+import { CaretDownOutlined } from "@ant-design/icons-vue";
 const auth = useAuthenticator();
 
 const current = ref<number>(1);
+
+// Watch variable sorted
 const sorted = ref<string>("byScore");
 const oldSorted = ref<string>("byScore");
+
+// For update countdown
 const now = new Date();
+const nowToronto = new Date().toLocaleString("en-US", {
+  hour: "2-digit",
+  timeZone: "America/Toronto",
+});
 const updateUTC = Date.UTC(
   now.getUTCFullYear(),
   now.getUTCMonth(),
   now.getUTCDate() + 1,
-  4,
+  0,
   0,
   0
 );
@@ -86,50 +94,72 @@ async function update() {
   }
   loading.value = false;
 }
+
+function getLeaderboardHeaderClass(value: string) {
+  return `filter ` + (sorted.value === value ? `selected` : ``);
+}
+
+const filters = [
+  {
+    filter: "byScore",
+    title: "Score",
+  },
+  {
+    filter: "byCorrectPlacements",
+    title: "Cor. Placements",
+  },
+  {
+    filter: "byCorrectRanks",
+    title: "Cor. Ranks",
+  },
+  {
+    filter: "byAverageScore",
+    title: "Avg. Score",
+  },
+  {
+    filter: "byAverageCorrectPlacements",
+    title: "Avg. Cor. Placements",
+  },
+];
 </script>
 
 <template>
   <div class="options">
-    <a-radio-group v-model:value="sorted">
-      <a-radio-button class="sorter" value="byScore">By Score</a-radio-button>
-      <a-radio-button class="sorter" value="byCorrectPlacements"
-        >By Correct Placements</a-radio-button
-      >
-      <a-radio-button class="sorter" value="byCorrectRanks"
-        >By Correct Ranks</a-radio-button
-      >
-    </a-radio-group>
-    <div class="filters">
-      Updates in: {{ timer }}
-      <a-statistic-countdown :value="timer" @finish="update()" />
-      Last updated:
+    <div class="timer">
+      Updates in:
+      <a-statistic-countdown
+        :value="timer"
+        @finish="update()"
+        valueStyle="font-size: 1.25rem"
+      />
     </div>
   </div>
-  <div class="leaderboard-header">
-    <h2>Rank</h2>
-    <h2>Username</h2>
-    <h2>Score</h2>
-    <h2>Correct Placements</h2>
-    <h2>Correct Ranks</h2>
-  </div>
-  <div v-if="!loading" class="leaderboard-items">
-    <LeaderboardItem
-      v-for="(user, index) in leaderboard.slice(
-        100 * (current - 1),
-        100 * current
-      )"
-      :user="user"
-      :rank="100 * (current - 1) + index + 1"
-    />
-  </div>
-  <div v-else><a-spin :indicator="indicator"></a-spin></div>
-  <div class="pages">
-    <a-pagination
-      v-model:current="current"
-      :total="leaderboard.length"
-      :defaultPageSize="100"
-      :showSizeChanger="false"
-    />
+  <div class="table">
+    <div class="leaderboard-header">
+      <h3>Rank</h3>
+      <h3>Username</h3>
+      <div
+        v-for="filter in filters"
+        class="leaderboard-header-item"
+        @click="() => (sorted = filter.filter)"
+      >
+        <h3 :class="getLeaderboardHeaderClass(filter.filter)">
+          {{ filter.title }}
+        </h3>
+        <CaretDownOutlined
+          v-if="filter.filter === sorted"
+          style="font-size: 1.5rem; color: rgba(0, 0, 0, 0.85)"
+        />
+      </div>
+    </div>
+    <div v-if="!loading" class="leaderboard-items">
+      <LeaderboardItem
+        v-for="(user, index) in leaderboard"
+        :user="user"
+        :rank="100 * (current - 1) + index + 1"
+      />
+    </div>
+    <div class="loading" v-else><a-spin :indicator="indicator"></a-spin></div>
   </div>
 </template>
 
@@ -142,33 +172,18 @@ async function update() {
 
 .leaderboard-header {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1.25fr;
   justify-content: space-between;
-  padding: 1rem 0;
+  column-gap: 1rem;
+  padding: 0.5rem;
   align-items: center;
   justify-items: center;
-  border: solid 1px lightslategray;
+  border-bottom: solid 1px lightslategray;
 }
 
-.leaderboard-header > h2 {
+.leaderboard-header > h3 {
   margin: 0;
-}
-
-label.ant-radio-button-wrapper.ant-radio-button-wrapper-checked.sorter {
-  border-color: lightslategray !important;
-  color: rgba(0, 0, 0, 0.85);
-  box-shadow: none;
-}
-label.ant-radio-button-wrapper.ant-radio-button-wrapper-checked.sorter::before {
-  background-color: lightslategray;
-}
-
-.sorter:hover {
   color: lightslategray;
-}
-
-.sorter {
-  border-width: 1px 1px 0 1px;
 }
 
 .options {
@@ -176,7 +191,41 @@ label.ant-radio-button-wrapper.ant-radio-button-wrapper-checked.sorter::before {
   justify-content: space-between;
 }
 
-.filters {
+.timer {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto auto;
+  column-gap: 0.5rem;
+  font-size: 1.25rem;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.table {
   display: flex;
+  flex-direction: column;
+  border: solid 1px lightslategray;
+  min-width: -webkit-min-content;
+}
+
+.filter {
+  cursor: pointer;
+  margin: 0;
+}
+
+.selected {
+  text-decoration: underline;
+}
+
+.leaderboard-header-item {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
 }
 </style>

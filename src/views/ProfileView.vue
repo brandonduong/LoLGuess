@@ -141,7 +141,7 @@ async function forceUpdate() {
       :guesses="(staticProfileGuesses!.guessesByDate!.items as [Guess])"
     />
   </div>
-  <div v-else><a-spin :indicator="indicator"></a-spin></div>
+  <div class="loading" v-else><a-spin :indicator="indicator"></a-spin></div>
 </template>
 
 <style scoped>
@@ -152,7 +152,17 @@ async function forceUpdate() {
 .profile {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 1rem;
-  row-gap: 1rem;
+  column-gap: 0.5rem;
+  row-gap: 0.5rem;
+}
+
+.loading {
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: solid 1px lightslategray;
+  border-radius: 0.25rem;
+  background-color: white;
 }
 </style>

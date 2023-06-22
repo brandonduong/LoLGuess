@@ -1,3 +1,5 @@
+import "@aws-amplify/ui-vue/styles.css";
+import "ant-design-vue/dist/antd.css";
 import "./assets/main.css";
 
 import { createApp } from "vue";

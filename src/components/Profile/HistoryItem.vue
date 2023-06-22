@@ -58,8 +58,9 @@ function updateScore() {
   display: grid;
   grid-template-columns: 0.45fr 0.75fr auto;
   border: solid 1px lightslategray;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 1rem;
   align-items: center;
+  border-radius: 0.25rem;
 }
 
 .history-item > h3 {

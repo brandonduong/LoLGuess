@@ -44,7 +44,11 @@ const props = defineProps<{
 
 const unitStyles = ref<UnitStyle[]>([]);
 
-props.units.forEach((unit) => {
+function sortByCostThenStar(a: APIUnit, b: APIUnit) {
+  return a.rarity - b.rarity || a.tier - b.tier;
+}
+
+props.units.sort(sortByCostThenStar).forEach((unit) => {
   const unitInfo = props.staticTFTUnitData.filter((u) => {
     // For set 8.5 return u.character_id === unit.character_id;
     // For set 9, new return as some ids are messy (Ryze, Reksai)
@@ -85,7 +89,7 @@ props.units.forEach((unit) => {
 <template>
   <div class="units">
     <div v-for="unit in unitStyles" class="unit">
-      <div>
+      <div class="star-div">
         <star-filled
           v-for="t in unit.tier"
           :class="`star rarity${unit.rarity}`"
@@ -165,5 +169,10 @@ props.units.forEach((unit) => {
 
 .star {
   font-size: 12px;
+}
+
+.star-div {
+  display: flex;
+  padding: 0.25rem 0;
 }
 </style>
