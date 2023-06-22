@@ -2,7 +2,7 @@
 import { ref, onUpdated, onMounted } from "vue";
 import type { Guess } from "@/API";
 import { calculateScore } from "@/common/helper";
-import RankIcon from "../RankIcon.vue";
+import RankIcon from "../Game/RankIcon.vue";
 
 const props = defineProps<{
   guess: Guess;

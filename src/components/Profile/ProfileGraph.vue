@@ -28,29 +28,31 @@ ChartJS.register(
   Legend
 );
 
-console.log(props.guesses);
-
 const scoreData = ref<number[]>([]);
 const maxScoreData = ref<number[]>([]);
 const labels = ref<string[]>([]);
 
 // Initialize data for graph
-props.guesses.forEach((x: Guess) => {
-  const [score, maxScore] = calculateScore(
-    x.placements,
-    x.guessedRank,
-    x.rank,
-    x.ranks
-  );
-  labels.value.push(
-    new Date(x.createdAt).toLocaleString("default", {
-      month: "short",
-      day: "numeric",
-    })
-  );
-  scoreData.value.push(score);
-  maxScoreData.value.push(maxScore);
-});
+props.guesses
+  .sort((a, b) =>
+    a.createdAt > b.createdAt ? 1 : a.createdAt < b.createdAt ? -1 : 0
+  )
+  .forEach((x: Guess) => {
+    const [score, maxScore] = calculateScore(
+      x.placements,
+      x.guessedRank,
+      x.rank,
+      x.ranks
+    );
+    labels.value.push(
+      new Date(x.createdAt).toLocaleString("default", {
+        month: "short",
+        day: "numeric",
+      })
+    );
+    scoreData.value.push(score);
+    maxScoreData.value.push(maxScore);
+  });
 
 const data = {
   labels: labels.value,

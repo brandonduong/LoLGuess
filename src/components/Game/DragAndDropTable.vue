@@ -5,7 +5,7 @@ import UnitIcons from "./UnitIcons.vue";
 import GoldIcons from "./GoldIcons.vue";
 import LevelIcons from "./LevelIcons.vue";
 import { onMounted, ref } from "vue";
-import http from "../common/http-common";
+import http from "../../common/http-common";
 import { Sortable } from "sortablejs-vue3";
 const props = defineProps<{
   rankedMatch: Array<object>;

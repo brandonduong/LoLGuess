@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { InfoCircleOutlined } from "@ant-design/icons-vue";
-import { calculateScore } from "../common/helper";
+import { calculateScore } from "../../common/helper";
 
 const props = defineProps<{
   verifiedRank: string;

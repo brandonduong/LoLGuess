@@ -15,15 +15,15 @@ const sorted = ref<string>("byScore");
 const oldSorted = ref<string>("byScore");
 
 // For update countdown
-const now = new Date();
-const nowToronto = new Date().toLocaleString("en-US", {
-  hour: "2-digit",
-  timeZone: "America/Toronto",
-});
+const nowToronto = new Date(
+  new Date().toLocaleString("en-US", {
+    timeZone: "America/Toronto",
+  })
+);
 const updateUTC = Date.UTC(
-  now.getUTCFullYear(),
-  now.getUTCMonth(),
-  now.getUTCDate() + 1,
+  nowToronto.getUTCFullYear(),
+  nowToronto.getUTCMonth(),
+  nowToronto.getUTCDate() + 1,
   0,
   0,
   0

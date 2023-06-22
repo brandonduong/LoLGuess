@@ -6,6 +6,7 @@ const props = defineProps<{
   selectedRanks: string[];
   verifiedRank: string;
   selectedRank: string;
+  loading: boolean;
 }>();
 
 const emit = defineEmits(["updateSelectedRank"]);
@@ -30,6 +31,8 @@ onMounted(async () => {
       placeholder="Guess Rank"
       :dropdownMatchSelectWidth="false"
       :hidden="props.verifiedRank.length !== 0"
+      :disabled="props.loading"
+      :loading="props.loading"
     >
       <a-select-option v-for="rank in props.selectedRanks" :value="rank">
         <div class="option">

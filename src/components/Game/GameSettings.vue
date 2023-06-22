@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, h } from "vue";
 import { LoadingOutlined } from "@ant-design/icons-vue";
-import http from "../common/http-common";
+import http from "../../common/http-common";
 import GroupSettings from "./GroupSettings.vue";
 import DragAndDropTable from "./DragAndDropTable.vue";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
@@ -19,7 +19,9 @@ const next = async () => {
     });
   } else if (current.value === 2) {
     console.log(selectedGuess.value);
+    loading.value = true;
     await verifyGuess().then(() => {
+      loading.value = false;
       current.value++;
     });
   } else if (current.value === 3) {
@@ -50,14 +52,20 @@ async function getMatch() {
   console.log(url);
 
   loading.value = true;
-  await http.api.get(url, header).then((res) => {
-    console.log(res);
-    rankedMatch = res.data.rankedMatch;
-    encryptedRank = res.data.rank;
-    encryptedRanks = res.data.ranks;
-    encryptedUnfinished = res.data.unfinished;
-    loading.value = false;
-  });
+  await http.api
+    .get(url, header)
+    .then((res) => {
+      console.log(res);
+      rankedMatch = res.data.rankedMatch;
+      encryptedRank = res.data.rank;
+      encryptedRanks = res.data.ranks;
+      encryptedUnfinished = res.data.unfinished;
+    })
+    .catch(() => {
+      alert("Error finding ranked match. Please try again.");
+      prev();
+    });
+  loading.value = false;
 }
 async function verifyGuess() {
   let url = "/verifyGuess";
@@ -173,6 +181,7 @@ const indicator = h(LoadingOutlined, {
             :options="ranks"
             :selected-options="selectedRanks"
             @update-selected-options="selectedRanks = $event"
+            :icons="true"
           />
         </div>
         <div v-if="current === 2 || current === 3">
@@ -194,6 +203,7 @@ const indicator = h(LoadingOutlined, {
           @update-selected-rank="selectedRank = $event"
           :selectedRank="selectedRank"
           :verifiedRank="verifiedRank"
+          :loading="loading"
         />
         <GuessScore
           :selectedRank="selectedRank"

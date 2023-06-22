@@ -1,15 +1,31 @@
 <template>
-  <a-checkbox-group
-    class="options"
-    v-model:value="checkedList"
-    :options="options"
-  />
+  <div class="options">
+    <a-checkbox
+      class="option"
+      v-model:value="checkedList"
+      v-for="option in options"
+      :checked="checkedList!.includes(option)"
+      @click="checkBox(option)"
+    >
+      <div class="option-div">
+        {{ option }}
+        <img
+          v-if="icons"
+          :src="`/${option.toLowerCase()}.png`"
+          :alt="option.toString()"
+          :title="option.toString()"
+          class="icon"
+        />
+      </div>
+    </a-checkbox>
+  </div>
   <a-divider class="divider" />
   <div class="all">
     <a-checkbox
       v-model:checked="checkAll"
       :indeterminate="indeterminate"
       @change="onCheckAllChange"
+      class="check-all"
     >
       Check all
     </a-checkbox>
@@ -20,7 +36,11 @@
 import { defineComponent, reactive, toRefs, watch } from "vue";
 
 export default defineComponent({
-  props: { options: Array<String>, selectedOptions: Array<String> },
+  props: {
+    options: Array<String>,
+    selectedOptions: Array<String>,
+    icons: Boolean,
+  },
   emits: ["updateSelectedOptions"],
   setup(props, { emit }) {
     const state = reactive({
@@ -37,6 +57,16 @@ export default defineComponent({
         indeterminate: false,
       });
     };
+
+    const checkBox = (option: String) => {
+      if (!state.checkedList!.includes(option)) {
+        state.checkedList!.push(option);
+      } else {
+        const ind = state.checkedList!.indexOf(option);
+        state.checkedList!.splice(ind, 1);
+      }
+    };
+
     watch(
       () => state.checkedList,
       (val) => {
@@ -50,6 +80,7 @@ export default defineComponent({
     return {
       ...toRefs(state),
       onCheckAllChange,
+      checkBox,
     };
   },
 });
@@ -57,9 +88,8 @@ export default defineComponent({
 <style scoped>
 .options {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 0fr;
-  padding: 1rem 2rem 0;
-  font-size: 2rem;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  padding: 0.25rem 2rem 0;
 }
 
 .all {
@@ -68,6 +98,29 @@ export default defineComponent({
 }
 
 .divider {
-  margin: 1rem 0;
+  margin: 0.5rem 0;
+}
+
+.option {
+  margin: 0;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.check-all {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  height: 1.75rem;
+  padding-left: 0.25rem;
+}
+
+.option-div {
+  display: flex;
+  align-items: center;
 }
 </style>
