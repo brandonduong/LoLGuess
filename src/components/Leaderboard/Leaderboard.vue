@@ -157,10 +157,12 @@ const filters = [
     </div>
     <div v-if="!loading" class="leaderboard-items">
       <LeaderboardItem
+        v-if="leaderboard && leaderboard.length > 0"
         v-for="(user, index) in leaderboard"
         :user="user"
         :rank="100 * (current - 1) + index + 1"
       />
+      <a-empty class="empty" v-else />
     </div>
     <div class="loading" v-else><a-spin :indicator="indicator"></a-spin></div>
   </div>
@@ -229,5 +231,8 @@ const filters = [
   align-items: center;
   justify-content: center;
   background-color: white;
+}
+.empty {
+  padding: 2rem 0;
 }
 </style>

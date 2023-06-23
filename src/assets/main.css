@@ -29,3 +29,8 @@ h3 {
 .ant-steps-item-title {
   font-weight: 500;
 }
+
+.ant-empty-description {
+  color: lightslategray;
+  font-weight: 500;
+}

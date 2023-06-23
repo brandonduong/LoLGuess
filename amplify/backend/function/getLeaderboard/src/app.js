@@ -162,7 +162,10 @@ app.get("/getLeaderboard", async function (req, res) {
   console.log(`EVENT: ${JSON.stringify(req.apiGateway.event)}`);
   const param = req.apiGateway.event.queryStringParameters;
   const leaderboard = await getLeaderboard();
-  const users = await getLeaderboardUsers(leaderboard, param.sort);
+  var users = [];
+  if (leaderboard.ids.length > 0) {
+    users = await getLeaderboardUsers(leaderboard, param.sort);
+  }
   res.json({ users });
 });
 

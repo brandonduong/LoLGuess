@@ -36,118 +36,57 @@ export const batchFetchUser = /* GraphQL */ `
     }
   }
 `;
-export const getGuess = /* GraphQL */ `
-  query GetGuess($id: ID!) {
-    getGuess(id: $id) {
-      id
-      placements
-      guessedRank
-      rank
-      ranks
-      userGuessesId
-      createdAt
-      region
-      regions
-      updatedAt
-    }
-  }
-`;
-export const listGuesses = /* GraphQL */ `
-  query ListGuesses(
-    $filter: ModelGuessFilterInput
+export const searchUsers = /* GraphQL */ `
+  query SearchUsers(
+    $filter: SearchableUserFilterInput
+    $sort: [SearchableUserSortInput]
     $limit: Int
     $nextToken: String
+    $from: Int
+    $aggregates: [SearchableUserAggregationInput]
   ) {
-    listGuesses(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        placements
-        guessedRank
-        rank
-        ranks
-        userGuessesId
-        createdAt
-        region
-        regions
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getLeaderboard = /* GraphQL */ `
-  query GetLeaderboard($date: ID!) {
-    getLeaderboard(date: $date) {
-      byCorrectPlacements
-      byCorrectRanks
-      byScore
-      byAverageCorrectPlacements
-      byAverageScore
-      date
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listLeaderboards = /* GraphQL */ `
-  query ListLeaderboards(
-    $date: ID
-    $filter: ModelLeaderboardFilterInput
-    $limit: Int
-    $nextToken: String
-    $sortDirection: ModelSortDirection
-  ) {
-    listLeaderboards(
-      date: $date
+    searchUsers(
       filter: $filter
+      sort: $sort
       limit: $limit
       nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
-      items {
-        byCorrectPlacements
-        byCorrectRanks
-        byScore
-        byAverageCorrectPlacements
-        byAverageScore
-        date
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const guessesByDate = /* GraphQL */ `
-  query GuessesByDate(
-    $userGuessesId: ID!
-    $createdAt: ModelStringKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelGuessFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    guessesByDate(
-      userGuessesId: $userGuessesId
-      createdAt: $createdAt
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
+      from: $from
+      aggregates: $aggregates
     ) {
       items {
         id
-        placements
-        guessedRank
-        rank
-        ranks
-        userGuessesId
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        averageCorrectPlacements
+        averageScore
         createdAt
-        region
-        regions
         updatedAt
       }
       nextToken
+      total
+      aggregateItems {
+        name
+        result {
+          ... on SearchableAggregateScalarResult {
+            value
+          }
+          ... on SearchableAggregateBucketResult {
+            buckets {
+              key
+              doc_count
+            }
+          }
+        }
+      }
     }
   }
 `;
@@ -214,57 +153,118 @@ export const listUsers = /* GraphQL */ `
     }
   }
 `;
-export const searchUsers = /* GraphQL */ `
-  query SearchUsers(
-    $filter: SearchableUserFilterInput
-    $sort: [SearchableUserSortInput]
+export const getGuess = /* GraphQL */ `
+  query GetGuess($id: ID!) {
+    getGuess(id: $id) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      userGuessesId
+      createdAt
+      region
+      regions
+      updatedAt
+    }
+  }
+`;
+export const listGuesses = /* GraphQL */ `
+  query ListGuesses(
+    $filter: ModelGuessFilterInput
     $limit: Int
     $nextToken: String
-    $from: Int
-    $aggregates: [SearchableUserAggregationInput]
   ) {
-    searchUsers(
+    listGuesses(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        placements
+        guessedRank
+        rank
+        ranks
+        userGuessesId
+        createdAt
+        region
+        regions
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const guessesByDate = /* GraphQL */ `
+  query GuessesByDate(
+    $userGuessesId: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelGuessFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    guessesByDate(
+      userGuessesId: $userGuessesId
+      createdAt: $createdAt
+      sortDirection: $sortDirection
       filter: $filter
-      sort: $sort
       limit: $limit
       nextToken: $nextToken
-      from: $from
-      aggregates: $aggregates
     ) {
       items {
         id
-        username
-        guesses {
-          nextToken
-        }
-        score
-        maxScore
-        correctPlacements
-        correctRanks
-        totalRanks
-        unfinished
-        totalGuesses
-        averageCorrectPlacements
-        averageScore
+        placements
+        guessedRank
+        rank
+        ranks
+        userGuessesId
+        createdAt
+        region
+        regions
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getLeaderboard = /* GraphQL */ `
+  query GetLeaderboard($date: ID!) {
+    getLeaderboard(date: $date) {
+      byCorrectPlacements
+      byCorrectRanks
+      byScore
+      byAverageCorrectPlacements
+      byAverageScore
+      date
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listLeaderboards = /* GraphQL */ `
+  query ListLeaderboards(
+    $date: ID
+    $filter: ModelLeaderboardFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listLeaderboards(
+      date: $date
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        byCorrectPlacements
+        byCorrectRanks
+        byScore
+        byAverageCorrectPlacements
+        byAverageScore
+        date
         createdAt
         updatedAt
       }
       nextToken
-      total
-      aggregateItems {
-        name
-        result {
-          ... on SearchableAggregateScalarResult {
-            value
-          }
-          ... on SearchableAggregateBucketResult {
-            buckets {
-              key
-              doc_count
-            }
-          }
-        }
-      }
     }
   }
 `;

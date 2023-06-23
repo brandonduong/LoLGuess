@@ -5,12 +5,14 @@ const supporters = [
     msg: "Wow this is the best TFT website ever and probably costs a lot of money to host!",
     value: "-20,000 from student debt",
     id: "1b587836-a7be-4e31-a4f3-3c88daf21f1e",
+    date: "2023-06-22",
   },
   {
     name: "Ninjakat2000",
     msg: "The message from the person on the left is probably speaking some true facts!",
     value: "1",
     id: "9d49e34f-1470-4b2d-ba2b-143e327d88ba",
+    date: "2023-06-23",
   },
 ];
 </script>
@@ -28,6 +30,7 @@ const supporters = [
             <h4>
               {{ supporter.msg }}
             </h4>
+            <h5>{{ supporter.date }}</h5>
           </div>
         </template>
         <RouterLink :to="`/profile/${supporter.id}`">

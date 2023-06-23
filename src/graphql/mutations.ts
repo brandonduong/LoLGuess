@@ -2,114 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createGuess = /* GraphQL */ `
-  mutation CreateGuess(
-    $input: CreateGuessInput!
-    $condition: ModelGuessConditionInput
-  ) {
-    createGuess(input: $input, condition: $condition) {
-      id
-      placements
-      guessedRank
-      rank
-      ranks
-      userGuessesId
-      createdAt
-      region
-      regions
-      updatedAt
-    }
-  }
-`;
-export const updateGuess = /* GraphQL */ `
-  mutation UpdateGuess(
-    $input: UpdateGuessInput!
-    $condition: ModelGuessConditionInput
-  ) {
-    updateGuess(input: $input, condition: $condition) {
-      id
-      placements
-      guessedRank
-      rank
-      ranks
-      userGuessesId
-      createdAt
-      region
-      regions
-      updatedAt
-    }
-  }
-`;
-export const deleteGuess = /* GraphQL */ `
-  mutation DeleteGuess(
-    $input: DeleteGuessInput!
-    $condition: ModelGuessConditionInput
-  ) {
-    deleteGuess(input: $input, condition: $condition) {
-      id
-      placements
-      guessedRank
-      rank
-      ranks
-      userGuessesId
-      createdAt
-      region
-      regions
-      updatedAt
-    }
-  }
-`;
-export const createLeaderboard = /* GraphQL */ `
-  mutation CreateLeaderboard(
-    $input: CreateLeaderboardInput!
-    $condition: ModelLeaderboardConditionInput
-  ) {
-    createLeaderboard(input: $input, condition: $condition) {
-      byCorrectPlacements
-      byCorrectRanks
-      byScore
-      byAverageCorrectPlacements
-      byAverageScore
-      date
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateLeaderboard = /* GraphQL */ `
-  mutation UpdateLeaderboard(
-    $input: UpdateLeaderboardInput!
-    $condition: ModelLeaderboardConditionInput
-  ) {
-    updateLeaderboard(input: $input, condition: $condition) {
-      byCorrectPlacements
-      byCorrectRanks
-      byScore
-      byAverageCorrectPlacements
-      byAverageScore
-      date
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteLeaderboard = /* GraphQL */ `
-  mutation DeleteLeaderboard(
-    $input: DeleteLeaderboardInput!
-    $condition: ModelLeaderboardConditionInput
-  ) {
-    deleteLeaderboard(input: $input, condition: $condition) {
-      byCorrectPlacements
-      byCorrectRanks
-      byScore
-      byAverageCorrectPlacements
-      byAverageScore
-      date
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser(
     $input: CreateUserInput!
@@ -216,6 +108,114 @@ export const deleteUser = /* GraphQL */ `
       totalGuesses
       averageCorrectPlacements
       averageScore
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createGuess = /* GraphQL */ `
+  mutation CreateGuess(
+    $input: CreateGuessInput!
+    $condition: ModelGuessConditionInput
+  ) {
+    createGuess(input: $input, condition: $condition) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      userGuessesId
+      createdAt
+      region
+      regions
+      updatedAt
+    }
+  }
+`;
+export const updateGuess = /* GraphQL */ `
+  mutation UpdateGuess(
+    $input: UpdateGuessInput!
+    $condition: ModelGuessConditionInput
+  ) {
+    updateGuess(input: $input, condition: $condition) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      userGuessesId
+      createdAt
+      region
+      regions
+      updatedAt
+    }
+  }
+`;
+export const deleteGuess = /* GraphQL */ `
+  mutation DeleteGuess(
+    $input: DeleteGuessInput!
+    $condition: ModelGuessConditionInput
+  ) {
+    deleteGuess(input: $input, condition: $condition) {
+      id
+      placements
+      guessedRank
+      rank
+      ranks
+      userGuessesId
+      createdAt
+      region
+      regions
+      updatedAt
+    }
+  }
+`;
+export const createLeaderboard = /* GraphQL */ `
+  mutation CreateLeaderboard(
+    $input: CreateLeaderboardInput!
+    $condition: ModelLeaderboardConditionInput
+  ) {
+    createLeaderboard(input: $input, condition: $condition) {
+      byCorrectPlacements
+      byCorrectRanks
+      byScore
+      byAverageCorrectPlacements
+      byAverageScore
+      date
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateLeaderboard = /* GraphQL */ `
+  mutation UpdateLeaderboard(
+    $input: UpdateLeaderboardInput!
+    $condition: ModelLeaderboardConditionInput
+  ) {
+    updateLeaderboard(input: $input, condition: $condition) {
+      byCorrectPlacements
+      byCorrectRanks
+      byScore
+      byAverageCorrectPlacements
+      byAverageScore
+      date
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteLeaderboard = /* GraphQL */ `
+  mutation DeleteLeaderboard(
+    $input: DeleteLeaderboardInput!
+    $condition: ModelLeaderboardConditionInput
+  ) {
+    deleteLeaderboard(input: $input, condition: $condition) {
+      byCorrectPlacements
+      byCorrectRanks
+      byScore
+      byAverageCorrectPlacements
+      byAverageScore
+      date
       createdAt
       updatedAt
     }

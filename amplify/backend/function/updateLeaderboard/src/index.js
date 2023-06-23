@@ -116,7 +116,7 @@ async function searchUsers(sortField) {
     },
     filter: {
       totalGuesses: {
-        gt: MIN_NUMBER_OF_GUESSES,
+        gte: MIN_NUMBER_OF_GUESSES,
       },
     },
     limit: 100,
