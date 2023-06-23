@@ -4,11 +4,32 @@ import AccountHeader from "./components/AccountHeader.vue";
 
 import { Authenticator, useAuthenticator } from "@aws-amplify/ui-vue";
 const auth = useAuthenticator();
+
+const formFields = {
+  signUp: {
+    preferred_username: {
+      order: 1,
+      label: "Display Name",
+      placeholder: "Enter your preferred Display Name",
+    },
+    username: {
+      order: 2,
+      label: "Username",
+      placeholder: "Enter your preferred login Username",
+    },
+    email: {
+      order: 3,
+      label: "Email",
+      placeholder: "Enter your Email",
+    },
+  },
+};
+const signUpAttributes = ["preferred_username"];
 </script>
 
 <template>
   <h1 v-if="auth.authStatus !== 'authenticated'" class="logo">LoLGuess</h1>
-  <Authenticator>
+  <Authenticator :formFields="formFields" :signUpAttributes="signUpAttributes">
     <template v-if="auth.authStatus === 'configuring'">
       <button @click="auth.signOut">Loading...</button>
     </template>
