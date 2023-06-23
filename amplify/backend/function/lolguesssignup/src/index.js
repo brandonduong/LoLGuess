@@ -54,7 +54,7 @@ export const handler = async (event, context, callback) => {
   const variables = {
     input: {
       id: event.request.userAttributes.sub,
-      username: `${event.request.userAttributes.preferred_username} (${event.request.userName})`,
+      username: `${event.request.userAttributes.preferred_username} ${event.userName}`,
       score: 0,
       maxScore: 0,
       correctPlacements: 0,

@@ -17,8 +17,10 @@ const auth = useAuthenticator();
           <div class="dropdown-content">
             <h3 class="username">
               {{
-                auth.user.username.charAt(0).toUpperCase() +
-                auth.user.username.slice(1)
+                auth.user.signInUserSession.idToken.payload.preferred_username.substring(
+                  0,
+                  20
+                )
               }}
             </h3>
             <a-divider class="divider" />

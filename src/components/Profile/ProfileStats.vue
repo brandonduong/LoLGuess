@@ -10,6 +10,8 @@ const props = defineProps<{
   staticProfileData: User;
 }>();
 
+const [pref, username] = props.staticProfileData.username.split(" ");
+
 function refresh() {
   emit("getStaticProfileData");
 }
@@ -17,10 +19,7 @@ function refresh() {
 <template>
   <div class="stats">
     <h2 class="stats-title">
-      {{
-        staticProfileData.username.charAt(0).toUpperCase() +
-        staticProfileData.username.slice(1)
-      }}
+      {{ pref.substring(0, 20) }} ({{ username.substring(0, 20) }})
     </h2>
     <div class="refresh">
       <a-button class="refresh-btn" type="primary" @click="refresh"

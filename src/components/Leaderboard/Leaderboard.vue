@@ -133,6 +133,9 @@ const filters = [
         valueStyle="font-size: 1.17em;"
       />
     </div>
+    <div>
+      <h3>Minimum 10 Guesses</h3>
+    </div>
   </div>
   <div class="table">
     <div class="leaderboard-header">

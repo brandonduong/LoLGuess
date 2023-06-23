@@ -1,10 +1,10 @@
 <script setup lang="ts">
 const supporters = [
   {
-    name: "Tupy",
+    name: "TFTupy",
     msg: "Wow this is the best TFT website ever and probably costs a lot of money to host!",
     value: "-20,000 from student debt",
-    id: "9d49e34f-1470-4b2d-ba2b-143e327d88ba",
+    id: "1b587836-a7be-4e31-a4f3-3c88daf21f1e",
   },
   {
     name: "Ninjakat2000",
