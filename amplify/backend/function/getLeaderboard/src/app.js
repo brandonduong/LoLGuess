@@ -161,10 +161,11 @@ app.get("/getLeaderboard", async function (req, res) {
   // Add your code here
   console.log(`EVENT: ${JSON.stringify(req.apiGateway.event)}`);
   const param = req.apiGateway.event.queryStringParameters;
+  const sort = param.sort;
   const leaderboard = await getLeaderboard();
   var users = [];
-  if (leaderboard.ids.length > 0) {
-    users = await getLeaderboardUsers(leaderboard, param.sort);
+  if (leaderboard[sort].length > 0) {
+    users = await getLeaderboardUsers(leaderboard, sort);
   }
   res.json({ users });
 });

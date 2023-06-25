@@ -23,7 +23,7 @@ const nowToronto = new Date(
 const updateUTC = Date.UTC(
   nowToronto.getUTCFullYear(),
   nowToronto.getUTCMonth(),
-  nowToronto.getUTCDate() + 1,
+  nowToronto.getUTCDate() + 7,
   0,
   0,
   0
@@ -145,6 +145,7 @@ const filters = [
         v-for="filter in filters"
         class="leaderboard-header-item"
         @click="() => (sorted = filter.filter)"
+        :style="loading ? `pointer-events:none;` : ``"
       >
         <h3 :class="getLeaderboardHeaderClass(filter.filter)">
           {{ filter.title }}
@@ -184,6 +185,7 @@ const filters = [
   align-items: center;
   justify-items: center;
   border-bottom: solid 1px lightslategray;
+  text-align: center;
 }
 
 .leaderboard-header > h3 {

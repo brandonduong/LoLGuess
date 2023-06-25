@@ -9,7 +9,7 @@ import Supporters from "../components/Supporter/Supporters.vue";
       If you mistakingly supported me on
       <a href="https://ko-fi.com/brandonduong" target="_blank">Ko-fi</a>, no
       matter the amount, I will put your name/username, profile, and message
-      here!
+      here! Please include your login username.
     </h3>
     <Supporters />
   </div>
@@ -26,5 +26,6 @@ import Supporters from "../components/Supporter/Supporters.vue";
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 </style>

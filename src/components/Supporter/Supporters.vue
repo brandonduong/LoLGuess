@@ -11,7 +11,7 @@ const supporters = [
     name: "Ninjakat2000",
     msg: "The message from the person on the left is probably speaking some true facts!",
     value: "1",
-    id: "9d49e34f-1470-4b2d-ba2b-143e327d88ba",
+    id: "321b054c-7caf-40d9-ae32-0f1b3816d4fa",
     date: "2023-06-23",
   },
 ];
