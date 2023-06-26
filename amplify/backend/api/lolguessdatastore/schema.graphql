@@ -22,7 +22,12 @@ type User
 
 type Guess
   @model
-  @auth(rules: [{ allow: private, operations: [read], provider: iam }]) {
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: private, operations: [read], provider: iam }
+    ]
+  ) {
   id: ID!
   placements: [String!]!
   guessedRank: String!

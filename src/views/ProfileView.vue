@@ -17,7 +17,7 @@ import { useAuthenticator } from "@aws-amplify/ui-vue";
 import { LoadingOutlined } from "@ant-design/icons-vue";
 const auth = useAuthenticator();
 
-const staticProfileGuesses = ref<GuessesByDateQuery | null>();
+const staticProfileGuesses = ref<(Guess | null)[]>([]);
 const staticProfileData = ref<User>();
 const loading = ref<boolean>(true);
 const props = defineProps<{ sub: string }>();
@@ -44,14 +44,18 @@ async function getStaticProfileData() {
 }
 
 async function getStaticProfileGuesses() {
+  var variables;
+  variables = {
+    userGuessesId: props.sub,
+    sortDirection: "DESC",
+  };
   const guesses = await API.graphql<GraphQLQuery<GuessesByDateQuery>>({
     query: queries.guessesByDate,
-    variables: {
-      userGuessesId: props.sub,
-      sortDirection: "DESC",
-    },
+    variables,
   });
-  staticProfileGuesses.value = guesses.data!;
+  if (guesses.data && guesses.data.guessesByDate) {
+    staticProfileGuesses.value = guesses.data.guessesByDate.items;
+  }
 }
 
 const indicator = h(LoadingOutlined, {
@@ -138,13 +142,8 @@ async function forceUpdate() {
       :staticProfileData="staticProfileData!"
       @getStaticProfileData="forceUpdate()"
     />
-    <ProfileGraph
-      :guesses="(staticProfileGuesses!.guessesByDate!.items as [Guess])"
-      :key="staticProfileGuesses!.guessesByDate!.items[0]?.id"
-    />
-    <ProfileHistory
-      :guesses="(staticProfileGuesses!.guessesByDate!.items as [Guess])"
-    />
+    <ProfileGraph :guesses="(staticProfileGuesses as [Guess])" />
+    <ProfileHistory :guesses="(staticProfileGuesses as [Guess])" />
   </div>
   <div class="loading" v-else><a-spin :indicator="indicator"></a-spin></div>
 </template>
