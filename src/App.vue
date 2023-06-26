@@ -3,6 +3,8 @@ import { RouterView } from "vue-router";
 import AccountHeader from "./components/AccountHeader.vue";
 
 import { Authenticator, useAuthenticator } from "@aws-amplify/ui-vue";
+import { onUpdated, ref } from "vue";
+import router from "@/router";
 const auth = useAuthenticator();
 
 const formFields = {
@@ -25,6 +27,24 @@ const formFields = {
   },
 };
 const signUpAttributes = ["preferred_username"];
+const oldAuthStatus = ref<string>(auth.authStatus);
+
+onUpdated(() => {
+  // Reroute depending on if authenticated or not
+  if (
+    oldAuthStatus.value !== "configuring" &&
+    auth.authStatus === "authenticated"
+  ) {
+    router.push("/");
+  } else if (
+    oldAuthStatus.value === "configuring" &&
+    auth.authStatus === "authenticated"
+  ) {
+  } else if (auth.authStatus === "unauthenticated") {
+    router.push("/login");
+  }
+  oldAuthStatus.value = auth.authStatus;
+});
 </script>
 
 <template>
