@@ -48,12 +48,19 @@ async function createLeaderboard(
     }
   `;
   // Today in UTC with no time
-  const today = new Date().toISOString().split("T")[0];
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const lastSunday = new Date(today.setDate(today.getDate() - today.getDay()))
+    .toISOString()
+    .split("T")[0];
+
+  console.log(now);
   console.log(today);
+  console.log(lastSunday);
 
   const variables = {
     input: {
-      date: today,
+      date: lastSunday,
       byCorrectPlacements,
       byCorrectRanks,
       byScore,

@@ -4,8 +4,7 @@
 # , operations: [read]
 type User
   @model
-  @searchable
-  @auth(rules: [{ allow: private, operations: [], provider: iam }]) {
+  @auth(rules: [{ allow: private, operations: [read], provider: iam }]) {
   id: ID!
   username: String!
   guesses: [Guess] @hasMany
