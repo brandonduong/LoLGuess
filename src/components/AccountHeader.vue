@@ -6,12 +6,12 @@ import {
   MenuOutlined,
   UserOutlined,
 } from "@ant-design/icons-vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { watchEffect } from "vue";
-import router from "@/router";
 import { Auth } from "aws-amplify";
 const auth = useAuthenticator();
 const route = useRoute();
+const router = useRouter();
 
 watchEffect(() => {
   console.log(route.fullPath);
@@ -22,8 +22,8 @@ function getActive(link: string) {
     : `dropdown-link`;
 }
 function signout() {
-  router.push("/login");
   Auth.signOut();
+  router.push("/login");
 }
 </script>
 

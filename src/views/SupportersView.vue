@@ -7,9 +7,12 @@ import Supporters from "../components/Supporter/Supporters.vue";
     <h2>Supporters</h2>
     <h3>
       If you mistakingly supported me on
-      <a href="https://ko-fi.com/brandonduong" target="_blank">Ko-fi</a>, no
-      matter the amount, I will put your name/username, profile, and message
-      here! Please include your login username.
+      <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
+        >Ko-fi</a
+      >, no matter the amount, I will put your name/username, profile, and
+      message here!
+      <br />
+      Please include your login username!
     </h3>
     <Supporters />
   </div>
@@ -27,5 +30,9 @@ import Supporters from "../components/Supporter/Supporters.vue";
   flex-direction: column;
   align-items: center;
   text-align: center;
+}
+
+.ko-fi {
+  font-weight: bold;
 }
 </style>

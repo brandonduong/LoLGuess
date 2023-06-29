@@ -8,8 +8,10 @@ import { useAuthenticator } from "@aws-amplify/ui-vue";
 import GuessRank from "./GuessRank.vue";
 import GuessScore from "./GuessScore.vue";
 import GuessRegion from "./GuessRegion.vue";
+import { useRouter } from "vue-router";
 
 const auth = useAuthenticator();
+const router = useRouter();
 
 const loading = ref<boolean>(false);
 const current = ref<number>(0);
@@ -38,39 +40,45 @@ const prev = () => {
   current.value--;
 };
 async function getMatch() {
-  let url = "/getMatch?";
-  for (let i = 0; i < selectedRegions.value.length; i++) {
-    url += `regions[]=${selectedRegions.value[i]}&`;
-  }
-  for (let i = 0; i < selectedRanks.value.length; i++) {
-    url += `ranks[]=${selectedRanks.value[i]}&`;
-  }
-  console.log(url);
+  if (auth.user) {
+    let url = "/getMatch?";
+    for (let i = 0; i < selectedRegions.value.length; i++) {
+      url += `regions[]=${selectedRegions.value[i]}&`;
+    }
+    for (let i = 0; i < selectedRanks.value.length; i++) {
+      url += `ranks[]=${selectedRanks.value[i]}&`;
+    }
+    console.log(url);
 
-  const header = {
-    headers: {
-      "Content-type": "application/json",
-      Authorization: `Bearer ${auth.user.signInUserSession.idToken.jwtToken}`,
-    },
-  };
+    const header = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${auth.user.signInUserSession.idToken.jwtToken}`,
+      },
+    };
 
-  loading.value = true;
-  await http.api
-    .get(url, header)
-    .then((res) => {
-      console.log(res);
-      rankedMatch = res.data.rankedMatch;
-      encryptedRank = res.data.rank;
-      encryptedRanks = res.data.ranks;
-      encryptedUnfinished = res.data.unfinished;
-      encryptedRegion = res.data.region;
-      encryptedRegions = res.data.regions;
-    })
-    .catch(() => {
-      alert("Error finding ranked match. Please try again.");
-      prev();
-    });
-  loading.value = false;
+    loading.value = true;
+    await http.api
+      .get(url, header)
+      .then((res) => {
+        console.log(res);
+        rankedMatch = res.data.rankedMatch;
+        encryptedRank = res.data.rank;
+        encryptedRanks = res.data.ranks;
+        encryptedUnfinished = res.data.unfinished;
+        encryptedRegion = res.data.region;
+        encryptedRegions = res.data.regions;
+      })
+      .catch(() => {
+        alert("Error finding ranked match. Please try again.");
+        prev();
+      });
+    loading.value = false;
+  } else {
+    // Reroute to login page
+    alert("Please log in to play and track stats!");
+    router.push("/login");
+  }
 }
 async function verifyGuess() {
   let url = "/verifyGuess";

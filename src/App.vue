@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { RouterView } from "vue-router";
+import { RouterView, useRouter } from "vue-router";
 import AccountHeader from "./components/AccountHeader.vue";
 import { ref, watchEffect } from "vue";
-import router from "@/router";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
 
 const auth = useAuthenticator();
+const router = useRouter();
 
 const oldAuthStatus = ref<string>(auth.authStatus);
 

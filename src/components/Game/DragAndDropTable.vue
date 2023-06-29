@@ -236,6 +236,7 @@ function checkIfCorrect(placement: number) {
   grid-template-columns: 0.05fr 0.15fr 0.3fr 0.3fr 1fr 0.15fr;
   align-items: center;
   border: 1px solid lightslategray;
+  cursor: grab;
 }
 
 .placements {
