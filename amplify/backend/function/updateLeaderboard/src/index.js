@@ -79,27 +79,20 @@ async function createLeaderboard(
   });
 }
 
-async function searchUsers(sortField) {
+async function listAllUsers() {
   const query = /* GraphQL */ `
-    query SEARCH_USERS(
-      $filter: SearchableUserFilterInput
-      $sort: [SearchableUserSortInput]
+    query ListUsers(
+      $filter: ModelUserFilterInput
       $limit: Int
       $nextToken: String
-      $from: Int
-      $aggregates: [SearchableUserAggregationInput]
     ) {
-      searchUsers(
-        filter: $filter
-        sort: $sort
-        limit: $limit
-        nextToken: $nextToken
-        from: $from
-        aggregates: $aggregates
-      ) {
+      listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
         items {
           id
           username
+          guesses {
+            nextToken
+          }
           score
           maxScore
           correctPlacements
@@ -109,34 +102,43 @@ async function searchUsers(sortField) {
           totalGuesses
           averageCorrectPlacements
           averageScore
+          createdAt
+          updatedAt
         }
         nextToken
-        total
       }
     }
   `;
-
-  const variables = {
-    sort: {
-      direction: "desc",
-      field: sortField,
-    },
+  const users = [];
+  var nextToken = "";
+  var variables = {
     filter: {
       totalGuesses: {
-        gte: MIN_NUMBER_OF_GUESSES,
+        ge: MIN_NUMBER_OF_GUESSES,
       },
     },
-    limit: 100,
+    limit: 200,
   };
 
-  const res = await signAndRun(query, variables);
-  if (res.statusCode === 200) {
-    console.log(res.body);
-    console.log(res.body.data.searchUsers.items.map((user) => user.id));
-    return res.body.data.searchUsers.items.map((user) => user.id);
-  } else {
-    console.log(res.body.errors);
+  while (nextToken !== null) {
+    const res = await signAndRun(query, variables);
+    if (res.statusCode === 200) {
+      console.log(res.body.data.listUsers.items);
+      users.concat(res.body.data.listUsers.items);
+      nextToken = res.body.data.listUsers.nextToken;
+      variables.nextToken = nextToken;
+    } else {
+      console.log(res.body.errors);
+    }
   }
+  return users;
+}
+
+function sortUsers(users, sortField) {
+  const copy = [...users];
+  return copy.sort((a, b) =>
+    a[sortField] < b[sortField] ? 1 : a[sortField] > b[sortField] ? -1 : 0
+  );
 }
 
 async function signAndRun(query, variables) {
@@ -183,13 +185,16 @@ async function signAndRun(query, variables) {
 export const handler = async (event, context, callback) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
 
-  const byScore = await searchUsers("score");
-  const byCorrectPlacements = await searchUsers("correctPlacements");
-  const byCorrectRanks = await searchUsers("correctRanks");
-  const byAverageCorrectPlacements = await searchUsers(
+  const users = await listAllUsers();
+
+  const byScore = sortUsers(users, "score");
+  const byCorrectPlacements = sortUsers(users, "correctPlacements");
+  const byCorrectRanks = sortUsers(users, "correctRanks");
+  const byAverageCorrectPlacements = sortUsers(
+    users,
     "averageCorrectPlacements"
   );
-  const byAverageScore = await searchUsers("averageScore");
+  const byAverageScore = sortUsers(users, "averageScore");
 
   let statusCode = 200;
   try {

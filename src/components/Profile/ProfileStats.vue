@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, watchEffect } from "vue";
 import { type User, type Guess } from "../../API";
 import Stat from "./Stat.vue";
 import { roundToTwo } from "../../common/helper";
@@ -10,7 +11,12 @@ const props = defineProps<{
   staticProfileData: User;
 }>();
 
-const [pref, username] = props.staticProfileData.username.split(" ");
+const pref = ref<string>("");
+const username = ref<string>("");
+
+watchEffect(() => {
+  [pref.value, username.value] = props.staticProfileData.username.split(" ");
+});
 
 function refresh() {
   emit("getStaticProfileData");

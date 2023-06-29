@@ -79,6 +79,65 @@ async function getUser(sub) {
     id: sub,
   };
 
+  const res = await signAndRun(query, variables);
+  if (res.statusCode === 200) {
+    console.log(res.body);
+    return res.body.data.getUser;
+  } else {
+    console.log(res.body.errors);
+  }
+}
+
+async function guessesByDate(sub) {
+  const query = /* GraphQL */ `
+    query GuessesByDate(
+      $userGuessesId: ID!
+      $createdAt: ModelStringKeyConditionInput
+      $sortDirection: ModelSortDirection
+      $filter: ModelGuessFilterInput
+      $limit: Int
+      $nextToken: String
+    ) {
+      guessesByDate(
+        userGuessesId: $userGuessesId
+        createdAt: $createdAt
+        sortDirection: $sortDirection
+        filter: $filter
+        limit: $limit
+        nextToken: $nextToken
+      ) {
+        items {
+          id
+          placements
+          guessedRank
+          rank
+          ranks
+          userGuessesId
+          createdAt
+          region
+          regions
+          updatedAt
+        }
+        nextToken
+      }
+    }
+  `;
+
+  const variables = {
+    userGuessesId: sub,
+    sortDirection: "DESC",
+  };
+
+  const res = await signAndRun(query, variables);
+  if (res.statusCode === 200) {
+    console.log(res.body);
+    return res.body.data.guessesByDate;
+  } else {
+    console.log(res.body.errors);
+  }
+}
+
+async function signAndRun(query, variables) {
   const requestToBeSigned = new HttpRequest({
     method: "POST",
     headers: {
@@ -91,8 +150,9 @@ async function getUser(sub) {
   });
 
   const signed = await signer.sign(requestToBeSigned);
-  const request = new Request(GRAPHQL_ENDPOINT, signed);
+  const request = new Request(endpoint, signed);
 
+  let statusCode = 200;
   let body;
   let response;
 
@@ -100,12 +160,18 @@ async function getUser(sub) {
     response = await node_fetch(request);
     body = await response.json();
     console.log(body);
+    if (body.errors) statusCode = 400;
   } catch (error) {
     statusCode = 500;
-    console.log(error);
-    body = { error };
+    body = {
+      errors: [
+        {
+          message: error.message,
+        },
+      ],
+    };
   }
-  return body.data.getUser;
+  return { statusCode, body };
 }
 
 /****************************
@@ -117,11 +183,13 @@ app.get("/getProfile", async function (req, res) {
   console.log(`EVENT: ${JSON.stringify(req.apiGateway.event)}`);
   const param = req.apiGateway.event.queryStringParameters;
   const user = await getUser(param.sub);
+  const guesses = await guessesByDate(param.sub);
   console.log(param);
   console.log(user);
 
   res.json({
     user,
+    guesses,
   });
 });
 

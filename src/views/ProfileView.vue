@@ -27,7 +27,6 @@ async function getStaticProfileData() {
   const header = {
     headers: {
       "Content-type": "application/json",
-      Authorization: `Bearer ${auth.user.signInUserSession.idToken.jwtToken}`,
     },
   };
   let url = `/getProfile?sub=${props.sub}`;
@@ -37,25 +36,11 @@ async function getStaticProfileData() {
     .then((res) => {
       console.log(res);
       staticProfileData.value = res.data.user;
+      staticProfileGuesses.value = res.data.guesses.items;
     })
     .catch((err) => {
       console.log(err);
     });
-}
-
-async function getStaticProfileGuesses() {
-  var variables;
-  variables = {
-    userGuessesId: props.sub,
-    sortDirection: "DESC",
-  };
-  const guesses = await API.graphql<GraphQLQuery<GuessesByDateQuery>>({
-    query: queries.guessesByDate,
-    variables,
-  });
-  if (guesses.data && guesses.data.guessesByDate) {
-    staticProfileGuesses.value = guesses.data.guessesByDate.items;
-  }
 }
 
 const indicator = h(LoadingOutlined, {
@@ -81,7 +66,7 @@ onUpdated(async () => {
 async function update() {
   loading.value = true;
   // If looking at own profile put in cache
-  if (auth.user.attributes.sub === props.sub) {
+  if (auth.user && auth.user.attributes.sub === props.sub) {
     const staticData = window.localStorage.getItem("staticProfileData");
     const staticGuesses = window.localStorage.getItem("staticProfileGuesses");
 
@@ -99,9 +84,6 @@ async function update() {
           "staticProfileData",
           JSON.stringify(staticProfileData.value)
         );
-      });
-
-      await getStaticProfileGuesses().then(() => {
         localStorage.setItem(
           "staticProfileGuesses",
           JSON.stringify(staticProfileGuesses.value)
@@ -110,7 +92,6 @@ async function update() {
     }
   } else {
     await getStaticProfileData();
-    await getStaticProfileGuesses();
   }
   console.log(staticProfileData.value);
   console.log(staticProfileGuesses.value);
@@ -125,8 +106,6 @@ async function forceUpdate() {
       "staticProfileData",
       JSON.stringify(staticProfileData.value)
     );
-  });
-  await getStaticProfileGuesses().then(() => {
     localStorage.setItem(
       "staticProfileGuesses",
       JSON.stringify(staticProfileGuesses.value)

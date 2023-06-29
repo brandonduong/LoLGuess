@@ -3,19 +3,38 @@ import { useAuthenticator } from "@aws-amplify/ui-vue";
 import {
   CoffeeOutlined,
   HeartOutlined,
+  MenuOutlined,
   UserOutlined,
 } from "@ant-design/icons-vue";
+import { useRoute } from "vue-router";
+import { watchEffect } from "vue";
+import router from "@/router";
+import { Auth } from "aws-amplify";
 const auth = useAuthenticator();
+const route = useRoute();
+
+watchEffect(() => {
+  console.log(route.fullPath);
+});
+function getActive(link: string) {
+  return route.fullPath.includes(link)
+    ? `dropdown-link active`
+    : `dropdown-link`;
+}
+function signout() {
+  router.push("/login");
+  Auth.signOut();
+}
 </script>
 
 <template>
   <div class="account-header">
     <div class="account-header-contents">
-      <RouterLink to="/" class="title">LoLGuess</RouterLink>
+      <RouterLink to="/play" class="title">LoLGuess</RouterLink>
       <a-popover placement="bottomRight" trigger="click">
         <template #content>
           <div class="dropdown-content">
-            <h3 class="username">
+            <h3 v-if="auth.user" class="username">
               {{
                 auth.user.signInUserSession.idToken.payload.preferred_username.substring(
                   0,
@@ -23,17 +42,21 @@ const auth = useAuthenticator();
                 )
               }}
             </h3>
+            <RouterLink v-else to="/login" :class="getActive(`/login`)"
+              >Login / Register</RouterLink
+            >
             <a-divider class="divider" />
-            <RouterLink to="/" class="dropdown-link">Play</RouterLink>
+            <RouterLink to="/play" :class="getActive(`/play`)">Play</RouterLink>
             <RouterLink
+              v-if="auth.user"
               :to="`/profile/${auth.user.attributes.sub}`"
-              class="dropdown-link"
+              :class="getActive(`/profile`)"
               >Profile</RouterLink
             >
-            <RouterLink to="/leaderboard" class="dropdown-link"
+            <RouterLink to="/leaderboard" :class="getActive(`/leaderboard`)"
               >Leaderboard</RouterLink
             >
-            <RouterLink to="/supporters" class="dropdown-link"
+            <RouterLink to="/supporters" :class="getActive(`/supporters`)"
               >Supporters</RouterLink
             >
             <a-divider class="divider" />
@@ -53,14 +76,27 @@ const auth = useAuthenticator();
               /></a-button>
             </div>
             <div class="signout-div">
-              <a-button type="primary" class="signout" @click="auth.signOut"
+              <a-button
+                v-if="auth.user"
+                type="primary"
+                class="signout"
+                @click="signout()"
                 >Sign Out</a-button
               >
             </div>
           </div>
         </template>
 
-        <UserOutlined class="user" style="font-size: 2rem; color: white" />
+        <UserOutlined
+          v-if="auth.user"
+          class="dropdown-button"
+          style="font-size: 2rem; color: white"
+        />
+        <MenuOutlined
+          v-else
+          class="dropdown-button"
+          style="font-size: 2rem; color: white"
+        />
       </a-popover>
     </div>
   </div>
@@ -116,13 +152,17 @@ const auth = useAuthenticator();
   text-decoration: underline;
 }
 
-.user {
+.dropdown-button {
   transition: 0.4s;
 }
 
-.user:hover,
-.user:focus {
+.dropdown-button:hover,
+.dropdown-button:focus {
   color: hsl(51, 100%, 50%) !important;
+}
+
+.active {
+  color: lightslategray !important;
 }
 
 .signout,
@@ -151,6 +191,7 @@ const auth = useAuthenticator();
 .username {
   margin: 0;
   padding: 0 0.25rem;
+  font-weight: bold;
 }
 
 .dropdown-link {

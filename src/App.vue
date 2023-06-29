@@ -1,64 +1,29 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import AccountHeader from "./components/AccountHeader.vue";
-
-import { Authenticator, useAuthenticator } from "@aws-amplify/ui-vue";
-import { onUpdated, ref } from "vue";
+import { ref, watchEffect } from "vue";
 import router from "@/router";
+import { useAuthenticator } from "@aws-amplify/ui-vue";
+
 const auth = useAuthenticator();
 
-const formFields = {
-  signUp: {
-    preferred_username: {
-      order: 1,
-      label: "Display Name",
-      placeholder: "Enter your preferred Display Name",
-    },
-    username: {
-      order: 2,
-      label: "Username",
-      placeholder: "Enter your preferred login Username",
-    },
-    email: {
-      order: 3,
-      label: "Email",
-      placeholder: "Enter your Email",
-    },
-  },
-};
-const signUpAttributes = ["preferred_username"];
 const oldAuthStatus = ref<string>(auth.authStatus);
 
-onUpdated(() => {
-  // Reroute depending on if authenticated or not
+watchEffect(() => {
+  // Reroute to play if just logged in
   if (
-    oldAuthStatus.value !== "configuring" &&
+    oldAuthStatus.value === "unauthenticated" &&
     auth.authStatus === "authenticated"
   ) {
-    router.push("/");
-  } else if (
-    oldAuthStatus.value === "configuring" &&
-    auth.authStatus === "authenticated"
-  ) {
-  } else if (auth.authStatus === "unauthenticated") {
-    router.push("/login");
+    router.push("/play");
   }
   oldAuthStatus.value = auth.authStatus;
 });
 </script>
 
 <template>
-  <h1 v-if="auth.authStatus !== 'authenticated'" class="logo">LoLGuess</h1>
-  <Authenticator :formFields="formFields" :signUpAttributes="signUpAttributes">
-    <template v-if="auth.authStatus === 'configuring'">
-      <button @click="auth.signOut">Loading...</button>
-    </template>
-
-    <template v-if="auth.authStatus === 'authenticated'">
-      <AccountHeader />
-      <RouterView />
-    </template>
-  </Authenticator>
+  <AccountHeader />
+  <RouterView />
 </template>
 
 <style scoped>

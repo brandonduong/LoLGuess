@@ -37,7 +37,6 @@ async function getLeaderboard() {
   const header = {
     headers: {
       "Content-type": "application/json",
-      Authorization: `Bearer ${auth.user.signInUserSession.idToken.jwtToken}`,
     },
   };
   let url = `/getLeaderboard?sort=${sorted.value}`;

@@ -4,7 +4,12 @@
 # , operations: [read]
 type User
   @model
-  @auth(rules: [{ allow: private, operations: [read], provider: iam }]) {
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: private, operations: [read], provider: iam }
+    ]
+  ) {
   id: ID!
   username: String!
   guesses: [Guess] @hasMany

@@ -24,7 +24,7 @@
             "Arn"
           ],
           "category": "function",
-          "resourceName": "getProfile"
+          "resourceName": "getLeaderboard"
         },
         {
           "attributes": [
@@ -32,7 +32,7 @@
             "Arn"
           ],
           "category": "function",
-          "resourceName": "getLeaderboard"
+          "resourceName": "getProfile"
         }
       ],
       "providerPlugin": "awscloudformation",

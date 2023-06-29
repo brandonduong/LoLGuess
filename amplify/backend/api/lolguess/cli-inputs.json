@@ -18,19 +18,16 @@
         "setting": "open"
       }
     },
-    "/getProfile": {
-      "name": "/getProfile",
-      "lambdaFunction": "getProfile",
-      "permissions": {
-        "setting": "private",
-        "auth": [
-          "read"
-        ]
-      }
-    },
     "/getLeaderboard": {
       "name": "/getLeaderboard",
       "lambdaFunction": "getLeaderboard",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/getProfile": {
+      "name": "/getProfile",
+      "lambdaFunction": "getProfile",
       "permissions": {
         "setting": "open"
       }

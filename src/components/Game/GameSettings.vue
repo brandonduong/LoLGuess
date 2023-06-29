@@ -37,12 +37,6 @@ const next = async () => {
 const prev = () => {
   current.value--;
 };
-const header = {
-  headers: {
-    "Content-type": "application/json",
-    Authorization: `Bearer ${auth.user.signInUserSession.idToken.jwtToken}`,
-  },
-};
 async function getMatch() {
   let url = "/getMatch?";
   for (let i = 0; i < selectedRegions.value.length; i++) {
@@ -52,6 +46,13 @@ async function getMatch() {
     url += `ranks[]=${selectedRanks.value[i]}&`;
   }
   console.log(url);
+
+  const header = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${auth.user.signInUserSession.idToken.jwtToken}`,
+    },
+  };
 
   loading.value = true;
   await http.api
@@ -73,6 +74,12 @@ async function getMatch() {
 }
 async function verifyGuess() {
   let url = "/verifyGuess";
+  const header = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${auth.user.signInUserSession.idToken.jwtToken}`,
+    },
+  };
   loading.value = true;
   await http.api
     .post(

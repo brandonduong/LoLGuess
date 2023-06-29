@@ -32,11 +32,11 @@
         },
         "getProfile": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getProfile-466f416c2f4332596b76-build.zip"
+          "s3Key": "amplify-builds/getProfile-336b62552f336161455a-build.zip"
         },
         "updateLeaderboard": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/updateLeaderboard-576e704d6e5a6c544236-build.zip"
+          "s3Key": "amplify-builds/updateLeaderboard-6772624c61613655734f-build.zip"
         },
         "getLeaderboard": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
