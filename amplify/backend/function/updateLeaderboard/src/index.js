@@ -49,18 +49,16 @@ async function createLeaderboard(
   `;
   // Today in UTC with no time
   const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const lastSunday = new Date(today.setDate(today.getDate() - today.getDay()))
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     .toISOString()
     .split("T")[0];
 
   console.log(now);
   console.log(today);
-  console.log(lastSunday);
 
   const variables = {
     input: {
-      date: lastSunday,
+      date: today,
       byCorrectPlacements,
       byCorrectRanks,
       byScore,
@@ -136,6 +134,7 @@ async function listAllUsers() {
 
 function sortUsers(users, sortField) {
   const copy = [...users];
+  console.log(copy, sortField);
   return copy.sort((a, b) =>
     a[sortField] < b[sortField] ? 1 : a[sortField] > b[sortField] ? -1 : 0
   );

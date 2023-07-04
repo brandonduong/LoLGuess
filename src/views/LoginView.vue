@@ -8,12 +8,12 @@ const formFields = {
     preferred_username: {
       order: 1,
       label: "Display Name",
-      placeholder: "Enter your preferred Display Name",
+      placeholder: "Enter your nonunique display name",
     },
     username: {
       order: 2,
       label: "Username",
-      placeholder: "Enter your preferred login Username",
+      placeholder: "Enter your unique login username",
     },
     email: {
       order: 3,
@@ -30,30 +30,42 @@ const signUpAttributes = ["preferred_username"];
     <div class="intro">
       <h1 class="logo">LoLGuess</h1>
       <hr class="divider" />
+      <h4 class="description">
+        LoLGuess is a TFT practice tool designed for low and high elo players to
+        test their knowledge on end-game team composition power.
+      </h4>
       <ul class="unordered">
         <li>
-          LoLGuess is a TFT practice tool designed for low and high elo players
-          to test their knowledge on end-game team composition power.
+          <h3 class="unordered-section">Train Your Intuition</h3>
+          <span>
+            Study general unit, item, and team strength to faster assess the
+            power of your opponents and the tempo of your lobbies
+          </span>
         </li>
-        <br />
-
         <li>
-          Users first choose a set of ranks (Iron, Bronze, Silver, etc.) and a
-          set of regions (NA, EUW, etc.).
+          <h3 class="unordered-section">Better Your Flex Play</h3>
+          <span>
+            Understand what makes a comp strong, and apply this knowledge to
+            more effectively play what you hit in creative, off-meta teams
+          </span>
         </li>
-        <br />
         <li>
-          LoLGuess pulls a random ranked match from the selected ranks and
-          regions.
+          <h3 class="unordered-section">Learn to Maximize your Highrolls</h3>
+          <span>
+            Study what comps win out over others to better your ability to play
+            for first when highrolling
+          </span>
         </li>
-        <br />
         <li>
-          Users then must guess every team comps final placement (first, second,
-          third, etc.), and the rank.
+          <h3 class="unordered-section">Experience Different Environments</h3>
+          <span>
+            Quickly scout how different regions and ranks play the game to stay
+            on top of the meta
+          </span>
         </li>
       </ul>
     </div>
-    <div>
+    <div class="authenticator">
       <Authenticator
         :formFields="formFields"
         :signUpAttributes="signUpAttributes"
@@ -75,6 +87,14 @@ const signUpAttributes = ["preferred_username"];
   margin: 0 0 0 1rem;
 }
 
+.description {
+  margin-left: 1.5rem;
+}
+
+.authenticator {
+  margin: auto;
+}
+
 .login {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -85,6 +105,7 @@ const signUpAttributes = ["preferred_username"];
   border: 1px solid lightslategray;
   border-radius: 0.25rem;
   overflow-x: auto;
+  align-items: start;
 }
 
 .unordered {
@@ -92,11 +113,15 @@ const signUpAttributes = ["preferred_username"];
   padding-bottom: 3rem;
 }
 
+.unordered-section {
+  text-decoration: underline;
+}
+
 .divider {
   margin-left: 1.25rem;
 }
 
 .intro {
-  padding: 0 5rem 0 2rem;
+  padding: 0 2rem;
 }
 </style>

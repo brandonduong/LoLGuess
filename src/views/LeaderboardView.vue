@@ -16,5 +16,9 @@ import Leaderboard from "../components/Leaderboard/Leaderboard.vue";
   border-radius: 0.25rem;
   background-color: white;
   overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: center;
 }
 </style>

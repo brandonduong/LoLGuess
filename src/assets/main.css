@@ -7,7 +7,6 @@
   display: flex;
   flex-direction: column;
   font-weight: normal;
-  height: 100%;
 }
 
 .green {
@@ -32,6 +31,82 @@ h3 {
 }
 
 .ant-empty-description {
-  color: lightslategray;
+  color: var(--theme-gray);
   font-weight: 500;
+}
+
+.ant-btn:hover {
+  color: rgba(0, 0, 0, 0.85);
+  border-color: var(--theme-gray);
+}
+
+.ant-btn-primary,
+.ant-btn-primary:focus {
+  color: #fff;
+  border-color: var(--theme-gray);
+  background: var(--theme-gray);
+}
+
+.ant-btn-primary:hover {
+  color: #fff;
+  border-color: var(--theme-gray-highlight);
+  background: var(--theme-gray-highlight);
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+  border-color: var(--theme-gray);
+  background-color: var(--theme-gray);
+}
+
+.ant-checkbox-checked:after {
+  border-color: var(--theme-gray);
+}
+
+.ant-checkbox-indeterminate .ant-checkbox-inner::after {
+  background-color: var(--theme-gray);
+}
+
+.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-icon {
+  background: var(--theme-gray);
+  background-color: var(--theme-gray);
+  border-color: var(--theme-gray);
+}
+
+.ant-steps-item-finish .ant-steps-item-icon {
+  border-color: var(--theme-gray);
+}
+
+.ant-steps-icon > span > svg {
+  color: var(--theme-gray) !important;
+}
+
+.ant-steps-item-title::after {
+  background-color: var(--theme-gray) !important;
+}
+
+.ant-pagination-item-active a {
+  color: var(--theme-gray);
+}
+.ant-pagination-item-active a:hover {
+  color: var(--theme-gray-highlight);
+}
+
+.ant-pagination-item-active {
+  border-color: var(--theme-gray);
+}
+
+.ant-pagination-item-active:hover {
+  border-color: var(--theme-gray-highlight);
+}
+
+.ant-pagination-item a:hover,
+.ant-pagination-next .ant-pagination-item-link:hover > span,
+.ant-pagination-prev .ant-pagination-item-link:hover > span {
+  color: var(--theme-gray-highlight);
+}
+
+.ant-pagination-item:hover,
+.ant-pagination-next .ant-pagination-item-link:hover,
+.ant-pagination-prev .ant-pagination-item-link:hover {
+  border-color: var(--theme-gray-highlight);
 }

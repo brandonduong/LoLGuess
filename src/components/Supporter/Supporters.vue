@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { RedditOutlined, TwitterOutlined } from "@ant-design/icons-vue";
+
 const supporters = [
   {
     name: "TFTupy",
@@ -6,11 +8,15 @@ const supporters = [
     value: "-20,000 from student debt",
     id: "1b587836-a7be-4e31-a4f3-3c88daf21f1e",
     date: "2023-06-22",
+    lolchess: "https://lolchess.gg/profile/na/tupy",
+    twitch: "https://www.twitch.tv/tftupy",
+    reddit: "https://www.reddit.com/user/TreehouseTupy",
+    twitter: "https://twitter.com/THTupy",
   },
   {
     name: "Ninjakat2000",
     msg: "The message from the person on the left is probably speaking some true facts!",
-    value: "1",
+    value: "1.00",
     id: "321b054c-7caf-40d9-ae32-0f1b3816d4fa",
     date: "2023-06-23",
   },
@@ -21,24 +27,32 @@ const supporters = [
   <div class="supporters-grid">
     <a-divider class="divider" />
     <div class="supporter" v-for="supporter in supporters">
-      <a-popover>
-        <template #content>
-          <div class="supporter-info">
-            <h3>
-              <b> {{ supporter.name }}: ${{ supporter.value }} </b>
-            </h3>
-            <h4>
-              {{ supporter.msg }}
-            </h4>
-            <h5>{{ supporter.date }}</h5>
-          </div>
-        </template>
-        <RouterLink :to="`/profile/${supporter.id}`">
-          <h4>
-            {{ supporter.name }}
-          </h4>
-        </RouterLink>
-      </a-popover>
+      <RouterLink :to="`/profile/${supporter.id}`">
+        <h3 class="supporter-name">
+          {{ supporter.name }}
+        </h3>
+      </RouterLink>
+      <h3>
+        <b> ${{ supporter.value }} </b>
+      </h3>
+      <h4>
+        {{ supporter.msg }}
+      </h4>
+      <div class="brands">
+        <a v-if="supporter.lolchess" :href="supporter.lolchess" target="_blank">
+          <img src="/lolchess.png" class="brand" />
+        </a>
+        <a v-if="supporter.twitch" :href="supporter.twitch" target="_blank">
+          <img src="/twitch.svg" class="brand" />
+        </a>
+        <a v-if="supporter.reddit" :href="supporter.reddit" target="_blank">
+          <RedditOutlined class="brand reddit" />
+        </a>
+        <a v-if="supporter.twitter" :href="supporter.twitter" target="_blank">
+          <TwitterOutlined class="brand" />
+        </a>
+      </div>
+      <h5>{{ supporter.date }}</h5>
     </div>
   </div>
 </template>
@@ -46,29 +60,47 @@ const supporters = [
 <style scoped>
 .supporters-grid {
   display: grid;
-  width: 100%;
+
   grid-template-columns: 1fr 1fr;
   column-gap: 1rem;
-  justify-items: center;
+  row-gap: 1rem;
 }
 
 .supporter {
   display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  border: solid 1px lightslategray;
+  padding: 1rem;
+  border-radius: 0.25rem;
 }
 
-.supporter > h3 {
+.brands {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.brand {
+  width: 24px;
+  height: 24px;
+  font-size: 1.5rem;
+}
+
+.reddit {
+  color: #ff4500;
+}
+
+.supporter-name {
+  text-decoration: underline;
+}
+
+.supporter > h5 {
   margin: 0;
 }
 
 .divider {
   grid-column: span 2;
-  margin: 1rem;
-}
-
-.supporter-info {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  max-width: 50vw;
+  margin: 1rem 0;
 }
 </style>

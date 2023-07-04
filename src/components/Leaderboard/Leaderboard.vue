@@ -23,7 +23,7 @@ const nowToronto = new Date(
 const updateUTC = Date.UTC(
   nowToronto.getUTCFullYear(),
   nowToronto.getUTCMonth(),
-  nowToronto.getUTCDate() + 7,
+  nowToronto.getUTCDate() + 1,
   0,
   0,
   0
@@ -51,6 +51,7 @@ const indicator = h(LoadingOutlined, {
   style: {
     fontSize: "4rem",
     margin: "5rem 0 4.5rem 0",
+    color: "lightslategray",
   },
   spin: true,
 });
@@ -123,6 +124,8 @@ const filters = [
 </script>
 
 <template>
+  <h2>Leaderboard</h2>
+  <h3>Leaderboard placements update every day at 8 pm (EST)</h3>
   <div class="options">
     <div class="timer">
       <h3>Updates in:</h3>

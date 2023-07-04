@@ -5,15 +5,27 @@ import Supporters from "../components/Supporter/Supporters.vue";
 <template>
   <div class="supporters">
     <h2>Supporters</h2>
-    <h3>
-      If you mistakingly supported me on
-      <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
-        >Ko-fi</a
-      >, no matter the amount, I will put your name/username, profile, and
-      message here!
-      <br />
-      Please include your login username!
-    </h3>
+    <div class="supporters-exp">
+      <h3>
+        If you mistakingly supported me on
+        <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
+          >Ko-fi</a
+        >, no matter the amount, I will put your name/username, profile, and
+        message here!
+        <br />
+        (Please include your unique login username)
+        <br />
+      </h3>
+      <h4>
+        Hosting this website is not cheap and I would genuinely love to continue
+        working on this project further!
+
+        <br />I have many more ideas that would make everything even more fun,
+        therefore any amount is greatly appreciated.
+        <br />
+        Thanks!
+      </h4>
+    </div>
     <Supporters />
   </div>
 </template>
@@ -25,7 +37,6 @@ import Supporters from "../components/Supporter/Supporters.vue";
   padding: 1rem;
   border-radius: 0.25rem;
   background-color: white;
-  overflow-x: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,5 +45,15 @@ import Supporters from "../components/Supporter/Supporters.vue";
 
 .ko-fi {
   font-weight: bold;
+  text-decoration: underline;
+  color: var(--theme-love);
+}
+
+.supporters-exp > h3 {
+  margin-bottom: 0.5em;
+}
+
+.supporters-exp {
+  display: grid;
 }
 </style>

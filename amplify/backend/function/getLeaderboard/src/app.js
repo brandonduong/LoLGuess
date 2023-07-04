@@ -82,14 +82,12 @@ async function signAndRun(query, variables) {
 async function getLeaderboard() {
   // Today in UTC with no time
   const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const lastSunday = new Date(today.setDate(today.getDate() - today.getDay()))
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     .toISOString()
     .split("T")[0];
 
   console.log(now);
   console.log(today);
-  console.log(lastSunday);
 
   const query = /* GraphQL */ `
     query GET_LEADERBOARD($date: ID!) {
@@ -104,7 +102,7 @@ async function getLeaderboard() {
     }
   `;
   const variables = {
-    date: lastSunday,
+    date: today,
   };
 
   const res = await signAndRun(query, variables);

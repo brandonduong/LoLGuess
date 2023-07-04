@@ -176,6 +176,7 @@ const indicator = h(LoadingOutlined, {
   style: {
     fontSize: "4rem",
     margin: "5rem 0 4.5rem 0",
+    color: "lightslategray",
   },
   spin: true,
 });

@@ -176,11 +176,11 @@ function signout() {
 }
 
 .kofi {
-  border: #cc93ce;
+  border: var(--theme-love);
   transition: 0.3s;
 }
 .kofi-div :hover {
-  background-color: #d2b0d3;
+  background-color: var(--theme-love-highlight);
 }
 
 .signout-div,

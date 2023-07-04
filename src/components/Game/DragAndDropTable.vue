@@ -170,7 +170,13 @@ function checkIfCorrect(placement: number) {
       @end="onChange"
     >
       <template #item="{ element }">
-        <tr class="draggable-row">
+        <tr
+          :class="
+            props.verifiedGuess.length === 0
+              ? `draggable-row grab`
+              : `draggable-row`
+          "
+        >
           <DragOutlined
             style="color: black; font-size: 1rem"
             v-if="props.verifiedGuess.length === 0"
@@ -236,6 +242,9 @@ function checkIfCorrect(placement: number) {
   grid-template-columns: 0.05fr 0.15fr 0.3fr 0.3fr 1fr 0.15fr;
   align-items: center;
   border: 1px solid lightslategray;
+}
+
+.grab {
   cursor: grab;
 }
 
