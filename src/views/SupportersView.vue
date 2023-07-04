@@ -10,8 +10,8 @@ import Supporters from "../components/Supporter/Supporters.vue";
         If you mistakingly supported me on
         <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
           >Ko-fi</a
-        >, no matter the amount, I will put your name/username, profile, and
-        message here!
+        >, no matter the amount, I will put your name/username, profile, links,
+        and message here!
         <br />
         (Please include your unique login username)
         <br />

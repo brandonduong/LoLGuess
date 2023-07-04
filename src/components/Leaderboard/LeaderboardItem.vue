@@ -1,17 +1,38 @@
 <script setup lang="ts">
 import type { User } from "@/API";
 import { roundToTwo } from "@/common/helper";
+import { ref } from "vue";
 
 const props = defineProps<{
   user: User;
   rank: number;
 }>();
+
+const icon = ref<string>("");
+switch (props.rank) {
+  case 1:
+    icon.value = "/bedge.png";
+    break;
+  case 2:
+    icon.value = "/wokege.png";
+    break;
+  case 3:
+    icon.value = "/chatting.webp";
+    break;
+  case 4:
+    icon.value = "/giga.webp";
+    break;
+  default:
+    break;
+}
 </script>
 
 <template>
   <RouterLink :to="`/profile/${user.id}`">
     <div class="leaderboard-item">
-      <h3>{{ rank }}</h3>
+      <h3 class="rank">
+        {{ rank }} <img :src="icon" v-if="icon" class="emote" />
+      </h3>
       <h3>{{ user.username }}</h3>
       <h3>{{ user.score }} / {{ user.maxScore }}</h3>
       <h3>{{ user.correctPlacements }}</h3>
@@ -40,5 +61,17 @@ const props = defineProps<{
 
 .leaderboard-item > h3 {
   margin: 0;
+}
+
+.rank {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 0;
+  column-gap: 0.5rem;
+}
+
+.emote {
+  width: 24px;
+  height: 24px;
 }
 </style>
