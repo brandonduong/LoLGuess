@@ -3,6 +3,7 @@ import { RouterView, useRouter } from "vue-router";
 import AccountHeader from "./components/AccountHeader.vue";
 import { ref, watchEffect } from "vue";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
+import { Authenticator } from "@aws-amplify/ui-vue";
 
 const auth = useAuthenticator();
 const router = useRouter();
@@ -24,6 +25,7 @@ watchEffect(() => {
 <template>
   <AccountHeader />
   <RouterView />
+  <Authenticator />
 </template>
 
 <style scoped>
