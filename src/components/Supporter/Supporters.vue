@@ -4,8 +4,8 @@ import { RedditOutlined, TwitterOutlined } from "@ant-design/icons-vue";
 const supporters = [
   {
     name: "TFTupy",
-    msg: "Wow this is the best TFT website ever and probably costs a lot of money to host!",
-    value: "-20,000 from student debt",
+    msg: "Wow this is the best TFT website ever and probably costs a lot of money to host! The owner probably has a lot of student debt as well haha :)",
+    value: "From student debt, -13,333",
     id: "1b587836-a7be-4e31-a4f3-3c88daf21f1e",
     date: "06-22-2023",
     lolchess: "https://lolchess.gg/profile/na/tupy",
@@ -16,7 +16,7 @@ const supporters = [
   {
     name: "Ninjakat2000",
     msg: "Hey there cutie ;)",
-    value: "3.00",
+    value: "3",
     id: "321b054c-7caf-40d9-ae32-0f1b3816d4fa",
     date: "06-23-2023",
   },
@@ -33,7 +33,7 @@ const supporters = [
         </h3>
       </RouterLink>
       <h3>
-        <b> ${{ supporter.value }} </b>
+        <b>{{ supporter.value }} Coffees!</b>
       </h3>
       <h4>
         {{ supporter.msg }}
