@@ -33,6 +33,14 @@ const router = createRouter({
       alias: "/",
       component: () => import("../views/LoginView.vue"),
     },
+    {
+      path: "/404",
+      component: () => import("../views/NotFoundView.vue"),
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      component: () => import("../views/NotFoundView.vue"),
+    },
   ],
 });
 
