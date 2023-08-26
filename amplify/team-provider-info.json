@@ -36,7 +36,7 @@
         },
         "updateLeaderboard": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/updateLeaderboard-54486831585965753362-build.zip"
+          "s3Key": "amplify-builds/updateLeaderboard-5453374a3065654e7463-build.zip"
         },
         "getLeaderboard": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",

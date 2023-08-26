@@ -38,6 +38,7 @@ props.augments.forEach((aug) => {
   const path = augmentInfo.loadoutsIcon.split("/");
   const fileName = path[path.length - 1].toLowerCase();
   const augmentPath = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/maps/tft/icons/augments/hexcore/${fileName}`;
+  console.log(aug, augmentInfo, path, fileName);
 
   const ind = props.augments.indexOf(augmentInfo.nameId);
   checkIfImageExists(augmentPath, (exists: boolean) => {

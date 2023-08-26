@@ -107,7 +107,7 @@ async function listAllUsers() {
       }
     }
   `;
-  const users = [];
+  let users = [];
   var nextToken = "";
   var variables = {
     filter: {
@@ -122,7 +122,7 @@ async function listAllUsers() {
     const res = await signAndRun(query, variables);
     if (res.statusCode === 200) {
       console.log(res.body.data.listUsers.items);
-      users.concat(res.body.data.listUsers.items);
+      users = users.concat(res.body.data.listUsers.items);
       nextToken = res.body.data.listUsers.nextToken;
       variables.nextToken = nextToken;
     } else {
@@ -134,7 +134,7 @@ async function listAllUsers() {
 
 function sortUsers(users, sortField) {
   const copy = [...users];
-  console.log(copy, sortField);
+  console.log(copy, users, sortField);
   return copy.sort((a, b) =>
     a[sortField] < b[sortField] ? 1 : a[sortField] > b[sortField] ? -1 : 0
   );

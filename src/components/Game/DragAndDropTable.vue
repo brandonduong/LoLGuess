@@ -52,27 +52,9 @@ var staticTFTUnitData = ref<StaticUnit[]>([]);
 var staticTFTItemData = ref<StaticItem[]>([]);
 
 onMounted(async () => {
-  const staticData = window.localStorage.getItem("staticTFTData");
-  if (staticData) {
-    staticTFTTraitData = JSON.parse(staticData).traitData;
-    staticTFTAugmentData = JSON.parse(staticData).augmentData;
-    staticTFTUnitData = JSON.parse(staticData).unitData;
-    staticTFTItemData = JSON.parse(staticData).itemData;
+  await getStaticTFTData().then(() => {
     loading.value = false;
-  } else {
-    await getStaticTFTData().then(() => {
-      loading.value = false;
-      localStorage.setItem(
-        "staticTFTData",
-        JSON.stringify({
-          traitData: staticTFTTraitData,
-          augmentData: staticTFTAugmentData,
-          unitData: staticTFTUnitData,
-          itemData: staticTFTItemData,
-        })
-      );
-    });
-  }
+  });
   updateGuess();
 });
 
