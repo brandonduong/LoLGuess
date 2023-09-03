@@ -13,10 +13,13 @@ interface ItemStyle {
 }
 
 interface StaticUnit {
-  character_id: string;
-  squareIconPath: string;
-  display_name: string;
-  path: string;
+  name: string;
+  character_record: {
+    character_id: string;
+    squareIconPath: string;
+    display_name: string;
+    path: string;
+  };
 }
 
 interface APIUnit {
@@ -52,7 +55,10 @@ props.units.sort(sortByCostThenStar).forEach((unit) => {
   const unitInfo = props.staticTFTUnitData.filter((u) => {
     // For set 8.5 return u.character_id === unit.character_id;
     // For set 9, new return as some ids are messy (Ryze, Reksai)
-    return u.path.toLowerCase().includes(unit.character_id.toLowerCase());
+
+    return u.character_record.path
+      .toLowerCase()
+      .includes(unit.character_id.toLowerCase());
   })[0];
 
   const itemPaths: ItemStyle[] = [];
@@ -74,12 +80,14 @@ props.units.sort(sortByCostThenStar).forEach((unit) => {
   });
 
   // Get unit path
-  const path = unitInfo.squareIconPath.toLowerCase().split("/");
+  const path = unitInfo.character_record.squareIconPath
+    .toLowerCase()
+    .split("/");
   unitStyles.value.push({
     path: `${path[path.length - 3]}/${path[path.length - 2]}/${
       path[path.length - 1]
     }`,
-    title: unitInfo.display_name,
+    title: unitInfo.character_record.display_name,
     itemPaths: itemPaths,
     rarity: unit.rarity,
     tier: unit.tier,

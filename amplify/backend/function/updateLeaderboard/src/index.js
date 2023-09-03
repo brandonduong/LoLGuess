@@ -135,9 +135,12 @@ async function listAllUsers() {
 function sortUsers(users, sortField) {
   const copy = [...users];
   console.log(copy, users, sortField);
-  return copy.sort((a, b) =>
+  const sorted = copy.sort((a, b) =>
     a[sortField] < b[sortField] ? 1 : a[sortField] > b[sortField] ? -1 : 0
   );
+  const ids = sorted.map((user) => user.id);
+  console.log(sorted, ids);
+  return ids;
 }
 
 async function signAndRun(query, variables) {
