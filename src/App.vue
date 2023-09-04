@@ -25,7 +25,7 @@ watchEffect(() => {
 <template>
   <AccountHeader />
   <RouterView />
-  <Authenticator />
+  <Authenticator style="display: none" />
 </template>
 
 <style scoped>
