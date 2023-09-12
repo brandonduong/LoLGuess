@@ -6,6 +6,7 @@ import { LoadingOutlined } from "@ant-design/icons-vue";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
 import http from "../../common/http-common";
 import { CaretDownOutlined } from "@ant-design/icons-vue";
+import Loading from "../Loading.vue";
 const auth = useAuthenticator();
 
 const current = ref<number>(1);
@@ -46,15 +47,6 @@ async function getLeaderboard() {
     leaderboard.value = res.data.users;
   });
 }
-
-const indicator = h(LoadingOutlined, {
-  style: {
-    fontSize: "4rem",
-    margin: "5rem 0 4.5rem 0",
-    color: "lightslategray",
-  },
-  spin: true,
-});
 
 onMounted(async () => {
   await update();
@@ -167,7 +159,7 @@ const filters = [
       />
       <a-empty class="empty" v-else />
     </div>
-    <div class="loading" v-else><a-spin :indicator="indicator"></a-spin></div>
+    <Loading v-else />
   </div>
 </template>
 

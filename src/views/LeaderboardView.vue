@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Leaderboard from "../components/Leaderboard/Leaderboard.vue";
+import Leaderboard from "../components/Leaderboard/index.vue";
 </script>
 
 <template>

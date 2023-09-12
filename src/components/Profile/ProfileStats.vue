@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, watchEffect } from "vue";
-import { type User, type Guess } from "../../API";
+import { ref } from "vue";
+import { type User } from "../../API";
 import Stat from "./Stat.vue";
 import { roundToTwo } from "../../common/helper";
 import { RedoOutlined } from "@ant-design/icons-vue";
@@ -11,12 +11,25 @@ const props = defineProps<{
   staticProfileData: User;
 }>();
 
-const pref = ref<string>("");
-const username = ref<string>("");
-
-watchEffect(() => {
-  [pref.value, username.value] = props.staticProfileData.username.split(" ");
-});
+const [pref, username] = props.staticProfileData.username.split(" ");
+const stats = {
+  Guesses: props.staticProfileData.totalGuesses,
+  "Unfinished Guesses": props.staticProfileData.unfinished,
+  Score: `${props.staticProfileData.score} / ${props.staticProfileData.maxScore}`,
+  "Avg. Score": roundToTwo(
+    props.staticProfileData.score / props.staticProfileData.totalGuesses
+  ),
+  "Correct Placements": `${props.staticProfileData.correctPlacements} /
+  ${props.staticProfileData.totalGuesses * 8}`,
+  "Avg. Cor. Placements": roundToTwo(
+    props.staticProfileData.correctPlacements /
+      props.staticProfileData.totalGuesses
+  ),
+  "Correct Ranks": props.staticProfileData.correctRanks,
+  "Average Rank Pool": roundToTwo(
+    props.staticProfileData.totalRanks / props.staticProfileData.totalGuesses
+  ),
+};
 
 function refresh() {
   emit("getStaticProfileData");
@@ -28,44 +41,16 @@ function refresh() {
       {{ pref.substring(0, 20) }} ({{ username.substring(0, 20) }})
     </h2>
     <div class="refresh">
-      <a-button class="refresh-btn" type="primary" @click="refresh"
-        ><RedoOutlined style="font-size: 1.5rem; color: white"
-      /></a-button>
+      <a-button class="refresh-btn" type="primary" @click="refresh">
+        <RedoOutlined style="font-size: 1.5rem; color: white" />
+      </a-button>
     </div>
     <hr class="stats-divider" />
-    <Stat title="Guesses" :value="`${staticProfileData.totalGuesses}`" />
+
     <Stat
-      title="Unfinished Guesses"
-      :value="`${staticProfileData.unfinished}`"
-    />
-    <Stat
-      title="Score"
-      :value="`${staticProfileData.score} / ${staticProfileData.maxScore}`"
-    />
-    <Stat
-      title="Avg. Score"
-      :value="`${roundToTwo(
-        staticProfileData.score / staticProfileData.totalGuesses
-      )}`"
-    />
-    <Stat
-      title="Correct Placements"
-      :value="`${staticProfileData.correctPlacements} / ${
-        staticProfileData.totalGuesses * 8
-      }`"
-    />
-    <Stat
-      title="Avg. Cor. Placements"
-      :value="`${roundToTwo(
-        staticProfileData.correctPlacements / staticProfileData.totalGuesses
-      )}`"
-    />
-    <Stat title="Correct Ranks" :value="`${staticProfileData.correctRanks}`" />
-    <Stat
-      title="Average Rank Pool"
-      :value="`${roundToTwo(
-        staticProfileData.totalRanks / staticProfileData.totalGuesses
-      )}`"
+      v-for="[title, value] in Object.entries(stats)"
+      :title="title"
+      :value="value"
     />
   </div>
 </template>
