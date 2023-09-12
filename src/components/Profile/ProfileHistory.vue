@@ -15,6 +15,7 @@ const current = ref<number>(1);
     <HistoryItem
       v-for="guess in guesses.slice(5 * (current - 1), 5 * current)"
       :guess="guess"
+      :key="current"
     />
     <div class="pages">
       <a-pagination

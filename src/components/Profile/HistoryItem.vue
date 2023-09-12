@@ -14,10 +14,6 @@ onMounted(() => {
   updateScore();
 });
 
-onUpdated(() => {
-  updateScore();
-});
-
 function updateScore() {
   [score.value, maxScore.value] = calculateScore(
     props.guess.placements,
