@@ -14,7 +14,7 @@ const route = useRoute();
 const router = useRouter();
 
 watchEffect(() => {
-  console.log(route.fullPath);
+  //console.log(route.fullPath);
 });
 function getActive(link: string) {
   return route.fullPath.includes(link)

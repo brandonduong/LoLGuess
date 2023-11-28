@@ -9,16 +9,16 @@ import GuessRank from "./GuessRank.vue";
 import GuessScore from "./GuessScore.vue";
 import GuessRegion from "./GuessRegion.vue";
 import { useRouter } from "vue-router";
-const props = defineProps<{ matchId: string; rank: string }>();
+const props = defineProps<{ guessId: string }>();
 
 const auth = useAuthenticator();
 const router = useRouter();
 
 const loading = ref<boolean>(false);
-const current = ref<number>(props.matchId ? 2 : 0);
+const current = ref<number>(props.guessId ? 2 : 0);
 
 // Replay
-if (props.matchId) {
+if (props.guessId) {
   getReplay();
 }
 
@@ -32,7 +32,7 @@ const next = async () => {
     loading.value = true;
 
     // If replay, else
-    if (props.matchId) {
+    if (props.guessId) {
       verifyReplay();
       current.value++;
     } else {
@@ -98,9 +98,7 @@ async function getMatch() {
 }
 
 async function getReplay() {
-  let url = `/getReplay?matchId=${props.matchId}&rank=${encodeURIComponent(
-    props.rank.replace(/\-/g, "/")
-  )}`;
+  let url = `/getReplay?guessId=${props.guessId}`;
   //console.log(url);
 
   const header = {
@@ -117,17 +115,8 @@ async function getReplay() {
       //console.log(res);
       rankedMatch.value = res.data.rankedMatch;
       encryptedRank = res.data.rank;
-      selectedRanks.value = [
-        "Iron",
-        "Bronze",
-        "Silver",
-        "Gold",
-        "Platinum",
-        "Diamond",
-        "Master",
-        "Grandmaster",
-        "Challenger",
-      ];
+      selectedRanks.value = res.data.ranks;
+      verifiedRegion.value = res.data.region;
     })
     .catch(() => {
       alert("Error finding ranked match. Please try again.");
@@ -141,9 +130,6 @@ function verifyReplay() {
   );
   //console.log(verifiedGuess);
   verifiedRank = encryptedRank;
-  const reg = props.matchId.split("_")[0];
-  verifiedRegion.value = reg.slice(0, reg.length - 1);
-  verifiedMatchId.value = props.matchId;
   loading.value = false;
 }
 
@@ -177,7 +163,7 @@ async function verifyGuess() {
       verifiedGuess = res.data.unencrypted;
       verifiedRank = res.data.rank;
       verifiedRegion = res.data.region;
-      verifiedMatchId = res.data.matchId;
+      guessId.value = res.data.guessId;
       loading.value = false;
     });
 }
@@ -239,7 +225,7 @@ var encryptedMatchId = ref<string>("");
 var verifiedGuess = ref<string[]>([]);
 var verifiedRank = ref<string>("");
 var verifiedRegion = ref<string>("");
-var verifiedMatchId = ref<string>("");
+const guessId = ref<string>("");
 
 const buttonText = ["Next", "Play", "Guess", "Play Again"];
 
@@ -252,11 +238,9 @@ const indicator = h(LoadingOutlined, {
   spin: true,
 });
 
-async function share(text: string, rank: string) {
+async function share(text: string) {
   try {
-    await navigator.clipboard.writeText(
-      `http://lolguess.net/play/${text}/${rank.replace(/\//g, "-")}`
-    );
+    await navigator.clipboard.writeText(`http://lolguess.net/play/${text}`);
     alert("Copied url to match");
   } catch ($e) {
     alert("Cannot copy");
@@ -325,13 +309,7 @@ async function share(text: string, rank: string) {
           <a-button
             class="refresh-btn"
             type="primary"
-            @click="
-              () =>
-                share(
-                  verifiedMatchId,
-                  props.matchId ? props.rank : encryptedRank
-                )
-            "
+            @click="() => share(props.guessId ? props.guessId : guessId)"
           >
             Share
           </a-button>

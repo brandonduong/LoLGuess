@@ -113,6 +113,7 @@ async function guessesByDate(sub) {
           rank
           ranks
           userGuessesId
+          matchId
           createdAt
           region
           regions

@@ -157,6 +157,7 @@ async function createGuess(
     response = await node_fetch(request);
     body = await response.json();
     console.log(body);
+    return body.data.createGuess.id;
   } catch (error) {
     statusCode = 500;
     console.log(error);
@@ -345,13 +346,14 @@ app.post("/verifyGuess", async function (req, res) {
   );
 
   // Check that user did not cheat
+  var guessId;
   if (
     user.unfinished.toString() ===
     CryptoJS.AES.decrypt(req.body.encryptedUnfinished, RIOT_TOKEN).toString(
       CryptoJS.enc.Utf8
     )
   ) {
-    await createGuess(
+    guessId = await createGuess(
       user,
       unencrypted,
       rank,
@@ -371,7 +373,7 @@ app.post("/verifyGuess", async function (req, res) {
     unencrypted,
     rank,
     region,
-    matchId,
+    guessId,
   });
 });
 

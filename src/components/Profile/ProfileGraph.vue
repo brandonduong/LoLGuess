@@ -28,7 +28,7 @@ ChartJS.register(
   Legend
 );
 
-console.log(props.guesses);
+//console.log(props.guesses);
 
 const scoreData = ref<number[]>([]);
 const maxScoreData = ref<number[]>([]);

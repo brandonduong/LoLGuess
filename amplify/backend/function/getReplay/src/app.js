@@ -22,6 +22,22 @@ const bodyParser = require("body-parser");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 const axios = require("axios");
 const CryptoJS = require("crypto-js");
+const node_fetch = require("node-fetch");
+const { Request } = node_fetch;
+const crypto = require("@aws-crypto/sha256-js");
+const provider = require("@aws-sdk/credential-provider-node");
+const { defaultProvider } = provider;
+const signature = require("@aws-sdk/signature-v4");
+const { SignatureV4 } = signature;
+const protocol = require("@aws-sdk/protocol-http");
+const { HttpRequest } = protocol;
+
+const { Sha256 } = crypto;
+const GRAPHQL_ENDPOINT =
+  process.env.API_LOLGUESSDATASTORE_GRAPHQLAPIENDPOINTOUTPUT;
+const AWS_REGION = process.env.AWS_REGION || "us-east-1";
+
+const endpoint = new URL(GRAPHQL_ENDPOINT);
 
 // declare a new express app
 const app = express();
@@ -34,6 +50,82 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "*");
   next();
 });
+
+const signer = new SignatureV4({
+  credentials: defaultProvider(),
+  region: AWS_REGION,
+  service: "appsync",
+  sha256: Sha256,
+});
+
+async function getGuess(guessId) {
+  const query = /* GraphQL */ `
+    query GET_GUESS($id: ID!) {
+      getGuess(id: $id) {
+        id
+        placements
+        guessedRank
+        rank
+        ranks
+        userGuessesId
+        createdAt
+        region
+        regions
+        matchId
+        updatedAt
+      }
+    }
+  `;
+
+  const variables = {
+    id: guessId,
+  };
+
+  const res = await signAndRun(query, variables);
+  if (res.statusCode === 200) {
+    console.log(res.body);
+    return res.body.data.getGuess;
+  } else {
+    console.log(res.body.errors);
+  }
+}
+
+async function signAndRun(query, variables) {
+  const requestToBeSigned = new HttpRequest({
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      host: endpoint.host,
+    },
+    hostname: endpoint.host,
+    body: JSON.stringify({ query, variables }),
+    path: endpoint.pathname,
+  });
+
+  const signed = await signer.sign(requestToBeSigned);
+  const request = new Request(endpoint, signed);
+
+  let statusCode = 200;
+  let body;
+  let response;
+
+  try {
+    response = await node_fetch(request);
+    body = await response.json();
+    console.log(body);
+    if (body.errors) statusCode = 400;
+  } catch (error) {
+    statusCode = 500;
+    body = {
+      errors: [
+        {
+          message: error.message,
+        },
+      ],
+    };
+  }
+  return { statusCode, body };
+}
 
 /**********************
  * Example get method *
@@ -52,10 +144,12 @@ app.get("/getReplay", async function (req, res) {
   };
   console.log(`EVENT: ${JSON.stringify(req.apiGateway.event)}`);
   const param = req.apiGateway.event.queryStringParameters;
-  const matchId = param.matchId;
-  const rank = CryptoJS.AES.decrypt(param.rank, RIOT_TOKEN).toString(
-    CryptoJS.enc.Utf8
-  );
+  const guessId = param.guessId;
+
+  const guess = await getGuess(guessId);
+
+  const matchId = guess.matchId;
+  const rank = guess.rank;
   console.log(matchId);
 
   const region = matchId.split("_")[0].toLowerCase();
@@ -106,7 +200,7 @@ app.get("/getReplay", async function (req, res) {
     })
   );
 
-  res.json({ rankedMatch, rank });
+  res.json({ rankedMatch, rank, region: guess.region, ranks: guess.ranks });
 });
 
 app.listen(3000, function () {

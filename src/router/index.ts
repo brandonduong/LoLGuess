@@ -9,7 +9,7 @@ const router = createRouter({
       component: () => import("../views/GameView.vue"),
     },
     {
-      path: "/play/:matchId/:rank",
+      path: "/play/:guessId",
       name: "replay",
       component: () => import("../views/GameView.vue"),
       props: true,

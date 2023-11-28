@@ -68,7 +68,7 @@ async function update() {
   } else {
     await getStaticProfileData();
   }
-  console.log(staticProfileData.value);
+  //console.log(staticProfileData.value);
   console.log(staticProfileGuesses.value);
 
   loading.value = false;

@@ -3,6 +3,7 @@ import { ref, onUpdated, onMounted } from "vue";
 import type { Guess } from "@/API";
 import { calculateScore } from "@/common/helper";
 import RankIcon from "../Game/RankIcon.vue";
+import { useRouter } from "vue-router";
 
 const props = defineProps<{
   guess: Guess;
@@ -10,6 +11,8 @@ const props = defineProps<{
 
 const score = ref<number>(0);
 const maxScore = ref<number>(0);
+const router = useRouter();
+
 onMounted(() => {
   updateScore();
 });
@@ -22,37 +25,62 @@ function updateScore() {
     props.guess.ranks
   );
 }
+
+const reveal = ref<boolean>(false);
 </script>
 
 <template>
   <div class="history-item">
-    <h3>
-      {{
-        new Date(guess.createdAt).toLocaleString("default", {
-          month: "short",
-          day: "numeric",
-        })
-      }}
-    </h3>
-    <h3 v-if="guess.regions" class="regions" :title="guess.regions.toString()">
-      [ {{ guess.regions.join(", ") }} ]
-    </h3>
-    <h3 v-else>N/A</h3>
+    <div>
+      <h3>
+        {{
+          new Date(guess.createdAt).toLocaleString("default", {
+            month: "short",
+            day: "numeric",
+          })
+        }}
+      </h3>
+      <h3>{{ score }} / {{ maxScore }}</h3>
+    </div>
 
-    <h3 class="ranks">
-      Rank Pool:
-      <RankIcon v-for="rank in guess.ranks" :rank="rank" />
-    </h3>
-    <h3>Guessed Rank: <RankIcon :rank="guess.guessedRank" /></h3>
+    <div>
+      <span
+        v-if="guess.regions"
+        class="regions"
+        :title="guess.regions.toString()"
+      >
+        {{ guess.regions.join(", ") }}
+      </span>
+      <h3 v-else>N/A</h3>
+    </div>
 
-    <h3>{{ score }} / {{ maxScore }}</h3>
-    <h3>{{ guess.region || "N/A" }}</h3>
-    <h3>{{ guess.placements.map((place) => parseInt(place)) }}</h3>
+    <div>
+      <h3 class="ranks">
+        Rank Pool:
+        <RankIcon v-for="rank in guess.ranks" :rank="rank" />
+      </h3>
+      <h3>{{ guess.placements.map((place) => parseInt(place)).join(", ") }}</h3>
+    </div>
 
-    <h3>
-      Rank:
-      <RankIcon :rank="guess.rank" />
-    </h3>
+    <div v-if="reveal">
+      <h3>Guessed Rank: <RankIcon :rank="guess.guessedRank" /></h3>
+
+      <h3>
+        Rank:
+        <RankIcon :rank="guess.rank" />
+      </h3>
+    </div>
+    <div v-else>
+      <a-button type="default" @click="() => (reveal = !reveal)"
+        >Reveal</a-button
+      >
+      <a-button
+        v-if="props.guess.matchId"
+        type="primary"
+        @click="() => router.push(`/play/${props.guess.id}`)"
+        >Replay</a-button
+      >
+    </div>
   </div>
 </template>
 
@@ -70,7 +98,6 @@ function updateScore() {
 }
 
 h3.regions {
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-right: 1rem;
