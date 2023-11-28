@@ -21,6 +21,7 @@ export const createUser = /* GraphQL */ `
           createdAt
           region
           regions
+          matchId
           updatedAt
         }
         nextToken
@@ -58,6 +59,7 @@ export const updateUser = /* GraphQL */ `
           createdAt
           region
           regions
+          matchId
           updatedAt
         }
         nextToken
@@ -95,6 +97,7 @@ export const deleteUser = /* GraphQL */ `
           createdAt
           region
           regions
+          matchId
           updatedAt
         }
         nextToken
@@ -128,6 +131,7 @@ export const createGuess = /* GraphQL */ `
       createdAt
       region
       regions
+      matchId
       updatedAt
     }
   }
@@ -147,6 +151,7 @@ export const updateGuess = /* GraphQL */ `
       createdAt
       region
       regions
+      matchId
       updatedAt
     }
   }
@@ -166,6 +171,7 @@ export const deleteGuess = /* GraphQL */ `
       createdAt
       region
       regions
+      matchId
       updatedAt
     }
   }

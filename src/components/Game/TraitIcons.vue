@@ -87,7 +87,8 @@ traitStyles.value.sort(function (a, b) {
   filter: brightness(0%);
 }
 
-.style0 {
+.style0,
+.style5 {
   background-image: url("/goldtrait.svg");
 }
 

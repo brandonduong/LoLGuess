@@ -20,6 +20,7 @@ import {
   Input,
   Statistic,
   Empty,
+  Typography,
 } from "ant-design-vue";
 Amplify.configure(awsExports);
 
@@ -38,5 +39,6 @@ app.use(Radio);
 app.use(Input);
 app.use(Statistic);
 app.use(Empty);
+app.use(Typography);
 
 app.mount("#app");

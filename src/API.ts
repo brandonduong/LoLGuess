@@ -131,6 +131,7 @@ export type Guess = {
   createdAt: string,
   region?: string | null,
   regions?: Array< string | null > | null,
+  matchId?: string | null,
   updatedAt: string,
 };
 
@@ -162,6 +163,7 @@ export type CreateGuessInput = {
   createdAt?: string | null,
   region?: string | null,
   regions?: Array< string | null > | null,
+  matchId?: string | null,
 };
 
 export type ModelGuessConditionInput = {
@@ -173,6 +175,7 @@ export type ModelGuessConditionInput = {
   createdAt?: ModelStringInput | null,
   region?: ModelStringInput | null,
   regions?: ModelStringInput | null,
+  matchId?: ModelStringInput | null,
   and?: Array< ModelGuessConditionInput | null > | null,
   or?: Array< ModelGuessConditionInput | null > | null,
   not?: ModelGuessConditionInput | null,
@@ -204,6 +207,7 @@ export type UpdateGuessInput = {
   createdAt?: string | null,
   region?: string | null,
   regions?: Array< string | null > | null,
+  matchId?: string | null,
 };
 
 export type DeleteGuessInput = {
@@ -288,6 +292,7 @@ export type ModelGuessFilterInput = {
   createdAt?: ModelStringInput | null,
   region?: ModelStringInput | null,
   regions?: ModelStringInput | null,
+  matchId?: ModelStringInput | null,
   and?: Array< ModelGuessFilterInput | null > | null,
   or?: Array< ModelGuessFilterInput | null > | null,
   not?: ModelGuessFilterInput | null,
@@ -407,6 +412,7 @@ export type ModelSubscriptionGuessFilterInput = {
   createdAt?: ModelSubscriptionStringInput | null,
   region?: ModelSubscriptionStringInput | null,
   regions?: ModelSubscriptionStringInput | null,
+  matchId?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionGuessFilterInput | null > | null,
   or?: Array< ModelSubscriptionGuessFilterInput | null > | null,
 };
@@ -445,6 +451,7 @@ export type CreateUserMutation = {
         createdAt: string,
         region?: string | null,
         regions?: Array< string | null > | null,
+        matchId?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -486,6 +493,7 @@ export type UpdateUserMutation = {
         createdAt: string,
         region?: string | null,
         regions?: Array< string | null > | null,
+        matchId?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -527,6 +535,7 @@ export type DeleteUserMutation = {
         createdAt: string,
         region?: string | null,
         regions?: Array< string | null > | null,
+        matchId?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -562,6 +571,7 @@ export type CreateGuessMutation = {
     createdAt: string,
     region?: string | null,
     regions?: Array< string | null > | null,
+    matchId?: string | null,
     updatedAt: string,
   } | null,
 };
@@ -583,6 +593,7 @@ export type UpdateGuessMutation = {
     createdAt: string,
     region?: string | null,
     regions?: Array< string | null > | null,
+    matchId?: string | null,
     updatedAt: string,
   } | null,
 };
@@ -604,6 +615,7 @@ export type DeleteGuessMutation = {
     createdAt: string,
     region?: string | null,
     regions?: Array< string | null > | null,
+    matchId?: string | null,
     updatedAt: string,
   } | null,
 };
@@ -687,6 +699,7 @@ export type BatchFetchUserQuery = {
         createdAt: string,
         region?: string | null,
         regions?: Array< string | null > | null,
+        matchId?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -727,6 +740,7 @@ export type GetUserQuery = {
         createdAt: string,
         region?: string | null,
         regions?: Array< string | null > | null,
+        matchId?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -794,6 +808,7 @@ export type GetGuessQuery = {
     createdAt: string,
     region?: string | null,
     regions?: Array< string | null > | null,
+    matchId?: string | null,
     updatedAt: string,
   } | null,
 };
@@ -818,6 +833,7 @@ export type ListGuessesQuery = {
       createdAt: string,
       region?: string | null,
       regions?: Array< string | null > | null,
+      matchId?: string | null,
       updatedAt: string,
     } | null >,
     nextToken?: string | null,
@@ -847,6 +863,7 @@ export type GuessesByDateQuery = {
       createdAt: string,
       region?: string | null,
       regions?: Array< string | null > | null,
+      matchId?: string | null,
       updatedAt: string,
     } | null >,
     nextToken?: string | null,
@@ -919,6 +936,7 @@ export type OnCreateUserSubscription = {
         createdAt: string,
         region?: string | null,
         regions?: Array< string | null > | null,
+        matchId?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -959,6 +977,7 @@ export type OnUpdateUserSubscription = {
         createdAt: string,
         region?: string | null,
         regions?: Array< string | null > | null,
+        matchId?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -999,6 +1018,7 @@ export type OnDeleteUserSubscription = {
         createdAt: string,
         region?: string | null,
         regions?: Array< string | null > | null,
+        matchId?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -1033,6 +1053,7 @@ export type OnCreateGuessSubscription = {
     createdAt: string,
     region?: string | null,
     regions?: Array< string | null > | null,
+    matchId?: string | null,
     updatedAt: string,
   } | null,
 };
@@ -1053,6 +1074,7 @@ export type OnUpdateGuessSubscription = {
     createdAt: string,
     region?: string | null,
     regions?: Array< string | null > | null,
+    matchId?: string | null,
     updatedAt: string,
   } | null,
 };
@@ -1073,6 +1095,7 @@ export type OnDeleteGuessSubscription = {
     createdAt: string,
     region?: string | null,
     regions?: Array< string | null > | null,
+    matchId?: string | null,
     updatedAt: string,
   } | null,
 };

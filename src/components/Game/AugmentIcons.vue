@@ -38,7 +38,7 @@ props.augments.forEach((aug) => {
   const path = augmentInfo.loadoutsIcon.split("/");
   const fileName = path[path.length - 1].toLowerCase();
   const augmentPath = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/maps/tft/icons/augments/hexcore/${fileName}`;
-  console.log(aug, augmentInfo, path, fileName);
+  // console.log(aug, augmentInfo, path, fileName);
 
   const ind = props.augments.indexOf(augmentInfo.nameId);
   checkIfImageExists(augmentPath, (exists: boolean) => {
@@ -92,7 +92,7 @@ function checkIfImageExists(url: string, callback: Function) {
         />
       </div>
     </div>
-    <h3 class="augment-amount">({{ props.augmentAmount }})</h3>
+    <!--<h3 class="augment-amount">({{ props.augmentAmount }})</h3>-->
   </div>
 </template>
 <style scoped>

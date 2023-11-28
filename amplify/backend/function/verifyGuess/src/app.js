@@ -109,7 +109,8 @@ async function createGuess(
   ranks,
   selectedRank,
   region,
-  regions
+  regions,
+  matchId
 ) {
   const query = /* GraphQL */ `
     mutation CREATE_GUESS($input: CreateGuessInput!) {
@@ -122,6 +123,7 @@ async function createGuess(
         userGuessesId
         region
         regions
+        matchId
       }
     }
   `;
@@ -134,6 +136,7 @@ async function createGuess(
       userGuessesId: user.id,
       region,
       regions,
+      matchId,
     },
   };
   const requestToBeSigned = new HttpRequest({
@@ -311,6 +314,7 @@ app.post("/verifyGuess", async function (req, res) {
   const selectedRank = req.body.selectedRank;
   const encryptedRegion = req.body.encryptedRegion;
   const encryptedRegions = req.body.encryptedRegions;
+  const encryptedMatchId = req.body.encryptedMatchId;
 
   // Decrement Unfinished Games for User
   const user = await getUser(
@@ -336,6 +340,9 @@ app.post("/verifyGuess", async function (req, res) {
   const regions = CryptoJS.AES.decrypt(encryptedRegions, RIOT_TOKEN)
     .toString(CryptoJS.enc.Utf8)
     .split(",");
+  const matchId = CryptoJS.AES.decrypt(encryptedMatchId, RIOT_TOKEN).toString(
+    CryptoJS.enc.Utf8
+  );
 
   // Check that user did not cheat
   if (
@@ -351,7 +358,8 @@ app.post("/verifyGuess", async function (req, res) {
       ranks,
       selectedRank,
       region,
-      regions
+      regions,
+      matchId
     );
     const stats = calculateStats(user, unencrypted, selectedRank, rank, ranks);
     await updateUserStats(user, stats);
@@ -363,6 +371,7 @@ app.post("/verifyGuess", async function (req, res) {
     unencrypted,
     rank,
     region,
+    matchId,
   });
 });
 

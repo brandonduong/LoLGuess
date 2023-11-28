@@ -3,13 +3,13 @@ import { RedditOutlined, TwitterOutlined } from "@ant-design/icons-vue";
 
 const supporters = [
   {
-    name: "TFTupy",
+    name: "THTupy",
     msg: "Wow this is the best TFT website ever and probably costs a lot of money to host! The owner probably has a lot of student debt as well haha :)",
     value: "From student debt, -13,333",
-    id: "1b587836-a7be-4e31-a4f3-3c88daf21f1e",
+    id: "3763a9f9-3f45-4346-b131-68ade2f98515",
     date: "06-22-2023",
     lolchess: "https://lolchess.gg/profile/na/tupy",
-    twitch: "https://www.twitch.tv/tftupy",
+    twitch: "https://www.twitch.tv/thtupy",
     reddit: "https://www.reddit.com/user/TreehouseTupy",
     twitter: "https://twitter.com/THTupy",
   },

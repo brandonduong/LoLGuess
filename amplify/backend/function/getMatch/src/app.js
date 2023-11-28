@@ -302,6 +302,7 @@ app.get("/getMatch", async function (req, res) {
 
   var foundRanked = false;
   var rankedMatch = {};
+  var matchId;
   for (let i = 0; i < matches.length && !foundRanked; i++) {
     const matchUrl = `/match/v1/matches/${matches[i]}`;
     console.log(baseRegionalUrl + matchUrl);
@@ -314,6 +315,7 @@ app.get("/getMatch", async function (req, res) {
         if (res.data.info.queue_id === 1100) {
           console.log("found ranked match");
           rankedMatch = res.data.info.participants;
+          matchId = matches[i];
           foundRanked = true;
         }
       })
@@ -353,6 +355,7 @@ app.get("/getMatch", async function (req, res) {
       `${regions.toString()}`,
       RIOT_TOKEN
     ).toString(),
+    matchId: CryptoJS.AES.encrypt(`${matchId}`, RIOT_TOKEN).toString(),
   });
 });
 

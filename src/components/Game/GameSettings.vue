@@ -68,6 +68,7 @@ async function getMatch() {
         encryptedUnfinished = res.data.unfinished;
         encryptedRegion = res.data.region;
         encryptedRegions = res.data.regions;
+        encryptedMatchId = res.data.matchId;
       })
       .catch(() => {
         alert("Error finding ranked match. Please try again.");
@@ -100,6 +101,7 @@ async function verifyGuess() {
         encryptedUnfinished,
         encryptedRegion,
         encryptedRegions,
+        encryptedMatchId,
       },
       header
     )
@@ -109,6 +111,7 @@ async function verifyGuess() {
       verifiedGuess = res.data.unencrypted;
       verifiedRank = res.data.rank;
       verifiedRegion = res.data.region;
+      verifiedMatchId = res.data.matchId;
       loading.value = false;
     });
 }
@@ -166,9 +169,11 @@ var encryptedRanks = ref<string>("");
 var encryptedUnfinished = ref<string>("");
 var encryptedRegion = ref<string>("");
 var encryptedRegions = ref<string>("");
+var encryptedMatchId = ref<string>("");
 var verifiedGuess = ref<string[]>([]);
 var verifiedRank = ref<string>("");
 var verifiedRegion = ref<string>("");
+var verifiedMatchId = ref<string>("");
 
 const buttonText = ["Next", "Play", "Guess", "Play Again"];
 

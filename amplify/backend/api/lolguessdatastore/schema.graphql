@@ -46,6 +46,7 @@ type Guess
   createdAt: String!
   region: String
   regions: [String]
+  matchId: String
 }
 
 type Leaderboard
