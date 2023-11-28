@@ -98,6 +98,7 @@ function updateGuess() {
 }
 
 function checkIfCorrect(placement: number) {
+  //console.log(props.verifiedGuess, placement);
   if (placement.toString() !== props.verifiedGuess[placement - 1]) {
     return false;
   } else {

@@ -136,6 +136,30 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getReplay": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "ApiName",
+            "ApiId"
+          ],
+          "category": "api",
+          "resourceName": "lolguess"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "lolguessdatastore"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "lolguesssignup": {
       "build": true,
       "dependsOn": [
@@ -239,6 +263,30 @@
         {
           "category": "function",
           "resourceName": "getProfile"
+        }
+      ]
+    },
+    "AMPLIFY_function_getReplay_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getReplay"
+        }
+      ]
+    },
+    "AMPLIFY_function_getReplay_riotToken": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getReplay"
+        }
+      ]
+    },
+    "AMPLIFY_function_getReplay_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getReplay"
         }
       ]
     },

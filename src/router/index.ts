@@ -5,8 +5,14 @@ const router = createRouter({
   routes: [
     {
       path: "/play",
-      name: "home",
+      name: "play",
       component: () => import("../views/GameView.vue"),
+    },
+    {
+      path: "/play/:matchId/:rank",
+      name: "replay",
+      component: () => import("../views/GameView.vue"),
+      props: true,
     },
     {
       path: "/leaderboard",

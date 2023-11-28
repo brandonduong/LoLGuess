@@ -9,28 +9,43 @@ import GuessRank from "./GuessRank.vue";
 import GuessScore from "./GuessScore.vue";
 import GuessRegion from "./GuessRegion.vue";
 import { useRouter } from "vue-router";
+const props = defineProps<{ matchId: string; rank: string }>();
 
 const auth = useAuthenticator();
 const router = useRouter();
 
 const loading = ref<boolean>(false);
-const current = ref<number>(0);
+const current = ref<number>(props.matchId ? 2 : 0);
+
+// Replay
+if (props.matchId) {
+  getReplay();
+}
+
 const next = async () => {
   if (current.value === 1) {
     await getMatch().then(() => {
       current.value++;
     });
   } else if (current.value === 2) {
-    console.log(selectedGuess.value);
+    //console.log(selectedGuess.value);
     loading.value = true;
-    await verifyGuess().then(() => {
-      loading.value = false;
+
+    // If replay, else
+    if (props.matchId) {
+      verifyReplay();
       current.value++;
-    });
+    } else {
+      await verifyGuess().then(() => {
+        loading.value = false;
+        current.value++;
+      });
+    }
   } else if (current.value === 3) {
     verifiedGuess = ref<string[]>([]);
     verifiedRank = ref<string>("");
     verifiedRegion = ref<string>("");
+    router.push("/play");
     current.value = 0;
   } else {
     current.value++;
@@ -48,7 +63,7 @@ async function getMatch() {
     for (let i = 0; i < selectedRanks.value.length; i++) {
       url += `ranks[]=${selectedRanks.value[i]}&`;
     }
-    console.log(url);
+    //console.log(url);
 
     const header = {
       headers: {
@@ -61,7 +76,7 @@ async function getMatch() {
     await http.api
       .get(url, header)
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         rankedMatch = res.data.rankedMatch;
         encryptedRank = res.data.rank;
         encryptedRanks = res.data.ranks;
@@ -81,6 +96,57 @@ async function getMatch() {
     router.push("/login");
   }
 }
+
+async function getReplay() {
+  let url = `/getReplay?matchId=${props.matchId}&rank=${encodeURIComponent(
+    props.rank.replace(/\-/g, "/")
+  )}`;
+  //console.log(url);
+
+  const header = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${auth.user.signInUserSession.idToken.jwtToken}`,
+    },
+  };
+
+  loading.value = true;
+  await http.api
+    .get(url, header)
+    .then((res) => {
+      //console.log(res);
+      rankedMatch.value = res.data.rankedMatch;
+      encryptedRank = res.data.rank;
+      selectedRanks.value = [
+        "Iron",
+        "Bronze",
+        "Silver",
+        "Gold",
+        "Platinum",
+        "Diamond",
+        "Master",
+        "Grandmaster",
+        "Challenger",
+      ];
+    })
+    .catch(() => {
+      alert("Error finding ranked match. Please try again.");
+    });
+  loading.value = false;
+}
+
+function verifyReplay() {
+  verifiedGuess.value = rankedMatch.value.map((p: any) =>
+    p.placement.toString()
+  );
+  //console.log(verifiedGuess);
+  verifiedRank = encryptedRank;
+  const reg = props.matchId.split("_")[0];
+  verifiedRegion.value = reg.slice(0, reg.length - 1);
+  verifiedMatchId.value = props.matchId;
+  loading.value = false;
+}
+
 async function verifyGuess() {
   let url = "/verifyGuess";
   const header = {
@@ -106,8 +172,8 @@ async function verifyGuess() {
       header
     )
     .then((res) => {
-      console.log(res);
-      console.log(res.data.unencrypted);
+      //console.log(res);
+      //console.log(res.data.unencrypted);
       verifiedGuess = res.data.unencrypted;
       verifiedRank = res.data.rank;
       verifiedRegion = res.data.region;
@@ -185,6 +251,17 @@ const indicator = h(LoadingOutlined, {
   },
   spin: true,
 });
+
+async function share(text: string, rank: string) {
+  try {
+    await navigator.clipboard.writeText(
+      `http://lolguess.net/play/${text}/${rank.replace(/\//g, "-")}`
+    );
+    alert("Copied url to match");
+  } catch ($e) {
+    alert("Cannot copy");
+  }
+}
 </script>
 
 <template>
@@ -244,6 +321,21 @@ const indicator = h(LoadingOutlined, {
           v-if="current === 3"
         />
         <GuessRegion :region="verifiedRegion" v-if="current === 3" />
+        <div v-if="current === 3" class="match-id">
+          <a-button
+            class="refresh-btn"
+            type="primary"
+            @click="
+              () =>
+                share(
+                  verifiedMatchId,
+                  props.matchId ? props.rank : encryptedRank
+                )
+            "
+          >
+            Share
+          </a-button>
+        </div>
       </div>
       <div v-else></div>
       <a-button
@@ -287,6 +379,8 @@ const indicator = h(LoadingOutlined, {
 .extra {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .step {
@@ -298,5 +392,11 @@ const indicator = h(LoadingOutlined, {
   border-radius: 0.25rem;
   padding: 0.5rem 1rem;
   background-color: white;
+}
+
+.match-id {
+  margin: 0;
+  white-space: nowrap;
+  padding: 0 0.75rem;
 }
 </style>

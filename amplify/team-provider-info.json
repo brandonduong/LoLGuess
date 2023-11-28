@@ -41,6 +41,11 @@
         "getLeaderboard": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
           "s3Key": "amplify-builds/getLeaderboard-6d345a58796272357a49-build.zip"
+        },
+        "getReplay": {
+          "riotToken": "RGAPI-93f6e6ae-05ec-4b2c-8f35-8f5de9548a91",
+          "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
+          "s3Key": "amplify-builds/getReplay-6b663347556f63764445-build.zip"
         }
       },
       "api": {

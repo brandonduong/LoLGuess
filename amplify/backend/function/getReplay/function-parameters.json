@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "api": {
+      "lolguess": [
+        "read"
+      ],
+      "lolguessdatastore": [
+        "Query"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "riotToken",
+      "environmentVariableName": "RIOT_TOKEN"
+    }
+  ]
+}
