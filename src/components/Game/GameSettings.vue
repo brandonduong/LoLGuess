@@ -104,7 +104,6 @@ async function getReplay() {
   const header = {
     headers: {
       "Content-type": "application/json",
-      Authorization: `Bearer ${auth.user.signInUserSession.idToken.jwtToken}`,
     },
   };
 
