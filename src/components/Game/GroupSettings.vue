@@ -1,4 +1,5 @@
 <template>
+  <h4 class="description">{{ description }}</h4>
   <div class="options">
     <a-checkbox
       class="option"
@@ -40,6 +41,7 @@ export default defineComponent({
     options: Array<String>,
     selectedOptions: Array<String>,
     icons: Boolean,
+    description: String,
   },
   emits: ["updateSelectedOptions"],
   setup(props, { emit }) {
@@ -151,5 +153,8 @@ export default defineComponent({
   display: flex;
   align-items: center;
   font-weight: 500;
+}
+.description {
+  text-decoration: underline;
 }
 </style>

@@ -250,15 +250,6 @@ async function share(text: string) {
 
 <template>
   <div>
-    <a-steps :current="current" class="steps">
-      <a-step
-        v-for="item in steps"
-        :key="item.title"
-        :title="item.title"
-        disabled
-        class="step"
-      />
-    </a-steps>
     <div class="steps-content">
       <div v-if="!loading">
         <div v-if="current === 0">
@@ -266,6 +257,7 @@ async function share(text: string) {
             :options="regions"
             :selected-options="selectedRegions"
             @update-selected-options="selectedRegions = $event"
+            description="Choose the regions to include when fetching a match"
           />
         </div>
         <div v-if="current === 1">
@@ -274,6 +266,7 @@ async function share(text: string) {
             :selected-options="selectedRanks"
             @update-selected-options="selectedRanks = $event"
             :icons="true"
+            description="Choose the ranks to include when fetching a match"
           />
         </div>
         <div v-if="current === 2 || current === 3">
@@ -339,7 +332,6 @@ async function share(text: string) {
 
 <style scoped>
 .steps-content {
-  margin-top: 16px;
   border: 1px solid lightslategray;
   border-radius: 0.25rem;
   background-color: white;

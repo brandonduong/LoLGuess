@@ -28,10 +28,13 @@ interface StaticAugment {
 }
 
 interface StaticUnit {
-  character_id: string;
-  squareIconPath: string;
-  display_name: string;
-  path: string;
+  name: string;
+  character_record: {
+    character_id: string;
+    squareIconPath: string;
+    display_name: string;
+    path: string;
+  };
 }
 
 interface StaticItem {
@@ -107,6 +110,7 @@ function checkIfCorrect(placement: number) {
 }
 </script>
 <template>
+  <h4 class="table-description">Guess how the lobby ended!</h4>
   <table class="table-header" v-if="!loading">
     <h2></h2>
     <h2></h2>
@@ -266,5 +270,9 @@ function checkIfCorrect(placement: number) {
   margin: 0;
   font-weight: bold;
   font-size: 1.5rem;
+}
+
+.table-description {
+  text-decoration: underline;
 }
 </style>
