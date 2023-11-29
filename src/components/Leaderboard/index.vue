@@ -43,14 +43,14 @@ async function getLeaderboard() {
   let url = `/getLeaderboard?sort=${sorted.value}`;
 
   await http.api.get(url, header).then((res) => {
-    console.log(res);
+    //console.log(res);
     leaderboard.value = res.data.users;
   });
 }
 
 onMounted(async () => {
   await update();
-  console.log(leaderboard.value);
+  //console.log(leaderboard.value);
 });
 
 onUpdated(async () => {

@@ -8,6 +8,7 @@ import { onMounted, ref } from "vue";
 import http from "../../common/http-common";
 import { Sortable } from "sortablejs-vue3";
 import { DragOutlined } from "@ant-design/icons-vue";
+import { useRouter } from "vue-router";
 const props = defineProps<{
   rankedMatch: Array<object>;
   verifiedGuess: string[];
@@ -53,6 +54,7 @@ var staticTFTTraitData = ref<StaticTrait[]>([]);
 var staticTFTAugmentData = ref<StaticAugment[]>([]);
 var staticTFTUnitData = ref<StaticUnit[]>([]);
 var staticTFTItemData = ref<StaticItem[]>([]);
+const router = useRouter();
 
 onMounted(async () => {
   await getStaticTFTData().then(() => {
@@ -73,6 +75,7 @@ async function getStaticTFTData() {
     .then((res) => {
       staticTFTAugmentData = res.data;
     });
+  //console.log(staticTFTAugmentData);
 
   await http.dragon
     .get("/plugins/rcp-be-lol-game-data/global/default/v1/tftchampions.json")
@@ -110,7 +113,23 @@ function checkIfCorrect(placement: number) {
 }
 </script>
 <template>
-  <h4 class="table-description">Guess how the lobby ended!</h4>
+  <h4 class="table-description">
+    <span v-if="props.verifiedGuess.length !== 0">
+      Like guessing? Support on
+      <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
+        >Ko-fi</a
+      >!
+
+      <h5>
+        Or read our MANY great testimonials on the
+        <a class="ko-fi" @click="() => router.push('/supporters')"
+          >Supporters</a
+        >
+        page!
+      </h5>
+    </span>
+    <span v-else> Guess how the lobby ended! </span>
+  </h4>
   <table class="table-header" v-if="!loading">
     <h2></h2>
     <h2></h2>
@@ -274,5 +293,11 @@ function checkIfCorrect(placement: number) {
 
 .table-description {
   text-decoration: underline;
+}
+
+.ko-fi {
+  font-weight: bold;
+  text-decoration: underline;
+  color: var(--theme-love);
 }
 </style>

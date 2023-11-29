@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { Authenticator, useAuthenticator } from "@aws-amplify/ui-vue";
+import { useRouter } from "vue-router";
 
 const auth = useAuthenticator();
+const router = useRouter();
 
 const formFields = {
   signUp: {
@@ -34,7 +36,7 @@ const signUpAttributes = ["preferred_username"];
         LoLGuess is a TFT practice tool designed for low and high elo players to
         test their knowledge on end-game team composition power.
       </h4>
-      <ul class="unordered">
+      <ul class="unordered" v-if="!auth.user">
         <li>
           <h3 class="unordered-section">Train Your Intuition</h3>
           <span>
@@ -64,8 +66,54 @@ const signUpAttributes = ["preferred_username"];
           </span>
         </li>
       </ul>
+      <ul class="unordered" v-else>
+        <li>
+          <h3 class="unordered-section">
+            <a class="link" @click="() => router.push('/play')">Play</a>
+          </h3>
+          <span>
+            Select a set of regions and ranks to fetch a completed Teamfight
+            Tactics match. Then guess the rank and placements of the lobby!
+          </span>
+        </li>
+        <li>
+          <h3 class="unordered-section">
+            <a
+              class="link"
+              @click="() => router.push(`/profile/${auth.user.attributes.sub}`)"
+              >Profile</a
+            >
+          </h3>
+          <span>
+            See your guess history to review and replay, along with your guess
+            stats. Share your profile to let others replay as well!
+          </span>
+        </li>
+        <li>
+          <h3 class="unordered-section">
+            <a class="link" @click="() => router.push('/leaderboard')"
+              >Leaderboard</a
+            >
+          </h3>
+          <span>
+            Compete for the highest total score, correct placements, correct
+            ranks, average score, and average correct placements!
+          </span>
+        </li>
+        <li>
+          <h3 class="unordered-section">
+            <a class="link" @click="() => router.push('/supporters')"
+              >Supporters</a
+            >
+          </h3>
+          <span>
+            View our supporters, and maybe even become a suppport yourself!
+            Supporters display their message and social links here.
+          </span>
+        </li>
+      </ul>
     </div>
-    <div class="authenticator">
+    <div :class="auth.user ? 'peng' : 'authenticator'">
       <Authenticator
         :formFields="formFields"
         :signUpAttributes="signUpAttributes"
@@ -123,5 +171,19 @@ const signUpAttributes = ["preferred_username"];
 
 .intro {
   padding: 0 2rem;
+}
+
+.peng {
+  background-image: url("/peng.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.link {
+  font-weight: bold;
+  text-decoration: underline;
+  color: var(--theme-love);
 }
 </style>

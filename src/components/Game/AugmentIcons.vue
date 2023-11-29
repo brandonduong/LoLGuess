@@ -90,6 +90,7 @@ function checkIfImageExists(url: string, callback: Function) {
           height="24"
           :title="augment.title"
         />
+        <h6 class="augment-title">{{ augment.title }}</h6>
       </div>
     </div>
     <!--<h3 class="augment-amount">({{ props.augmentAmount }})</h3>-->
@@ -99,7 +100,7 @@ function checkIfImageExists(url: string, callback: Function) {
 .augment-div {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
 }
 
 .augment-amount {
@@ -108,5 +109,12 @@ function checkIfImageExists(url: string, callback: Function) {
 
 .augment {
   display: flex;
+  align-items: center;
+}
+
+.augment-title {
+  margin: 0;
+  padding-left: 1rem;
+  text-align: start;
 }
 </style>

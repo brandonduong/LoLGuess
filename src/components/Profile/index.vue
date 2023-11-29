@@ -25,7 +25,7 @@ async function getStaticProfileData() {
   await http.api
     .get(url, header)
     .then((res) => {
-      console.log(res);
+      //console.log(res);
       staticProfileData.value = res.data.user;
       staticProfileGuesses.value = res.data.guesses.items;
     })
@@ -69,7 +69,7 @@ async function update() {
     await getStaticProfileData();
   }
   //console.log(staticProfileData.value);
-  console.log(staticProfileGuesses.value);
+  //console.log(staticProfileGuesses.value);
 
   loading.value = false;
 }

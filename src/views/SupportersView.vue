@@ -7,16 +7,18 @@ import Supporters from "../components/Supporter/Supporters.vue";
     <h2>Supporters</h2>
     <div class="supporters-exp">
       <h3>
-        If you mistakingly supported me on
+        If you supported on
         <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
           >Ko-fi</a
-        >, no matter the amount, I will put your name/username, profile, links,
-        and message here!
-        <br />
-        (Please include your unique login username)
-        <br />
+        >, no matter the amount, thank you very much!
       </h3>
       <h4>
+        If included, I will put your name/username, profile, links, and message
+        here!
+        <br />
+        (Please include your unique login username)
+      </h4>
+      <h5>
         Hosting this website is not cheap and I would genuinely love to continue
         working on this project further!
 
@@ -24,7 +26,7 @@ import Supporters from "../components/Supporter/Supporters.vue";
         therefore any amount is greatly appreciated.
         <br />
         Thanks!
-      </h4>
+      </h5>
     </div>
     <Supporters />
   </div>

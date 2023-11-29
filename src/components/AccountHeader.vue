@@ -30,7 +30,7 @@ function signout() {
 <template>
   <div class="account-header">
     <div class="account-header-contents">
-      <RouterLink to="/play" class="title">LoLGuess</RouterLink>
+      <RouterLink to="/" class="title">LoLGuess</RouterLink>
       <a-popover placement="bottomRight" trigger="click">
         <template #content>
           <div class="dropdown-content">
