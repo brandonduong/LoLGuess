@@ -1,25 +1,7 @@
 <script setup lang="ts">
-import { RouterView, useRouter } from "vue-router";
+import { RouterView } from "vue-router";
 import AccountHeader from "./components/AccountHeader.vue";
-import { ref, watchEffect } from "vue";
-import { useAuthenticator } from "@aws-amplify/ui-vue";
 import { Authenticator } from "@aws-amplify/ui-vue";
-
-const auth = useAuthenticator();
-const router = useRouter();
-
-const oldAuthStatus = ref<string>(auth.authStatus);
-
-watchEffect(() => {
-  // Reroute to play if just logged in
-  if (
-    oldAuthStatus.value === "unauthenticated" &&
-    auth.authStatus === "authenticated"
-  ) {
-    router.push("/play");
-  }
-  oldAuthStatus.value = auth.authStatus;
-});
 </script>
 
 <template>
