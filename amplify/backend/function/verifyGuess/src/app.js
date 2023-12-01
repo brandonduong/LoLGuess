@@ -227,8 +227,8 @@ async function updateUserStats(user, stats) {
 function calculateScore(placements, guessedRank, rank, ranks) {
   // Returns scored points and max score
   const MAX_POINTS = [8, 6, 3]; // For each correct placement (depending on how far guess was)
-  const MAX_RANK_POOL = 9; // 9 ranks in total
-  const MAX_RANK_POINTS = [36, 27, 13.5]; // If rank pool had all 9 ranks
+  const MAX_RANK_POOL = 10; // 10 ranks in total
+  const MAX_RANK_POINTS = [36, 27, 13.5]; // If rank pool had all 10 ranks
   var score = 0;
 
   // Score for placement guesses

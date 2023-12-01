@@ -205,6 +205,7 @@ const ranks: string[] = [
   "Silver",
   "Gold",
   "Platinum",
+  "Emerald",
   "Diamond",
   "Master",
   "Grandmaster",
