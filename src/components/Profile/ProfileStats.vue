@@ -15,7 +15,9 @@ const [pref, username] = props.staticProfileData.username.split(" ");
 const stats = {
   Guesses: props.staticProfileData.totalGuesses,
   "Unfinished Guesses": props.staticProfileData.unfinished,
-  Score: `${props.staticProfileData.score} / ${props.staticProfileData.maxScore}`,
+  Score: `${roundToTwo(props.staticProfileData.score)} / ${roundToTwo(
+    props.staticProfileData.maxScore
+  )}`,
   "Avg. Score": roundToTwo(
     props.staticProfileData.score / props.staticProfileData.totalGuesses
   ),
