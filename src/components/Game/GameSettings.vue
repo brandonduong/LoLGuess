@@ -32,15 +32,13 @@ const next = async () => {
     loading.value = true;
 
     // If replay, else
-    if (props.guessId) {
+    if (props.guessId || !auth.user) {
       verifyReplay();
-      current.value++;
     } else {
-      await verifyGuess().then(() => {
-        loading.value = false;
-        current.value++;
-      });
+      await verifyGuess();
     }
+    loading.value = false;
+    current.value++;
   } else if (current.value === 3) {
     verifiedGuess = ref<string[]>([]);
     verifiedRank = ref<string>("");
@@ -91,10 +89,41 @@ async function getMatch() {
       });
     loading.value = false;
   } else {
-    // Reroute to login page
-    alert("Please log in to play and track stats!");
-    router.push("/login");
+    await getMatchNoAuth();
   }
+}
+
+async function getMatchNoAuth() {
+  let url = "/getmatchid?";
+  for (let i = 0; i < selectedRegions.value.length; i++) {
+    url += `regions[]=${selectedRegions.value[i]}&`;
+  }
+  for (let i = 0; i < selectedRanks.value.length; i++) {
+    url += `ranks[]=${selectedRanks.value[i]}&`;
+  }
+  //console.log(url);
+
+  const header = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+
+  loading.value = true;
+  await http.api
+    .get(url, header)
+    .then((res) => {
+      //console.log(res);
+      rankedMatch.value = res.data.rankedMatch;
+      encryptedRank = res.data.rank;
+      // selectedRanks.value = res.data.ranks;
+      verifiedRegion.value = res.data.region;
+    })
+    .catch(() => {
+      alert("Error finding ranked match. Please try again.");
+      prev();
+    });
+  loading.value = false;
 }
 
 async function getReplay() {
@@ -129,7 +158,6 @@ function verifyReplay() {
   );
   //console.log(verifiedGuess);
   verifiedRank = encryptedRank;
-  loading.value = false;
 }
 
 async function verifyGuess() {
@@ -239,11 +267,15 @@ const indicator = h(LoadingOutlined, {
 });
 
 async function share(text: string) {
-  try {
-    await navigator.clipboard.writeText(`http://lolguess.net/play/${text}`);
-    alert("Copied url to match");
-  } catch ($e) {
-    alert("Cannot copy");
+  if (text) {
+    try {
+      await navigator.clipboard.writeText(`http://lolguess.net/play/${text}`);
+      alert("Copied url to match");
+    } catch ($e) {
+      alert("Cannot copy");
+    }
+  } else {
+    alert("Login to share matches!");
   }
 }
 </script>

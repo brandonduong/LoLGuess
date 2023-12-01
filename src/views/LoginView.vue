@@ -122,6 +122,14 @@ const signUpAttributes = ["preferred_username"];
           <button @click="auth.signOut">Loading...</button>
         </template>
       </Authenticator>
+
+      <button
+        v-if="!auth.user"
+        class="guest"
+        @click="() => router.push('/play')"
+      >
+        Continue as Guest
+      </button>
     </div>
   </div>
 </template>
@@ -185,5 +193,12 @@ const signUpAttributes = ["preferred_username"];
   font-weight: bold;
   text-decoration: underline;
   color: var(--theme-love);
+}
+
+.guest {
+  width: 100%;
+  background: hsl(51, 100%, 50%);
+  margin-top: 1rem;
+  color: black;
 }
 </style>

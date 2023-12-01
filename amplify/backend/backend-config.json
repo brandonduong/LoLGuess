@@ -120,6 +120,12 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getMatchId": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getProfile": {
       "build": true,
       "dependsOn": [
@@ -223,6 +229,22 @@
         {
           "category": "function",
           "resourceName": "getLeaderboard"
+        }
+      ]
+    },
+    "AMPLIFY_function_getMatchId_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getMatchId"
+        }
+      ]
+    },
+    "AMPLIFY_function_getMatchId_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getMatchId"
         }
       ]
     },
