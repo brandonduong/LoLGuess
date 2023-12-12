@@ -308,48 +308,59 @@ async function share(text: string) {
             :verifiedGuess="verifiedGuess"
             :selectedRanks="selectedRanks"
           />
+          <div
+            :style="{
+              display: 'flex',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              marginTop: '0.5rem',
+              paddingLeft: '0.75rem',
+            }"
+          >
+            <GuessRank
+              v-if="current === 2 || current === 3"
+              :selectedRanks="selectedRanks"
+              @update-selected-rank="selectedRank = $event"
+              :selectedRank="selectedRank"
+              :verifiedRank="verifiedRank"
+              :loading="loading"
+            />
+            <GuessScore
+              :selectedRank="selectedRank"
+              :selectedRanks="selectedRanks"
+              :verifiedRank="verifiedRank"
+              :verifiedGuess="verifiedGuess"
+              v-if="current === 3"
+            />
+            <GuessRegion :region="verifiedRegion" v-if="current === 3" />
+            <div v-if="current === 3" class="match-id">
+              <a-button
+                class="refresh-btn"
+                type="primary"
+                @click="() => share(props.guessId ? props.guessId : guessId)"
+                :style="{ padding: '0 1rem' }"
+              >
+                Share
+              </a-button>
+            </div>
+          </div>
         </div>
       </div>
       <div v-else><a-spin :indicator="indicator"></a-spin></div>
     </div>
     <div class="steps-action">
-      <div class="extra" v-if="current === 2 || current === 3">
-        <GuessRank
-          v-if="current === 2 || current === 3"
-          :selectedRanks="selectedRanks"
-          @update-selected-rank="selectedRank = $event"
-          :selectedRank="selectedRank"
-          :verifiedRank="verifiedRank"
-          :loading="loading"
-        />
-        <GuessScore
-          :selectedRank="selectedRank"
-          :selectedRanks="selectedRanks"
-          :verifiedRank="verifiedRank"
-          :verifiedGuess="verifiedGuess"
-          v-if="current === 3"
-        />
-        <GuessRegion :region="verifiedRegion" v-if="current === 3" />
-        <div v-if="current === 3" class="match-id">
-          <a-button
-            class="refresh-btn"
-            type="primary"
-            @click="() => share(props.guessId ? props.guessId : guessId)"
-          >
-            Share
-          </a-button>
-        </div>
-      </div>
-      <div v-else></div>
       <a-button
         :disabled="!(current > 0 && current < steps.length - 1) || loading"
         @click="prev"
+        class="action-btn"
         >Previous</a-button
       >
       <a-button
         v-if="current < steps.length"
         type="primary"
         @click="next"
+        class="action-btn"
         :disabled="
           (selectedRegions.length === 0 && current === 0) ||
           (selectedRanks.length === 0 && current === 1) ||
@@ -373,9 +384,14 @@ async function share(text: string) {
 
 .steps-action {
   margin-top: 0.5rem;
-  display: grid;
-  grid-template-columns: 4fr 1fr 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  flex-basis: 50%;
 }
 
 .extra {
@@ -394,11 +410,5 @@ async function share(text: string) {
   border-radius: 0.25rem;
   padding: 0.5rem 1rem;
   background-color: white;
-}
-
-.match-id {
-  margin: 0;
-  white-space: nowrap;
-  padding: 0 0.75rem;
 }
 </style>

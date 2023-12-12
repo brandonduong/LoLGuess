@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import GameSettings from "../components/Game/GameSettings.vue";
+import Game from "../components/Game/index.vue";
 defineProps<{ guessId: string }>();
 </script>
 
 <template>
   <div class="main">
-    <GameSettings :guessId="guessId" />
+    <Game :guessId="guessId" />
   </div>
 </template>
 

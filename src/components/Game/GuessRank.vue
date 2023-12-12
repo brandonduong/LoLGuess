@@ -25,7 +25,7 @@ onMounted(async () => {
 </script>
 <template>
   <div class="rank-guess">
-    <h2 class="rank">Rank:</h2>
+    <h2 class="rank-title">Rank:</h2>
     <a-select
       @change="updateRank"
       placeholder="Guess Rank"
@@ -66,8 +66,7 @@ onMounted(async () => {
         <h2 class="correction">
           <ArrowRightOutlined
             style="font-size: 1.25rem; display: inline-block"
-          />
-          {{ `${props.verifiedRank}` }}
+          />{{ `${props.verifiedRank}` }}
         </h2>
         <img
           class="rank-icon"
@@ -81,17 +80,22 @@ onMounted(async () => {
 </template>
 <style scoped>
 .rank-guess {
-  display: grid;
-  grid-template-columns: 0.1fr 1fr;
+  display: flex;
+  column-gap: 1rem;
   justify-items: start;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+.rank-title {
+  margin: 0;
 }
 
 .rank {
-  padding: 0 0.75rem;
   border-radius: 1rem;
-  margin: 0;
   display: flex;
+  flex-wrap: wrap;
+  padding: 0 0.5rem;
 }
 
 .rank-select {
@@ -103,10 +107,10 @@ div.rank-div > h2 {
 }
 
 .rank-div {
-  display: grid;
-  grid-template-columns: 1fr 0.1fr;
+  display: flex;
   align-items: center;
   white-space: nowrap;
+  column-gap: 0.5rem;
 }
 
 .original {
@@ -131,7 +135,6 @@ div.rank-div > h2 {
 .rank-icon {
   width: 1.75rem;
   height: 1.75rem;
-  margin-left: 0.5rem;
 }
 
 .option {

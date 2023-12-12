@@ -19,7 +19,7 @@ const [scored, maxScore] = calculateScore(
 </script>
 <template>
   <div class="score-div">
-    <h2 class="score">Score: {{ `${scored}/ ${maxScore}` }}</h2>
+    <h2 class="score">Score: {{ `${scored}/${maxScore}` }}</h2>
     <a-popover title="Scoring Information">
       <template #content>
         <div class="score-info">
@@ -46,16 +46,15 @@ const [scored, maxScore] = calculateScore(
 </template>
 <style scoped>
 .score-div {
-  display: grid;
-  grid-template-columns: auto auto;
+  display: flex;
   justify-items: start;
   align-items: center;
+  column-gap: 0.75rem;
 }
 
 .score {
   margin: 0;
   white-space: nowrap;
-  padding: 0 0.75rem;
 }
 
 .info {

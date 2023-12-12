@@ -12,6 +12,5 @@ const props = defineProps<{
 .region {
   margin: 0;
   white-space: nowrap;
-  padding: 0 0.75rem;
 }
 </style>
