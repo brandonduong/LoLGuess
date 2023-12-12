@@ -131,7 +131,7 @@ function checkIfCorrect(placement: number) {
     <span v-else> Guess how the lobby ended! </span>
   </h4>
   <table class="table-header" v-if="!loading">
-    <h2></h2>
+    <h2>#</h2>
     <h2></h2>
     <h2>Level</h2>
     <h2>Traits</h2>
@@ -223,6 +223,7 @@ function checkIfCorrect(placement: number) {
 .table-header {
   display: grid;
   grid-template-columns: 0.15fr 0.05fr 0.15fr 0.3fr 0.3fr 1fr 0.15fr;
+  column-gap: 1rem;
 }
 
 .table-header > h2 {
@@ -248,6 +249,7 @@ function checkIfCorrect(placement: number) {
   grid-template-columns: 0.05fr 0.15fr 0.3fr 0.3fr 1fr 0.15fr;
   align-items: center;
   border: 1px solid lightslategray;
+  column-gap: 1rem;
 }
 
 .grab {
