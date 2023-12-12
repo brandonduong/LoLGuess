@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { User } from "@/API";
 import { roundToTwo } from "@/common/helper";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const props = defineProps<{
   user: User;
@@ -20,7 +20,13 @@ switch (props.rank) {
     break;
 }
 
-const [pref, username] = props.user.username.split(" ");
+const pref = ref<string>(props.user.username.split(" ")[0]);
+watch(
+  () => props.user,
+  (newVal, oldVal) => {
+    pref.value = props.user.username.split(" ")[0];
+  }
+);
 </script>
 
 <template>
