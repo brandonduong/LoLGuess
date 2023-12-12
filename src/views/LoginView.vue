@@ -152,16 +152,14 @@ const signUpAttributes = ["preferred_username"];
 }
 
 .login {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   height: 100%;
-  align-items: center;
   padding: 1rem;
   background: white;
   border: 1px solid lightslategray;
   border-radius: 0.25rem;
   overflow-x: auto;
-  align-items: start;
+  gap: 5rem;
 }
 
 .unordered {
@@ -169,6 +167,20 @@ const signUpAttributes = ["preferred_username"];
   padding-bottom: 3rem;
 }
 
+@media only screen and (max-width: 720px) {
+  .login {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .logo {
+    font-size: 4rem;
+  }
+
+  .unordered {
+    padding: 0 1.5rem 0 1.5rem;
+  }
+}
 .unordered-section {
   text-decoration: underline;
 }
@@ -176,17 +188,16 @@ const signUpAttributes = ["preferred_username"];
 .divider {
   margin-left: 1.25rem;
 }
-
-.intro {
-  padding: 0 2rem;
-}
-
 .peng {
   background-image: url("/peng.png");
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
-  height: 100%;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
 }
 
 .link {
