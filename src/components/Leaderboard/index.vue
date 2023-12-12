@@ -172,7 +172,7 @@ const filters = [
 
 .leaderboard-header {
   display: grid;
-  grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1.25fr;
+  grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr 1fr 1.25fr;
   justify-content: space-between;
   column-gap: 1rem;
   padding: 0.5rem;

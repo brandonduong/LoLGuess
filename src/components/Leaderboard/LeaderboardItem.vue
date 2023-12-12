@@ -16,12 +16,6 @@ switch (props.rank) {
   case 2:
     icon.value = "/wokege.png";
     break;
-  case 3:
-    icon.value = "/chatting.webp";
-    break;
-  case 4:
-    icon.value = "/giga.webp";
-    break;
   default:
     break;
 }
@@ -54,7 +48,7 @@ const [pref, username] = props.user.username.split(" ");
 .leaderboard-item {
   display: grid;
   padding: 1rem 0.5rem;
-  grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1.25fr;
+  grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr 1fr 1.25fr;
   justify-content: space-between;
   align-items: center;
   justify-items: center;
