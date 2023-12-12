@@ -128,6 +128,12 @@ function signout() {
   z-index: 1;
 }
 
+@media only screen and (max-width: 720px) {
+  .account-header {
+    position: absolute;
+  }
+}
+
 .account-header-contents {
   width: 1280px;
   display: flex;

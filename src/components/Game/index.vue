@@ -301,7 +301,7 @@ async function share(text: string) {
             description="Choose the ranks to include when fetching a match"
           />
         </div>
-        <div v-if="current === 2 || current === 3">
+        <div v-if="current === 2 || current === 3" class="table-div">
           <DragAndDropTable
             :rankedMatch="rankedMatch"
             @update-selected-guess="selectedGuess = $event"
@@ -410,5 +410,11 @@ async function share(text: string) {
   border-radius: 0.25rem;
   padding: 0.5rem 1rem;
   background-color: white;
+}
+
+@media only screen and (max-width: 720px) {
+  .table-div {
+    overflow: auto;
+  }
 }
 </style>

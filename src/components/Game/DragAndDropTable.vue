@@ -172,7 +172,13 @@ function checkIfCorrect(placement: number) {
       tag="tbody"
       item-key="name"
       class="draggable"
-      :options="{ animation: 150, disabled: props.verifiedGuess.length !== 0 }"
+      :options="{
+        animation: 150,
+        disabled: props.verifiedGuess.length !== 0,
+        delay: 50,
+        delayOnTouchOnly: true,
+        chosenClass: 'dragging',
+      }"
       @end="onChange"
     >
       <template #item="{ element }">
@@ -297,5 +303,9 @@ function checkIfCorrect(placement: number) {
   font-weight: bold;
   text-decoration: underline;
   color: var(--theme-love);
+}
+
+.dragging {
+  border-width: 0.25rem;
 }
 </style>
