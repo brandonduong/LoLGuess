@@ -189,19 +189,15 @@ function checkIfCorrect(placement: number) {
           />
           <div v-else></div>
           <h3><LevelIcons :level="element.level" /></h3>
-          <h3>
-            <TraitIcons
-              :staticTFTTraitData="staticTFTTraitData"
-              :traits="element.traits"
-            />
-          </h3>
-          <h3>
-            <AugmentIcons
-              :staticTFTAugmentData="staticTFTAugmentData"
-              :augments="element.augments"
-              :augmentAmount="element.augmentNum"
-            />
-          </h3>
+          <TraitIcons
+            :staticTFTTraitData="staticTFTTraitData"
+            :traits="element.traits"
+          />
+          <AugmentIcons
+            :staticTFTAugmentData="staticTFTAugmentData"
+            :augments="element.augments"
+            :augmentAmount="element.augmentNum"
+          />
           <h3>
             <UnitIcons
               :units="element.units"
@@ -222,7 +218,7 @@ function checkIfCorrect(placement: number) {
 
 .table-header {
   display: grid;
-  grid-template-columns: 0.15fr 0.05fr 0.15fr 0.3fr 0.3fr 1fr 0.15fr;
+  grid-template-columns: 0.15fr 0.05fr 0.15fr 0.2fr 0.3fr 1fr 0.15fr;
   column-gap: 1rem;
 }
 
@@ -246,7 +242,7 @@ function checkIfCorrect(placement: number) {
 
 .draggable-row {
   display: grid;
-  grid-template-columns: 0.05fr 0.15fr 0.3fr 0.3fr 1fr 0.15fr;
+  grid-template-columns: 0.05fr 0.15fr 0.2fr 0.3fr 1fr 0.15fr;
   align-items: center;
   border: 1px solid lightslategray;
   column-gap: 1rem;

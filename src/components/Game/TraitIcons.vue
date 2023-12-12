@@ -73,6 +73,7 @@ traitStyles.value.sort(function (a, b) {
 .traits {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .trait {
