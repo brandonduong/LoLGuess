@@ -329,4 +329,10 @@ function correctionStyle(placement: number) {
 .dragging {
   border-color: black;
 }
+
+@media only screen and (max-width: 720px) {
+  .dragging {
+    border-width: 0.15rem;
+  }
+}
 </style>
