@@ -118,6 +118,15 @@ export default defineComponent({
   padding: 0.25rem 2rem 0;
 }
 
+@media only screen and (max-width: 720px) {
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+}
+
 .all {
   text-align: start;
   padding: 0 2rem;
