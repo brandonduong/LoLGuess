@@ -31,7 +31,12 @@ const [pref, username] = props.user.username.split(" ");
 
 <template>
   <RouterLink :to="`/profile/${user.id}`">
-    <div class="leaderboard-item">
+    <div
+      :style="{
+        backgroundColor: rank % 2 == 0 ? 'rgb(240, 240, 240)' : 'white',
+      }"
+      class="leaderboard-item"
+    >
       <h3 class="rank">
         {{ rank }} <img :src="icon" v-if="icon" class="emote" />
       </h3>
@@ -57,7 +62,7 @@ const [pref, username] = props.user.username.split(" ");
 }
 
 .leaderboard-item:hover {
-  background-color: rgb(216, 222, 235);
+  background-color: rgb(216, 222, 235) !important;
   transition: 0.2s;
 }
 
