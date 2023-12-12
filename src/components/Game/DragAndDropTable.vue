@@ -111,6 +111,20 @@ function checkIfCorrect(placement: number) {
     return true;
   }
 }
+
+function correctionStyle(placement: number) {
+  console.log(placement, props.verifiedGuess[placement - 1]);
+  switch (Math.abs(placement - parseInt(props.verifiedGuess[placement - 1]))) {
+    case 0:
+      return "correct";
+    case 1:
+      return "yellow";
+    case 2:
+      return "orange";
+    default:
+      return "incorrect";
+  }
+}
 </script>
 <template>
   <h4 class="table-description">
@@ -143,9 +157,7 @@ function checkIfCorrect(placement: number) {
         v-for="placement in 8"
         :class="
           props.verifiedGuess.length !== 0
-            ? checkIfCorrect(placement)
-              ? `placement correct`
-              : `placement incorrect`
+            ? 'placement ' + correctionStyle(placement)
             : ``
         "
       >
@@ -252,6 +264,7 @@ function checkIfCorrect(placement: number) {
   align-items: center;
   border: 1px solid lightslategray;
   column-gap: 1rem;
+  user-select: none;
 }
 
 .grab {
@@ -267,6 +280,14 @@ function checkIfCorrect(placement: number) {
 
 .incorrect {
   background-color: rgb(223, 88, 88);
+}
+
+.orange {
+  background-color: rgb(223, 169, 88);
+}
+
+.yellow {
+  background-color: rgb(238, 235, 69);
 }
 
 .correct {
@@ -306,6 +327,6 @@ function checkIfCorrect(placement: number) {
 }
 
 .dragging {
-  border-width: 0.25rem;
+  border-color: black;
 }
 </style>

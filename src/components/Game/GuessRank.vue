@@ -19,6 +19,22 @@ function checkIfCorrect() {
   return props.verifiedRank && props.verifiedRank === props.selectedRank;
 }
 
+function correctionStyle() {
+  const selectedInd = props.selectedRanks.indexOf(props.selectedRank);
+  const verifiedInd = props.selectedRanks.indexOf(props.verifiedRank);
+  switch (Math.abs(selectedInd - verifiedInd)) {
+    case 0:
+      return "correct";
+
+    case 1:
+      return "yellow";
+    case 2:
+      return "orange";
+    default:
+      return "incorrect";
+  }
+}
+
 onMounted(async () => {
   updateRank("");
 });
@@ -47,10 +63,7 @@ onMounted(async () => {
         </div>
       </a-select-option>
     </a-select>
-    <div
-      v-if="props.verifiedRank"
-      :class="checkIfCorrect() ? `rank correct` : `rank incorrect`"
-    >
+    <div v-if="props.verifiedRank" :class="'rank ' + correctionStyle()">
       <div class="rank-div">
         <h2 :class="checkIfCorrect() ? `original` : `original strike`">
           {{ props.selectedRank }}
@@ -126,6 +139,14 @@ div.rank-div > h2 {
 
 .incorrect {
   background-color: rgb(223, 88, 88);
+}
+
+.orange {
+  background-color: rgb(223, 169, 88);
+}
+
+.yellow {
+  background-color: rgb(238, 235, 69);
 }
 
 .correct {
