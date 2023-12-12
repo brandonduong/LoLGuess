@@ -16,7 +16,7 @@ const supporters = [
   {
     name: "Ninjakat2000",
     msg: "Hey there cutie ;)",
-    value: "3",
+    value: "6",
     id: "321b054c-7caf-40d9-ae32-0f1b3816d4fa",
     date: "06-23-2023",
   },
