@@ -43,6 +43,7 @@ const next = async () => {
     verifiedGuess = ref<string[]>([]);
     verifiedRank = ref<string>("");
     verifiedRegion = ref<string>("");
+    selectedRank.value = "";
     router.push("/play");
     current.value = 0;
   } else {

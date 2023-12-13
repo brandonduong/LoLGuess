@@ -34,10 +34,6 @@ function correctionStyle() {
       return "incorrect";
   }
 }
-
-onMounted(async () => {
-  updateRank("");
-});
 </script>
 <template>
   <div class="rank-guess">
