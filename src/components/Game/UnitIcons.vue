@@ -183,4 +183,10 @@ props.units.sort(sortByCostThenStar).forEach((unit) => {
   display: flex;
   padding-bottom: 0.25rem;
 }
+
+@media only screen and (max-width: 720px) {
+  .units {
+    justify-content: center;
+  }
+}
 </style>

@@ -79,19 +79,17 @@ function checkIfImageExists(url: string, callback: Function) {
 </script>
 <template>
   <div class="augment-div">
-    <div class="augments">
-      <div v-for="augment in augmentStyles" :class="`augment`">
-        <img
-          v-if="augment.path"
-          class="augment-icon"
-          :src="augment.path"
-          :alt="augment.title"
-          width="24"
-          height="24"
-          :title="augment.title"
-        />
-        <h5 class="augment-title">{{ augment.title }}</h5>
-      </div>
+    <div v-for="augment in augmentStyles" :class="`augment`">
+      <img
+        v-if="augment.path"
+        class="augment-icon"
+        :src="augment.path"
+        :alt="augment.title"
+        width="24"
+        height="24"
+        :title="augment.title"
+      />
+      <h5 class="augment-title">{{ augment.title }}</h5>
     </div>
     <!--<h3 class="augment-amount">({{ props.augmentAmount }})</h3>-->
   </div>
@@ -99,8 +97,8 @@ function checkIfImageExists(url: string, callback: Function) {
 <style scoped>
 .augment-div {
   display: flex;
-  align-items: center;
-  justify-content: start;
+  flex-direction: column;
+  align-items: start;
 }
 
 .augment-amount {
@@ -116,5 +114,21 @@ function checkIfImageExists(url: string, callback: Function) {
 .augment-title {
   margin: 0;
   text-align: start;
+}
+
+@media only screen and (max-width: 720px) {
+  .augment-div {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .augment {
+    flex-direction: column;
+  }
+
+  .augment-title {
+    text-align: center;
+  }
 }
 </style>

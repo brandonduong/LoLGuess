@@ -145,13 +145,13 @@ function correctionStyle(placement: number) {
     <span v-else> Guess how the lobby ended! </span>
   </h4>
   <table class="table-header" v-if="!loading">
-    <h2>#</h2>
-    <h2></h2>
-    <h2>Level</h2>
-    <h2>Traits</h2>
-    <h2>Augments</h2>
-    <h2>Units</h2>
-    <h2>Gold</h2>
+    <h2 class="header">#</h2>
+    <h2 class="header"></h2>
+    <h2 class="header">Level</h2>
+    <h2 class="header">Traits</h2>
+    <h2 class="header">Augments</h2>
+    <h2 class="header">Units</h2>
+    <h2 class="header">Gold</h2>
     <div class="placements">
       <div
         v-for="placement in 8"
@@ -170,10 +170,11 @@ function correctionStyle(placement: number) {
         >
           {{ placement }}
         </h3>
+        <h3 class="arrow" v-if="!checkIfCorrect(placement)">--></h3>
         <h3 class="correction">
           {{
             props.verifiedGuess.length !== 0 && !checkIfCorrect(placement)
-              ? `-->${verifiedGuess[placement - 1]}`
+              ? `${verifiedGuess[placement - 1]}`
               : ""
           }}
         </h3>
@@ -204,9 +205,13 @@ function correctionStyle(placement: number) {
           <DragOutlined
             style="color: black; font-size: 1rem"
             v-if="props.verifiedGuess.length === 0"
+            class="drag-icon"
           />
-          <div v-else></div>
+          <div v-else class="drag-icon"></div>
           <h3><LevelIcons :level="element.level" /></h3>
+          <div class="mobile-gold">
+            <GoldIcons :goldLeft="element.gold_left" />
+          </div>
           <TraitIcons
             :staticTFTTraitData="staticTFTTraitData"
             :traits="element.traits"
@@ -223,7 +228,9 @@ function correctionStyle(placement: number) {
               :staticTFTItemData="staticTFTItemData"
             />
           </h3>
-          <GoldIcons :goldLeft="element.gold_left" />
+          <div class="web-gold">
+            <GoldIcons :goldLeft="element.gold_left" />
+          </div>
         </tr>
       </template>
     </Sortable>
@@ -330,9 +337,45 @@ function correctionStyle(placement: number) {
   border-color: black;
 }
 
+.mobile-gold {
+  display: none;
+}
+
 @media only screen and (max-width: 720px) {
   .dragging {
     border-width: 0.15rem;
+  }
+
+  .table-header {
+    column-gap: 0;
+  }
+
+  .placements {
+    margin: 0 0.5rem 0 0;
+  }
+
+  .placements > div > h3 {
+    line-height: 2rem;
+  }
+
+  .draggable-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 0.25rem;
+    gap: 0;
+  }
+
+  .header,
+  .drag-icon,
+  .arrow,
+  .strike,
+  .web-gold {
+    display: none;
+  }
+
+  .mobile-gold {
+    display: block;
   }
 }
 </style>

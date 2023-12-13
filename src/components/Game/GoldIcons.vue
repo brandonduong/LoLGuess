@@ -18,14 +18,11 @@ const goldLeft = ref<number>(props.goldLeft);
   display: flex;
   align-items: center;
   justify-content: center;
+  column-gap: 0.25rem;
 }
 
 .gold > h3 {
   font-size: 1.25rem;
   margin: 0;
-}
-
-.gold-icon {
-  margin-left: 0.5rem;
 }
 </style>
