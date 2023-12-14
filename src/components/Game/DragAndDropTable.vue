@@ -170,7 +170,12 @@ function correctionStyle(placement: number) {
         >
           {{ placement }}
         </h3>
-        <h3 class="arrow" v-if="!checkIfCorrect(placement)">--></h3>
+        <h3
+          class="arrow"
+          v-if="props.verifiedGuess.length !== 0 && !checkIfCorrect(placement)"
+        >
+          -->
+        </h3>
         <h3 class="correction">
           {{
             props.verifiedGuess.length !== 0 && !checkIfCorrect(placement)
