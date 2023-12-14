@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Authenticator, useAuthenticator } from "@aws-amplify/ui-vue";
-import { useRouter } from "vue-router";
+import { RouterView, useRouter } from "vue-router";
+import { ref, watchEffect } from "vue";
 
 const auth = useAuthenticator();
 const router = useRouter();
@@ -25,95 +26,34 @@ const formFields = {
   },
 };
 const signUpAttributes = ["preferred_username"];
+
+const oldAuthStatus = ref<string>(auth.authStatus);
+
+watchEffect(() => {
+  // Reroute to play if just logged in
+  if (
+    oldAuthStatus.value === "unauthenticated" &&
+    auth.authStatus === "authenticated"
+  ) {
+    router.push("/play");
+  }
+  oldAuthStatus.value = auth.authStatus;
+});
 </script>
 
 <template>
   <div class="login">
-    <div class="intro">
+    <div>
       <h1 class="logo">LoLGuess</h1>
-      <hr class="divider" />
-      <h4 class="description">
-        LoLGuess is a TFT practice tool designed for low and high elo players to
-        test their knowledge on end-game team composition power.
+      <h4 class="subtitle">
+        Login or register to track your guess history, overall stats, and to
+        show up on the leaderboard!
       </h4>
-      <ul class="unordered" v-if="!auth.user">
-        <li>
-          <h3 class="unordered-section">Train Your Intuition</h3>
-          <span>
-            Study general unit, item, and team strength to faster assess the
-            power of your opponents and the tempo of your lobbies
-          </span>
-        </li>
-        <li>
-          <h3 class="unordered-section">Better Your Flex Play</h3>
-          <span>
-            Understand what makes a comp strong, and apply this knowledge to
-            more effectively play what you hit in creative, off-meta teams
-          </span>
-        </li>
-        <li>
-          <h3 class="unordered-section">Learn to Maximize your Highrolls</h3>
-          <span>
-            Study what comps win out over others to better your ability to play
-            for first when highrolling
-          </span>
-        </li>
-        <li>
-          <h3 class="unordered-section">Experience Different Environments</h3>
-          <span>
-            Quickly scout how different regions and ranks play the game to stay
-            on top of the meta
-          </span>
-        </li>
-      </ul>
-      <ul class="unordered" v-else>
-        <li>
-          <h3 class="unordered-section">
-            <a class="link" @click="() => router.push('/play')">Play</a>
-          </h3>
-          <span>
-            Select a set of regions and ranks to fetch a completed Teamfight
-            Tactics match. Then guess the rank and placements of the lobby!
-          </span>
-        </li>
-        <li>
-          <h3 class="unordered-section">
-            <a
-              class="link"
-              @click="() => router.push(`/profile/${auth.user.attributes.sub}`)"
-              >Profile</a
-            >
-          </h3>
-          <span>
-            See your guess history to review and replay, along with your guess
-            stats. Share your profile to let others replay as well!
-          </span>
-        </li>
-        <li>
-          <h3 class="unordered-section">
-            <a class="link" @click="() => router.push('/leaderboard')"
-              >Leaderboard</a
-            >
-          </h3>
-          <span>
-            Compete for the highest total score, correct placements, correct
-            ranks, average score, and average correct placements!
-          </span>
-        </li>
-        <li>
-          <h3 class="unordered-section">
-            <a class="link" @click="() => router.push('/supporters')"
-              >Supporters</a
-            >
-          </h3>
-          <span>
-            View our supporters, and maybe even become a suppport yourself!
-            Supporters display their message and social links here.
-          </span>
-        </li>
-      </ul>
+      <hr class="divider" />
     </div>
-    <div :class="auth.user ? 'peng' : 'authenticator'">
+    <div
+      :class="auth.authStatus === 'authenticated' ? 'peng' : 'authenticator'"
+    >
       <Authenticator
         :formFields="formFields"
         :signUpAttributes="signUpAttributes"
@@ -122,14 +62,6 @@ const signUpAttributes = ["preferred_username"];
           <button @click="auth.signOut">Loading...</button>
         </template>
       </Authenticator>
-
-      <button
-        v-if="!auth.user"
-        class="guest"
-        @click="() => router.push('/play')"
-      >
-        Continue as Guest
-      </button>
     </div>
   </div>
 </template>
@@ -139,50 +71,36 @@ const signUpAttributes = ["preferred_username"];
   display: block;
   color: hsl(51, 100%, 50%);
   font-size: 6.5rem;
+  line-height: 6.5rem;
   text-shadow: 0 0 black;
-  margin: 0 0 0 1rem;
+  margin: 0 0 1rem 0;
+  text-align: center;
 }
-
-.description {
-  margin-left: 1.5rem;
-}
-
 .authenticator {
   margin: auto;
 }
 
 .login {
   display: flex;
+  flex-direction: column;
   height: 100%;
   padding: 1rem;
   background: white;
   border: 1px solid lightslategray;
   border-radius: 0.25rem;
   overflow-x: auto;
-  gap: 5rem;
+  gap: 1rem;
+  align-items: center;
 }
 
-.unordered {
-  color: rgba(0, 0, 0, 0.85);
-  padding-bottom: 3rem;
+.subtitle {
+  text-align: center;
 }
 
 @media only screen and (max-width: 720px) {
-  .login {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
   .logo {
     font-size: 4rem;
   }
-
-  .unordered {
-    padding: 0 1.5rem 0 1.5rem;
-  }
-}
-.unordered-section {
-  text-decoration: underline;
 }
 
 .divider {
@@ -192,24 +110,13 @@ const signUpAttributes = ["preferred_username"];
   background-image: url("/peng.png");
   background-repeat: no-repeat;
   background-size: cover;
-  width: 100%;
-}
-
-.intro {
-  display: flex;
-  flex-direction: column;
+  width: 300px;
+  height: 300px;
 }
 
 .link {
   font-weight: bold;
   text-decoration: underline;
   color: var(--theme-love);
-}
-
-.guest {
-  width: 100%;
-  background: hsl(51, 100%, 50%);
-  margin-top: 1rem;
-  color: black;
 }
 </style>

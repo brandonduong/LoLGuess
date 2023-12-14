@@ -34,7 +34,7 @@ function signout() {
       <a-popover placement="bottomRight" trigger="click">
         <template #content>
           <div class="dropdown-content">
-            <h3 v-if="auth.user" class="username">
+            <h3 v-if="auth.authStatus === 'authenticated'" class="username">
               {{
                 auth.user.signInUserSession.idToken.payload.preferred_username.substring(
                   0,
@@ -48,7 +48,7 @@ function signout() {
             <a-divider class="divider" />
             <RouterLink to="/play" :class="getActive(`/play`)">Play</RouterLink>
             <RouterLink
-              v-if="auth.user"
+              v-if="auth.authStatus === 'authenticated'"
               :to="`/profile/${auth.user.attributes.sub}`"
               :class="getActive(`/profile`)"
               >Profile</RouterLink
@@ -77,7 +77,7 @@ function signout() {
             </div>
             <div class="signout-div">
               <a-button
-                v-if="auth.user"
+                v-if="auth.authStatus === 'authenticated'"
                 type="primary"
                 class="signout"
                 @click="signout()"
@@ -88,7 +88,7 @@ function signout() {
         </template>
 
         <UserOutlined
-          v-if="auth.user"
+          v-if="auth.authStatus === 'authenticated'"
           class="dropdown-button"
           style="font-size: 2rem; color: white"
         />

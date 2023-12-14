@@ -34,9 +34,14 @@ const router = createRouter({
       component: () => import("../views/SupportersView.vue"),
     },
     {
+      path: "/",
+      name: "home",
+      alias: "/",
+      component: () => import("../views/HomeView.vue"),
+    },
+    {
       path: "/login",
       name: "login",
-      alias: "/",
       component: () => import("../views/LoginView.vue"),
     },
     {
