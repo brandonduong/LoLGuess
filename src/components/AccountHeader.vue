@@ -46,7 +46,9 @@ function signout() {
               >Login / Register</RouterLink
             >
             <a-divider class="divider" />
-            <RouterLink to="/play" :class="getActive(`/play`)">Play</RouterLink>
+            <RouterLink to="/play" :class="getActive(`/play`)"
+              >Freeplay</RouterLink
+            >
             <RouterLink
               v-if="auth.authStatus === 'authenticated'"
               :to="`/profile/${auth.user.attributes.sub}`"
