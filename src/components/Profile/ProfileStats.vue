@@ -84,4 +84,17 @@ function refresh() {
 .refresh-btn {
   padding: 0.18rem 0.5rem 0;
 }
+
+@media only screen and (max-width: 720px) {
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .stat,
+  .stats-divider {
+    width: 100%;
+  }
+}
 </style>

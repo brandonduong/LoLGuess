@@ -79,20 +79,20 @@ const signUpAttributes = ["preferred_username"];
         <HomeButton
           title="Freeplay"
           :onClick="() => router.push('/play')"
-          description="Guess the rank and placements of a random lobby"
+          description="Guess rank and placements of a random lobby"
         />
 
         <HomeButton
           title="Daily"
           :onClick="() => router.push('/play')"
-          description="Guess the rank and placements of today's lobby"
+          description="Guess rank and placements of today's lobby"
           disabled
         />
 
         <HomeButton
           title="Profile"
           :onClick="() => router.push(`/profile/${auth.user.attributes.sub}`)"
-          description="Share guess stats and guess history for others to review and replay"
+          description="Share guess stats and guess history"
           v-if="auth.authStatus === 'authenticated'"
         />
         <HomeButton
@@ -105,7 +105,7 @@ const signUpAttributes = ["preferred_username"];
         <HomeButton
           title="Leaderboard"
           :onClick="() => router.push(`/leaderboard`)"
-          description="Compare against other guessers"
+          description="Compete against other guessers"
         />
         <HomeButton
           title="Supporters"

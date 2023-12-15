@@ -31,7 +31,7 @@ const reveal = ref<boolean>(false);
 
 <template>
   <div class="history-item">
-    <div>
+    <div class="date">
       <h3>
         {{
           new Date(guess.createdAt).toLocaleString("default", {
@@ -44,25 +44,24 @@ const reveal = ref<boolean>(false);
     </div>
 
     <div>
-      <span
+      <h4
         v-if="guess.regions"
         class="regions"
         :title="guess.regions.toString()"
       >
         {{ guess.regions.join(", ") }}
-      </span>
+      </h4>
       <h3 v-else>N/A</h3>
     </div>
 
     <div>
       <h3 class="ranks">
-        Rank Pool:
         <RankIcon v-for="rank in guess.ranks" :rank="rank" />
       </h3>
       <h3>{{ guess.placements.map((place) => parseInt(place)).join(", ") }}</h3>
     </div>
 
-    <div v-if="reveal">
+    <div class="reveal" v-if="reveal">
       <h3>Guessed Rank: <RankIcon :rank="guess.guessedRank" /></h3>
 
       <h3>
@@ -87,19 +86,35 @@ const reveal = ref<boolean>(false);
 <style scoped>
 .history-item {
   display: grid;
-  grid-template-columns: 0.2fr 0.7fr 1fr auto;
+  grid-template-columns: auto 0.7fr 0.5fr auto;
   border: solid 1px lightslategray;
   padding: 0.5rem 1rem;
   align-items: center;
+  gap: 1rem;
 }
 
 .history-item > h3 {
   margin: 0;
 }
 
-h3.regions {
+h4.regions {
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-right: 1rem;
+  margin: 0;
+}
+
+@media only screen and (max-width: 720px) {
+  .history-item {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .reveal,
+  .date {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
 }
 </style>

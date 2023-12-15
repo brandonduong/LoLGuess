@@ -15,7 +15,6 @@ const props = defineProps<{
 .rank-icon {
   width: 1.75rem;
   height: 1.75rem;
-  margin-left: 0.5rem;
   margin-top: -0.5rem;
 }
 </style>

@@ -134,18 +134,22 @@ function signout() {
   z-index: 1;
 }
 
-@media only screen and (max-width: 720px) {
-  .account-header {
-    position: absolute;
-  }
-}
-
 .account-header-contents {
   width: 1280px;
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 2rem;
   align-items: center;
+}
+
+@media only screen and (max-width: 720px) {
+  .account-header {
+    position: absolute;
+  }
+
+  .account-header-contents {
+    padding: 0.25rem 0.25rem;
+  }
 }
 
 .account-header-contents > a {

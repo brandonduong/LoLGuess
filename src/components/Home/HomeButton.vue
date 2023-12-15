@@ -25,4 +25,8 @@ const props = defineProps<{
   border-color: hsl(51, 99%, 43%);
   background-color: hsl(51, 100%, 83%);
 }
+
+.home-btn:disabled {
+  background-color: rgb(214, 214, 214);
+}
 </style>

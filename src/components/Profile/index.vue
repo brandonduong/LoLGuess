@@ -109,4 +109,10 @@ async function forceUpdate() {
   column-gap: 0.5rem;
   row-gap: 0.5rem;
 }
+@media only screen and (max-width: 720px) {
+  .profile {
+    display: flex;
+    flex-direction: column;
+  }
+}
 </style>
