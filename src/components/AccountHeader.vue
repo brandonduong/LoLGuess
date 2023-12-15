@@ -61,6 +61,9 @@ function signout() {
             <RouterLink to="/supporters" :class="getActive(`/supporters`)"
               >Supporters</RouterLink
             >
+            <RouterLink to="/updates" :class="getActive(`/updates`)"
+              >Updates</RouterLink
+            >
             <a-divider class="divider" />
             <div class="kofi-div">
               <a-button
