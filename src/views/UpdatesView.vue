@@ -3,6 +3,15 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const updates = [
   {
+    version: "1.1 and beyond",
+    title: "Future Work",
+    items: [
+      "Daily mode",
+      "More unique modes in my head but don't want people to rat",
+    ],
+    date: "---",
+  },
+  {
     version: "1.0.2",
     title: "UI/UX improvements for both mobile and desktop",
     items: [
@@ -40,13 +49,7 @@ const updates = [
 
 <template>
   <div class="updates">
-    <h2>Future Work</h2>
-    <div>
-      <h4>Daily mode</h4>
-      <h4>More unique modes in my head and I don't want people to rat</h4>
-    </div>
-
-    <h2>Updates</h2>
+    <h2 style="margin: 0">Updates</h2>
     <h4>
       Support future work and updates on
       <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
