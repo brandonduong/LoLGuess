@@ -79,7 +79,14 @@ const signUpAttributes = ["preferred_username"];
         <HomeButton
           title="Freeplay"
           :onClick="() => router.push('/play')"
-          description="Guess the rank and placements of a lobby"
+          description="Guess the rank and placements of a random lobby"
+        />
+
+        <HomeButton
+          title="Daily"
+          :onClick="() => router.push('/play')"
+          description="Guess the rank and placements of today's lobby"
+          disabled
         />
 
         <HomeButton
@@ -104,6 +111,11 @@ const signUpAttributes = ["preferred_username"];
           title="Supporters"
           :onClick="() => router.push(`/supporters`)"
           description="Help a guy with a lot of student debt"
+        />
+        <HomeButton
+          title="Updates"
+          :onClick="() => router.push(`/updates`)"
+          description="New and future additions"
         />
       </div>
     </div>
@@ -143,9 +155,6 @@ const signUpAttributes = ["preferred_username"];
 
 .unordered {
   color: rgba(0, 0, 0, 0.85);
-}
-.unordered-section {
-  text-decoration: underline;
 }
 
 .peng {
