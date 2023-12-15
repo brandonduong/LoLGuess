@@ -6,6 +6,7 @@ const updates = [
     version: "1.1 and beyond",
     title: "Future Work",
     items: [
+      "Dark mode for ui",
       "Daily mode",
       "More unique modes in my head but don't want people to rat",
     ],
