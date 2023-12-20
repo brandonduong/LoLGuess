@@ -8,17 +8,22 @@ const props = defineProps<{
 }>();
 
 const current = ref<number>(1);
+const pageSize = ref<number>(5);
 </script>
 
 <template>
   <div class="history">
     <HistoryItem
-      v-for="guess in guesses.slice(5 * (current - 1), 5 * current)"
+      v-for="guess in guesses.slice(
+        pageSize * (current - 1),
+        pageSize * current
+      )"
       :guess="guess"
       :key="current"
     />
     <div class="pages">
       <a-pagination
+        v-model:pageSize="pageSize"
         v-model:current="current"
         :total="guesses.length"
         :defaultPageSize="5"
