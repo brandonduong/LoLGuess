@@ -64,30 +64,56 @@ onMounted(async () => {
 });
 
 async function getStaticTFTData() {
-  await http.dragon
-    .get("/plugins/rcp-be-lol-game-data/global/default/v1/tfttraits.json")
-    .then((res) => {
-      staticTFTTraitData = res.data;
-    });
+  const staticData = window.localStorage.getItem("staticTFTData");
+  // Today in UTC with no time
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    .toISOString()
+    .split("T")[0];
+  if (!staticData || JSON.parse(staticData).date !== today) {
+    await http.dragon
+      .get("/plugins/rcp-be-lol-game-data/global/default/v1/tfttraits.json")
+      .then((res) => {
+        staticTFTTraitData.value = res.data;
+      });
 
-  await http.dragon
-    .get("/plugins/rcp-be-lol-game-data/global/default/v1/tftitems.json")
-    .then((res) => {
-      staticTFTAugmentData = res.data;
-    });
-  //console.log(staticTFTAugmentData);
+    await http.dragon
+      .get("/plugins/rcp-be-lol-game-data/global/default/v1/tftitems.json")
+      .then((res) => {
+        staticTFTAugmentData.value = res.data;
+      });
+    //console.log(staticTFTAugmentData);
 
-  await http.dragon
-    .get("/plugins/rcp-be-lol-game-data/global/default/v1/tftchampions.json")
-    .then((res) => {
-      staticTFTUnitData = res.data;
-    });
+    await http.dragon
+      .get("/plugins/rcp-be-lol-game-data/global/default/v1/tftchampions.json")
+      .then((res) => {
+        staticTFTUnitData.value = res.data;
+      });
 
-  await http.dragon
-    .get("/plugins/rcp-be-lol-game-data/global/default/v1/tftitems.json")
-    .then((res) => {
-      staticTFTItemData = res.data;
-    });
+    await http.dragon
+      .get("/plugins/rcp-be-lol-game-data/global/default/v1/tftitems.json")
+      .then((res) => {
+        staticTFTItemData.value = res.data;
+      });
+
+    localStorage.setItem(
+      "staticTFTData",
+      JSON.stringify({
+        trait: staticTFTTraitData.value,
+        augment: staticTFTAugmentData.value,
+        unit: staticTFTUnitData.value,
+        item: staticTFTItemData.value,
+        date: today,
+      })
+    );
+  } else {
+    const parsed = JSON.parse(staticData);
+    console.log(parsed);
+    staticTFTTraitData.value = parsed.trait;
+    staticTFTAugmentData.value = parsed.augment;
+    staticTFTUnitData.value = parsed.unit;
+    staticTFTItemData.value = parsed.item;
+  }
 }
 
 function onChange(event: SortableEvent) {
@@ -113,7 +139,7 @@ function checkIfCorrect(placement: number) {
 }
 
 function correctionStyle(placement: number) {
-  console.log(placement, props.verifiedGuess[placement - 1]);
+  // console.log(placement, props.verifiedGuess[placement - 1]);
   switch (Math.abs(placement - parseInt(props.verifiedGuess[placement - 1]))) {
     case 0:
       return "correct";
