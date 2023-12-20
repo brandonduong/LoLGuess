@@ -14,11 +14,12 @@ const props = defineProps<{
 </template>
 <style scoped>
 .home-btn {
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   height: 100%;
   white-space: break-spaces;
   border-color: hsl(51, 99%, 43%);
   border-radius: 0.25rem;
+  width: 100%;
 }
 
 .home-btn:hover {

@@ -168,7 +168,6 @@ const signUpAttributes = ["preferred_username"];
 .intro {
   display: flex;
   gap: 1rem;
-  align-items: center;
 }
 
 .link {
@@ -192,10 +191,12 @@ const signUpAttributes = ["preferred_username"];
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  flex-basis: 50%;
 }
 
 .benefits {
   flex-basis: 50%;
+  margin: auto;
 }
 
 .kofi {
