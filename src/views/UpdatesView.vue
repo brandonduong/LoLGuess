@@ -23,6 +23,8 @@ const updates = [
       "Made arrow icons consistent in game table",
       "Removed max score from leaderboard",
       "Added kofi to home page",
+      "Added peng to logo",
+      "Fixed pagination in profile",
     ],
     date: "12-20-2023",
   },
