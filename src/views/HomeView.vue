@@ -165,13 +165,6 @@ const signUpAttributes = ["preferred_username"];
   color: rgba(0, 0, 0, 0.85);
 }
 
-.peng {
-  background-image: url("/peng.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 100%;
-}
-
 .intro {
   display: flex;
   gap: 1rem;

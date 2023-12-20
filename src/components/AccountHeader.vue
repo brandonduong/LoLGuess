@@ -30,7 +30,13 @@ function signout() {
 <template>
   <div class="account-header">
     <div class="account-header-contents">
-      <RouterLink to="/" class="title">LoLGuess</RouterLink>
+      <RouterLink to="/" class="title"
+        ><div class="logo">
+          <div class="peng"></div>
+          LoLGuess
+        </div>
+      </RouterLink>
+
       <a-popover placement="bottomRight" trigger="click">
         <template #content>
           <div class="dropdown-content">
@@ -165,6 +171,19 @@ function signout() {
 
 .account-header-contents > a.router-link-exact-active {
   text-decoration: underline;
+}
+.peng {
+  background-image: url("/peng.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 36px;
+  height: 36px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .dropdown-button {
