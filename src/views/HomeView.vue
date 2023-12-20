@@ -42,6 +42,7 @@ const signUpAttributes = ["preferred_username"];
       </h6>
       <hr class="divider" />
     </div>
+
     <div class="intro">
       <div class="benefits">
         <ul class="unordered">
@@ -95,12 +96,13 @@ const signUpAttributes = ["preferred_username"];
           description="Share guess stats and guess history"
           v-if="auth.authStatus === 'authenticated'"
         />
-        <HomeButton
-          title="Login / Register"
-          :onClick="() => router.push(`/login`)"
-          description="Store guess stats, guess history, and compete on the leaderboard"
-          v-else
-        />
+        <a-badge-ribbon text="Fixed!" color="gray" v-else>
+          <HomeButton
+            title="Login / Register"
+            :onClick="() => router.push(`/login`)"
+            description="Store guess stats, guess history, and compete on the leaderboard"
+          />
+        </a-badge-ribbon>
 
         <HomeButton
           title="Leaderboard"

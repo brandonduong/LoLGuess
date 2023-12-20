@@ -13,6 +13,12 @@ const updates = [
     date: "---",
   },
   {
+    version: "1.0.3",
+    title: "Fixed register bug",
+    items: ["Increased limit for emailing code when registering new account"],
+    date: "12-20-2023",
+  },
+  {
     version: "1.0.2",
     title: "UI/UX improvements for both mobile and desktop",
     items: [

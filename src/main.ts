@@ -21,6 +21,8 @@ import {
   Statistic,
   Empty,
   Typography,
+  Alert,
+  Badge,
 } from "ant-design-vue";
 Amplify.configure(awsExports);
 
@@ -40,5 +42,7 @@ app.use(Input);
 app.use(Statistic);
 app.use(Empty);
 app.use(Typography);
+app.use(Alert);
+app.use(Badge);
 
 app.mount("#app");
