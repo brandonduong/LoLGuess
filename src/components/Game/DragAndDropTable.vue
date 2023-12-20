@@ -7,7 +7,7 @@ import LevelIcons from "./LevelIcons.vue";
 import { onMounted, ref } from "vue";
 import http from "../../common/http-common";
 import { Sortable } from "sortablejs-vue3";
-import { DragOutlined } from "@ant-design/icons-vue";
+import { DragOutlined, ArrowRightOutlined } from "@ant-design/icons-vue";
 import { useRouter } from "vue-router";
 const props = defineProps<{
   rankedMatch: Array<object>;
@@ -132,15 +132,10 @@ function correctionStyle(placement: number) {
       Like guessing? Support on
       <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
         >Ko-fi</a
-      >!
-
-      <h5>
-        Or read our MANY great testimonials on the
-        <a class="ko-fi" @click="() => router.push('/supporters')"
-          >Supporters</a
-        >
-        page!
-      </h5>
+      >
+      or visit the
+      <a class="ko-fi" @click="() => router.push('/supporters')">Supporters</a>
+      page!
     </span>
     <span v-else> Guess how the lobby ended! </span>
   </h4>
@@ -174,7 +169,13 @@ function correctionStyle(placement: number) {
           class="arrow"
           v-if="props.verifiedGuess.length !== 0 && !checkIfCorrect(placement)"
         >
-          -->
+          <ArrowRightOutlined
+            style="
+              font-size: 1.25rem;
+              display: inline-block;
+              padding: 0 0.25rem 0 0.4rem;
+            "
+          />
         </h3>
         <h3 class="correction">
           {{
