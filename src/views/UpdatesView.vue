@@ -16,6 +16,17 @@ const updates = [
     date: "---",
   },
   {
+    version: "1.0.4",
+    title: "Optimizations, small details, and bug fixes",
+    items: [
+      "Optimized fetching of static tft data",
+      "Made arrow icons consistent in game table",
+      "Removed max score from leaderboard",
+      "Added kofi to home page",
+    ],
+    date: "12-20-2023",
+  },
+  {
     version: "1.0.3",
     title: "Fixed register bug",
     items: ["Increased limit for emailing code when registering new account"],

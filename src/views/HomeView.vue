@@ -112,12 +112,18 @@ const signUpAttributes = ["preferred_username"];
         <HomeButton
           title="Supporters"
           :onClick="() => router.push(`/supporters`)"
-          description="Help a guy with a lot of student debt"
+          description="View our MANY great testimonials"
         />
         <HomeButton
           title="Updates"
           :onClick="() => router.push(`/updates`)"
           description="New and future additions"
+        />
+        <HomeButton
+          title="Ko-fi"
+          :onClick="() => router.push(`/updates`)"
+          description="Help a guy with a lot of student debt"
+          class="kofi"
         />
       </div>
     </div>
@@ -169,12 +175,17 @@ const signUpAttributes = ["preferred_username"];
 .intro {
   display: flex;
   gap: 1rem;
+  align-items: center;
 }
 
 .link {
   font-weight: bold;
   text-decoration: underline;
   color: var(--theme-love);
+}
+
+.unordered > li {
+  margin: 0.75rem 0;
 }
 
 .guest {
@@ -194,6 +205,18 @@ const signUpAttributes = ["preferred_username"];
   flex-basis: 50%;
 }
 
+.kofi {
+  grid-column: span 2;
+  background-color: #e0ade2;
+  border-color: #e0ade2;
+}
+
+.kofi:hover {
+  grid-column: span 2;
+  background-color: #edc7ee;
+  border-color: #edc7ee;
+}
+
 @media only screen and (max-width: 720px) {
   .login {
     flex-direction: column;
@@ -205,10 +228,16 @@ const signUpAttributes = ["preferred_username"];
   }
 
   .unordered {
-    padding: 0 1.5rem 0 1.5rem;
+    padding: 0 0 0 1.5rem;
   }
   .intro {
     flex-direction: column-reverse;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 }
 </style>
