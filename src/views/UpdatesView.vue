@@ -7,6 +7,9 @@ const updates = [
     title: "Future Work",
     items: [
       "Dark mode for ui",
+      "Better leaderboard categories",
+      "After guessing, reveal what round players died at",
+      "After guessing, reveal usernames?",
       "Daily mode",
       "More unique modes in my head but don't want people to rat",
     ],
