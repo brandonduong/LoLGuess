@@ -41,7 +41,7 @@ watch(
         {{ rank }} <img :src="icon" v-if="icon" class="emote" />
       </h3>
       <h3>{{ pref }}</h3>
-      <h3>{{ roundToTwo(user.score) }} / {{ roundToTwo(user.maxScore) }}</h3>
+      <h3>{{ roundToTwo(user.score) }}</h3>
       <h3>{{ user.correctPlacements }}</h3>
       <h3>{{ user.correctRanks }}</h3>
       <h3>{{ roundToTwo(user.averageScore) }}</h3>
