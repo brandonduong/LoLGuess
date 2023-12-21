@@ -104,6 +104,22 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getDaily": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "lolguessdatastore"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getLeaderboard": {
       "build": true,
       "dependsOn": [
@@ -245,6 +261,22 @@
         {
           "category": "function",
           "resourceName": "generateDailies"
+        }
+      ]
+    },
+    "AMPLIFY_function_getDaily_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getDaily"
+        }
+      ]
+    },
+    "AMPLIFY_function_getDaily_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getDaily"
         }
       ]
     },

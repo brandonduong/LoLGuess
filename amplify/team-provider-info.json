@@ -54,6 +54,10 @@
         "generateDailies": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
           "s3Key": "amplify-builds/generateDailies-4f6241594f444d45314f-build.zip"
+        },
+        "getDaily": {
+          "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
+          "s3Key": "amplify-builds/getDaily-72717a4434636e463144-build.zip"
         }
       },
       "api": {
