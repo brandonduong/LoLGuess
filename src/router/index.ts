@@ -57,6 +57,11 @@ const router = createRouter({
       path: "/:pathMatch(.*)*",
       component: () => import("../views/NotFoundView.vue"),
     },
+    {
+      path: "/daily",
+      name: "daily",
+      component: () => import("../views/DailyView.vue"),
+    },
   ],
 });
 

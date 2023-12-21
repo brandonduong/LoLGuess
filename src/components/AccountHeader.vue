@@ -55,6 +55,9 @@ function signout() {
             <RouterLink to="/play" :class="getActive(`/play`)"
               >Freeplay</RouterLink
             >
+            <RouterLink to="/daily" :class="getActive(`/daily`)"
+              >Daily</RouterLink
+            >
             <RouterLink
               v-if="auth.authStatus === 'authenticated'"
               :to="`/profile/${auth.user.attributes.sub}`"

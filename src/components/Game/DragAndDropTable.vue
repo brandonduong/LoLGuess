@@ -108,7 +108,7 @@ async function getStaticTFTData() {
     );
   } else {
     const parsed = JSON.parse(staticData);
-    console.log(parsed);
+    //console.log(parsed);
     staticTFTTraitData.value = parsed.trait;
     staticTFTAugmentData.value = parsed.augment;
     staticTFTUnitData.value = parsed.unit;

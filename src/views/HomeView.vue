@@ -85,9 +85,8 @@ const signUpAttributes = ["preferred_username"];
 
         <HomeButton
           title="Daily"
-          :onClick="() => router.push('/play')"
+          :onClick="() => router.push('/daily')"
           description="Guess rank and placements of today's lobby"
-          disabled
         />
 
         <HomeButton
