@@ -101,6 +101,43 @@ export const listUsers = /* GraphQL */ `
     }
   }
 `;
+export const usersByUsername = /* GraphQL */ `
+  query UsersByUsername(
+    $username: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    usersByUsername(
+      username: $username
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        username
+        guesses {
+          nextToken
+        }
+        score
+        maxScore
+        correctPlacements
+        correctRanks
+        totalRanks
+        unfinished
+        totalGuesses
+        averageCorrectPlacements
+        averageScore
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getGuess = /* GraphQL */ `
   query GetGuess($id: ID!) {
     getGuess(id: $id) {
@@ -212,6 +249,67 @@ export const listLeaderboards = /* GraphQL */ `
         byAverageCorrectPlacements
         byAverageScore
         date
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getDaily = /* GraphQL */ `
+  query GetDaily($date: ID!) {
+    getDaily(date: $date) {
+      date
+      matchId
+      rank
+      region
+      category
+      iron
+      bronze
+      silver
+      gold
+      plat
+      em
+      dia
+      master
+      grand
+      chall
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listDailies = /* GraphQL */ `
+  query ListDailies(
+    $date: ID
+    $filter: ModelDailyFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listDailies(
+      date: $date
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        date
+        matchId
+        rank
+        region
+        category
+        iron
+        bronze
+        silver
+        gold
+        plat
+        em
+        dia
+        master
+        grand
+        chall
         createdAt
         updatedAt
       }

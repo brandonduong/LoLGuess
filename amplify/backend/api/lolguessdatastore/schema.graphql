@@ -12,6 +12,7 @@ type User
   ) {
   id: ID!
   username: String!
+    @index(name: "usersByUsername", queryField: "usersByUsername")
   guesses: [Guess] @hasMany
   score: Float!
   maxScore: Float!
@@ -63,6 +64,31 @@ type Leaderboard
   byAverageCorrectPlacements: [String]
   byAverageScore: [String]
   date: ID! @primaryKey
+}
+
+type Daily
+  @model
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: private, operations: [read], provider: iam }
+    ]
+  ) {
+  date: ID! @primaryKey
+  matchId: String!
+  rank: String!
+  region: String!
+  category: String
+  iron: Int
+  bronze: Int
+  silver: Int
+  gold: Int
+  plat: Int
+  em: Int
+  dia: Int
+  master: Int
+  grand: Int
+  chall: Int
 }
 
 type Query {

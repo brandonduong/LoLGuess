@@ -206,3 +206,72 @@ export const onDeleteLeaderboard = /* GraphQL */ `
     }
   }
 `;
+export const onCreateDaily = /* GraphQL */ `
+  subscription OnCreateDaily($filter: ModelSubscriptionDailyFilterInput) {
+    onCreateDaily(filter: $filter) {
+      date
+      matchId
+      rank
+      region
+      category
+      iron
+      bronze
+      silver
+      gold
+      plat
+      em
+      dia
+      master
+      grand
+      chall
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateDaily = /* GraphQL */ `
+  subscription OnUpdateDaily($filter: ModelSubscriptionDailyFilterInput) {
+    onUpdateDaily(filter: $filter) {
+      date
+      matchId
+      rank
+      region
+      category
+      iron
+      bronze
+      silver
+      gold
+      plat
+      em
+      dia
+      master
+      grand
+      chall
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteDaily = /* GraphQL */ `
+  subscription OnDeleteDaily($filter: ModelSubscriptionDailyFilterInput) {
+    onDeleteDaily(filter: $filter) {
+      date
+      matchId
+      rank
+      region
+      category
+      iron
+      bronze
+      silver
+      gold
+      plat
+      em
+      dia
+      master
+      grand
+      chall
+      createdAt
+      updatedAt
+    }
+  }
+`;

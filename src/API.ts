@@ -259,6 +259,87 @@ export type DeleteLeaderboardInput = {
   date: string,
 };
 
+export type CreateDailyInput = {
+  date: string,
+  matchId: string,
+  rank: string,
+  region: string,
+  category?: string | null,
+  iron?: number | null,
+  bronze?: number | null,
+  silver?: number | null,
+  gold?: number | null,
+  plat?: number | null,
+  em?: number | null,
+  dia?: number | null,
+  master?: number | null,
+  grand?: number | null,
+  chall?: number | null,
+};
+
+export type ModelDailyConditionInput = {
+  matchId?: ModelStringInput | null,
+  rank?: ModelStringInput | null,
+  region?: ModelStringInput | null,
+  category?: ModelStringInput | null,
+  iron?: ModelIntInput | null,
+  bronze?: ModelIntInput | null,
+  silver?: ModelIntInput | null,
+  gold?: ModelIntInput | null,
+  plat?: ModelIntInput | null,
+  em?: ModelIntInput | null,
+  dia?: ModelIntInput | null,
+  master?: ModelIntInput | null,
+  grand?: ModelIntInput | null,
+  chall?: ModelIntInput | null,
+  and?: Array< ModelDailyConditionInput | null > | null,
+  or?: Array< ModelDailyConditionInput | null > | null,
+  not?: ModelDailyConditionInput | null,
+};
+
+export type Daily = {
+  __typename: "Daily",
+  date: string,
+  matchId: string,
+  rank: string,
+  region: string,
+  category?: string | null,
+  iron?: number | null,
+  bronze?: number | null,
+  silver?: number | null,
+  gold?: number | null,
+  plat?: number | null,
+  em?: number | null,
+  dia?: number | null,
+  master?: number | null,
+  grand?: number | null,
+  chall?: number | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateDailyInput = {
+  date: string,
+  matchId?: string | null,
+  rank?: string | null,
+  region?: string | null,
+  category?: string | null,
+  iron?: number | null,
+  bronze?: number | null,
+  silver?: number | null,
+  gold?: number | null,
+  plat?: number | null,
+  em?: number | null,
+  dia?: number | null,
+  master?: number | null,
+  grand?: number | null,
+  chall?: number | null,
+};
+
+export type DeleteDailyInput = {
+  date: string,
+};
+
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   username?: ModelStringInput | null,
@@ -281,6 +362,12 @@ export type ModelUserConnection = {
   items:  Array<User | null >,
   nextToken?: string | null,
 };
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
 
 export type ModelGuessFilterInput = {
   id?: ModelIDInput | null,
@@ -308,12 +395,6 @@ export type ModelStringKeyConditionInput = {
   beginsWith?: string | null,
 };
 
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
-}
-
-
 export type ModelLeaderboardFilterInput = {
   byCorrectPlacements?: ModelStringInput | null,
   byCorrectRanks?: ModelStringInput | null,
@@ -329,6 +410,33 @@ export type ModelLeaderboardFilterInput = {
 export type ModelLeaderboardConnection = {
   __typename: "ModelLeaderboardConnection",
   items:  Array<Leaderboard | null >,
+  nextToken?: string | null,
+};
+
+export type ModelDailyFilterInput = {
+  date?: ModelIDInput | null,
+  matchId?: ModelStringInput | null,
+  rank?: ModelStringInput | null,
+  region?: ModelStringInput | null,
+  category?: ModelStringInput | null,
+  iron?: ModelIntInput | null,
+  bronze?: ModelIntInput | null,
+  silver?: ModelIntInput | null,
+  gold?: ModelIntInput | null,
+  plat?: ModelIntInput | null,
+  em?: ModelIntInput | null,
+  dia?: ModelIntInput | null,
+  master?: ModelIntInput | null,
+  grand?: ModelIntInput | null,
+  chall?: ModelIntInput | null,
+  and?: Array< ModelDailyFilterInput | null > | null,
+  or?: Array< ModelDailyFilterInput | null > | null,
+  not?: ModelDailyFilterInput | null,
+};
+
+export type ModelDailyConnection = {
+  __typename: "ModelDailyConnection",
+  items:  Array<Daily | null >,
   nextToken?: string | null,
 };
 
@@ -426,6 +534,26 @@ export type ModelSubscriptionLeaderboardFilterInput = {
   date?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionLeaderboardFilterInput | null > | null,
   or?: Array< ModelSubscriptionLeaderboardFilterInput | null > | null,
+};
+
+export type ModelSubscriptionDailyFilterInput = {
+  date?: ModelSubscriptionIDInput | null,
+  matchId?: ModelSubscriptionStringInput | null,
+  rank?: ModelSubscriptionStringInput | null,
+  region?: ModelSubscriptionStringInput | null,
+  category?: ModelSubscriptionStringInput | null,
+  iron?: ModelSubscriptionIntInput | null,
+  bronze?: ModelSubscriptionIntInput | null,
+  silver?: ModelSubscriptionIntInput | null,
+  gold?: ModelSubscriptionIntInput | null,
+  plat?: ModelSubscriptionIntInput | null,
+  em?: ModelSubscriptionIntInput | null,
+  dia?: ModelSubscriptionIntInput | null,
+  master?: ModelSubscriptionIntInput | null,
+  grand?: ModelSubscriptionIntInput | null,
+  chall?: ModelSubscriptionIntInput | null,
+  and?: Array< ModelSubscriptionDailyFilterInput | null > | null,
+  or?: Array< ModelSubscriptionDailyFilterInput | null > | null,
 };
 
 export type CreateUserMutationVariables = {
@@ -677,6 +805,90 @@ export type DeleteLeaderboardMutation = {
   } | null,
 };
 
+export type CreateDailyMutationVariables = {
+  input: CreateDailyInput,
+  condition?: ModelDailyConditionInput | null,
+};
+
+export type CreateDailyMutation = {
+  createDaily?:  {
+    __typename: "Daily",
+    date: string,
+    matchId: string,
+    rank: string,
+    region: string,
+    category?: string | null,
+    iron?: number | null,
+    bronze?: number | null,
+    silver?: number | null,
+    gold?: number | null,
+    plat?: number | null,
+    em?: number | null,
+    dia?: number | null,
+    master?: number | null,
+    grand?: number | null,
+    chall?: number | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateDailyMutationVariables = {
+  input: UpdateDailyInput,
+  condition?: ModelDailyConditionInput | null,
+};
+
+export type UpdateDailyMutation = {
+  updateDaily?:  {
+    __typename: "Daily",
+    date: string,
+    matchId: string,
+    rank: string,
+    region: string,
+    category?: string | null,
+    iron?: number | null,
+    bronze?: number | null,
+    silver?: number | null,
+    gold?: number | null,
+    plat?: number | null,
+    em?: number | null,
+    dia?: number | null,
+    master?: number | null,
+    grand?: number | null,
+    chall?: number | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteDailyMutationVariables = {
+  input: DeleteDailyInput,
+  condition?: ModelDailyConditionInput | null,
+};
+
+export type DeleteDailyMutation = {
+  deleteDaily?:  {
+    __typename: "Daily",
+    date: string,
+    matchId: string,
+    rank: string,
+    region: string,
+    category?: string | null,
+    iron?: number | null,
+    bronze?: number | null,
+    silver?: number | null,
+    gold?: number | null,
+    plat?: number | null,
+    em?: number | null,
+    dia?: number | null,
+    master?: number | null,
+    grand?: number | null,
+    chall?: number | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type BatchFetchUserQueryVariables = {
   ids?: Array< string | null > | null,
 };
@@ -767,6 +979,41 @@ export type ListUsersQueryVariables = {
 
 export type ListUsersQuery = {
   listUsers?:  {
+    __typename: "ModelUserConnection",
+    items:  Array< {
+      __typename: "User",
+      id: string,
+      username: string,
+      guesses?:  {
+        __typename: "ModelGuessConnection",
+        nextToken?: string | null,
+      } | null,
+      score: number,
+      maxScore: number,
+      correctPlacements: number,
+      correctRanks: number,
+      totalRanks: number,
+      unfinished: number,
+      totalGuesses: number,
+      averageCorrectPlacements: number,
+      averageScore: number,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type UsersByUsernameQueryVariables = {
+  username: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelUserFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type UsersByUsernameQuery = {
+  usersByUsername?:  {
     __typename: "ModelUserConnection",
     items:  Array< {
       __typename: "User",
@@ -907,6 +1154,68 @@ export type ListLeaderboardsQuery = {
       byAverageCorrectPlacements?: Array< string | null > | null,
       byAverageScore?: Array< string | null > | null,
       date: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetDailyQueryVariables = {
+  date: string,
+};
+
+export type GetDailyQuery = {
+  getDaily?:  {
+    __typename: "Daily",
+    date: string,
+    matchId: string,
+    rank: string,
+    region: string,
+    category?: string | null,
+    iron?: number | null,
+    bronze?: number | null,
+    silver?: number | null,
+    gold?: number | null,
+    plat?: number | null,
+    em?: number | null,
+    dia?: number | null,
+    master?: number | null,
+    grand?: number | null,
+    chall?: number | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListDailiesQueryVariables = {
+  date?: string | null,
+  filter?: ModelDailyFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
+};
+
+export type ListDailiesQuery = {
+  listDailies?:  {
+    __typename: "ModelDailyConnection",
+    items:  Array< {
+      __typename: "Daily",
+      date: string,
+      matchId: string,
+      rank: string,
+      region: string,
+      category?: string | null,
+      iron?: number | null,
+      bronze?: number | null,
+      silver?: number | null,
+      gold?: number | null,
+      plat?: number | null,
+      em?: number | null,
+      dia?: number | null,
+      master?: number | null,
+      grand?: number | null,
+      chall?: number | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -1149,6 +1458,87 @@ export type OnDeleteLeaderboardSubscription = {
     byAverageCorrectPlacements?: Array< string | null > | null,
     byAverageScore?: Array< string | null > | null,
     date: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateDailySubscriptionVariables = {
+  filter?: ModelSubscriptionDailyFilterInput | null,
+};
+
+export type OnCreateDailySubscription = {
+  onCreateDaily?:  {
+    __typename: "Daily",
+    date: string,
+    matchId: string,
+    rank: string,
+    region: string,
+    category?: string | null,
+    iron?: number | null,
+    bronze?: number | null,
+    silver?: number | null,
+    gold?: number | null,
+    plat?: number | null,
+    em?: number | null,
+    dia?: number | null,
+    master?: number | null,
+    grand?: number | null,
+    chall?: number | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateDailySubscriptionVariables = {
+  filter?: ModelSubscriptionDailyFilterInput | null,
+};
+
+export type OnUpdateDailySubscription = {
+  onUpdateDaily?:  {
+    __typename: "Daily",
+    date: string,
+    matchId: string,
+    rank: string,
+    region: string,
+    category?: string | null,
+    iron?: number | null,
+    bronze?: number | null,
+    silver?: number | null,
+    gold?: number | null,
+    plat?: number | null,
+    em?: number | null,
+    dia?: number | null,
+    master?: number | null,
+    grand?: number | null,
+    chall?: number | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteDailySubscriptionVariables = {
+  filter?: ModelSubscriptionDailyFilterInput | null,
+};
+
+export type OnDeleteDailySubscription = {
+  onDeleteDaily?:  {
+    __typename: "Daily",
+    date: string,
+    matchId: string,
+    rank: string,
+    region: string,
+    category?: string | null,
+    iron?: number | null,
+    bronze?: number | null,
+    silver?: number | null,
+    gold?: number | null,
+    plat?: number | null,
+    em?: number | null,
+    dia?: number | null,
+    master?: number | null,
+    grand?: number | null,
+    chall?: number | null,
     createdAt: string,
     updatedAt: string,
   } | null,
