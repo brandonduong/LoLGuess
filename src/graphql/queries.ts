@@ -257,23 +257,19 @@ export const listLeaderboards = /* GraphQL */ `
   }
 `;
 export const getDaily = /* GraphQL */ `
-  query GetDaily($date: ID!) {
-    getDaily(date: $date) {
+  query GetDaily($date: ID!, $category: String!) {
+    getDaily(date: $date, category: $category) {
       date
       matchId
       rank
       region
       category
-      iron
-      bronze
-      silver
-      gold
-      plat
-      em
-      dia
-      master
-      grand
-      chall
+      rankGuesses
+      placementGuesses
+      perfects
+      score
+      usernames
+      patch
       createdAt
       updatedAt
     }
@@ -282,6 +278,7 @@ export const getDaily = /* GraphQL */ `
 export const listDailies = /* GraphQL */ `
   query ListDailies(
     $date: ID
+    $category: ModelStringKeyConditionInput
     $filter: ModelDailyFilterInput
     $limit: Int
     $nextToken: String
@@ -289,6 +286,7 @@ export const listDailies = /* GraphQL */ `
   ) {
     listDailies(
       date: $date
+      category: $category
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -300,16 +298,12 @@ export const listDailies = /* GraphQL */ `
         rank
         region
         category
-        iron
-        bronze
-        silver
-        gold
-        plat
-        em
-        dia
-        master
-        grand
-        chall
+        rankGuesses
+        placementGuesses
+        perfects
+        score
+        usernames
+        patch
         createdAt
         updatedAt
       }

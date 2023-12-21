@@ -70,25 +70,21 @@ type Daily
   @model
   @auth(
     rules: [
-      { allow: public, operations: [read] }
+      { allow: public, operations: [read, delete] }
       { allow: private, operations: [read], provider: iam }
     ]
   ) {
-  date: ID! @primaryKey
+  date: ID! @primaryKey(sortKeyFields: ["category"])
   matchId: String!
   rank: String!
   region: String!
-  category: String
-  iron: Int
-  bronze: Int
-  silver: Int
-  gold: Int
-  plat: Int
-  em: Int
-  dia: Int
-  master: Int
-  grand: Int
-  chall: Int
+  category: String!
+  rankGuesses: [Int]
+  placementGuesses: [[Int]]
+  perfects: Int
+  score: Int
+  usernames: [String]
+  patch: Int
 }
 
 type Query {

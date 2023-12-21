@@ -23,6 +23,14 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "generateDailies": {
+      "Arn": "string",
+      "CloudWatchEventRule": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "getLeaderboard": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

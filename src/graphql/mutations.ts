@@ -238,16 +238,12 @@ export const createDaily = /* GraphQL */ `
       rank
       region
       category
-      iron
-      bronze
-      silver
-      gold
-      plat
-      em
-      dia
-      master
-      grand
-      chall
+      rankGuesses
+      placementGuesses
+      perfects
+      score
+      usernames
+      patch
       createdAt
       updatedAt
     }
@@ -264,16 +260,12 @@ export const updateDaily = /* GraphQL */ `
       rank
       region
       category
-      iron
-      bronze
-      silver
-      gold
-      plat
-      em
-      dia
-      master
-      grand
-      chall
+      rankGuesses
+      placementGuesses
+      perfects
+      score
+      usernames
+      patch
       createdAt
       updatedAt
     }
@@ -290,16 +282,12 @@ export const deleteDaily = /* GraphQL */ `
       rank
       region
       category
-      iron
-      bronze
-      silver
-      gold
-      plat
-      em
-      dia
-      master
-      grand
-      chall
+      rankGuesses
+      placementGuesses
+      perfects
+      score
+      usernames
+      patch
       createdAt
       updatedAt
     }

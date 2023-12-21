@@ -50,6 +50,10 @@
         "getMatchId": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
           "s3Key": "amplify-builds/getMatchId-51595534736f4c625168-build.zip"
+        },
+        "generateDailies": {
+          "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
+          "s3Key": "amplify-builds/generateDailies-4f6241594f444d45314f-build.zip"
         }
       },
       "api": {
