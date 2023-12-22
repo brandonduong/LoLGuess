@@ -42,8 +42,8 @@ const nowToronto = new Date(
 const updateUTC = Date.UTC(
   nowToronto.getUTCFullYear(),
   nowToronto.getUTCMonth(),
-  nowToronto.getUTCDate() + 1,
-  0,
+  nowToronto.getUTCDate(),
+  5,
   0,
   0
 );
@@ -123,7 +123,7 @@ watch(category, async (newVal, oldVal) => {
     <div>
       <div>
         <h2>Daily</h2>
-        <h3 style="margin: 0">Updates every day at 7 pm (EST)</h3>
+        <h3 style="margin: 0">Updates every day at 12 am (EST)</h3>
         <div style="display: flex; justify-content: space-between">
           <div class="timer">
             <h3>Updates in:</h3>
