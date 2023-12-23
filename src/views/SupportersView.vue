@@ -7,16 +7,16 @@ import Supporters from "../components/Supporter/Supporters.vue";
     <h2>Supporters</h2>
     <div class="supporters-exp">
       <h3>
-        If you supported on
+        If you just play LoLGuess in general, or have supported on
         <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
           >Ko-fi</a
-        >, no matter the amount, thank you very much!
+        >
+        no matter the amount, thank you very much!
       </h3>
       <h4>
-        If included, I will put your name/username, profile, links, and message
-        here!
+        If included on ko-fi donations, I will put your name/username, profile,
+        links, and message here!
         <br />
-        (Please include your unique login username)
       </h4>
       <h5>
         Hosting this website is not cheap and I would genuinely love to continue
