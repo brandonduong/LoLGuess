@@ -1,31 +1,10 @@
 <script setup lang="ts">
-import { Authenticator, useAuthenticator } from "@aws-amplify/ui-vue";
+import { useAuthenticator } from "@aws-amplify/ui-vue";
 import { useRouter } from "vue-router";
 import HomeButton from "../components/Home/HomeButton.vue";
 
 const auth = useAuthenticator();
 const router = useRouter();
-
-const formFields = {
-  signUp: {
-    preferred_username: {
-      order: 1,
-      label: "Display Name",
-      placeholder: "Enter your nonunique display name",
-    },
-    username: {
-      order: 2,
-      label: "Username",
-      placeholder: "Enter your unique login username",
-    },
-    email: {
-      order: 3,
-      label: "Email",
-      placeholder: "Enter your Email",
-    },
-  },
-};
-const signUpAttributes = ["preferred_username"];
 </script>
 
 <template>

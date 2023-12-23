@@ -35,6 +35,8 @@ const GRAPHQL_ENDPOINT =
 const GRAPHQL_API_KEY = process.env.API_LOLGUESSDATASTORE_GRAPHQLAPIKEYOUTPUT;
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 
+const RIOT_TOKEN = process.env.RIOT_TOKEN;
+
 const endpoint = new URL(GRAPHQL_ENDPOINT);
 
 const signer = new SignatureV4({
@@ -115,7 +117,45 @@ async function getDaily(date, category) {
 }
 
 async function getDailyMatch(matchId, region) {
-  const RIOT_TOKEN = process.env.RIOT_TOKEN;
+  const regTranslate = [
+    "br1",
+    "eun1",
+    "euw1",
+    "jp1",
+    "kr",
+    "la1",
+    "la2",
+    "na1",
+    "oc1",
+    "tr1",
+    "ru",
+    "ph2",
+    "sg2",
+    "th2",
+    "tw2",
+    "vn2",
+  ];
+  const reg = [
+    "BR",
+    "EUNE",
+    "EUW",
+    "JP",
+    "KR",
+    "LAN",
+    "LAS",
+    "NA",
+    "OCE",
+    "TR",
+    "RU",
+    "PH",
+    "SG",
+    "TH",
+    "TW",
+    "VN",
+  ];
+
+  region = regTranslate[reg.findIndex((x) => x === region)];
+
   // Match regions that cover player regions
   const americas = ["na1", "br1", "la1", "la2"];
   const asia = ["kr", "jp1"];
@@ -208,11 +248,16 @@ app.get("/getDaily", async function (req, res) {
 
   // Get daily info
   const daily = await getDaily(date, category);
-  const { matchId, region } = daily;
+  const { matchId, region, rank } = daily;
   const dailyMatch = await getDailyMatch(matchId, region);
 
   // Add your code here
-  res.json({ dailyMatch });
+  res.json({
+    dailyMatch,
+    rank: CryptoJS.AES.encrypt(`${rank}`, RIOT_TOKEN).toString(),
+    region: CryptoJS.AES.encrypt(`${region}`, RIOT_TOKEN).toString(),
+    matchId: CryptoJS.AES.encrypt(`${matchId}`, RIOT_TOKEN).toString(),
+  });
 });
 
 app.listen(3000, function () {

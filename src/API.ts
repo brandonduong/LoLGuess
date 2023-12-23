@@ -305,6 +305,11 @@ export type Daily = {
   updatedAt: string,
 };
 
+export type DeleteDailyInput = {
+  date: string,
+  category: string,
+};
+
 export type UpdateDailyInput = {
   date: string,
   matchId?: string | null,
@@ -317,11 +322,6 @@ export type UpdateDailyInput = {
   score?: number | null,
   usernames?: Array< string | null > | null,
   patch?: number | null,
-};
-
-export type DeleteDailyInput = {
-  date: string,
-  category: string,
 };
 
 export type ModelUserFilterInput = {
@@ -805,13 +805,13 @@ export type CreateDailyMutation = {
   } | null,
 };
 
-export type UpdateDailyMutationVariables = {
-  input: UpdateDailyInput,
+export type DeleteDailyMutationVariables = {
+  input: DeleteDailyInput,
   condition?: ModelDailyConditionInput | null,
 };
 
-export type UpdateDailyMutation = {
-  updateDaily?:  {
+export type DeleteDailyMutation = {
+  deleteDaily?:  {
     __typename: "Daily",
     date: string,
     matchId: string,
@@ -829,13 +829,13 @@ export type UpdateDailyMutation = {
   } | null,
 };
 
-export type DeleteDailyMutationVariables = {
-  input: DeleteDailyInput,
+export type UpdateDailyMutationVariables = {
+  input: UpdateDailyInput,
   condition?: ModelDailyConditionInput | null,
 };
 
-export type DeleteDailyMutation = {
-  deleteDaily?:  {
+export type UpdateDailyMutation = {
+  updateDaily?:  {
     __typename: "Daily",
     date: string,
     matchId: string,

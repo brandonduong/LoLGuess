@@ -230,6 +230,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "verifyAnyGuess": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "verifyGuess": {
       "build": true,
       "dependsOn": [
@@ -405,6 +410,22 @@
         {
           "category": "function",
           "resourceName": "updateLeaderboard"
+        }
+      ]
+    },
+    "AMPLIFY_function_verifyAnyGuess_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifyAnyGuess"
+        }
+      ]
+    },
+    "AMPLIFY_function_verifyAnyGuess_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifyAnyGuess"
         }
       ]
     },

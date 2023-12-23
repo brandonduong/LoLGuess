@@ -249,12 +249,12 @@ export const createDaily = /* GraphQL */ `
     }
   }
 `;
-export const updateDaily = /* GraphQL */ `
-  mutation UpdateDaily(
-    $input: UpdateDailyInput!
+export const deleteDaily = /* GraphQL */ `
+  mutation DeleteDaily(
+    $input: DeleteDailyInput!
     $condition: ModelDailyConditionInput
   ) {
-    updateDaily(input: $input, condition: $condition) {
+    deleteDaily(input: $input, condition: $condition) {
       date
       matchId
       rank
@@ -271,12 +271,12 @@ export const updateDaily = /* GraphQL */ `
     }
   }
 `;
-export const deleteDaily = /* GraphQL */ `
-  mutation DeleteDaily(
-    $input: DeleteDailyInput!
+export const updateDaily = /* GraphQL */ `
+  mutation UpdateDaily(
+    $input: UpdateDailyInput!
     $condition: ModelDailyConditionInput
   ) {
-    deleteDaily(input: $input, condition: $condition) {
+    updateDaily(input: $input, condition: $condition) {
       date
       matchId
       rank

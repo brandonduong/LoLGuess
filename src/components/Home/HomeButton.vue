@@ -10,6 +10,7 @@ const props = defineProps<{
   <a-button class="home-btn" @click="() => onClick()" :disabled="disabled">
     <h3>{{ title }}</h3>
     <h5>{{ description }}</h5>
+    <slot />
   </a-button>
 </template>
 <style scoped>

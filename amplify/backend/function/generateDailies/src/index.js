@@ -151,6 +151,7 @@ async function getMatch(ranks) {
 
   // Get random region
   var region = regions[Math.floor(Math.random() * regions.length)];
+  const origRegion = region;
   // Get random rank
   var rank = ranks[Math.floor(Math.random() * ranks.length)];
   const rankDivision = rank;
@@ -330,7 +331,7 @@ async function getMatch(ranks) {
       .catch((err) => console.log(err));
   }
 
-  return { matchId, rank: rankDivision, region, patch, usernames };
+  return { matchId, rank: rankDivision, region: origRegion, patch, usernames };
 }
 
 /**

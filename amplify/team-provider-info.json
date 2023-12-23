@@ -53,11 +53,15 @@
         },
         "generateDailies": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/generateDailies-4f6241594f444d45314f-build.zip"
+          "s3Key": "amplify-builds/generateDailies-686f4b6f66712b52744d-build.zip"
         },
         "getDaily": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getDaily-72717a4434636e463144-build.zip"
+          "s3Key": "amplify-builds/getDaily-5337537a463376467644-build.zip"
+        },
+        "verifyAnyGuess": {
+          "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
+          "s3Key": "amplify-builds/verifyAnyGuess-596254506c464a487836-build.zip"
         }
       },
       "api": {
