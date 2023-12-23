@@ -284,6 +284,8 @@ async function share(text: string) {
 <template>
   <div>
     <div class="steps-content">
+      <h2 v-if="current <= 1 && !loading">Freeplay</h2>
+
       <div v-if="!loading">
         <div v-if="current === 0">
           <GroupSettings
@@ -380,7 +382,7 @@ async function share(text: string) {
   border-radius: 0.25rem;
   background-color: white;
   text-align: center;
-  padding: 0.25rem 0.5rem 0.5rem;
+  padding: 1rem 0.5rem 0.5rem;
 }
 
 .steps-action {

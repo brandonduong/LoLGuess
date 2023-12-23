@@ -1,5 +1,5 @@
 <template>
-  <h4 class="description">{{ description }}</h4>
+  <h3 class="description">{{ description }}</h3>
   <div class="options">
     <a-checkbox
       class="option"
@@ -164,6 +164,6 @@ export default defineComponent({
   font-weight: 500;
 }
 .description {
-  text-decoration: underline;
+  margin: 0;
 }
 </style>
