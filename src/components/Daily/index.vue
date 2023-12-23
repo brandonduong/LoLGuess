@@ -66,6 +66,7 @@ const updateUTC = Date.UTC(
   0,
   0
 );
+
 const timer = ref<number>(updateUTC);
 
 const now = new Date();
@@ -80,6 +81,20 @@ function update() {
   today.value = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     .toISOString()
     .split("T")[0];
+}
+
+function getDailyDates() {
+  const startOfDailies = new Date("12/21/2023");
+  const dailies = [];
+  var date = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+  while (date >= startOfDailies) {
+    console.log(date, startOfDailies);
+    dailies.push(date.toISOString().split("T")[0]);
+    date = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
+    console.log(date);
+  }
+  console.log(dailies);
+  return dailies;
 }
 
 async function verifyGuess() {
@@ -267,6 +282,40 @@ const buttonDescriptions = {
     </div>
     <div>
       <h3>Archive</h3>
+      <div v-for="d in getDailyDates()">
+        <h4 style="text-align: end; margin: 0">
+          <b>{{ d }}</b>
+        </h4>
+        <div class="buttons">
+          <HomeButton
+            v-for="cat in ['low', 'high', 'all']"
+            :title="
+              cat.substring(0, 1).toUpperCase() + cat.substring(1) + ' Ranks'
+            "
+            :onClick="
+              () => {
+                date = d;
+                category = cat;
+              }
+            "
+            :description="buttonDescriptions[cat as keyof typeof buttonDescriptions]"
+          >
+            <div v-for="prev in [guessedBefore(d, cat)]">
+              <h5 v-if="prev">
+                {{
+                  calculateScore(
+                    prev.placements,
+                    prev.rank,
+                    prev.verifiedRank,
+                    cat === "all" ? all : cat === "high" ? high : low
+                  ).join(" / ")
+                }}
+              </h5>
+              <h5 v-else>---</h5>
+            </div>
+          </HomeButton>
+        </div>
+      </div>
     </div>
   </div>
   <div v-else>
