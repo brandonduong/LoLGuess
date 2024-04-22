@@ -84,7 +84,7 @@ function update() {
 }
 
 function getDailyDates() {
-  const startOfDailies = new Date("12/21/2023");
+  const startOfDailies = new Date("03/21/2024"); // Only support most recent set
   const dailies = [];
   var date = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
   while (date >= startOfDailies) {
@@ -282,6 +282,7 @@ const buttonDescriptions = {
     </div>
     <div>
       <h3>Archive</h3>
+      <h5>Only supports the most recent set</h5>
       <div v-for="d in getDailyDates()">
         <h4 style="text-align: end; margin: 0">
           <b>{{ d }}</b>
