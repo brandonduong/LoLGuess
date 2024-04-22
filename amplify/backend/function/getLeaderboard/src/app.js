@@ -114,7 +114,7 @@ async function getLeaderboard() {
   }
 }
 
-async function getLeaderboardUsers(leaderboard, sort) {
+async function getLeaderboardUsers(leaderboard, sort, page) {
   const query = /* GraphQL */ `
     query BatchFetchUser($ids: [ID]) {
       batchFetchUser(ids: $ids) {
@@ -135,7 +135,7 @@ async function getLeaderboardUsers(leaderboard, sort) {
     }
   `;
 
-  var sortedUsers = leaderboard[sort];
+  var sortedUsers = leaderboard[sort].slice(0 + 100 * page, 100 * (page + 1));
 
   const variables = {
     ids: sortedUsers,
@@ -172,9 +172,10 @@ app.get("/getLeaderboard", async function (req, res) {
   const param = req.apiGateway.event.queryStringParameters;
   const sort = param.sort;
   const leaderboard = await getLeaderboard();
+  const page = 0;
   var users = [];
   if (leaderboard[sort].length > 0) {
-    users = await getLeaderboardUsers(leaderboard, sort);
+    users = await getLeaderboardUsers(leaderboard, sort, page);
   }
   res.json({ users });
 });

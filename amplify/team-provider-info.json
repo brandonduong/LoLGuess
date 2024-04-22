@@ -40,7 +40,7 @@
         },
         "getLeaderboard": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getLeaderboard-6d345a58796272357a49-build.zip"
+          "s3Key": "amplify-builds/getLeaderboard-4c6a52334159314b7630-build.zip"
         },
         "getReplay": {
           "riotToken": "RGAPI-93f6e6ae-05ec-4b2c-8f35-8f5de9548a91",
