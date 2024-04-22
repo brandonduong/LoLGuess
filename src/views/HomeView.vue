@@ -71,21 +71,20 @@ const router = useRouter();
         <HomeButton
           title="Profile"
           :onClick="() => router.push(`/profile/${auth.user.attributes.sub}`)"
-          description="Share guess stats and guess history"
+          description="Share freeplay guess stats and guess history"
           v-if="auth.authStatus === 'authenticated'"
         />
-        <a-badge-ribbon text="Fixed!" color="gray" v-else>
-          <HomeButton
-            title="Login / Register"
-            :onClick="() => router.push(`/login`)"
-            description="Store guess stats, guess history, and compete on the leaderboard"
-          />
-        </a-badge-ribbon>
+        <HomeButton
+          title="Login / Register"
+          :onClick="() => router.push(`/login`)"
+          description="Store freeplay guess stats, guess history, and compete on the leaderboard"
+          v-else
+        />
 
         <HomeButton
           title="Leaderboard"
           :onClick="() => router.push(`/leaderboard`)"
-          description="Compete against other guessers"
+          description="Compete against other freeplay guessers"
         />
         <HomeButton
           title="Supporters"
@@ -99,7 +98,7 @@ const router = useRouter();
         />
         <HomeButton
           title="Ko-fi"
-          :onClick="() => router.push(`/updates`)"
+          href="https://ko-fi.com/brandonduong"
           description="Help a guy with a lot of student debt"
           class="kofi"
         />

@@ -20,6 +20,13 @@ const supporters = [
     id: "321b054c-7caf-40d9-ae32-0f1b3816d4fa",
     date: "06-23-2023",
   },
+  {
+    name: "tikutikutikuwa",
+    msg: "",
+    value: "1",
+    id: "",
+    date: "12-23-2023",
+  },
 ];
 </script>
 
