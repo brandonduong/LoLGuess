@@ -1,7 +1,7 @@
 <script lang="ts">
 interface StaticAugment {
   nameId: string;
-  loadoutsIcon: string;
+  squareIconPath: string;
   name: string;
 }
 
@@ -35,10 +35,11 @@ props.augments.forEach((aug) => {
   })[0];
 
   // Check if hero augment or normal augment, then get path to image
-  const path = augmentInfo.loadoutsIcon.split("/");
+  console.log(aug, augmentInfo);
+  const path = augmentInfo.squareIconPath.split("/");
   const fileName = path[path.length - 1].toLowerCase();
   const augmentPath = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/maps/tft/icons/augments/hexcore/${fileName}`;
-  // console.log(aug, augmentInfo, path, fileName);
+  console.log(aug, augmentInfo, path, fileName);
 
   const ind = props.augments.indexOf(augmentInfo.nameId);
   checkIfImageExists(augmentPath, (exists: boolean) => {

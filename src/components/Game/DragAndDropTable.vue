@@ -24,7 +24,7 @@ interface StaticTrait {
 
 interface StaticAugment {
   nameId: string;
-  loadoutsIcon: string;
+  squareIconPath: string;
   name: string;
 }
 
@@ -41,7 +41,7 @@ interface StaticUnit {
 interface StaticItem {
   name: string;
   nameId: string;
-  loadoutsIcon: string;
+  squareIconPath: string;
 }
 
 interface SortableEvent {

@@ -32,7 +32,7 @@ interface APIUnit {
 interface StaticItem {
   name: string;
   nameId: string;
-  loadoutsIcon: string;
+  squareIconPath: string;
 }
 </script>
 <script setup lang="ts">
@@ -60,6 +60,7 @@ props.units.sort(sortByCostThenStar).forEach((unit) => {
       .toLowerCase()
       .includes(unit.character_id.toLowerCase());
   })[0];
+  console.log(unit, unitInfo);
 
   const itemPaths: ItemStyle[] = [];
   // Get item paths
@@ -67,7 +68,8 @@ props.units.sort(sortByCostThenStar).forEach((unit) => {
     const itemInfo = props.staticTFTItemData.filter((i) => {
       return i.nameId === item;
     })[0];
-    const path = itemInfo.loadoutsIcon.toLowerCase().split("/");
+    console.log(item, itemInfo);
+    const path = itemInfo.squareIconPath.toLowerCase().split("/");
     const ind = path.indexOf("item_icons");
     var completedPath = "";
     for (let i = ind + 1; i < path.length; i++) {
