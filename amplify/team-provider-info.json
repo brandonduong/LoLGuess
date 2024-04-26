@@ -65,7 +65,7 @@
         },
         "applyGuess": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/applyGuess-485164592b437a7a706b-build.zip"
+          "s3Key": "amplify-builds/applyGuess-524b3044556b54666179-build.zip"
         }
       },
       "api": {

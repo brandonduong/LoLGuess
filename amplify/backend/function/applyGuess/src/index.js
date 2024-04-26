@@ -126,13 +126,12 @@ async function createGuess(
   const request = new Request(GRAPHQL_ENDPOINT, signed);
 
   try {
-    response = await node_fetch(request);
+    var response = await node_fetch(request);
     body = await response.json();
     console.log(body);
     return body.data.createGuess.id;
   } catch (error) {
     console.log(error);
-    body = { error };
   }
 }
 
@@ -184,13 +183,11 @@ async function updateUserStats(user, stats) {
   const request = new Request(GRAPHQL_ENDPOINT, signed);
 
   try {
-    response = await node_fetch(request);
+    var response = await node_fetch(request);
     body = await response.json();
     console.log(body);
   } catch (error) {
-    statusCode = 500;
     console.log(error);
-    body = { error };
   }
 }
 
