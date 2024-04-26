@@ -27,8 +27,8 @@ const augmentStyles = ref<AugmentStyle[]>([
   defaultStyles,
   defaultStyles,
 ]);
-props.augments.forEach((aug) => {
-  const augmentInfo = props.staticTFTAugmentData.filter((a) => {
+props.augments.forEach((aug, ind) => {
+  var augmentInfo = props.staticTFTAugmentData.filter((a) => {
     // For set 8.5 return a.nameId === aug;
     // For set 9, new return as some ids are messy (Galio Carry Augment / Winds of War)
     return a.nameId === aug || a.name === aug;
@@ -36,29 +36,36 @@ props.augments.forEach((aug) => {
 
   // Check if hero augment or normal augment, then get path to image
   console.log(aug, augmentInfo);
-  const path = augmentInfo.squareIconPath.split("/");
-  const fileName = path[path.length - 1].toLowerCase();
-  const augmentPath = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/maps/tft/icons/augments/hexcore/${fileName}`;
-  console.log(aug, augmentInfo, path, fileName);
 
-  const ind = props.augments.indexOf(augmentInfo.nameId);
-  checkIfImageExists(augmentPath, (exists: boolean) => {
-    if (exists) {
-      augmentStyles.value.splice(ind, 1, {
-        path: augmentPath,
-        title: augmentInfo.name,
-      });
-    } else {
-      augmentStyles.value.splice(ind, 1, {
-        path: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${path[
-          path.length - 3
-        ].toLowerCase()}/${path[path.length - 2].toLowerCase()}/${path[
-          path.length - 1
-        ].toLowerCase()}`,
-        title: augmentInfo.name,
-      });
-    }
-  });
+  if (augmentInfo && augmentInfo.squareIconPath) {
+    const path = augmentInfo.squareIconPath.split("/");
+    const fileName = path[path.length - 1].toLowerCase();
+    const augmentPath = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/maps/tft/icons/augments/hexcore/${fileName}`;
+    console.log(aug, augmentInfo, path, fileName);
+
+    checkIfImageExists(augmentPath, (exists: boolean) => {
+      if (exists) {
+        augmentStyles.value.splice(ind, 1, {
+          path: augmentPath,
+          title: augmentInfo.name,
+        });
+      } else {
+        augmentStyles.value.splice(ind, 1, {
+          path: `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${path[
+            path.length - 3
+          ].toLowerCase()}/${path[path.length - 2].toLowerCase()}/${path[
+            path.length - 1
+          ].toLowerCase()}`,
+          title: augmentInfo.name,
+        });
+      }
+    });
+  } else {
+    augmentStyles.value.splice(ind, 1, {
+      path: "",
+      title: aug,
+    });
+  }
 });
 
 function checkIfImageExists(url: string, callback: Function) {

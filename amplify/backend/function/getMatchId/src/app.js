@@ -43,187 +43,207 @@ app.get("/getMatchId", async function (req, res) {
   console.log(`Query Parameters: ${regions}`);
   console.log(`Query Parameters: ${ranks}`);
 
-  // Get random region
-  var region = regions[Math.floor(Math.random() * regions.length)];
-  const ogRegion = region;
-
-  // Get random rank
-  var rank = ranks[Math.floor(Math.random() * ranks.length)];
-  const rankDivision = rank;
-  const regTranslate = [
-    "br1",
-    "eun1",
-    "euw1",
-    "jp1",
-    "kr",
-    "la1",
-    "la2",
-    "na1",
-    "oc1",
-    "tr1",
-    "ru",
-    "ph2",
-    "sg2",
-    "th2",
-    "tw2",
-    "vn2",
-  ];
-  const reg = [
-    "BR",
-    "EUNE",
-    "EUW",
-    "JP",
-    "KR",
-    "LAN",
-    "LAS",
-    "NA",
-    "OCE",
-    "TR",
-    "RU",
-    "PH",
-    "SG",
-    "TH",
-    "TW",
-    "VN",
-  ];
-
-  region = regTranslate[reg.findIndex((x) => x === region)];
-
-  const div = ["I", "II", "III", "IV"];
-
-  const highRank =
-    rank === "Challenger" || rank === "Grandmaster" || rank === "Master";
-  if (highRank) {
-    rank = rank.charAt(0).toLowerCase() + rank.slice(1);
-  } else {
-    const page = 1;
-    rank =
-      "entries/" +
-      rank.toUpperCase() +
-      `/${div[Math.floor(Math.random() * div.length)]}/?page=${page}`;
-  }
-
-  const baseUrl = `https://${region}.api.riotgames.com/tft`;
-  const divUrl = `/league/v1/${rank}`;
-  const headers = {
-    "User-Agent":
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-    Origin: "https://developer.riotgames.com",
-    "X-Riot-Token": RIOT_TOKEN,
-  };
-
-  console.log(baseUrl + divUrl);
-
-  // Get ranked division
-  var players = [];
-  await axios
-    .get(baseUrl + divUrl, {
-      headers,
-    })
-    .then((res) => {
-      if (!highRank) {
-        console.log(res.data.slice(0, 5));
-        players = res.data;
-      } else {
-        console.log(res.data.entries.slice(0, 5));
-        players = res.data.entries;
-      }
-    })
-    .catch((err) => console.log(err));
-
-  // Get random player's puuid
-  const player = players[Math.floor(Math.random() * players.length)].summonerId;
-  const playerUrl = `/summoner/v1/summoners/${player}`;
-  console.log(baseUrl + playerUrl);
-
-  var puuid = "";
-  await axios
-    .get(baseUrl + playerUrl, {
-      headers,
-    })
-    .then((res) => {
-      console.log(res.data);
-      puuid = res.data.puuid;
-    })
-    .catch((err) => console.log(err));
-
-  // Get matches from player
-  // Match regions that cover player regions
-  const americas = ["na1", "br1", "la1", "la2"];
-  const asia = ["kr", "jp1"];
-  const europe = ["eun1", "euw1", "tr1", "ru"];
-  const sea = ["oc1", "ph2", "sg2", "th2", "tw2", "vn2"];
-  var matchesRegion = "";
-  if (americas.includes(region)) {
-    matchesRegion = "americas";
-  } else if (asia.includes(region)) {
-    matchesRegion = "asia";
-  } else if (europe.includes(region)) {
-    matchesRegion = "europe";
-  } else if (sea.includes(region)) {
-    matchesRegion = "sea";
-  }
-
-  const baseRegionalUrl = `https://${matchesRegion}.api.riotgames.com/tft`;
-  const count = 100;
-  const startTime = Math.floor(new Date("2023.06.7").getTime() / 1000); // Only get matches from current patch
-  const matchesUrl = `/match/v1/matches/by-puuid/${puuid}/ids?count=${count}&startTime=${startTime}`;
-  console.log(baseRegionalUrl + matchesUrl);
-
-  var matches = [];
-  await axios
-    .get(baseRegionalUrl + matchesUrl, {
-      headers,
-    })
-    .then((res) => {
-      console.log(res.data);
-      matches = res.data;
-    })
-    .catch((err) => console.log(err));
-
-  // Only get ranked matches
-
   var foundRanked = false;
-  var rankedMatch = {};
-  for (let i = 0; i < matches.length && !foundRanked; i++) {
-    const matchUrl = `/match/v1/matches/${matches[i]}`;
-    console.log(baseRegionalUrl + matchUrl);
+  var tries = 0;
+  var ogRegion;
+  var rankDivision;
+  while (!foundRanked && tries < 3) {
+    // Get random region
+    var region = regions[Math.floor(Math.random() * regions.length)];
+    ogRegion = region;
+
+    // Get random rank
+    var rank = ranks[Math.floor(Math.random() * ranks.length)];
+    rankDivision = rank;
+    const regTranslate = [
+      "br1",
+      "eun1",
+      "euw1",
+      "jp1",
+      "kr",
+      "la1",
+      "la2",
+      "na1",
+      "oc1",
+      "tr1",
+      "ru",
+      "ph2",
+      "sg2",
+      "th2",
+      "tw2",
+      "vn2",
+    ];
+    const reg = [
+      "BR",
+      "EUNE",
+      "EUW",
+      "JP",
+      "KR",
+      "LAN",
+      "LAS",
+      "NA",
+      "OCE",
+      "TR",
+      "RU",
+      "PH",
+      "SG",
+      "TH",
+      "TW",
+      "VN",
+    ];
+
+    region = regTranslate[reg.findIndex((x) => x === region)];
+
+    const div = ["I", "II", "III", "IV"];
+
+    const highRank =
+      rank === "Challenger" || rank === "Grandmaster" || rank === "Master";
+    if (highRank) {
+      rank = rank.charAt(0).toLowerCase() + rank.slice(1);
+    } else {
+      const page = 1;
+      rank =
+        "entries/" +
+        rank.toUpperCase() +
+        `/${div[Math.floor(Math.random() * div.length)]}/?page=${page}`;
+    }
+
+    const baseUrl = `https://${region}.api.riotgames.com/tft`;
+    const divUrl = `/league/v1/${rank}`;
+    const headers = {
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
+      Origin: "https://developer.riotgames.com",
+      "X-Riot-Token": RIOT_TOKEN,
+    };
+
+    console.log(baseUrl + divUrl);
+
+    // Get ranked division
+    var players = [];
     await axios
-      .get(baseRegionalUrl + matchUrl, {
+      .get(baseUrl + divUrl, {
         headers,
       })
       .then((res) => {
-        // console.log(res.data);
-        if (res.data.info.queue_id === 1100) {
-          console.log("found ranked match");
-          rankedMatch = res.data.info.participants;
-
-          foundRanked = true;
+        if (!highRank) {
+          console.log(res.data.slice(0, 5));
+          players = res.data;
+        } else {
+          console.log(res.data.entries.slice(0, 5));
+          players = res.data.entries;
         }
       })
       .catch((err) => console.log(err));
+
+    // Get random player's puuid
+    const player =
+      players[Math.floor(Math.random() * players.length)].summonerId;
+    const playerUrl = `/summoner/v1/summoners/${player}`;
+    console.log(baseUrl + playerUrl);
+
+    var puuid = "";
+    await axios
+      .get(baseUrl + playerUrl, {
+        headers,
+      })
+      .then((res) => {
+        console.log(res.data);
+        puuid = res.data.puuid;
+      })
+      .catch((err) => console.log(err));
+
+    // Get matches from player
+    // Match regions that cover player regions
+    const americas = ["na1", "br1", "la1", "la2"];
+    const asia = ["kr", "jp1"];
+    const europe = ["eun1", "euw1", "tr1", "ru"];
+    const sea = ["oc1", "ph2", "sg2", "th2", "tw2", "vn2"];
+    var matchesRegion = "";
+    if (americas.includes(region)) {
+      matchesRegion = "americas";
+    } else if (asia.includes(region)) {
+      matchesRegion = "asia";
+    } else if (europe.includes(region)) {
+      matchesRegion = "europe";
+    } else if (sea.includes(region)) {
+      matchesRegion = "sea";
+    }
+
+    const baseRegionalUrl = `https://${matchesRegion}.api.riotgames.com/tft`;
+    const count = 10;
+    const startTime = Math.floor(new Date("2024.03.19").getTime() / 1000); // Only get matches from current patch
+    const matchesUrl = `/match/v1/matches/by-puuid/${puuid}/ids?count=${count}&startTime=${startTime}`;
+    console.log(baseRegionalUrl + matchesUrl);
+
+    var matches = [];
+    await axios
+      .get(baseRegionalUrl + matchesUrl, {
+        headers,
+      })
+      .then((res) => {
+        console.log(res.data);
+        matches = res.data;
+      })
+      .catch((err) => console.log(err));
+
+    // Only get ranked matches
+
+    var rankedMatch = {};
+    for (let i = 0; i < matches.length && !foundRanked; i++) {
+      const matchUrl = `/match/v1/matches/${matches[i]}`;
+      await axios
+        .get(baseRegionalUrl + matchUrl, {
+          headers,
+        })
+        .then((res) => {
+          // console.log(res.data);
+          if (res.data.info.queue_id === 1100) {
+            console.log("found ranked match");
+            rankedMatch = res.data.info.participants;
+
+            foundRanked = true;
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+    tries += 1;
   }
 
-  rankedMatch = rankedMatch.map(
-    ({ augments, level, traits, placement, units, gold_left, last_round }) => ({
-      augments,
-      level,
-      traits,
-      placement,
-      units,
-      gold_left,
-      augmentNum:
-        last_round >= 20 ? 3 : last_round >= 13 ? 2 : last_round >= 5 ? 1 : 0,
-    })
-  );
+  if (!foundRanked) {
+    res.json({
+      error: "Error finding ranked match",
+    });
+  } else {
+    rankedMatch = rankedMatch.map(
+      ({
+        augments,
+        level,
+        traits,
+        placement,
+        units,
+        gold_left,
+        last_round,
+      }) => ({
+        augments,
+        level,
+        traits,
+        placement,
+        units,
+        gold_left,
+        augmentNum:
+          last_round >= 20 ? 3 : last_round >= 13 ? 2 : last_round >= 5 ? 1 : 0,
+      })
+    );
 
-  res.json({
-    rankedMatch,
-    rank: rankDivision,
-    region: ogRegion,
-  });
+    res.json({
+      rankedMatch,
+      rank: rankDivision,
+      region: ogRegion,
+    });
+  }
 });
 
 app.listen(3000, function () {

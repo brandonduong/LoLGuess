@@ -251,12 +251,19 @@ app.get("/getDaily", async function (req, res) {
   const { matchId, region, rank } = daily;
   const dailyMatch = await getDailyMatch(matchId, region);
 
-  // Add your code here
+  const sensitive = {
+    rank,
+    region,
+    matchId,
+    daily: true,
+  };
+
   res.json({
     dailyMatch,
-    rank: CryptoJS.AES.encrypt(`${rank}`, RIOT_TOKEN).toString(),
-    region: CryptoJS.AES.encrypt(`${region}`, RIOT_TOKEN).toString(),
-    matchId: CryptoJS.AES.encrypt(`${matchId}`, RIOT_TOKEN).toString(),
+    sensitive: CryptoJS.AES.encrypt(
+      JSON.stringify(sensitive),
+      RIOT_TOKEN
+    ).toString(),
   });
 });
 

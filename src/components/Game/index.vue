@@ -40,9 +40,9 @@ const next = async () => {
     loading.value = false;
     current.value++;
   } else if (current.value === 3) {
-    verifiedGuess = ref<string[]>([]);
-    verifiedRank = ref<string>("");
-    verifiedRegion = ref<string>("");
+    verifiedGuess.value = [];
+    verifiedRank.value = "";
+    verifiedRegion.value = "";
     selectedRank.value = "";
     router.push("/play");
     current.value = 0;
@@ -76,13 +76,8 @@ async function getMatch() {
       .get(url, header)
       .then((res) => {
         //console.log(res);
-        rankedMatch = res.data.rankedMatch;
-        encryptedRank = res.data.rank;
-        encryptedRanks = res.data.ranks;
-        encryptedUnfinished = res.data.unfinished;
-        encryptedRegion = res.data.region;
-        encryptedRegions = res.data.regions;
-        encryptedMatchId = res.data.matchId;
+        rankedMatch.value = res.data.rankedMatch;
+        sensitive.value = res.data.sensitive;
       })
       .catch(() => {
         alert("Error finding ranked match. Please try again.");
@@ -116,7 +111,7 @@ async function getMatchNoAuth() {
     .then((res) => {
       //console.log(res);
       rankedMatch.value = res.data.rankedMatch;
-      encryptedRank = res.data.rank;
+      encryptedRank.value = res.data.rank;
       // selectedRanks.value = res.data.ranks;
       verifiedRegion.value = res.data.region;
     })
@@ -143,7 +138,7 @@ async function getReplay() {
     .then((res) => {
       //console.log(res);
       rankedMatch.value = res.data.rankedMatch;
-      encryptedRank = res.data.rank;
+      encryptedRank.value = res.data.rank;
       selectedRanks.value = res.data.ranks;
       verifiedRegion.value = res.data.region;
     })
@@ -158,7 +153,7 @@ function verifyReplay() {
     p.placement.toString()
   );
   //console.log(verifiedGuess);
-  verifiedRank = encryptedRank;
+  verifiedRank.value = encryptedRank.value;
 }
 
 async function verifyGuess() {
@@ -175,23 +170,17 @@ async function verifyGuess() {
       url,
       {
         guess: selectedGuess.value,
-        encryptedRank,
-        encryptedRanks,
         selectedRank: selectedRank.value,
-        encryptedUnfinished,
-        encryptedRegion,
-        encryptedRegions,
-        encryptedMatchId,
+        sensitive: sensitive.value,
       },
       header
     )
     .then((res) => {
       //console.log(res);
       //console.log(res.data.unencrypted);
-      verifiedGuess = res.data.unencrypted;
-      verifiedRank = res.data.rank;
-      verifiedRegion = res.data.region;
-      guessId.value = res.data.guessId;
+      verifiedGuess.value = res.data.unencrypted;
+      verifiedRank.value = res.data.rank;
+      verifiedRegion.value = res.data.region;
       loading.value = false;
     });
 }
@@ -244,17 +233,12 @@ const selectedRegions = ref<string[]>([]);
 const selectedRanks = ref<string[]>([]);
 const selectedGuess = ref<string[]>([]);
 const selectedRank = ref<string>("");
-var rankedMatch = ref<object[]>([]);
-var encryptedRank = ref<string>("");
-var encryptedRanks = ref<string>("");
-var encryptedUnfinished = ref<string>("");
-var encryptedRegion = ref<string>("");
-var encryptedRegions = ref<string>("");
-var encryptedMatchId = ref<string>("");
-var verifiedGuess = ref<string[]>([]);
-var verifiedRank = ref<string>("");
-var verifiedRegion = ref<string>("");
-const guessId = ref<string>("");
+const rankedMatch = ref<object[]>([]);
+const encryptedRank = ref<string>("");
+const sensitive = ref<string>("");
+const verifiedGuess = ref<string[]>([]);
+const verifiedRank = ref<string>("");
+const verifiedRegion = ref<string>("");
 
 const buttonText = ["Next", "Play", "Guess", "Play Again"];
 
@@ -266,19 +250,6 @@ const indicator = h(LoadingOutlined, {
   },
   spin: true,
 });
-
-async function share(text: string) {
-  if (text) {
-    try {
-      await navigator.clipboard.writeText(`http://lolguess.net/play/${text}`);
-      alert("Copied url to match");
-    } catch ($e) {
-      alert("Cannot copy");
-    }
-  } else {
-    alert("Login to share matches!");
-  }
-}
 </script>
 
 <template>
@@ -337,16 +308,6 @@ async function share(text: string) {
               v-if="current === 3"
             />
             <GuessRegion :region="verifiedRegion" v-if="current === 3" />
-            <div v-if="current === 3" class="match-id">
-              <a-button
-                class="refresh-btn"
-                type="primary"
-                @click="() => share(props.guessId ? props.guessId : guessId)"
-                :style="{ padding: '0 1rem' }"
-              >
-                Share
-              </a-button>
-            </div>
           </div>
         </div>
       </div>

@@ -27,10 +27,6 @@
     "apilolguessdatastoreGraphQLAPIKeyOutput": {
       "Type": "String",
       "Default": "apilolguessdatastoreGraphQLAPIKeyOutput"
-    },
-    "functionapplyGuessName": {
-      "Type": "String",
-      "Default": "functionapplyGuessName"
     }
   },
   "Conditions": {
@@ -63,12 +59,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "verifyGuess",
+            "applyGuess",
             {
               "Fn::Join": [
                 "",
                 [
-                  "verifyGuess",
+                  "applyGuess",
                   "-",
                   {
                     "Ref": "env"
@@ -94,9 +90,6 @@
             },
             "API_LOLGUESSDATASTORE_GRAPHQLAPIKEYOUTPUT": {
               "Ref": "apilolguessdatastoreGraphQLAPIKeyOutput"
-            },
-            "FUNCTION_APPLYGUESS_NAME": {
-              "Ref": "functionapplyGuessName"
             }
           }
         },
@@ -117,12 +110,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "lolguessLambdaRole170228a8",
+            "lolguessLambdaRole58fd1fc9",
             {
               "Fn::Join": [
                 "",
                 [
-                  "lolguessLambdaRole170228a8",
+                  "lolguessLambdaRole58fd1fc9",
                   "-",
                   {
                     "Ref": "env"
@@ -253,28 +246,12 @@
                       "/types/Mutation/*"
                     ]
                   ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "lambda:Create*",
-                "lambda:Put*",
-                "lambda:Add*",
-                "lambda:Get*",
-                "lambda:List*",
-                "lambda:Invoke*",
-                "lambda:Update*",
-                "lambda:Delete*",
-                "lambda:Remove*"
-              ],
-              "Resource": [
+                },
                 {
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:lambda:",
+                      "arn:aws:appsync:",
                       {
                         "Ref": "AWS::Region"
                       },
@@ -282,10 +259,11 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":function:",
+                      ":apis/",
                       {
-                        "Ref": "functionapplyGuessName"
-                      }
+                        "Ref": "apilolguessdatastoreGraphQLAPIIdOutput"
+                      },
+                      "/types/Subscription/*"
                     ]
                   ]
                 }

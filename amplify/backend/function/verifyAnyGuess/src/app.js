@@ -10,6 +10,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 const CryptoJS = require("crypto-js");
+var aws = require("aws-sdk");
+var lambda = new aws.Lambda({
+  region: "us-east-1", //change to your region
+});
 
 // declare a new express app
 const app = express();
@@ -24,45 +28,44 @@ app.use(function (req, res, next) {
 });
 
 /****************************
- * Example get method *
+ * Example post method *
  ****************************/
 
-app.get("/verifyAnyGuess", async function (req, res) {
+app.post("/verifyAnyGuess", async function (req, res) {
   // Add your code here
   console.log(`EVENT: ${JSON.stringify(req.apiGateway.event)}`);
   const RIOT_TOKEN = process.env.RIOT_TOKEN;
-  const param = req.apiGateway.event.queryStringParameters;
-  const multi = req.apiGateway.event.multiValueQueryStringParameters;
-  const guess = multi["guess[]"];
 
+  console.log(req.body);
+  const sensitive = req.body.sensitive;
+  const rawSensitive = JSON.parse(
+    CryptoJS.AES.decrypt(sensitive, RIOT_TOKEN).toString(CryptoJS.enc.Utf8)
+  );
+  const selectedRank = req.body.selectedRank;
+  console.log(rawSensitive);
+
+  const guess = req.body.guess;
+  console.log("guess", guess);
   const unencrypted = [];
   guess.forEach((g) => {
     unencrypted.push(
-      CryptoJS.AES.decrypt(decodeURIComponent(g), RIOT_TOKEN).toString(
-        CryptoJS.enc.Utf8
-      )
+      CryptoJS.AES.decrypt(g, RIOT_TOKEN).toString(CryptoJS.enc.Utf8)
     );
   });
-  console.log("unecrypted", unencrypted);
-  const { encryptedRank, encryptedRegion, encryptedMatchId } = param;
-  const rank = CryptoJS.AES.decrypt(
-    decodeURIComponent(encryptedRank),
-    RIOT_TOKEN
-  ).toString(CryptoJS.enc.Utf8);
-  const region = CryptoJS.AES.decrypt(
-    decodeURIComponent(encryptedRegion),
-    RIOT_TOKEN
-  ).toString(CryptoJS.enc.Utf8);
-  const matchId = CryptoJS.AES.decrypt(
-    decodeURIComponent(encryptedMatchId),
-    RIOT_TOKEN
-  ).toString(CryptoJS.enc.Utf8);
+  console.log("unencrypted", unencrypted);
+  const rank = rawSensitive.rank;
+  const region = rawSensitive.region;
+  const daily = rawSensitive.daily;
 
+  if (daily) {
+    console.log("daily, run ___ lambda function to update daily");
+  }
+
+  // Return answers
   res.json({
     unencrypted,
     rank,
     region,
-    matchId,
   });
 });
 

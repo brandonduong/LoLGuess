@@ -6,6 +6,14 @@
         "Query",
         "Mutation"
       ]
+    },
+    "function": {
+      "applyGuess": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
     }
   }
 }

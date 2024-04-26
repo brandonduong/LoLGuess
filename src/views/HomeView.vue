@@ -56,16 +56,19 @@ const router = useRouter();
         </ul>
       </div>
       <div class="buttons">
-        <HomeButton
-          title="Freeplay"
-          :onClick="() => router.push('/play')"
-          description="Guess rank and placements of a random lobby"
-        />
+        <a-badge-ribbon text="Fixed Set 11!" style="background-color: gray">
+          <HomeButton
+            title="Freeplay"
+            :onClick="() => router.push('/play')"
+            description="Guess rank and placements of a random lobby"
+          />
+        </a-badge-ribbon>
 
         <HomeButton
           title="Daily"
           :onClick="() => router.push('/daily')"
           description="Guess rank and placements of today's lobby"
+          disabled
         />
 
         <HomeButton

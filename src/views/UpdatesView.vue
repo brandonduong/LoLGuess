@@ -16,6 +16,16 @@ const updates = [
     date: "---",
   },
   {
+    version: "1.0.5",
+    title: "Updated for Set 11",
+    items: [
+      "Updated for Set 11",
+      "Less chance for error when fetching or displaying match",
+      "Small details and bugs",
+    ],
+    date: "04-24-2023",
+  },
+  {
     version: "1.0.4",
     title: "Optimizations, small details, and bug fixes",
     items: [

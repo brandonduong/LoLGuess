@@ -55,7 +55,7 @@ function signout() {
             <RouterLink to="/play" :class="getActive(`/play`)"
               >Freeplay</RouterLink
             >
-            <RouterLink to="/daily" :class="getActive(`/daily`)"
+            <RouterLink to="" :class="getActive(`/daily`)" class="disabled"
               >Daily</RouterLink
             >
             <RouterLink
@@ -257,5 +257,11 @@ function signout() {
 
 .kofi {
   background-color: #cc93ce;
+}
+
+.disabled {
+  cursor: not-allowed;
+  color: gray;
+  text-decoration: line-through;
 }
 </style>

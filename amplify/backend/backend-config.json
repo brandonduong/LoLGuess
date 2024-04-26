@@ -88,6 +88,22 @@
     }
   },
   "function": {
+    "applyGuess": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "lolguessdatastore"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "generateDailies": {
       "build": true,
       "dependsOn": [
@@ -246,6 +262,13 @@
           ],
           "category": "api",
           "resourceName": "lolguessdatastore"
+        },
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "applyGuess"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -253,6 +276,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_applyGuess_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "applyGuess"
+        }
+      ]
+    },
+    "AMPLIFY_function_applyGuess_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "applyGuess"
+        }
+      ]
+    },
     "AMPLIFY_function_generateDailies_deploymentBucketName": {
       "usedBy": [
         {
