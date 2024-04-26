@@ -6,12 +6,11 @@ const updates = [
     version: "1.1 and beyond",
     title: "Future Work",
     items: [
-      "Dark mode for ui",
+      "Dark mode for UI / UI Overhaul",
       "Better leaderboard categories",
       "After guessing, reveal what round players died at",
       "After guessing, reveal usernames?",
       "Daily mode",
-      "More unique modes in my head but don't want people to rat",
     ],
     date: "---",
   },
@@ -21,6 +20,7 @@ const updates = [
     items: [
       "Updated for Set 11",
       "Less chance for error when fetching or displaying match",
+      "Optimized freeplay for logged in users",
       "Small details and bugs",
     ],
     date: "04-24-2023",
