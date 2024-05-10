@@ -18,22 +18,37 @@ defineProps<{
 function getDailyDates() {
   const startOfDailies = new Date("03/21/2024"); // Only support most recent set
   const dailies = [];
-  const now = new Date();
-  var date = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const nowToronto = new Date(
+    new Date().toLocaleString("en-US", {
+      timeZone: "America/Toronto",
+    })
+  );
+  const updateUTC = new Date(
+    nowToronto.getUTCFullYear(),
+    nowToronto.getUTCMonth(),
+    nowToronto.getUTCDate(),
+    0,
+    0,
+    0
+  );
+  var date = new Date(
+    updateUTC.getFullYear(),
+    updateUTC.getMonth(),
+    updateUTC.getDate()
+  );
   while (date >= startOfDailies) {
     console.log(date, startOfDailies);
     dailies.push(date.toISOString().split("T")[0]);
     date = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
     console.log(date);
   }
-  console.log(dailies);
   return dailies;
 }
 </script>
 
 <template>
   <div v-for="d in getDailyDates()">
-    <h4 style="text-align: end; margin: 0">
+    <h4 style="margin: 0">
       <b>{{ d }}</b>
     </h4>
     <div class="buttons">

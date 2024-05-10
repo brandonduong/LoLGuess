@@ -75,7 +75,7 @@ function updateHistory(guess: DailyGuess) {
     <div>
       <div>
         <h2>Daily</h2>
-        <h3 style="margin: 0">Updates every day at 5 am (UTC)</h3>
+        <h3 style="margin: 0">Updates every day at 12 am (UTC)</h3>
         <div
           style="
             display: flex;
@@ -95,7 +95,7 @@ function updateHistory(guess: DailyGuess) {
         </div>
       </div>
     </div>
-    <div>
+    <div class="archive">
       <div class="buttons">
         <div style="width: 100%">
           <h3>
@@ -139,7 +139,6 @@ function updateHistory(guess: DailyGuess) {
   border-radius: 0.25rem;
   overflow-x: auto;
   text-align: center;
-  gap: 1rem;
 }
 
 .timer {
@@ -152,5 +151,10 @@ function updateHistory(guess: DailyGuess) {
 .buttons {
   display: flex;
   gap: 1rem;
+}
+
+.archive {
+  border: solid 1px lightslategray;
+  padding: 1rem;
 }
 </style>
