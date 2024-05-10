@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const props = defineProps<{
-  title: string;
-  description: string;
+defineProps<{
+  title?: string;
+  description?: string;
   onClick?: () => void;
   disabled?: boolean;
   href?: string;
@@ -15,10 +15,10 @@ const props = defineProps<{
     :href="href"
     target="_blank"
   >
-    <h3>
+    <h3 v-if="title">
       <b>{{ title }}</b>
     </h3>
-    <h5>{{ description }}</h5>
+    <h5 v-if="description">{{ description }}</h5>
     <slot />
   </a-button>
 </template>
