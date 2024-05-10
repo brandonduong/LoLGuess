@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import Daily from "../components/Daily/index.vue";
+defineProps<{ date: string; category: string }>();
 </script>
 
 <template>
   <div class="main">
-    <Daily />
+    <Daily :date="date" :category="category" />
   </div>
 </template>
 

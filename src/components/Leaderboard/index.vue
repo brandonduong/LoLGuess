@@ -117,7 +117,7 @@ const filters = [
 
 <template>
   <h2>Leaderboard</h2>
-  <h3>Leaderboard placements update every day at 7 pm (EST)</h3>
+  <h3>Updates every day at 5 am (UTC)</h3>
   <div class="options">
     <div class="timer">
       <h3>Updates in:</h3>
