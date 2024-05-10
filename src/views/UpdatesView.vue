@@ -20,7 +20,7 @@ const updates = [
     items: [
       "Updated for Set 11",
       "Less chance for error when fetching or displaying match",
-      "Optimized freeplay for logged in users",
+      "Optimized freeplay for logged in users (less time waiting when submitting)",
       "Small details and bugs",
     ],
     date: "04-24-2023",
