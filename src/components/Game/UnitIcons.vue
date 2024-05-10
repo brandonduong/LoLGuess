@@ -51,7 +51,7 @@ function sortByCostThenStar(a: APIUnit, b: APIUnit) {
   return a.rarity - b.rarity || a.tier - b.tier;
 }
 
-props.units.sort(sortByCostThenStar).forEach((unit) => {
+props.units.sort(sortByCostThenStar).forEach((unit, ind) => {
   const unitInfo = props.staticTFTUnitData.filter((u) => {
     // For set 8.5 return u.character_id === unit.character_id;
     // For set 9, new return as some ids are messy (Ryze, Reksai)
@@ -60,40 +60,50 @@ props.units.sort(sortByCostThenStar).forEach((unit) => {
       .toLowerCase()
       .includes(unit.character_id.toLowerCase());
   })[0];
-  console.log(unit, unitInfo);
+  // console.log(unit, unitInfo);
 
-  const itemPaths: ItemStyle[] = [];
-  // Get item paths
-  unit.itemNames.forEach((item) => {
-    const itemInfo = props.staticTFTItemData.filter((i) => {
-      return i.nameId === item;
-    })[0];
-    console.log(item, itemInfo);
-    const path = itemInfo.squareIconPath.toLowerCase().split("/");
-    const ind = path.indexOf("item_icons");
-    var completedPath = "";
-    for (let i = ind + 1; i < path.length; i++) {
-      completedPath += `/${path[i]}`;
-    }
-    itemPaths.push({
-      path: completedPath,
-      title: itemInfo.name,
+  if (unitInfo && unitInfo.character_record) {
+    const itemPaths: ItemStyle[] = [];
+    // Get item paths
+    unit.itemNames.forEach((item) => {
+      const itemInfo = props.staticTFTItemData.filter((i) => {
+        return i.nameId === item;
+      })[0];
+      //console.log(item, itemInfo);
+      const path = itemInfo.squareIconPath.toLowerCase().split("/");
+      const ind = path.indexOf("item_icons");
+      var completedPath = "";
+      for (let i = ind + 1; i < path.length; i++) {
+        completedPath += `/${path[i]}`;
+      }
+      itemPaths.push({
+        path: completedPath,
+        title: itemInfo.name,
+      });
     });
-  });
 
-  // Get unit path
-  const path = unitInfo.character_record.squareIconPath
-    .toLowerCase()
-    .split("/");
-  unitStyles.value.push({
-    path: `${path[path.length - 3]}/${path[path.length - 2]}/${
-      path[path.length - 1]
-    }`,
-    title: unitInfo.character_record.display_name,
-    itemPaths: itemPaths,
-    rarity: unit.rarity,
-    tier: unit.tier,
-  });
+    // Get unit path
+    const path = unitInfo.character_record.squareIconPath
+      .toLowerCase()
+      .split("/");
+    unitStyles.value.push({
+      path: `${path[path.length - 3]}/${path[path.length - 2]}/${
+        path[path.length - 1]
+      }`,
+      title: unitInfo.character_record.display_name,
+      itemPaths: itemPaths,
+      rarity: unit.rarity,
+      tier: unit.tier,
+    });
+  } else {
+    unitStyles.value.splice(ind, 1, {
+      path: "",
+      title: unit.character_id,
+      itemPaths: [],
+      rarity: unit.rarity,
+      tier: unit.tier,
+    });
+  }
 });
 </script>
 <template>
