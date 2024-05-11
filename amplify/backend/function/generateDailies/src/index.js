@@ -318,15 +318,14 @@ async function getMatch(ranks) {
 
   const usernames = [];
   for (let i = 0; i < puuids.length; i++) {
-    const summonerUrl = `/summoner/v1/summoners/by-puuid/${puuids[i]}`;
+    const accountUrl = `https://${matchesRegion}.api.riotgames.com/riot/account/v1/accounts/by-puuid/${puuids[i]}`;
     await axios
-      .get(baseUrl + summonerUrl, {
+      .get(accountUrl, {
         headers,
       })
       .then((res) => {
         console.log(res.data);
-        usernames.push(puuids[i]);
-        usernames.push(res.data.name);
+        usernames.push(`${res.data.gameName} #${res.data.tagLine}`);
       })
       .catch((err) => console.log(err));
   }

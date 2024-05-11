@@ -13,6 +13,7 @@ type User
   id: ID!
   username: String!
     @index(name: "usersByUsername", queryField: "usersByUsername")
+  # Freeplay stats
   guesses: [Guess] @hasMany
   score: Float!
   maxScore: Float!
@@ -23,6 +24,14 @@ type User
   totalGuesses: Int!
   averageCorrectPlacements: Float!
   averageScore: Float!
+  scores: [Float]
+  # Daily stats
+  dailyTotalGuesses: Int
+  dailyScore: Float
+  dailyMaxScore: Float
+  dailyCorrectPlacements: Int
+  dailyCorrectRanks: Int
+  dailyScores: [Float]
 }
 
 type Guess
@@ -48,6 +57,7 @@ type Guess
   region: String
   regions: [String]
   matchId: String
+  mode: String # freeplay, daily
 }
 
 type Leaderboard
@@ -75,16 +85,24 @@ type Daily
     ]
   ) {
   date: ID! @primaryKey(sortKeyFields: ["category"])
-  matchId: String!
+  matchId: String! # riot api match id
   rank: String!
   region: String!
-  category: String!
-  rankGuesses: [Int]
-  placementGuesses: [[Int]]
-  perfects: Int
-  score: Int
-  usernames: [String]
-  patch: Int
+  category: String! # low, high, all
+  usernames: [String] # original usernames of players
+  patch: Int # what set it was played on
+  # Unauthorized user stats
+  rankGuesses: [Int] # 1D array of rank guesses from iron to challenger
+  placementGuesses: [[Int]] # 2D array of placement guesses from first to eight
+  perfects: Int # number of perfects
+  score: Int # total score
+  scores: [Int] # 1D array of size 100 counting scores
+  # Authorized user stats
+  loggedRankGuesses: [Int]
+  loggedPlacementGuesses: [[Int]]
+  loggedPerfects: Int
+  loggedScore: Int
+  loggedScores: [Int]
 }
 
 type Query {

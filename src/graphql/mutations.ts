@@ -22,6 +22,7 @@ export const createUser = /* GraphQL */ `
           region
           regions
           matchId
+          mode
           updatedAt
         }
         nextToken
@@ -35,6 +36,13 @@ export const createUser = /* GraphQL */ `
       totalGuesses
       averageCorrectPlacements
       averageScore
+      scores
+      dailyTotalGuesses
+      dailyScore
+      dailyMaxScore
+      dailyCorrectPlacements
+      dailyCorrectRanks
+      dailyScores
       createdAt
       updatedAt
     }
@@ -60,6 +68,7 @@ export const updateUser = /* GraphQL */ `
           region
           regions
           matchId
+          mode
           updatedAt
         }
         nextToken
@@ -73,6 +82,13 @@ export const updateUser = /* GraphQL */ `
       totalGuesses
       averageCorrectPlacements
       averageScore
+      scores
+      dailyTotalGuesses
+      dailyScore
+      dailyMaxScore
+      dailyCorrectPlacements
+      dailyCorrectRanks
+      dailyScores
       createdAt
       updatedAt
     }
@@ -98,6 +114,7 @@ export const deleteUser = /* GraphQL */ `
           region
           regions
           matchId
+          mode
           updatedAt
         }
         nextToken
@@ -111,6 +128,13 @@ export const deleteUser = /* GraphQL */ `
       totalGuesses
       averageCorrectPlacements
       averageScore
+      scores
+      dailyTotalGuesses
+      dailyScore
+      dailyMaxScore
+      dailyCorrectPlacements
+      dailyCorrectRanks
+      dailyScores
       createdAt
       updatedAt
     }
@@ -132,6 +156,7 @@ export const createGuess = /* GraphQL */ `
       region
       regions
       matchId
+      mode
       updatedAt
     }
   }
@@ -152,6 +177,7 @@ export const updateGuess = /* GraphQL */ `
       region
       regions
       matchId
+      mode
       updatedAt
     }
   }
@@ -172,6 +198,7 @@ export const deleteGuess = /* GraphQL */ `
       region
       regions
       matchId
+      mode
       updatedAt
     }
   }
@@ -238,12 +265,18 @@ export const createDaily = /* GraphQL */ `
       rank
       region
       category
+      usernames
+      patch
       rankGuesses
       placementGuesses
       perfects
       score
-      usernames
-      patch
+      scores
+      loggedRankGuesses
+      loggedPlacementGuesses
+      loggedPerfects
+      loggedScore
+      loggedScores
       createdAt
       updatedAt
     }
@@ -260,12 +293,18 @@ export const deleteDaily = /* GraphQL */ `
       rank
       region
       category
+      usernames
+      patch
       rankGuesses
       placementGuesses
       perfects
       score
-      usernames
-      patch
+      scores
+      loggedRankGuesses
+      loggedPlacementGuesses
+      loggedPerfects
+      loggedScore
+      loggedScores
       createdAt
       updatedAt
     }
@@ -282,12 +321,18 @@ export const updateDaily = /* GraphQL */ `
       rank
       region
       category
+      usernames
+      patch
       rankGuesses
       placementGuesses
       perfects
       score
-      usernames
-      patch
+      scores
+      loggedRankGuesses
+      loggedPlacementGuesses
+      loggedPerfects
+      loggedScore
+      loggedScores
       createdAt
       updatedAt
     }

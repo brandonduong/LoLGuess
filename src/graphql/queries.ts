@@ -19,6 +19,7 @@ export const batchFetchUser = /* GraphQL */ `
           region
           regions
           matchId
+          mode
           updatedAt
         }
         nextToken
@@ -32,6 +33,13 @@ export const batchFetchUser = /* GraphQL */ `
       totalGuesses
       averageCorrectPlacements
       averageScore
+      scores
+      dailyTotalGuesses
+      dailyScore
+      dailyMaxScore
+      dailyCorrectPlacements
+      dailyCorrectRanks
+      dailyScores
       createdAt
       updatedAt
     }
@@ -54,6 +62,7 @@ export const getUser = /* GraphQL */ `
           region
           regions
           matchId
+          mode
           updatedAt
         }
         nextToken
@@ -67,6 +76,13 @@ export const getUser = /* GraphQL */ `
       totalGuesses
       averageCorrectPlacements
       averageScore
+      scores
+      dailyTotalGuesses
+      dailyScore
+      dailyMaxScore
+      dailyCorrectPlacements
+      dailyCorrectRanks
+      dailyScores
       createdAt
       updatedAt
     }
@@ -94,6 +110,13 @@ export const listUsers = /* GraphQL */ `
         totalGuesses
         averageCorrectPlacements
         averageScore
+        scores
+        dailyTotalGuesses
+        dailyScore
+        dailyMaxScore
+        dailyCorrectPlacements
+        dailyCorrectRanks
+        dailyScores
         createdAt
         updatedAt
       }
@@ -131,6 +154,13 @@ export const usersByUsername = /* GraphQL */ `
         totalGuesses
         averageCorrectPlacements
         averageScore
+        scores
+        dailyTotalGuesses
+        dailyScore
+        dailyMaxScore
+        dailyCorrectPlacements
+        dailyCorrectRanks
+        dailyScores
         createdAt
         updatedAt
       }
@@ -151,6 +181,7 @@ export const getGuess = /* GraphQL */ `
       region
       regions
       matchId
+      mode
       updatedAt
     }
   }
@@ -173,6 +204,7 @@ export const listGuesses = /* GraphQL */ `
         region
         regions
         matchId
+        mode
         updatedAt
       }
       nextToken
@@ -207,6 +239,7 @@ export const guessesByDate = /* GraphQL */ `
         region
         regions
         matchId
+        mode
         updatedAt
       }
       nextToken
@@ -264,12 +297,18 @@ export const getDaily = /* GraphQL */ `
       rank
       region
       category
+      usernames
+      patch
       rankGuesses
       placementGuesses
       perfects
       score
-      usernames
-      patch
+      scores
+      loggedRankGuesses
+      loggedPlacementGuesses
+      loggedPerfects
+      loggedScore
+      loggedScores
       createdAt
       updatedAt
     }
@@ -298,12 +337,18 @@ export const listDailies = /* GraphQL */ `
         rank
         region
         category
+        usernames
+        patch
         rankGuesses
         placementGuesses
         perfects
         score
-        usernames
-        patch
+        scores
+        loggedRankGuesses
+        loggedPlacementGuesses
+        loggedPerfects
+        loggedScore
+        loggedScores
         createdAt
         updatedAt
       }
