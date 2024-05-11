@@ -38,6 +38,7 @@ async function getUser(sub) {
         totalRanks
         unfinished
         totalGuesses
+        scores
       }
     }
   `;
@@ -149,6 +150,7 @@ async function updateUserStats(user, stats) {
         totalGuesses
         averageCorrectPlacements
         averageScore
+        scores
       }
     }
   `;
@@ -165,6 +167,7 @@ async function updateUserStats(user, stats) {
       totalGuesses: stats.totalGuesses,
       averageCorrectPlacements: stats.correctPlacements / stats.totalGuesses,
       averageScore: stats.score / stats.totalGuesses,
+      scores: stats.scores,
     },
   };
 
@@ -239,7 +242,7 @@ function calculateCorrectPlacements(placements) {
 }
 
 function calculateStats(stats, placements, guessedRank, rank, ranks) {
-  const copy = stats;
+  const copy = stats; // copy of user
   console.log(copy);
   const [score, maxScore] = calculateScore(
     placements,
@@ -247,6 +250,11 @@ function calculateStats(stats, placements, guessedRank, rank, ranks) {
     rank,
     ranks
   );
+  // If scores was initialized, just increment
+  if (!copy.scores) {
+    copy.scores = new Array(100).fill(0);
+  }
+  copy.scores[Math.round(score) - 1] += 1;
   copy.unfinished = copy.unfinished - 1;
   copy.score = copy.score + score;
   copy.maxScore = copy.maxScore + maxScore;

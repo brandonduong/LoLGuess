@@ -299,6 +299,8 @@ export const getDaily = /* GraphQL */ `
       category
       usernames
       patch
+      set
+      datetimePlayed
       rankGuesses
       placementGuesses
       perfects
@@ -339,6 +341,8 @@ export const listDailies = /* GraphQL */ `
         category
         usernames
         patch
+        set
+        datetimePlayed
         rankGuesses
         placementGuesses
         perfects

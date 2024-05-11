@@ -64,7 +64,16 @@ async function signAndRun(query, variables) {
   return { statusCode, body };
 }
 
-async function createDaily(matchId, rank, region, category, usernames, patch) {
+async function createDaily(
+  matchId,
+  rank,
+  region,
+  category,
+  usernames,
+  patch,
+  set,
+  datetimePlayed
+) {
   const createDaily = /* GraphQL */ `
     mutation CreateDaily(
       $input: CreateDailyInput!
@@ -82,6 +91,8 @@ async function createDaily(matchId, rank, region, category, usernames, patch) {
         score
         usernames
         patch
+        set
+        datetimePlayed
       }
     }
   `;
@@ -115,6 +126,8 @@ async function createDaily(matchId, rank, region, category, usernames, patch) {
       score: 0,
       usernames,
       patch,
+      set,
+      datetimePlayed,
     },
   };
   console.log(variables);
@@ -292,6 +305,8 @@ async function getMatch(ranks) {
   var foundRanked = false;
   var matchId;
   var patch;
+  var set;
+  var datetimePlayed;
   for (let i = 0; i < matches.length && !foundRanked; i++) {
     const matchUrl = `/match/v1/matches/${matches[i]}`;
     console.log(baseRegionalUrl + matchUrl);
@@ -305,7 +320,9 @@ async function getMatch(ranks) {
           console.log("found ranked match");
           matchId = matches[i];
           players = res.data.info.participants;
-          patch = res.data.info.tft_set_number;
+          set = res.data.info.tft_set_number;
+          patch = res.data.info.game_version;
+          datetimePlayed = res.data.info.game_datetime;
           foundRanked = true;
         }
       })
@@ -330,7 +347,15 @@ async function getMatch(ranks) {
       .catch((err) => console.log(err));
   }
 
-  return { matchId, rank: rankDivision, region: origRegion, patch, usernames };
+  return {
+    matchId,
+    rank: rankDivision,
+    region: origRegion,
+    patch,
+    usernames,
+    set,
+    datetimePlayed,
+  };
 }
 
 /**
@@ -359,14 +384,44 @@ export const handler = async (event) => {
   let statusCode = 200;
   try {
     const allData = await getMatch(all);
-    var { matchId, rank, region, usernames, patch } = allData;
-    await createDaily(matchId, rank, region, "all", usernames, patch);
+    var { matchId, rank, region, usernames, patch, set, datetimePlayed } =
+      allData;
+    await createDaily(
+      matchId,
+      rank,
+      region,
+      "all",
+      usernames,
+      patch,
+      set,
+      datetimePlayed
+    );
     const lowData = await getMatch(low);
-    var { matchId, rank, region, usernames, patch } = lowData;
-    await createDaily(matchId, rank, region, "low", usernames, patch);
+    var { matchId, rank, region, usernames, patch, set, datetimePlayed } =
+      lowData;
+    await createDaily(
+      matchId,
+      rank,
+      region,
+      "low",
+      usernames,
+      patch,
+      set,
+      datetimePlayed
+    );
     const highData = await getMatch(high);
-    var { matchId, rank, region, usernames, patch } = highData;
-    await createDaily(matchId, rank, region, "high", usernames, patch);
+    var { matchId, rank, region, usernames, patch, set, datetimePlayed } =
+      highData;
+    await createDaily(
+      matchId,
+      rank,
+      region,
+      "high",
+      usernames,
+      patch,
+      set,
+      datetimePlayed
+    );
   } catch (error) {
     console.log(error);
     statusCode = 500;

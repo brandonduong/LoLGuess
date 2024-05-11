@@ -243,6 +243,8 @@ export const onCreateDaily = /* GraphQL */ `
       category
       usernames
       patch
+      set
+      datetimePlayed
       rankGuesses
       placementGuesses
       perfects
@@ -268,6 +270,8 @@ export const onUpdateDaily = /* GraphQL */ `
       category
       usernames
       patch
+      set
+      datetimePlayed
       rankGuesses
       placementGuesses
       perfects
@@ -293,6 +297,8 @@ export const onDeleteDaily = /* GraphQL */ `
       category
       usernames
       patch
+      set
+      datetimePlayed
       rankGuesses
       placementGuesses
       perfects

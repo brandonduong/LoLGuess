@@ -90,7 +90,9 @@ type Daily
   region: String!
   category: String! # low, high, all
   usernames: [String] # original usernames of players
-  patch: Int # what set it was played on
+  patch: Int # patch number
+  set: Int # set number
+  datetimePlayed: Int # game_datetime
   # Unauthorized user stats
   rankGuesses: [Int] # 1D array of rank guesses from iron to challenger
   placementGuesses: [[Int]] # 2D array of placement guesses from first to eight
