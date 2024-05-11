@@ -23,18 +23,10 @@ function getDailyDates() {
       timeZone: "America/Toronto",
     })
   );
-  const updateUTC = new Date(
+  var date = new Date(
     nowToronto.getUTCFullYear(),
     nowToronto.getUTCMonth(),
-    nowToronto.getUTCDate(),
-    0,
-    0,
-    0
-  );
-  var date = new Date(
-    updateUTC.getFullYear(),
-    updateUTC.getMonth(),
-    updateUTC.getDate()
+    nowToronto.getUTCDate()
   );
   while (date >= startOfDailies) {
     console.log(date, startOfDailies);
