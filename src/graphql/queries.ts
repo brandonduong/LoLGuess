@@ -34,6 +34,8 @@ export const batchFetchUser = /* GraphQL */ `
       averageCorrectPlacements
       averageScore
       scores
+      rankGuesses
+      placementGuesses
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
@@ -77,6 +79,8 @@ export const getUser = /* GraphQL */ `
       averageCorrectPlacements
       averageScore
       scores
+      rankGuesses
+      placementGuesses
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
@@ -111,6 +115,8 @@ export const listUsers = /* GraphQL */ `
         averageCorrectPlacements
         averageScore
         scores
+        rankGuesses
+        placementGuesses
         dailyTotalGuesses
         dailyScore
         dailyMaxScore
@@ -155,6 +161,8 @@ export const usersByUsername = /* GraphQL */ `
         averageCorrectPlacements
         averageScore
         scores
+        rankGuesses
+        placementGuesses
         dailyTotalGuesses
         dailyScore
         dailyMaxScore

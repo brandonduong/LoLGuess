@@ -24,7 +24,9 @@ type User
   totalGuesses: Int!
   averageCorrectPlacements: Float!
   averageScore: Float!
-  scores: [Float]
+  scores: [Int]
+  rankGuesses: [[Int]] # 2D array of rank guesses from iron to challenger
+  placementGuesses: [[Int]] # 2D array of placement guesses from first to eight
   # Daily stats
   dailyTotalGuesses: Int
   dailyScore: Float

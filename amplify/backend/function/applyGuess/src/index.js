@@ -26,6 +26,93 @@ const signer = new SignatureV4({
   sha256: Sha256,
 });
 
+async function signAndRun(query, variables) {
+  const requestToBeSigned = new HttpRequest({
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      host: endpoint.host,
+    },
+    hostname: endpoint.host,
+    body: JSON.stringify({ query, variables }),
+    path: endpoint.pathname,
+  });
+
+  const signed = await signer.sign(requestToBeSigned);
+  const request = new Request(endpoint, signed);
+
+  let statusCode = 200;
+  let body;
+  let response;
+
+  try {
+    response = await node_fetch(request);
+    body = await response.json();
+    console.log(body);
+    if (body.errors) statusCode = 400;
+  } catch (error) {
+    statusCode = 500;
+    body = {
+      errors: [
+        {
+          message: error.message,
+        },
+      ],
+    };
+  }
+  return { statusCode, body };
+}
+
+async function guessesByDate(sub) {
+  const query = /* GraphQL */ `
+    query GuessesByDate(
+      $userGuessesId: ID!
+      $createdAt: ModelStringKeyConditionInput
+      $sortDirection: ModelSortDirection
+      $filter: ModelGuessFilterInput
+      $limit: Int
+      $nextToken: String
+    ) {
+      guessesByDate(
+        userGuessesId: $userGuessesId
+        createdAt: $createdAt
+        sortDirection: $sortDirection
+        filter: $filter
+        limit: $limit
+        nextToken: $nextToken
+      ) {
+        items {
+          placements
+          guessedRank
+          rank
+          ranks
+        }
+        nextToken
+      }
+    }
+  `;
+
+  let guesses = [];
+  var nextToken = "";
+  const variables = {
+    userGuessesId: sub,
+    sortDirection: "DESC",
+    limit: 200,
+  };
+
+  while (nextToken !== null) {
+    const res = await signAndRun(query, variables);
+    if (res.statusCode === 200) {
+      guesses = guesses.concat(res.body.data.guessesByDate.items);
+      nextToken = res.body.data.guessesByDate.nextToken;
+      variables.nextToken = nextToken;
+    } else {
+      console.log(res.body.errors);
+    }
+  }
+  return guesses;
+}
+
 async function getUser(sub) {
   const query = /* GraphQL */ `
     query GET_USER($id: ID!) {
@@ -39,6 +126,8 @@ async function getUser(sub) {
         unfinished
         totalGuesses
         scores
+        rankGuesses
+        placementGuesses
       }
     }
   `;
@@ -47,32 +136,12 @@ async function getUser(sub) {
     id: sub,
   };
 
-  const requestToBeSigned = new HttpRequest({
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      host: endpoint.host,
-    },
-    hostname: endpoint.host,
-    body: JSON.stringify({ query, variables }),
-    path: endpoint.pathname,
-  });
-
-  const signed = await signer.sign(requestToBeSigned);
-  const request = new Request(GRAPHQL_ENDPOINT, signed);
-
-  let body;
-  let response;
-
-  try {
-    response = await node_fetch(request);
-    body = await response.json();
-    console.log(body);
-  } catch (error) {
-    console.log(error);
-    body = { error };
+  const res = await signAndRun(query, variables);
+  if (res.statusCode === 200) {
+    return res.body.data.getUser;
+  } else {
+    console.log(res.body.errors);
   }
-  return body.data.getUser;
 }
 
 async function createGuess(
@@ -112,27 +181,12 @@ async function createGuess(
       matchId,
     },
   };
-  const requestToBeSigned = new HttpRequest({
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      host: endpoint.host,
-    },
-    hostname: endpoint.host,
-    body: JSON.stringify({ query, variables }),
-    path: endpoint.pathname,
-  });
 
-  const signed = await signer.sign(requestToBeSigned);
-  const request = new Request(GRAPHQL_ENDPOINT, signed);
-
-  try {
-    var response = await node_fetch(request);
-    body = await response.json();
-    console.log(body);
-    return body.data.createGuess.id;
-  } catch (error) {
-    console.log(error);
+  const res = await signAndRun(query, variables);
+  if (res.statusCode === 200) {
+    return res.body.data.createGuess.id;
+  } else {
+    console.log(res.body.errors);
   }
 }
 
@@ -151,6 +205,8 @@ async function updateUserStats(user, stats) {
         averageCorrectPlacements
         averageScore
         scores
+        rankGuesses
+        placementGuesses
       }
     }
   `;
@@ -168,29 +224,16 @@ async function updateUserStats(user, stats) {
       averageCorrectPlacements: stats.correctPlacements / stats.totalGuesses,
       averageScore: stats.score / stats.totalGuesses,
       scores: stats.scores,
+      rankGuesses: stats.rankGuesses,
+      placementGuesses: stats.placementGuesses,
     },
   };
 
-  const requestToBeSigned = new HttpRequest({
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      host: endpoint.host,
-    },
-    hostname: endpoint.host,
-    body: JSON.stringify({ query, variables }),
-    path: endpoint.pathname,
-  });
-
-  const signed = await signer.sign(requestToBeSigned);
-  const request = new Request(GRAPHQL_ENDPOINT, signed);
-
-  try {
-    var response = await node_fetch(request);
-    body = await response.json();
-    console.log(body);
-  } catch (error) {
-    console.log(error);
+  const res = await signAndRun(query, variables);
+  if (res.statusCode === 200) {
+    console.log(res.body);
+  } else {
+    console.log(res.body.errors);
   }
 }
 
@@ -241,7 +284,7 @@ function calculateCorrectPlacements(placements) {
   return correct;
 }
 
-function calculateStats(stats, placements, guessedRank, rank, ranks) {
+async function calculateStats(stats, placements, guessedRank, rank, ranks) {
   const copy = stats; // copy of user
   console.log(copy);
   const [score, maxScore] = calculateScore(
@@ -250,11 +293,57 @@ function calculateStats(stats, placements, guessedRank, rank, ranks) {
     rank,
     ranks
   );
-  // If scores was initialized, just increment
-  if (!copy.scores) {
+  const RANKS = [
+    "Iron",
+    "Bronze",
+    "Silver",
+    "Gold",
+    "Platinum",
+    "Emerald",
+    "Diamond",
+    "Master",
+    "Grandmaster",
+    "Challenger",
+  ];
+  // Initialize scores, rankGuesses, placementGuesses
+  if (!copy.rankGuesses || !copy.rankGuesses[0].length) {
+    const guesses = await guessesByDate(stats.id);
     copy.scores = new Array(100).fill(0);
+    copy.rankGuesses = new Array(10).fill(0).map((x) => new Array(10).fill(0));
+    copy.placementGuesses = new Array(8)
+      .fill(0)
+      .map((x) => new Array(8).fill(0));
+
+    for (const guess of guesses) {
+      // initialize scores
+      copy.scores[
+        Math.round(
+          calculateScore(
+            guess.placements,
+            guess.guessedRank,
+            guess.rank,
+            guess.ranks
+          )[0]
+        ) - 1
+      ] += 1;
+
+      // initialize rankGuesses
+      copy.rankGuesses[RANKS.indexOf(guess.rank)][
+        RANKS.indexOf(guess.guessedRank)
+      ] += 1;
+
+      // initialize placementGuesses
+      for (let i = 0; i < guess.placements.length; i++) {
+        copy.placementGuesses[guess.placements[i] - 1][i] += 1;
+      }
+    }
+  } else {
+    copy.scores[Math.round(score) - 1] += 1;
+    copy.rankGuesses[RANKS.indexOf(rank)][RANKS.indexOf(guessedRank)] += 1;
+    for (let i = 0; i < placements.length; i++) {
+      copy.placementGuesses[placements[i] - 1][i] += 1;
+    }
   }
-  copy.scores[Math.round(score) - 1] += 1;
   copy.unfinished = copy.unfinished - 1;
   copy.score = copy.score + score;
   copy.maxScore = copy.maxScore + maxScore;
@@ -305,10 +394,9 @@ export const handler = async (event) => {
   const matchId = rawSensitive.matchId;
 
   // Check that user did not cheat
-  var guessId;
   console.log(user.unfinished, unfinished, user.totalGuesses, totalGuesses);
   if (user.unfinished === unfinished && user.totalGuesses === totalGuesses) {
-    guessId = await createGuess(
+    await createGuess(
       user,
       unencrypted,
       rank,
@@ -318,7 +406,13 @@ export const handler = async (event) => {
       regions,
       matchId
     );
-    const stats = calculateStats(user, unencrypted, selectedRank, rank, ranks);
+    const stats = await calculateStats(
+      user,
+      unencrypted,
+      selectedRank,
+      rank,
+      ranks
+    );
     await updateUserStats(user, stats);
   }
 

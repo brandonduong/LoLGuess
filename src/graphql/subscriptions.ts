@@ -34,6 +34,8 @@ export const onCreateUser = /* GraphQL */ `
       averageCorrectPlacements
       averageScore
       scores
+      rankGuesses
+      placementGuesses
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
@@ -77,6 +79,8 @@ export const onUpdateUser = /* GraphQL */ `
       averageCorrectPlacements
       averageScore
       scores
+      rankGuesses
+      placementGuesses
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
@@ -120,6 +124,8 @@ export const onDeleteUser = /* GraphQL */ `
       averageCorrectPlacements
       averageScore
       scores
+      rankGuesses
+      placementGuesses
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
