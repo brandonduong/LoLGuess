@@ -55,7 +55,7 @@ function signout() {
             <RouterLink to="/play" :class="getActive(`/play`)"
               >Freeplay</RouterLink
             >
-            <RouterLink to="/" :class="getActive(`/daily`)" class="disabled"
+            <RouterLink to="/daily" :class="getActive(`/daily`)"
               >Daily</RouterLink
             >
             <RouterLink
@@ -133,31 +133,22 @@ function signout() {
   font-size: 2em;
 }
 .account-header {
-  display: flex;
-  position: fixed;
-  justify-content: center;
-  left: 0;
-  right: 0;
-  top: 0;
-  background-color: lightslategray;
   z-index: 1;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .account-header-contents {
-  width: 1280px;
+  max-width: 1280px;
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 2rem;
   align-items: center;
+  margin: auto;
 }
 
 @media only screen and (max-width: 720px) {
-  .account-header {
-    position: absolute;
-  }
-
   .account-header-contents {
-    padding: 0.25rem 0.25rem;
+    padding: 0.25rem 0.5rem;
   }
 }
 
@@ -257,11 +248,5 @@ function signout() {
 
 .kofi {
   background-color: #cc93ce;
-}
-
-.disabled {
-  cursor: not-allowed;
-  color: gray;
-  text-decoration: line-through;
 }
 </style>

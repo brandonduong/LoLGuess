@@ -1,18 +1,10 @@
 @import "./base.css";
 @import "./aws.css";
 #app {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 5rem 2rem 2rem;
   display: flex;
   flex-direction: column;
   font-weight: normal;
-}
-
-@media only screen and (max-width: 720px) {
-  #app {
-    padding: 4.25rem 0.25rem 0.25rem;
-  }
 }
 
 .green {

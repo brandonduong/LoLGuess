@@ -40,6 +40,12 @@ const router = createRouter({
       component: () => import("../views/HomeView.vue"),
     },
     {
+      path: "/new/",
+      name: "newhome",
+      alias: "/new/",
+      component: () => import("../views/NewHomeView.vue"),
+    },
+    {
       path: "/login",
       name: "login",
       component: () => import("../views/LoginView.vue"),
@@ -48,6 +54,12 @@ const router = createRouter({
       path: "/updates",
       name: "updates",
       component: () => import("../views/UpdatesView.vue"),
+    },
+    {
+      path: "/daily/:date?/:category?",
+      name: "daily",
+      component: () => import("../views/DailyView.vue"),
+      props: true,
     },
     {
       path: "/404",

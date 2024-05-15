@@ -2,11 +2,17 @@
 import { RouterView } from "vue-router";
 import AccountHeader from "./components/AccountHeader.vue";
 import { Authenticator } from "@aws-amplify/ui-vue";
+import { ref } from "vue";
+const selectedKeys = ref<string[]>(["2"]);
 </script>
 
 <template>
   <AccountHeader />
-  <RouterView />
+  <div>
+    <div class="app-body">
+      <RouterView />
+    </div>
+  </div>
   <Authenticator style="display: none" />
 </template>
 
@@ -31,5 +37,19 @@ nav a {
 
 nav a:first-of-type {
   border: 0;
+}
+
+.app-body {
+  max-width: 1280px;
+  padding: 0.5rem 2rem;
+  margin: auto;
+}
+
+@media only screen and (max-width: 720px) {
+  .app-body {
+    max-width: 1280px;
+    padding: 0.5rem 0;
+    margin: auto;
+  }
 }
 </style>
