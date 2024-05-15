@@ -68,6 +68,7 @@ const router = useRouter();
           title="Daily"
           :onClick="() => router.push('/daily')"
           description="Guess rank and placements of today's lobby"
+          disabled
         />
 
         <HomeButton

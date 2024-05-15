@@ -50,12 +50,6 @@ const router = createRouter({
       component: () => import("../views/UpdatesView.vue"),
     },
     {
-      path: "/daily/:date?/:category?",
-      name: "daily",
-      component: () => import("../views/DailyView.vue"),
-      props: true,
-    },
-    {
       path: "/404",
       component: () => import("../views/NotFoundView.vue"),
     },
