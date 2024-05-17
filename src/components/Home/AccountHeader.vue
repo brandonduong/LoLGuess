@@ -9,6 +9,8 @@ import {
 import { useRoute, useRouter } from "vue-router";
 import { watchEffect } from "vue";
 import { Auth } from "aws-amplify";
+import AccountHeaderLink from "./AccountHeaderLink.vue";
+
 const auth = useAuthenticator();
 const route = useRoute();
 const router = useRouter();
@@ -30,12 +32,32 @@ function signout() {
 <template>
   <div class="account-header">
     <div class="account-header-contents">
-      <RouterLink to="/" class="title"
-        ><div class="logo">
-          <div class="peng"></div>
-          LoLGuess
+      <div class="account-header-left">
+        <RouterLink to="/" class="title"
+          ><div class="logo">
+            <div class="peng"></div>
+            <h2 style="margin: 0" class="gold">LOLGUESS</h2>
+          </div>
+        </RouterLink>
+        <div style="display: flex">
+          <AccountHeaderLink route="" text="HOME" />
+          <AccountHeaderLink route="play" text="FREEPLAY" />
+          <AccountHeaderLink route="daily" text="DAILY" />
+          <AccountHeaderLink route="leaderboard" text="LEADERBOARD" />
+          <AccountHeaderLink
+            v-if="auth.authStatus !== 'authenticated'"
+            route="login"
+            text="LOGIN"
+          />
+          <AccountHeaderLink
+            v-else
+            :route="`profile/${auth.user.attributes.sub}`"
+            text="PROFILE"
+          />
+          <AccountHeaderLink route="supporters" text="SUPPORTERS" />
+          <AccountHeaderLink route="updates" text="UPDATES" />
         </div>
-      </RouterLink>
+      </div>
 
       <a-popover placement="bottomRight" trigger="click">
         <template #content>
@@ -101,37 +123,21 @@ function signout() {
           </div>
         </template>
 
-        <UserOutlined
-          v-if="auth.authStatus === 'authenticated'"
-          class="dropdown-button"
-          style="font-size: 2rem; color: white"
-        />
-        <MenuOutlined
-          v-else
-          class="dropdown-button"
-          style="font-size: 2rem; color: white"
-        />
+        <h3 style="margin: 0" class="gold dropdown-button">
+          <UserOutlined v-if="auth.authStatus === 'authenticated'" />
+          <MenuOutlined v-else />
+        </h3>
       </a-popover>
     </div>
   </div>
 </template>
 
 <style scoped>
-.account {
-  margin: 0;
+.account-header-left {
+  display: flex;
+  gap: 0.25rem;
 }
 
-#app
-  > div.account-header
-  > div
-  > a.router-link-active.router-link-exact-active.title {
-  text-decoration: none;
-}
-
-.account-header-contents > .title {
-  color: hsl(51, 100%, 50%);
-  font-size: 2em;
-}
 .account-header {
   z-index: 1;
   border-bottom: 1px solid var(--color-border);
@@ -141,31 +147,28 @@ function signout() {
   max-width: 1280px;
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem 2rem;
-  align-items: center;
+  padding: 0 2rem;
   margin: auto;
 }
 
-@media only screen and (max-width: 720px) {
-  .account-header-contents {
-    padding: 0.25rem 0.5rem;
-  }
+.dropdown-button {
+  display: none;
 }
 
-.account-header-contents > a {
-  display: block;
-  text-decoration: none;
-  color: white;
-  transition: 0.4s;
+@media only screen and (max-width: 1024px) {
+  .account-header-contents {
+    padding: 0 0.25rem;
+  }
+  .dropdown-button {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .account-header-contents > a:hover {
   color: hsl(51, 100%, 50%);
 }
 
-.account-header-contents > a.router-link-exact-active {
-  text-decoration: underline;
-}
 .peng {
   background-image: url("/peng.png");
   background-repeat: no-repeat;
@@ -177,7 +180,7 @@ function signout() {
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
 .dropdown-button {
