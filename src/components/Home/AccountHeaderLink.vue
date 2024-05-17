@@ -36,10 +36,4 @@ function getActive(link: string) {
 .link:hover {
   background-image: linear-gradient(var(--color-background), rgb(91, 90, 86));
 }
-
-@media only screen and (max-width: 1024px) {
-  .link {
-    display: none;
-  }
-}
 </style>

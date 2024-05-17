@@ -39,7 +39,7 @@ function signout() {
             <h2 style="margin: 0" class="gold">LOLGUESS</h2>
           </div>
         </RouterLink>
-        <div style="display: flex">
+        <div class="account-header-links">
           <AccountHeaderLink route="" text="HOME" />
           <AccountHeaderLink route="play" text="FREEPLAY" />
           <AccountHeaderLink route="daily" text="DAILY" />
@@ -155,6 +155,10 @@ function signout() {
   display: none;
 }
 
+.account-header-links {
+  display: flex;
+}
+
 @media only screen and (max-width: 1024px) {
   .account-header-contents {
     padding: 0 0.25rem;
@@ -162,6 +166,9 @@ function signout() {
   .dropdown-button {
     display: flex;
     align-items: center;
+  }
+  .account-header-links {
+    display: none;
   }
 }
 
