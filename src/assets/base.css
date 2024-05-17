@@ -29,7 +29,7 @@
 
 /* semantic color variables for this project */
 :root {
-  --color-background: var(--vt-c-white);
+  --color-background: rgb(1, 10, 19);
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
 
@@ -54,7 +54,7 @@
 body {
   min-height: 100vh;
   color: var(--color-text);
-  background: rgb(1, 10, 19);
+  background: var(--color-background);
   line-height: 1.6;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -117,4 +117,61 @@ button {
     url("/fonts/spiegel_tt_regular-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
+}
+
+h1 {
+  line-height: 42pt;
+  letter-spacing: 0.05em;
+  font-size: 40pt;
+  color: rgb(240, 230, 210);
+  font-family: "beaufort_for_lolbold";
+  font-weight: 700;
+  font-style: normal;
+  margin-bottom: 1.25rem;
+}
+
+h2 {
+  line-height: 32pt;
+  letter-spacing: 0.05em;
+  font-size: 28pt;
+  color: rgb(240, 230, 210);
+  font-family: "beaufort_for_lolbold";
+  font-weight: 700;
+  font-style: normal;
+}
+
+h3 {
+  line-height: 28pt;
+  letter-spacing: 0.05em;
+  font-size: 23pt;
+  color: rgb(240, 230, 210);
+  font-family: "beaufort_for_lolbold";
+  font-weight: 700;
+  font-style: normal;
+  margin-bottom: 0.75rem;
+}
+
+h4 {
+  line-height: 22pt;
+  letter-spacing: 0.05em;
+  font-size: 18pt;
+  color: rgb(240, 230, 210);
+  font-family: "beaufort_for_lolbold";
+  font-weight: 700;
+  font-style: normal;
+}
+
+h5 {
+  line-height: 18pt;
+  letter-spacing: 0.075em;
+  font-size: 14pt;
+  color: rgb(240, 230, 210);
+  font-family: "beaufort_for_lolbold";
+  font-weight: 700;
+  font-style: normal;
+  margin-bottom: 0.75rem;
+}
+
+.gold {
+  color: rgb(200, 155, 60);
 }

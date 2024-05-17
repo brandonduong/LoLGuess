@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useAuthenticator } from "@aws-amplify/ui-vue";
-import { useRouter } from "vue-router";
+import CustomHR from "../components/Home/CustomHR.vue";
 </script>
 
 <template>
@@ -32,62 +31,10 @@ import { useRouter } from "vue-router";
       ></video>
     </div>
   </section>
+  <CustomHR />
 </template>
 
 <style scoped>
-h1 {
-  line-height: 42pt;
-  letter-spacing: 0.05em;
-  font-size: 40pt;
-  color: rgb(240, 230, 210);
-  font-family: "beaufort_for_lolbold";
-  font-weight: 700;
-  font-style: normal;
-  margin-bottom: 1.25rem;
-}
-
-h2 {
-  line-height: 32pt;
-  letter-spacing: 0.05em;
-  font-size: 28pt;
-  color: rgb(240, 230, 210);
-  font-family: "beaufort_for_lolbold";
-  font-weight: 700;
-  font-style: normal;
-}
-
-h3 {
-  line-height: 28pt;
-  letter-spacing: 0.05em;
-  font-size: 23pt;
-  color: rgb(240, 230, 210);
-  font-family: "beaufort_for_lolbold";
-  font-weight: 700;
-  font-style: normal;
-  margin-bottom: 0.75rem;
-}
-
-h4 {
-  line-height: 22pt;
-  letter-spacing: 0.05em;
-  font-size: 18pt;
-  color: rgb(240, 230, 210);
-  font-family: "beaufort_for_lolbold";
-  font-weight: 700;
-  font-style: normal;
-}
-
-h5 {
-  line-height: 18pt;
-  letter-spacing: 0.075em;
-  font-size: 14pt;
-  color: rgb(240, 230, 210);
-  font-family: "beaufort_for_lolbold";
-  font-weight: 700;
-  font-style: normal;
-  margin-bottom: 0.75rem;
-}
-
 p {
   font-family: "spiegelregular";
   font-weight: 400;
@@ -105,10 +52,6 @@ p {
   color: rgb(240, 230, 210);
   font-family: "beaufort_for_lolmedium";
   font-weight: 500;
-}
-
-.gold {
-  color: rgb(200, 155, 60);
 }
 
 .home {
@@ -164,9 +107,5 @@ p {
   width: 100%;
   top: 0rem;
   left: 0rem;
-}
-
-.top-page {
-  border-bottom: 1px solid var(--color-border);
 }
 </style>
