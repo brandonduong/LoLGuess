@@ -44,90 +44,25 @@ function signout() {
           <AccountHeaderLink route="play" text="FREEPLAY" />
           <AccountHeaderLink route="daily" text="DAILY" />
           <AccountHeaderLink route="leaderboard" text="LEADERBOARD" />
-          <AccountHeaderLink
-            v-if="auth.authStatus !== 'authenticated'"
-            route="login"
-            text="LOGIN"
-          />
-          <AccountHeaderLink
-            v-else
-            :route="`profile/${auth.user.attributes.sub}`"
-            text="PROFILE"
-          />
           <AccountHeaderLink route="supporters" text="SUPPORTERS" />
           <AccountHeaderLink route="updates" text="UPDATES" />
         </div>
       </div>
-
-      <a-popover placement="bottomRight" trigger="click">
-        <template #content>
-          <div class="dropdown-content">
-            <h3 v-if="auth.authStatus === 'authenticated'" class="username">
-              {{
-                auth.user.signInUserSession.idToken.payload.preferred_username.substring(
-                  0,
-                  20
-                )
-              }}
-            </h3>
-            <RouterLink v-else to="/login" :class="getActive(`/login`)"
-              >Login / Register</RouterLink
-            >
-            <a-divider class="divider" />
-            <RouterLink to="/play" :class="getActive(`/play`)"
-              >Freeplay</RouterLink
-            >
-            <RouterLink to="/daily" :class="getActive(`/daily`)"
-              >Daily</RouterLink
-            >
-            <RouterLink
-              v-if="auth.authStatus === 'authenticated'"
-              :to="`/profile/${auth.user.attributes.sub}`"
-              :class="getActive(`/profile`)"
-              >Profile</RouterLink
-            >
-            <RouterLink to="/leaderboard" :class="getActive(`/leaderboard`)"
-              >Leaderboard</RouterLink
-            >
-            <RouterLink to="/supporters" :class="getActive(`/supporters`)"
-              >Supporters</RouterLink
-            >
-            <RouterLink to="/updates" :class="getActive(`/updates`)"
-              >Updates</RouterLink
-            >
-            <a-divider class="divider" />
-            <div class="kofi-div">
-              <a-button
-                type="primary"
-                class="kofi"
-                href="https://ko-fi.com/brandonduong"
-                target="_blank"
-                ><HeartOutlined
-                  style="font-size: 1.25rem; color: white" /><CoffeeOutlined
-                  style="font-size: 1.25rem; color: white" /><HeartOutlined
-                  style="font-size: 1.25rem; color: white" />
-                <CoffeeOutlined
-                  style="font-size: 1.25rem; color: white" /><HeartOutlined
-                  style="font-size: 1.25rem; color: white"
-              /></a-button>
-            </div>
-            <div class="signout-div">
-              <a-button
-                v-if="auth.authStatus === 'authenticated'"
-                type="primary"
-                class="signout"
-                @click="signout()"
-                >Sign Out</a-button
-              >
-            </div>
-          </div>
-        </template>
-
-        <h3 style="margin: 0" class="gold dropdown-button">
-          <UserOutlined v-if="auth.authStatus === 'authenticated'" />
-          <MenuOutlined v-else />
-        </h3>
-      </a-popover>
+      <AccountHeaderLink
+        v-if="auth.authStatus !== 'authenticated'"
+        route="login"
+        text="LOGIN"
+      />
+      <AccountHeaderLink
+        v-else
+        :route="`profile/${auth.user.attributes.sub}`"
+        :text="
+          auth.user.signInUserSession.idToken.payload.preferred_username.substring(
+            0,
+            20
+          )
+        "
+      />
     </div>
   </div>
 </template>
@@ -252,7 +187,8 @@ function signout() {
 }
 
 .dropdown-content {
-  margin: -0.25rem -0.75rem;
+  margin: 0;
+  width: 100vw;
   display: flex;
   flex-direction: column;
 }

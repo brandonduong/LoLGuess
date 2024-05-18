@@ -23,6 +23,7 @@ import {
   Typography,
   Alert,
   Badge,
+  Menu,
 } from "ant-design-vue";
 Amplify.configure(awsExports);
 
@@ -44,5 +45,6 @@ app.use(Empty);
 app.use(Typography);
 app.use(Alert);
 app.use(Badge);
+app.use(Menu);
 
 app.mount("#app");
