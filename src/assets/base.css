@@ -39,6 +39,9 @@
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
 
+  --color-gold: rgb(200, 155, 60);
+  --color-highlight-gold: rgb(200, 170, 110);
+
   --section-gap: 160px;
 }
 
@@ -173,5 +176,5 @@ h5 {
 }
 
 .gold {
-  color: rgb(200, 155, 60);
+  color: var(--color-gold);
 }

@@ -8,9 +8,10 @@ function getActive(link: string) {
 }
 </script>
 <template>
-  <RouterLink :to="`/${route}`" :class="getActive(`/${route}`)"
-    ><h5>{{ text }}</h5></RouterLink
-  >
+  <RouterLink :to="`/${route}`" :class="getActive(`/${route}`)">
+    <h5>{{ text }}</h5>
+    <div class="arrow"></div>
+  </RouterLink>
 </template>
 <style>
 .link > h5 {
@@ -23,7 +24,7 @@ function getActive(link: string) {
   transition: 0.4s;
   display: flex;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0 0.5rem;
 }
 
 .active {
@@ -35,5 +36,28 @@ function getActive(link: string) {
 
 .link:hover {
   background-image: linear-gradient(var(--color-background), rgb(91, 90, 86));
+}
+
+.active > .arrow {
+  background-image: url("/arrow.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 100%;
+  height: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation-name: arrow;
+  animation-duration: 0.5s;
+}
+
+@keyframes arrow {
+  0% {
+    top: -10px;
+  }
+  100% {
+    top: 0px;
+  }
 }
 </style>

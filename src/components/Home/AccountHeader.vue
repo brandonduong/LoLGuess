@@ -140,7 +140,8 @@ function signout() {
 
 .account-header {
   z-index: 1;
-  border-bottom: 1px solid var(--color-border);
+  border-top: 2px solid var(--color-border);
+  border-bottom: 2px solid var(--color-border);
 }
 
 .account-header-contents {
@@ -173,7 +174,7 @@ function signout() {
 }
 
 .account-header-contents > a:hover {
-  color: hsl(51, 100%, 50%);
+  color: var(--color-highlight-gold);
 }
 
 .peng {
