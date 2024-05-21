@@ -2,6 +2,14 @@
 import { useRouter } from "vue-router";
 import CustomHR from "../components/Home/CustomHR.vue";
 import HomeButton from "@/components/Home/HomeButton.vue";
+import {
+  HeartOutlined,
+  MenuOutlined,
+  UserOutlined,
+  CalendarOutlined,
+  QuestionCircleOutlined,
+  HistoryOutlined,
+} from "@ant-design/icons-vue";
 
 const router = useRouter();
 </script>
@@ -12,10 +20,7 @@ const router = useRouter();
       <div class="description">
         <h5 class="gold subtitle">LOLGUESS</h5>
         <h2>TEAMFIGHT TACTICS PRACTICE TOOL</h2>
-        <p>
-          Test your TFT knowledge about end-game team compositions by guessing
-          the placements and rank of a random match
-        </p>
+        <p>Guess the placements and rank of a random match</p>
         <CustomHR />
       </div>
     </div>
@@ -37,34 +42,51 @@ const router = useRouter();
     </div>
   </section>
   <section class="bot-page">
-    <div class="home-buttons">
-      <div class="home-buttons-grid">
-        <HomeButton
-          title="Freeplay"
-          :onClick="() => router.push('/play')"
-          description="Guess rank and placements of a random lobby"
-        />
-        <HomeButton
-          title="Daily"
-          :onClick="() => router.push('/daily')"
-          description="Guess rank and placements of a random lobby"
-        />
-      </div>
+    <div class="home-buttons-grid">
+      <HomeButton
+        title="FREEPLAY"
+        :onClick="() => router.push('/play')"
+        description="Guess on a random lobby"
+        ><question-circle-outlined
+          style="color: rgb(240, 230, 210); font-size: 2.5rem"
+      /></HomeButton>
+      <HomeButton
+        title="DAILY"
+        :onClick="() => router.push('/daily')"
+        description="Guess on today's lobby"
+        ><calendar-outlined
+          style="color: rgb(240, 230, 210); font-size: 2.5rem"
+      /></HomeButton>
+      <HomeButton
+        title="LEADERBOARD"
+        :onClick="() => router.push('/leaderboard')"
+        description="Compete against others"
+        ><menu-outlined style="color: rgb(240, 230, 210); font-size: 2.5rem"
+      /></HomeButton>
+
+      <HomeButton
+        title="LOGIN"
+        :onClick="() => router.push('/login')"
+        description="Store stats and history"
+        ><user-outlined style="color: rgb(240, 230, 210); font-size: 2.5rem"
+      /></HomeButton>
+      <HomeButton
+        title="SUPPORTERS"
+        :onClick="() => router.push('/supporters')"
+        description="Help keep everything running"
+        ><heart-outlined style="color: rgb(240, 230, 210); font-size: 2.5rem"
+      /></HomeButton>
+      <HomeButton
+        title="UPDATES"
+        :onClick="() => router.push('/updates')"
+        description="New and future additions"
+        ><history-outlined style="color: rgb(240, 230, 210); font-size: 2.5rem"
+      /></HomeButton>
     </div>
   </section>
 </template>
 
 <style scoped>
-p {
-  font-family: "spiegelregular";
-  font-weight: 400;
-  font-style: normal;
-  font-size: 1rem;
-  line-height: 1.24;
-  letter-spacing: 0.01em;
-  color: rgb(160, 155, 140);
-}
-
 .beau-reg {
   line-height: 62pt;
   letter-spacing: 0.025em;
@@ -134,19 +156,12 @@ p {
 }
 
 .home-buttons {
-  display: flex;
-  justify-content: center;
 }
 
 .home-buttons-grid {
-  display: flex;
+  display: grid;
   gap: 1rem;
-  flex: 0 0 50%;
-}
-
-@media only screen and (max-width: 1024px) {
-  .home-buttons-grid {
-    flex-direction: column;
-  }
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 }
 </style>
