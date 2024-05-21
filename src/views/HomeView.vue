@@ -10,7 +10,9 @@ import {
   CalendarOutlined,
   QuestionCircleOutlined,
   HistoryOutlined,
+  CoffeeOutlined,
 } from "@ant-design/icons-vue";
+import IconButton from "@/components/Home/IconButton.vue";
 
 const router = useRouter();
 const auth = useAuthenticator();
@@ -94,6 +96,12 @@ const auth = useAuthenticator();
       /></HomeButton>
     </div>
   </section>
+
+  <section class="footer">
+    <IconButton href="https://ko-fi.com/brandonduong"
+      ><coffee-outlined style="color: var(--color-gold); font-size: 2.5rem"
+    /></IconButton>
+  </section>
 </template>
 
 <style scoped>
@@ -165,13 +173,17 @@ const auth = useAuthenticator();
   left: 0rem;
 }
 
-.home-buttons {
-}
-
 .home-buttons-grid {
   display: grid;
   gap: 1rem;
   justify-content: center;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
 }
 </style>

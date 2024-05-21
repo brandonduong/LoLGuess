@@ -6,7 +6,7 @@ import { Authenticator } from "@aws-amplify/ui-vue";
 
 <template>
   <AccountHeader />
-  <div>
+  <div class="body-content">
     <div class="app-body">
       <RouterView />
     </div>
@@ -39,14 +39,17 @@ nav a:first-of-type {
 
 .app-body {
   max-width: 1280px;
-  padding: 0.5rem 2rem;
+  padding: 0rem 2rem;
   margin: auto;
+}
+
+.body-content {
 }
 
 @media only screen and (max-width: 720px) {
   .app-body {
     max-width: 1280px;
-    padding: 0.5rem 0;
+    padding: 0rem 0;
     margin: auto;
   }
 }
