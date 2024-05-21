@@ -87,10 +87,6 @@ function signout() {
   margin: auto;
 }
 
-.dropdown-button {
-  display: none;
-}
-
 .account-header-links {
   display: flex;
 }
@@ -124,76 +120,5 @@ function signout() {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
-
-.dropdown-button {
-  transition: 0.4s;
-}
-
-.dropdown-button:hover,
-.dropdown-button:focus {
-  color: hsl(51, 100%, 50%) !important;
-}
-
-.active {
-  color: lightslategray !important;
-}
-
-.signout,
-.kofi {
-  width: 100%;
-  margin-top: 0.25rem;
-  font-size: 1rem;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-
-.kofi {
-  border: var(--theme-love);
-  transition: 0.3s;
-}
-.kofi-div :hover {
-  background-color: var(--theme-love-highlight);
-}
-
-.signout-div,
-.kofi-div {
-  padding: 0 0.25rem;
-}
-
-.username {
-  margin: 0;
-  padding: 0 0.25rem;
-  font-weight: bold;
-}
-
-.dropdown-link {
-  color: black;
-  display: inline-block;
-  width: 100%;
-  font-weight: 500;
-  font-size: 1rem;
-  transition: 0.4s;
-  padding: 0 0.25rem;
-}
-
-.dropdown-link:hover {
-  background-color: rgb(228, 228, 228);
-}
-
-.divider {
-  margin: 0.2rem 0;
-}
-
-.dropdown-content {
-  margin: 0;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-}
-
-.kofi {
-  background-color: #cc93ce;
 }
 </style>

@@ -36,6 +36,7 @@ function getActive(link: string) {
 
 .link:hover {
   background-image: linear-gradient(var(--color-background), rgb(91, 90, 86));
+  color: var(--color-highlight-gold);
 }
 
 .active > .arrow {
