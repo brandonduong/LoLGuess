@@ -2,6 +2,7 @@
 import { useRouter } from "vue-router";
 import CustomHR from "../components/Home/CustomHR.vue";
 import HomeButton from "@/components/Home/HomeButton.vue";
+import { useAuthenticator } from "@aws-amplify/ui-vue";
 import {
   HeartOutlined,
   MenuOutlined,
@@ -12,6 +13,7 @@ import {
 } from "@ant-design/icons-vue";
 
 const router = useRouter();
+const auth = useAuthenticator();
 </script>
 
 <template>
@@ -65,9 +67,17 @@ const router = useRouter();
       /></HomeButton>
 
       <HomeButton
+        v-if="auth.authStatus !== 'authenticated'"
         title="LOGIN"
         :onClick="() => router.push('/login')"
         description="Store stats and history"
+        ><user-outlined style="color: rgb(240, 230, 210); font-size: 2.5rem"
+      /></HomeButton>
+      <HomeButton
+        v-else
+        title="PROFILE"
+        :onClick="() => router.push(`/profile/${auth.user.attributes.sub}`)"
+        description="View stats and history"
         ><user-outlined style="color: rgb(240, 230, 210); font-size: 2.5rem"
       /></HomeButton>
       <HomeButton
