@@ -105,15 +105,6 @@ const auth = useAuthenticator();
 </template>
 
 <style scoped>
-.beau-reg {
-  line-height: 62pt;
-  letter-spacing: 0.025em;
-  font-size: 57pt;
-  color: rgb(240, 230, 210);
-  font-family: "beaufort_for_lolmedium";
-  font-weight: 500;
-}
-
 .home {
   text-align: center;
   display: flex;

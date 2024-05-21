@@ -1,61 +1,49 @@
 <script setup lang="ts">
+import CustomHR from "@/components/Home/CustomHR.vue";
 import Supporters from "../components/Supporter/Supporters.vue";
+import IconButton from "@/components/Home/IconButton.vue";
+import { CoffeeOutlined } from "@ant-design/icons-vue";
 </script>
 
 <template>
   <div class="supporters">
-    <h2>Supporters</h2>
-    <div class="supporters-exp">
-      <h3>
-        If you just play LoLGuess in general, or have supported on
-        <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
-          >Ko-fi</a
-        >
-        no matter the amount, thank you very much!
-      </h3>
-      <h4>
-        If included on ko-fi donations, I will put your name/username, profile,
-        links, and message here!
-        <br />
-      </h4>
-      <h5>
-        Hosting this website is not cheap and I would genuinely love to continue
-        working on this project further!
-
-        <br />I have many more ideas that would make everything even more fun,
-        therefore any amount is greatly appreciated.
-        <br />
-        Thanks!
-      </h5>
+    <div style="display: flex; justify-content: center">
+      <div class="supporters-container">
+        <h3 class="gold">SUPPORTERS</h3>
+        <p>
+          If you enjoy LoLGuess in general or have even supported on
+          <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
+            >Ko-fi</a
+          >, thank you very much! Any support to keep the site up is
+          appreciated!
+        </p>
+        <p>
+          If included on ko-fi donations, I will put your name/username,
+          profile, links, and message here!
+        </p>
+        <CustomHR style="margin-bottom: 1rem; rotate: 180deg" />
+        <Supporters />
+        <CustomHR style="margin: 1rem 0" />
+      </div>
     </div>
-    <Supporters />
+    <IconButton href="https://ko-fi.com/brandonduong"
+      ><coffee-outlined style="color: var(--color-gold); font-size: 2.5rem"
+    /></IconButton>
   </div>
 </template>
 
 <style scoped>
 .supporters {
-  grid-column: span 2;
-  border: solid 1px lightslategray;
-  padding: 1rem;
-  border-radius: 0.25rem;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
+}
+
+.supporters-container {
+  flex: 0 0 75%;
 }
 
 .ko-fi {
   font-weight: bold;
   text-decoration: underline;
   color: var(--theme-love);
-}
-
-.supporters-exp > h3 {
-  margin-bottom: 0.5em;
-}
-
-.supporters-exp {
-  display: grid;
 }
 </style>

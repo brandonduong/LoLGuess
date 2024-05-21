@@ -188,3 +188,13 @@ p {
   letter-spacing: 0.01em;
   color: rgb(160, 155, 140);
 }
+
+.number {
+  color: rgb(240, 230, 210);
+  font-family: "beaufort_for_lolmedium";
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  font-style: italic;
+}
