@@ -1,22 +1,25 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-const router = useRouter();
+import CustomCard from "@/components/CustomCard.vue";
 const updates = [
   {
-    version: "1.1 and beyond",
-    title: "Future Work",
     items: [
-      "Dark mode for UI / UI Overhaul",
       "Better leaderboard categories",
       "After guessing, reveal what round players died at",
       "After guessing, reveal usernames?",
-      "Daily mode",
+      "More game modes",
     ],
-    date: "---",
+    date: "Future Work",
   },
   {
-    version: "1.0.5",
-    title: "Updated for Set 11",
+    items: [
+      "UI overhaul to not flashbang people's eyes and better user experience for PC and mobile",
+      "Daily mode with stats",
+      "More stats and graphs for logged in users",
+      "Small details and bugs",
+    ],
+    date: "05-28-2024",
+  },
+  {
     items: [
       "Updated for Set 11",
       "Less chance for error when fetching or displaying match",
@@ -26,8 +29,6 @@ const updates = [
     date: "04-24-2023",
   },
   {
-    version: "1.0.4",
-    title: "Optimizations, small details, and bug fixes",
     items: [
       "Optimized fetching of static tft data",
       "Made arrow icons consistent in game table",
@@ -39,14 +40,10 @@ const updates = [
     date: "12-20-2023",
   },
   {
-    version: "1.0.3",
-    title: "Fixed register bug",
     items: ["Increased limit for emailing code when registering new account"],
     date: "12-20-2023",
   },
   {
-    version: "1.0.2",
-    title: "UI/UX improvements for both mobile and desktop",
     items: [
       "Clearer rows for leaderboard",
       "Home page with routes",
@@ -58,14 +55,10 @@ const updates = [
     date: "12-15-2023",
   },
   {
-    version: "1.0.1",
-    title: "Quick fix to not require authentication/email",
     items: ["Added 'Continue as guest' option"],
     date: "12-01-2023",
   },
   {
-    version: "1.0",
-    title: "Released to the public",
     items: [
       "Authentication",
       "Guess stats",
@@ -82,57 +75,38 @@ const updates = [
 
 <template>
   <div class="updates">
-    <h2 style="margin: 0">Updates</h2>
-    <h4>
-      Support future work and updates on
-      <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
-        >Ko-fi</a
-      >!
-
-      <h5>
-        Or read our MANY great testimonials on the
-        <a class="ko-fi" @click="() => router.push('/supporters')"
-          >Supporters</a
-        >
-        page!
-      </h5>
-    </h4>
-    <div class="update" v-for="update in updates">
-      <h3 style="font-weight: bold">{{ update.title }}</h3>
-      <h6>{{ update.version }}</h6>
-
-      <h4 v-for="item in update.items">
-        {{ item }}
-      </h4>
-
-      <h6>{{ update.date }}</h6>
+    <div style="display: flex; justify-content: center">
+      <div style="display: flex; flex-direction: column; gap: 1rem">
+        <h3 class="gold" style="margin: 0">UPDATES</h3>
+        <p>
+          Support future work and updates on
+          <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
+            >Ko-fi</a
+          >!
+        </p>
+        <CustomCard class="update" v-for="update in updates">
+          <h5>{{ update.date }}</h5>
+          <p v-for="item in update.items">
+            {{ item }}
+          </p>
+        </CustomCard>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
 .updates {
-  border: solid 1px lightslategray;
-  padding: 1rem;
-  border-radius: 0.25rem;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
-  gap: 1rem;
+  padding: 1rem;
 }
 
 .update {
-  border: solid 1px lightslategray;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  width: 100%;
 }
 
 .ko-fi {
   font-weight: bold;
   text-decoration: underline;
-  color: var(--theme-love);
+  color: var(--color-gold);
 }
 </style>
