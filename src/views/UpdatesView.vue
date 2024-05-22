@@ -15,6 +15,8 @@ const updates = [
       "UI overhaul to not flashbang people's eyes and better user experience for PC and mobile",
       "Daily mode with stats",
       "More stats and graphs for logged in users",
+      "Fixed old replays",
+      "More accurrate champion icons used",
       "Small details and bugs",
     ],
     date: "05-28-2024",
@@ -76,20 +78,22 @@ const updates = [
 <template>
   <div class="updates">
     <div style="display: flex; justify-content: center">
-      <div style="display: flex; flex-direction: column; gap: 1rem">
-        <h3 class="gold" style="margin: 0">UPDATES</h3>
+      <div>
+        <h3 class="gold">UPDATES</h3>
         <p>
           Support future work and updates on
           <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
             >Ko-fi</a
           >!
         </p>
-        <CustomCard class="update" v-for="update in updates">
-          <h5>{{ update.date }}</h5>
-          <p v-for="item in update.items">
-            {{ item }}
-          </p>
-        </CustomCard>
+        <div style="display: flex; flex-direction: column; gap: 1rem">
+          <CustomCard class="update" v-for="update in updates">
+            <h5>{{ update.date }}</h5>
+            <p v-for="item in update.items">
+              {{ item }}
+            </p>
+          </CustomCard>
+        </div>
       </div>
     </div>
   </div>
