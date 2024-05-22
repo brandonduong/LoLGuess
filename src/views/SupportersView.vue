@@ -48,7 +48,7 @@ import { CoffeeOutlined } from "@ant-design/icons-vue";
   color: var(--color-gold);
 }
 
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 1024px) {
   .supporters-container {
     flex: 0 0 100%;
   }
