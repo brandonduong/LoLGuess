@@ -1,3 +1,96 @@
 span.amplify-authenticator__subtitle {
   color: black;
 }
+
+[data-amplify-authenticator] {
+  --amplify-components-authenticator-router-border-width: 0;
+  --amplify-components-button-primary-background-color: var(
+    --amplify-colors-neutral-100
+  );
+  --amplify-components-tabs-item-active-border-color: #202021;
+  --amplify-components-tabs-item-color: rgb(240, 230, 210);
+  --amplify-components-tabs-item-active-color: var(--color-gold);
+  --amplify-components-button-link-color: var(--amplify-colors-purple-80);
+
+  --amplify-components-tabs-item-border-color: #084152;
+  --amplify-components-button-link-hover-background-color: #0c0d12;
+
+  --amplify-components-button-color: rgb(240, 230, 210);
+  --amplify-components-button-focus-color: var(--color-highlight-gold);
+  --amplify-components-button-hover-color: var(--color-highlight-gold);
+}
+
+[data-amplify-authenticator] [data-amplify-router] {
+  background: linear-gradient(#202021, #0c0d12);
+}
+
+[data-amplify-authenticator] [data-state="inactive"] {
+  background: linear-gradient(#084152, #2d9eca);
+}
+
+.amplify-tabs-item:hover,
+.amplify-tabs-item:focus {
+  color: var(--color-highlight-gold);
+}
+
+.amplify-label {
+  color: rgb(240, 230, 210);
+  font-family: "beaufort_for_lolbold";
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1rem;
+  line-height: 18pt;
+  letter-spacing: 0.075em;
+}
+
+.amplify-tabs-item {
+  line-height: 18pt;
+  letter-spacing: 0.075em;
+  font-size: 14pt;
+  font-family: "beaufort_for_lolbold";
+  font-weight: 700;
+  font-style: normal;
+}
+
+.amplify-input {
+  background: #202021;
+  border: var(--color-gold) solid 2px;
+  border-radius: 0;
+  color: rgb(240, 230, 210);
+}
+
+.amplify-input:focus {
+  border-color: var(--color-highlight-gold);
+}
+
+.amplify-field-group__outer-end {
+  background: #202021;
+  border: var(--color-gold) solid 2px;
+  border-left: none;
+  border-radius: 0;
+}
+
+.amplify-field-group__outer-end > button:hover {
+  background: #202021;
+  color: var(--color-highlight-gold);
+}
+
+.amplify-field-group__outer-end > button,
+.amplify-field-group__outer-end > button:focus {
+  border: none;
+  box-shadow: none;
+  background-color: #202021;
+  color: var(--color-gold);
+}
+
+.amplify-button--primary {
+  line-height: 18pt;
+  letter-spacing: 0.075em;
+  font-size: 14pt;
+  color: rgb(240, 230, 210);
+  font-family: "beaufort_for_lolbold";
+  font-weight: 700;
+  font-style: normal;
+
+  background: linear-gradient(#084152, #2d9eca);
+}
