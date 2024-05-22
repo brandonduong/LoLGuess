@@ -10,7 +10,7 @@ import { CoffeeOutlined } from "@ant-design/icons-vue";
     <div style="display: flex; justify-content: center">
       <div class="supporters-container">
         <h3 class="gold">SUPPORTERS</h3>
-        <p>
+        <p style="text-wrap: pretty">
           If you enjoy LoLGuess in general or have even supported on
           <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
             >Ko-fi</a
@@ -18,8 +18,8 @@ import { CoffeeOutlined } from "@ant-design/icons-vue";
           appreciated!
         </p>
         <p>
-          If included on ko-fi donations, I will put your name/username,
-          profile, links, and message here!
+          If included on ko-fi donations, I can put your name/username, profile,
+          links, and message here!
         </p>
         <CustomHR style="margin-bottom: 1rem; rotate: 180deg" />
         <Supporters />
@@ -35,15 +35,22 @@ import { CoffeeOutlined } from "@ant-design/icons-vue";
 <style scoped>
 .supporters {
   text-align: center;
+  padding: 1rem;
 }
 
 .supporters-container {
-  flex: 0 0 75%;
+  flex: 0 0 50%;
 }
 
 .ko-fi {
   font-weight: bold;
   text-decoration: underline;
-  color: var(--theme-love);
+  color: var(--color-gold);
+}
+
+@media only screen and (max-width: 720px) {
+  .supporters-container {
+    flex: 0 0 100%;
+  }
 }
 </style>

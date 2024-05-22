@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import CustomCard from "@/components/CustomCard.vue";
 const supporters = [
   {
     name: "THTupy",
@@ -26,7 +27,7 @@ const supporters = [
 
 <template>
   <div class="supporters-grid">
-    <div class="supporter" v-for="supporter in supporters">
+    <CustomCard class="supporter" v-for="supporter in supporters">
       <RouterLink :to="supporter.id ? `/profile/${supporter.id}` : ''">
         <h5 class="supporter-name">
           {{ supporter.name }}
@@ -37,7 +38,7 @@ const supporters = [
         {{ supporter.msg }}
       </p>
       <h5>{{ supporter.date }}</h5>
-    </div>
+    </CustomCard>
   </div>
 </template>
 
@@ -47,17 +48,6 @@ const supporters = [
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   column-gap: 1rem;
   row-gap: 1rem;
-}
-
-.supporter {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: space-between;
-  border: solid 4px var(--color-gold);
-  padding: 1rem;
-  text-align: center;
-  background: linear-gradient(#202021, #0c0d12);
 }
 
 .supporter-name,
