@@ -1,32 +1,8 @@
 <script setup lang="ts">
 import { useAuthenticator } from "@aws-amplify/ui-vue";
-import {
-  CoffeeOutlined,
-  HeartOutlined,
-  MenuOutlined,
-  UserOutlined,
-} from "@ant-design/icons-vue";
-import { useRoute, useRouter } from "vue-router";
-import { watchEffect } from "vue";
-import { Auth } from "aws-amplify";
 import AccountHeaderLink from "./AccountHeaderLink.vue";
 
 const auth = useAuthenticator();
-const route = useRoute();
-const router = useRouter();
-
-watchEffect(() => {
-  //console.log(route.fullPath);
-});
-function getActive(link: string) {
-  return route.fullPath.includes(link)
-    ? `dropdown-link active`
-    : `dropdown-link`;
-}
-function signout() {
-  Auth.signOut();
-  router.push("/login");
-}
 </script>
 
 <template>
