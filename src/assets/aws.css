@@ -13,7 +13,11 @@ span.amplify-authenticator__subtitle {
   --amplify-components-button-link-color: var(--amplify-colors-purple-80);
 
   --amplify-components-tabs-item-border-color: #084152;
-  --amplify-components-button-link-hover-background-color: #0c0d12;
+
+  --amplify-components-button-link-background-color: none;
+  --amplify-components-button-link-hover-background-color: none;
+  --amplify-components-button-link-color: rgb(240, 230, 210);
+  --amplify-components-button-link-hover-color: #2d9eca;
 
   --amplify-components-button-color: rgb(240, 230, 210);
   --amplify-components-button-focus-color: var(--color-highlight-gold);
