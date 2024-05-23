@@ -335,6 +335,9 @@ async function getMatch(ranks) {
 
   const usernames = [];
   for (let i = 0; i < puuids.length; i++) {
+    if (matchesRegion === "sea") {
+      matchesRegion = "asia";
+    }
     const accountUrl = `https://${matchesRegion}.api.riotgames.com/riot/account/v1/accounts/by-puuid/${puuids[i]}`;
     await axios
       .get(accountUrl, {

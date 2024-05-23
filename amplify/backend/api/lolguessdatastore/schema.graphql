@@ -92,7 +92,7 @@ type Daily
   region: String!
   category: String! # low, high, all
   usernames: [String] # original usernames of players
-  patch: Int # patch number
+  patch: String # patch number
   set: Int # set number
   datetimePlayed: Int # game_datetime
   # Unauthorized user stats
