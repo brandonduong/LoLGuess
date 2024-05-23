@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUpdated, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { type User } from "../../API";
 import http from "../../common/http-common";
 import { CaretDownOutlined } from "@ant-design/icons-vue";
