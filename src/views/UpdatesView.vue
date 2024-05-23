@@ -104,13 +104,4 @@ const updates = [
   text-align: center;
   padding: 1rem;
 }
-
-.update {
-}
-
-.ko-fi {
-  font-weight: bold;
-  text-decoration: underline;
-  color: var(--color-gold);
-}
 </style>

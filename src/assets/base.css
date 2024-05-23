@@ -198,3 +198,11 @@ p {
   letter-spacing: 0.04em;
   font-style: italic;
 }
+
+a {
+  color: var(--color-gold);
+}
+
+a:hover {
+  color: var(--color-highlight-gold);
+}

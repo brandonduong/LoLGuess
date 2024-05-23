@@ -72,10 +72,7 @@ watchEffect(() => {
         </p>
       </div>
     </div>
-    <div
-      class="login-container"
-      :style="auth.authStatus === 'authenticated' ? 'display: none;' : ''"
-    >
+    <div class="login-container" v-if="auth.authStatus !== 'authenticated'">
       <div class="login-border">
         <Authenticator
           :formFields="formFields"
@@ -86,6 +83,19 @@ watchEffect(() => {
           </template>
         </Authenticator>
       </div>
+    </div>
+    <div v-else>
+      <p>
+        Currently logged in as
+        <RouterLink :to="`/profile/${auth.user.attributes.sub}`">
+          {{
+            auth.user.signInUserSession.idToken.payload.preferred_username.substring(
+              0,
+              20
+            )
+          }}
+        </RouterLink>
+      </p>
     </div>
   </div>
 </template>

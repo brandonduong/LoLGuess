@@ -42,12 +42,6 @@ import { CoffeeOutlined } from "@ant-design/icons-vue";
   flex: 0 0 50%;
 }
 
-.ko-fi {
-  font-weight: bold;
-  text-decoration: underline;
-  color: var(--color-gold);
-}
-
 @media only screen and (max-width: 1024px) {
   .supporters-container {
     flex: 0 0 100%;
