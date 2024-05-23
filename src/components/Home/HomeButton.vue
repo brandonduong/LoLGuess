@@ -1,10 +1,20 @@
 <script setup lang="ts">
-defineProps<{
-  title?: string;
-  description?: string;
-  onClick?: () => void;
-  href?: string;
-}>();
+withDefaults(
+  defineProps<{
+    title?: string;
+    description?: string;
+    onClick?: () => void;
+    href?: string;
+    gold?: boolean;
+    inner?: boolean;
+    innerBlue?: boolean;
+  }>(),
+  {
+    gold: true,
+    inner: true,
+    innerBlue: true,
+  }
+);
 </script>
 <template>
   <a-button
@@ -13,16 +23,17 @@ defineProps<{
     :href="href"
     target="_blank"
   >
-    <div class="gold-border">
-      <div class="inner-border">
-        <div class="inner-blue-border">
-          <div class="button-content">
-            <div>
-              <slot />
+    <div :class="gold ? 'gold-border' : ''" style="height: 100%">
+      <div :class="inner ? 'inner-border' : ''" style="height: 100%">
+        <div :class="innerBlue ? 'inner-blue-border' : ''" style="height: 100%">
+          <div class="button-content" style="height: 100%">
+            <div v-if="$slots.icon">
+              <slot name="icon" />
             </div>
             <div>
               <h5 v-if="title">{{ title }}</h5>
               <p v-if="description">{{ description }}</p>
+              <slot />
             </div>
           </div>
         </div>

@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useRouter } from "vue-router";
 import DailyButtons from "./DailyButtons.vue";
+import { calculateScore } from "@/common/helper";
+import HomeButton from "../Home/HomeButton.vue";
 
 interface DailyGuess {
   placements: string[];
@@ -13,10 +16,11 @@ interface DailyGuess {
 
 defineProps<{
   guessedBefore: (date: string, category: string) => void | DailyGuess;
+  option: string;
 }>();
 
 function getDailyDates() {
-  const startOfDailies = new Date("03/21/2024"); // Only support most recent set
+  const startOfDailies = new Date("04/21/2024"); // Only support most recent set
   const dailies = [];
   const nowToronto = new Date(
     new Date().toLocaleString("en-US", {
@@ -36,17 +40,67 @@ function getDailyDates() {
   }
   return dailies;
 }
+
+const router = useRouter();
+
+const low = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
+const high = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
+const all = [...low, ...high];
 </script>
 
 <template>
-  <div v-for="d in getDailyDates()">
-    <h4 style="margin: 0">
-      <b>{{ d }}</b>
-    </h4>
-    <div class="buttons">
-      <DailyButtons :guessed-before="guessedBefore" :date="d" />
+  <div class="daily-grid">
+    <div
+      v-for="d in getDailyDates()"
+      :onClick="() => router.push(`/daily/${d}/${option}`)"
+      class="daily-button"
+    >
+      <div v-for="prev in [guessedBefore(d, option)]">
+        <h5>{{ d }}</h5>
+        <div v-if="prev">
+          <p>
+            <span
+              v-for="(place, ind) in prev.placements.map((place) =>
+                parseInt(place)
+              )"
+            >
+              <span>{{ place }}</span>
+              <span v-if="ind != 7">, </span>
+            </span>
+          </p>
+          <p>
+            {{
+              calculateScore(
+                prev.placements,
+                prev.rank,
+                prev.verifiedRank,
+                option === "all" ? all : option === "high" ? high : low
+              ).join(" / ")
+            }}
+          </p>
+        </div>
+        <div v-else>
+          <p>---</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.daily-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.daily-button {
+  background: #3c3c41;
+  padding-top: 1rem;
+}
+
+.daily-button:hover {
+  background: #5b5a56;
+}
+</style>

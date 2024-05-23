@@ -51,49 +51,61 @@ const auth = useAuthenticator();
         title="FREEPLAY"
         :onClick="() => router.push('/play')"
         description="Guess on a random lobby"
-        ><question-circle-outlined
-          style="color: rgb(240, 230, 210); font-size: 2.5rem"
-      /></HomeButton>
+        ><template #icon
+          ><question-circle-outlined
+            style="color: rgb(240, 230, 210); font-size: 2.5rem" /></template
+      ></HomeButton>
       <HomeButton
         title="DAILY"
         :onClick="() => router.push('/daily')"
         description="Guess on today's lobby"
-        ><calendar-outlined
-          style="color: rgb(240, 230, 210); font-size: 2.5rem"
-      /></HomeButton>
+        ><template #icon
+          ><calendar-outlined
+            style="color: rgb(240, 230, 210); font-size: 2.5rem" /></template
+      ></HomeButton>
       <HomeButton
         title="LEADERBOARD"
         :onClick="() => router.push('/leaderboard')"
         description="Compete against others"
-        ><menu-outlined style="color: rgb(240, 230, 210); font-size: 2.5rem"
-      /></HomeButton>
+        ><template #icon
+          ><menu-outlined
+            style="color: rgb(240, 230, 210); font-size: 2.5rem" /></template
+      ></HomeButton>
 
       <HomeButton
         v-if="auth.authStatus !== 'authenticated'"
         title="LOGIN"
         :onClick="() => router.push('/login')"
         description="Store stats and history"
-        ><user-outlined style="color: rgb(240, 230, 210); font-size: 2.5rem"
-      /></HomeButton>
+        ><template #icon
+          ><user-outlined
+            style="color: rgb(240, 230, 210); font-size: 2.5rem" /></template
+      ></HomeButton>
       <HomeButton
         v-else
         title="PROFILE"
         :onClick="() => router.push(`/profile/${auth.user.attributes.sub}`)"
         description="View stats and history"
-        ><user-outlined style="color: rgb(240, 230, 210); font-size: 2.5rem"
-      /></HomeButton>
+        ><template #icon
+          ><user-outlined
+            style="color: rgb(240, 230, 210); font-size: 2.5rem" /></template
+      ></HomeButton>
       <HomeButton
         title="SUPPORTERS"
         :onClick="() => router.push('/supporters')"
         description="Help keep everything running"
-        ><heart-outlined style="color: rgb(240, 230, 210); font-size: 2.5rem"
-      /></HomeButton>
+        ><template #icon
+          ><heart-outlined
+            style="color: rgb(240, 230, 210); font-size: 2.5rem" /></template
+      ></HomeButton>
       <HomeButton
         title="UPDATES"
         :onClick="() => router.push('/updates')"
         description="New and future additions"
-        ><history-outlined style="color: rgb(240, 230, 210); font-size: 2.5rem"
-      /></HomeButton>
+        ><template #icon
+          ><history-outlined
+            style="color: rgb(240, 230, 210); font-size: 2.5rem" /></template
+      ></HomeButton>
     </div>
   </section>
 
