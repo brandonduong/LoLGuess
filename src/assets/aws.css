@@ -18,6 +18,9 @@ span.amplify-authenticator__subtitle {
   --amplify-components-button-color: rgb(240, 230, 210);
   --amplify-components-button-focus-color: var(--color-highlight-gold);
   --amplify-components-button-hover-color: var(--color-highlight-gold);
+  --amplify-components-text-error-color: var(--color-gold);
+
+  --amplify-components-heading-color: rgb(240, 230, 210);
 }
 
 [data-amplify-authenticator] [data-amplify-router] {
@@ -26,6 +29,11 @@ span.amplify-authenticator__subtitle {
 
 [data-amplify-authenticator] [data-state="inactive"] {
   background: linear-gradient(#084152, #2d9eca);
+}
+
+span.amplify-authenticator__subtitle {
+  color: rgb(160, 155, 140);
+  margin: 0;
 }
 
 .amplify-tabs-item:hover,
@@ -43,7 +51,8 @@ span.amplify-authenticator__subtitle {
   letter-spacing: 0.075em;
 }
 
-.amplify-tabs-item {
+.amplify-tabs-item,
+.amplify-authenticator__heading {
   line-height: 18pt;
   letter-spacing: 0.075em;
   font-size: 14pt;
@@ -93,4 +102,33 @@ span.amplify-authenticator__subtitle {
   font-style: normal;
 
   background: linear-gradient(#084152, #2d9eca);
+  border: none;
+  border-top: #2d9eca 1px solid;
+}
+.amplify-button {
+  border-radius: 0;
+}
+
+.amplify-button--default {
+  line-height: 18pt;
+  letter-spacing: 0.075em;
+  font-size: 14pt;
+  color: rgb(240, 230, 210);
+  font-family: "beaufort_for_lolbold";
+  font-weight: 700;
+  font-style: normal;
+
+  background: linear-gradient(#082031, #183039);
+  border: none;
+  border-top: #183039 1px solid;
+}
+
+.amplify-button--default:hover {
+  border-top: #213039 1px solid;
+  background: linear-gradient(#182c39, #213039);
+}
+
+.amplify-button--primary:hover {
+  border-top: #56bde3 1px solid;
+  background: linear-gradient(#094a63, #56bde3);
 }
