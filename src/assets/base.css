@@ -42,6 +42,8 @@
   --color-gold: rgb(200, 155, 60);
   --color-highlight-gold: rgb(200, 170, 110);
   --color-offwhite: rgb(240, 230, 210);
+  --color-background-gray: #3c3c41;
+  --color-background-highlight-gray: #5b5a56;
 
   --section-gap: 160px;
 }

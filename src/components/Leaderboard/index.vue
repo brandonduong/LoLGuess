@@ -253,7 +253,7 @@ td > p {
 }
 
 tr:nth-child(even) {
-  background-color: #3c3c41;
+  background-color: var(--color-background-gray);
 }
 
 .options > div > h5 {

@@ -96,11 +96,11 @@ const all = [...low, ...high];
 }
 
 .daily-button {
-  background: #3c3c41;
+  background: var(--color-background-gray);
   padding-top: 1rem;
 }
 
 .daily-button:hover {
-  background: #5b5a56;
+  background: var(--color-background-highlight-gray);
 }
 </style>
