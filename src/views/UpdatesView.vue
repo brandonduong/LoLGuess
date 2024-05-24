@@ -8,7 +8,7 @@ const updates = [
       "After guessing, reveal usernames?",
       "More game modes",
     ],
-    date: "Future Work",
+    date: "FUTURE WORK",
   },
   {
     items: [
@@ -17,6 +17,7 @@ const updates = [
       "More stats and graphs for logged in users",
       "Fixed old replays",
       "More accurrate champion icons used",
+      "Fixed daily countdown timers",
       "Small details and bugs",
     ],
     date: "05-28-2024",
