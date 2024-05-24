@@ -5,14 +5,12 @@ withDefaults(
     description?: string;
     onClick?: () => void;
     href?: string;
-    gold?: boolean;
-    inner?: boolean;
-    innerBlue?: boolean;
+    type?: string;
+    active?: boolean;
   }>(),
   {
-    gold: true,
-    inner: true,
-    innerBlue: true,
+    type: "primary",
+    active: true,
   }
 );
 </script>
@@ -22,11 +20,18 @@ withDefaults(
     @click="() => onClick && onClick()"
     :href="href"
     target="_blank"
+    :style="active ? '' : 'filter: grayscale(70%);'"
   >
-    <div :class="gold ? 'gold-border' : ''" style="height: 100%">
-      <div :class="inner ? 'inner-border' : ''" style="height: 100%">
-        <div :class="innerBlue ? 'inner-blue-border' : ''" style="height: 100%">
-          <div class="button-content" style="height: 100%">
+    <div :class="type === 'primary' ? 'gold-border' : ''" style="height: 100%">
+      <div
+        :class="type === 'primary' ? 'inner-border' : ''"
+        style="height: 100%"
+      >
+        <div
+          :class="type === 'primary' ? 'inner-blue-border' : ''"
+          style="height: 100%"
+        >
+          <div class="button-content" :type="type" style="height: 100%">
             <div v-if="$slots.icon">
               <slot name="icon" />
             </div>
@@ -69,7 +74,20 @@ withDefaults(
   padding: 1rem;
   gap: 1rem;
   align-items: center;
+}
+
+[type="primary"] {
   background: linear-gradient(#084152, #2d9eca);
+}
+.home-btn:hover [type="primary"] {
+  background: linear-gradient(#094a63, #56bde3);
+}
+
+[type="secondary"] {
+  background: var(--color-background-gray);
+}
+.home-btn:hover [type="secondary"] {
+  background: var(--color-background-highlight-gray);
 }
 
 .button-content > div > p,
@@ -84,9 +102,6 @@ withDefaults(
 }
 .home-btn:hover .inner-blue-border {
   background: linear-gradient(#84cbe7, #a5efff);
-}
-.home-btn:hover .button-content {
-  background: linear-gradient(#094a63, #56bde3);
 }
 
 .home-btn:hover .gold-border {

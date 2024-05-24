@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import DailyButtons from "./DailyButtons.vue";
 import { calculateScore } from "@/common/helper";
 import HomeButton from "../Home/HomeButton.vue";
 
@@ -50,13 +49,14 @@ const all = [...low, ...high];
 
 <template>
   <div class="daily-grid">
-    <div
+    <HomeButton
       v-for="d in getDailyDates()"
       :onClick="() => router.push(`/daily/${d}/${option}`)"
       class="daily-button"
+      type="secondary"
+      :title="d"
     >
       <div v-for="prev in [guessedBefore(d, option)]">
-        <h5>{{ d }}</h5>
         <div v-if="prev">
           <p>
             <span
@@ -83,7 +83,7 @@ const all = [...low, ...high];
           <p>---</p>
         </div>
       </div>
-    </div>
+    </HomeButton>
   </div>
 </template>
 
@@ -93,14 +93,5 @@ const all = [...low, ...high];
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   padding: 1rem;
   gap: 1rem;
-}
-
-.daily-button {
-  background: var(--color-background-gray);
-  padding-top: 1rem;
-}
-
-.daily-button:hover {
-  background: var(--color-background-highlight-gray);
 }
 </style>
