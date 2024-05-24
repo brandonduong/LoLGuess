@@ -125,7 +125,7 @@ const filters = [
       />
     </div>
     <div>
-      <h5>MINIMUM 10 GUESSES</h5>
+      <h5 style="text-align: end">MINIMUM 10 GUESSES</h5>
     </div>
   </div>
   <CustomCard
@@ -198,15 +198,13 @@ const filters = [
 .options {
   display: flex;
   justify-content: space-between;
-  align-items: end;
 }
 
 .timer {
-  display: grid;
-  align-items: end;
-  grid-template-columns: auto auto;
+  display: flex;
   column-gap: 0.5rem;
   color: rgba(0, 0, 0, 0.85);
+  flex-wrap: wrap;
 }
 
 .t-header {
@@ -220,9 +218,7 @@ const filters = [
 }
 
 .loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
 }
 
 .filter,

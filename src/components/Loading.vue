@@ -13,16 +13,9 @@ const indicator = h(LoadingOutlined, {
 </script>
 
 <template>
-  <div class="loading">
+  <div>
     <a-spin :indicator="indicator"></a-spin>
   </div>
 </template>
 
-<style>
-.loading {
-  grid-column: span 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-</style>
+<style></style>
