@@ -35,7 +35,7 @@ withDefaults(
             <div v-if="$slots.icon">
               <slot name="icon" />
             </div>
-            <div>
+            <div v-if="title || description">
               <h5 v-if="title">{{ title }}</h5>
               <p v-if="description">{{ description }}</p>
               <slot />
@@ -76,11 +76,16 @@ withDefaults(
   align-items: center;
 }
 
-[type="primary"] {
-  background: linear-gradient(#084152, #2d9eca);
+[type="primary"],
+[type="tertiary"] {
+  background: linear-gradient(var(--color-dark-blue), var(--color-light-blue));
 }
-.home-btn:hover [type="primary"] {
-  background: linear-gradient(#094a63, #56bde3);
+.home-btn:hover [type="primary"],
+.home-btn:hover [type="tertiary"] {
+  background: linear-gradient(
+    var(--color-highlight-dark-blue),
+    var(--color-highlight-light-blue)
+  );
 }
 
 [type="secondary"] {

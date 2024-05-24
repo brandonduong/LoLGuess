@@ -26,8 +26,14 @@ function updateOption(o: string) {
 }
 
 .inactive-tab {
-  border-top: #2d9eca 1px solid;
-  background: linear-gradient(#084152, #2d9eca);
+  background: linear-gradient(var(--color-dark-blue), var(--color-light-blue));
+}
+
+.inactive-tab:hover {
+  background: linear-gradient(
+    var(--color-highlight-dark-blue),
+    var(--color-highlight-light-blue)
+  );
 }
 
 .active-tab {

@@ -44,6 +44,10 @@
   --color-offwhite: rgb(240, 230, 210);
   --color-background-gray: #3c3c41;
   --color-background-highlight-gray: #5b5a56;
+  --color-dark-blue: #084152;
+  --color-light-blue: #2d9eca;
+  --color-highlight-dark-blue: #094a63;
+  --color-highlight-light-blue: #56bde3;
 
   --section-gap: 160px;
 }
@@ -73,7 +77,10 @@ body {
 }
 
 a,
-button {
+button,
+.ant-checkbox-wrapper,
+input,
+.amplify-tabs-item {
   cursor: url("/cursor-pointer.png"), pointer !important;
 }
 
