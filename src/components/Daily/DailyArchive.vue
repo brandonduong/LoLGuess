@@ -20,7 +20,7 @@ defineProps<{
 }>();
 
 function getDailyDates() {
-  const startOfDailies = new Date("04/21/2024"); // Only support most recent set
+  const startOfDailies = new Date("05/21/2024"); // Only support most recent set
   const dailies = [];
   const nowToronto = new Date(
     new Date().toLocaleString("en-US", {

@@ -203,7 +203,6 @@ const filters = [
 .timer {
   display: flex;
   column-gap: 0.5rem;
-  color: rgba(0, 0, 0, 0.85);
   flex-wrap: wrap;
 }
 

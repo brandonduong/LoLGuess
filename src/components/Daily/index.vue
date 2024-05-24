@@ -85,7 +85,7 @@ const option = ref<string>("low");
         />
       </div>
       <div>
-        <h5 style="margin: 0">SET 11</h5>
+        <h5 style="margin: 0; text-align: end">SET 11</h5>
       </div>
     </div>
 
@@ -116,8 +116,7 @@ const option = ref<string>("low");
 
 .timer {
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 0.5rem;
+  column-gap: 0.5rem;
+  flex-wrap: wrap;
 }
 </style>
