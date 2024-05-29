@@ -15,6 +15,8 @@ import GuessRegion from "./GuessRegion.vue";
 import { useRouter } from "vue-router";
 import CustomCard from "../CustomCard.vue";
 import HomeButton from "../Home/HomeButton.vue";
+import Loading from "../Loading.vue";
+import FreeplaySettings from "./FreeplaySettings.vue";
 const props = defineProps<{ guessId: string }>();
 
 const auth = useAuthenticator();
@@ -194,19 +196,6 @@ async function verifyGuess() {
     });
 }
 
-const steps = [
-  {
-    title: "Regions",
-  },
-  {
-    title: "Ranks",
-  },
-  {
-    title: "Guess",
-  },
-  { title: "Results" },
-];
-
 const regions: string[] = [
   "BR",
   "EUNE",
@@ -251,15 +240,6 @@ const verifiedRegion = ref<string>("");
 
 const prevButtonText = ["HOME", "REGIONS", "FORFEIT", "HOME"];
 const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY AGAIN"];
-
-const indicator = h(LoadingOutlined, {
-  style: {
-    fontSize: "4rem",
-    margin: "5rem 0 4.5rem 0",
-    color: "lightslategray",
-  },
-  spin: true,
-});
 </script>
 
 <template>
@@ -270,11 +250,11 @@ const indicator = h(LoadingOutlined, {
     <CustomCard style="align-items: normal">
       <div v-if="!loading">
         <div v-if="current === 0">
-          <GroupSettings
+          <h5>REGIONS</h5>
+          <FreeplaySettings
             :options="regions"
             :selected-options="selectedRegions"
-            @update-selected-options="selectedRegions = $event"
-            description="REGIONS"
+            @update-options="(newOptions) => (selectedRegions = newOptions)"
           />
         </div>
         <div v-if="current === 1">
@@ -322,7 +302,7 @@ const indicator = h(LoadingOutlined, {
           </div>
         </div>
       </div>
-      <div v-else><a-spin :indicator="indicator"></a-spin></div>
+      <div v-else><Loading /></div>
     </CustomCard>
   </div>
   <div class="steps-action">

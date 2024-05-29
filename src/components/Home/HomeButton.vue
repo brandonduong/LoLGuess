@@ -7,10 +7,12 @@ const props = withDefaults(
     href?: string;
     type?: string;
     active?: boolean;
+    justifyContent?: string;
   }>(),
   {
     type: "primary",
     active: true,
+    justifyContent: "start",
   }
 );
 function borderOne() {
@@ -75,7 +77,7 @@ function contentColor() {
           <div
             class="button-content"
             :class="contentColor()"
-            style="height: 100%"
+            :style="`justify-content: ${justifyContent}`"
           >
             <span v-if="$slots.icon" style="display: flex">
               <slot name="icon" />
@@ -83,8 +85,8 @@ function contentColor() {
             <div v-if="title || description">
               <h5 v-if="title">{{ title }}</h5>
               <p v-if="description">{{ description }}</p>
-              <slot />
             </div>
+            <slot />
             <span v-if="$slots.iconRight" style="display: flex">
               <slot name="iconRight" />
             </span>
@@ -107,6 +109,7 @@ function contentColor() {
   padding: 1rem;
   gap: 1rem;
   align-items: center;
+  height: 100%;
 }
 
 .button-content > div > p,
