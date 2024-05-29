@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref, h } from "vue";
-import { LoadingOutlined } from "@ant-design/icons-vue";
+import {
+  LoadingOutlined,
+  DoubleRightOutlined,
+  DoubleLeftOutlined,
+} from "@ant-design/icons-vue";
 import http from "../../common/http-common";
 import GroupSettings from "./GroupSettings.vue";
 import DragAndDropTable from "./DragAndDropTable.vue";
@@ -9,6 +13,8 @@ import GuessRank from "./GuessRank.vue";
 import GuessScore from "./GuessScore.vue";
 import GuessRegion from "./GuessRegion.vue";
 import { useRouter } from "vue-router";
+import CustomCard from "../CustomCard.vue";
+import HomeButton from "../Home/HomeButton.vue";
 const props = defineProps<{ guessId: string }>();
 
 const auth = useAuthenticator();
@@ -52,6 +58,9 @@ const next = async () => {
 };
 const prev = () => {
   current.value--;
+  if (current.value < 0) {
+    router.push("/");
+  }
 };
 async function getMatch() {
   if (auth.user) {
@@ -240,7 +249,8 @@ const verifiedGuess = ref<string[]>([]);
 const verifiedRank = ref<string>("");
 const verifiedRegion = ref<string>("");
 
-const buttonText = ["Next", "Play", "Guess", "Play Again"];
+const prevButtonText = ["HOME", "REGIONS", "FORFEIT", ""];
+const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY AGAIN"];
 
 const indicator = h(LoadingOutlined, {
   style: {
@@ -253,17 +263,18 @@ const indicator = h(LoadingOutlined, {
 </script>
 
 <template>
-  <div>
-    <div class="steps-content">
-      <h2 v-if="current <= 1 && !loading">Freeplay</h2>
+  <div class="steps-content">
+    <h3 v-if="current <= 1 && !loading" class="gold">FREEPLAY</h3>
+    <p>Guess on a random match from the selected ranks and regions</p>
 
+    <CustomCard style="align-items: normal">
       <div v-if="!loading">
         <div v-if="current === 0">
           <GroupSettings
             :options="regions"
             :selected-options="selectedRegions"
             @update-selected-options="selectedRegions = $event"
-            description="Choose the regions to include when fetching a match"
+            description="REGIONS"
           />
         </div>
         <div v-if="current === 1">
@@ -272,7 +283,7 @@ const indicator = h(LoadingOutlined, {
             :selected-options="selectedRanks"
             @update-selected-options="selectedRanks = $event"
             :icons="true"
-            description="Choose the ranks to include when fetching a match"
+            description="RANKS"
           />
         </div>
         <div v-if="current === 2 || current === 3" class="table-div">
@@ -312,42 +323,42 @@ const indicator = h(LoadingOutlined, {
         </div>
       </div>
       <div v-else><a-spin :indicator="indicator"></a-spin></div>
-    </div>
-    <div class="steps-action">
-      <a-button
-        :disabled="!(current > 0 && current < steps.length - 1) || loading"
-        @click="prev"
-        class="action-btn"
-        >Previous</a-button
-      >
-      <a-button
-        v-if="current < steps.length"
-        type="primary"
-        @click="next"
-        class="action-btn"
-        :disabled="
-          (selectedRegions.length === 0 && current === 0) ||
-          (selectedRanks.length === 0 && current === 1) ||
-          (current === 2 && !selectedRank) ||
-          loading
-        "
-        >{{ buttonText[current] }}</a-button
-      >
-    </div>
+    </CustomCard>
+  </div>
+  <div class="steps-action">
+    <HomeButton
+      type="default"
+      :title="prevButtonText[current]"
+      :active="current < steps.length - 1 && !loading"
+      :onClick="prev"
+      ><template #icon
+        ><double-left-outlined
+          style="color: rgb(240, 230, 210); font-size: 1.75rem" /></template
+    ></HomeButton>
+    <HomeButton
+      :title="buttonText[current]"
+      :active="
+        ((selectedRegions.length > 0 && current === 0) ||
+          (selectedRanks.length > 0 && current === 1) ||
+          (current === 2 && selectedRank.length > 0) ||
+          current === 3) &&
+        !loading
+      "
+      :onClick="next"
+      ><template #iconRight
+        ><double-right-outlined
+          style="color: rgb(240, 230, 210); font-size: 1.75rem" /></template
+    ></HomeButton>
   </div>
 </template>
 
 <style scoped>
 .steps-content {
-  border: 1px solid lightslategray;
-  border-radius: 0.25rem;
-  background-color: white;
   text-align: center;
-  padding: 1rem 0.5rem 0.5rem;
+  padding: 1rem 0;
 }
 
 .steps-action {
-  margin-top: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -363,17 +374,6 @@ const indicator = h(LoadingOutlined, {
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: center;
-}
-
-.step {
-  cursor: context-menu;
-}
-
-.steps {
-  border: 1px solid lightslategray;
-  border-radius: 0.25rem;
-  padding: 0.5rem 1rem;
-  background-color: white;
 }
 
 @media only screen and (max-width: 720px) {
