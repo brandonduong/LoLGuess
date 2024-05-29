@@ -347,6 +347,7 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY AGAIN"];
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  padding-bottom: 1rem;
 }
 
 .action-btn {
