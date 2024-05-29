@@ -8,11 +8,15 @@ const props = withDefaults(
     type?: string;
     active?: boolean;
     justifyContent?: string;
+    flexDirection?: string;
+    iconGap?: string;
   }>(),
   {
     type: "primary",
     active: true,
     justifyContent: "start",
+    flexDirection: "row",
+    iconGap: "1rem",
   }
 );
 function borderOne() {
@@ -77,7 +81,7 @@ function contentColor() {
           <div
             class="button-content"
             :class="contentColor()"
-            :style="`justify-content: ${justifyContent}`"
+            :style="`justify-content: ${justifyContent}; flex-direction: ${flexDirection}; gap: ${iconGap}`"
           >
             <span v-if="$slots.icon" style="display: flex">
               <slot name="icon" />
@@ -107,7 +111,6 @@ function contentColor() {
 .button-content {
   display: flex;
   padding: 1rem;
-  gap: 1rem;
   align-items: center;
   height: 100%;
 }

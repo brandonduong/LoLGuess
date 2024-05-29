@@ -251,20 +251,24 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY AGAIN"];
       <div v-if="!loading">
         <div v-if="current === 0">
           <h5>REGIONS</h5>
-          <FreeplaySettings
-            :options="regions"
-            :selected-options="selectedRegions"
-            @update-options="(newOptions) => (selectedRegions = newOptions)"
-          />
+          <div class="region-grid">
+            <FreeplaySettings
+              :options="regions"
+              :selected-options="selectedRegions"
+              @update-options="(newOptions) => (selectedRegions = newOptions)"
+            />
+          </div>
         </div>
         <div v-if="current === 1">
-          <GroupSettings
-            :options="ranks"
-            :selected-options="selectedRanks"
-            @update-selected-options="selectedRanks = $event"
-            :icons="true"
-            description="RANKS"
-          />
+          <h5>RANKS</h5>
+          <div class="rank-grid">
+            <FreeplaySettings
+              :options="ranks"
+              :selected-options="selectedRanks"
+              @update-options="(newOptions) => (selectedRanks = newOptions)"
+              :icons="true"
+            />
+          </div>
         </div>
         <div v-if="current === 2 || current === 3" class="table-div">
           <DragAndDropTable
@@ -359,6 +363,32 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY AGAIN"];
 @media only screen and (max-width: 720px) {
   .table-div {
     overflow: auto;
+  }
+}
+
+.region-grid,
+.rank-grid {
+  display: grid;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.region-grid {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.rank-grid {
+  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+}
+
+@media only screen and (max-width: 1024px) {
+  .region-grid {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+
+  .rank-grid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   }
 }
 </style>

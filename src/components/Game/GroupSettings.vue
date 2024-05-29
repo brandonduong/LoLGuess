@@ -1,5 +1,5 @@
 <template>
-  <h3 class="description">{{ description }}</h3>
+  <h5 class="description">{{ description }}</h5>
   <div class="options">
     <a-checkbox
       class="option"
@@ -9,7 +9,7 @@
       @click="checkBox(option)"
     >
       <div class="option-div">
-        {{ option }}
+        <p>{{ option }}</p>
         <img
           v-if="icons"
           :src="`/${option.toLowerCase()}.png`"
@@ -20,7 +20,6 @@
       </div>
     </a-checkbox>
   </div>
-  <a-divider class="divider" />
   <div class="all">
     <a-checkbox
       v-model:checked="checkAll"
@@ -28,7 +27,7 @@
       @change="onCheckAllChange"
       class="check-all"
     >
-      <span class="check-all-text"> Check all </span>
+      <p class="check-all-text">Check all</p>
     </a-checkbox>
   </div>
 </template>
@@ -114,43 +113,29 @@ export default defineComponent({
 <style scoped>
 .options {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
-  padding: 0.25rem 2rem 0;
-}
-
-@media only screen and (max-width: 720px) {
-  .options {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.5rem;
-  }
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  padding: 1rem;
+  gap: 1rem;
 }
 
 .all {
   text-align: start;
-  padding: 0 2rem;
-}
-
-.divider {
-  margin: 0.5rem 0;
+  padding: 0 1rem;
 }
 
 .option {
   margin: 0;
-  font-size: 1rem;
-  display: flex;
   align-items: center;
 }
 
 .check-all {
-  font-size: 1rem;
-  display: flex;
   align-items: center;
+  margin: 0;
+  width: 100%;
 }
 
 .check-all-text {
-  font-weight: 500;
+  margin: 0;
 }
 
 .icon {
@@ -161,8 +146,9 @@ export default defineComponent({
 .option-div {
   display: flex;
   align-items: center;
-  font-weight: 500;
 }
+
+.option-div > p,
 .description {
   margin: 0;
 }

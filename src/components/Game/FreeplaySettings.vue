@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import HomeButton from "../Home/HomeButton.vue";
+import RankIcon from "./RankIcon.vue";
 
-const props = defineProps<{ options: string[]; selectedOptions: string[] }>();
+const props = defineProps<{
+  options: string[];
+  selectedOptions: string[];
+  icons?: boolean;
+}>();
 const emit = defineEmits<{
   (e: "updateOptions", newOptions: string[]): void;
 }>();
@@ -28,34 +33,24 @@ function checkAll() {
 }
 </script>
 <template>
-  <div class="option-grid">
-    <HomeButton
-      v-for="option in options"
-      :type="selectedOptions.includes(option) ? 'tertiary' : 'secondary'"
-      :title="option"
-      :onClick="() => updateOptions(option)"
-      justifyContent="center"
-      class="option-button"
-    />
-  </div>
+  <HomeButton
+    v-for="option in options"
+    :type="selectedOptions.includes(option) ? 'tertiary' : 'secondary'"
+    :title="option"
+    :onClick="() => updateOptions(option)"
+    justifyContent="center"
+    flexDirection="column"
+    iconGap="0"
+    class="option-button"
+    ><template #icon v-if="icons"
+      ><RankIcon :rank="option" width="100px" height="100px" /></template
+  ></HomeButton>
   <HomeButton
     :type="selectedOptions.length > 0 ? 'tertiary' : 'secondary'"
     title="CHECK ALL"
     justifyContent="center"
-    style="width: 100%"
+    style="grid-column: 1 / -1"
     :onClick="checkAll"
   />
 </template>
-<style scoped>
-.option-grid {
-  display: grid;
-  gap: 1rem;
-  justify-content: center;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-  margin-bottom: 1rem;
-}
-
-.option-button {
-  aspect-ratio: 1;
-}
-</style>
+<style scoped></style>
