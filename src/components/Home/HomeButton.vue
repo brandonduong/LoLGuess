@@ -10,6 +10,7 @@ const props = withDefaults(
     justifyContent?: string;
     flexDirection?: string;
     iconGap?: string;
+    padding?: string;
   }>(),
   {
     type: "primary",
@@ -17,6 +18,7 @@ const props = withDefaults(
     justifyContent: "start",
     flexDirection: "row",
     iconGap: "1rem",
+    padding: "1rem",
   }
 );
 function borderOne() {
@@ -81,7 +83,7 @@ function contentColor() {
           <div
             class="button-content"
             :class="contentColor()"
-            :style="`justify-content: ${justifyContent}; flex-direction: ${flexDirection}; gap: ${iconGap}`"
+            :style="`justify-content: ${justifyContent}; flex-direction: ${flexDirection}; gap: ${iconGap}; padding: ${padding}`"
           >
             <span v-if="$slots.icon" style="display: flex">
               <slot name="icon" />
@@ -120,7 +122,6 @@ function contentColor() {
 
 .button-content {
   display: flex;
-  padding: 1rem;
   align-items: center;
   height: 100%;
 }

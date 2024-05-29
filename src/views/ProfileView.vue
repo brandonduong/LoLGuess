@@ -4,13 +4,9 @@ defineProps<{ sub: string }>();
 </script>
 
 <template>
-  <div class="main">
-    <Profile :sub="sub" :key="sub" />
+  <div style="padding: 1rem 0">
+    <Profile :sub="sub" />
   </div>
 </template>
 
-<style scoped>
-.main {
-  grid-column: span 2;
-}
-</style>
+<style scoped></style>

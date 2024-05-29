@@ -4,6 +4,8 @@ import { type User } from "../../API";
 import Stat from "./Stat.vue";
 import { roundToTwo } from "../../common/helper";
 import { RedoOutlined } from "@ant-design/icons-vue";
+import CustomCard from "../CustomCard.vue";
+import HomeButton from "../Home/HomeButton.vue";
 
 const emit = defineEmits(["getStaticProfileData"]);
 
@@ -13,22 +15,22 @@ const props = defineProps<{
 
 const [pref, username] = props.staticProfileData.username.split(" ");
 const stats = {
-  Guesses: props.staticProfileData.totalGuesses,
-  "Unfinished Guesses": props.staticProfileData.unfinished,
-  Score: `${roundToTwo(props.staticProfileData.score)} / ${roundToTwo(
+  GUESSES: props.staticProfileData.totalGuesses,
+  "UNFINISHED GUESSES": props.staticProfileData.unfinished,
+  SCORE: `${roundToTwo(props.staticProfileData.score)} / ${roundToTwo(
     props.staticProfileData.maxScore
   )}`,
-  "Avg. Score": roundToTwo(
+  "AVG. SCORE": roundToTwo(
     props.staticProfileData.score / props.staticProfileData.totalGuesses
   ),
-  "Correct Placements": `${props.staticProfileData.correctPlacements} /
+  "CORRECT PLACEMENTS": `${props.staticProfileData.correctPlacements} /
   ${props.staticProfileData.totalGuesses * 8}`,
-  "Avg. Cor. Placements": roundToTwo(
+  "AVG. CORRECT PLACEMENTS": roundToTwo(
     props.staticProfileData.correctPlacements /
       props.staticProfileData.totalGuesses
   ),
-  "Correct Ranks": props.staticProfileData.correctRanks,
-  "Average Rank Pool": roundToTwo(
+  "CORRECT RANKS": props.staticProfileData.correctRanks,
+  "AVG. RANK POOL": roundToTwo(
     props.staticProfileData.totalRanks / props.staticProfileData.totalGuesses
   ),
 };
@@ -38,63 +40,54 @@ function refresh() {
 }
 </script>
 <template>
-  <div class="stats">
-    <h2 class="stats-title">
-      {{ pref.substring(0, 20) }} ({{ username.substring(0, 20) }})
-    </h2>
+  <CustomCard style="align-items: normal; gap: 0.5rem">
     <div class="refresh">
-      <a-button class="refresh-btn" type="primary" @click="refresh">
-        <RedoOutlined style="font-size: 1.5rem; color: white" />
-      </a-button>
+      <h4 class="stats-title">
+        {{ pref.substring(0, 20) }}
+        <p>({{ username.substring(0, 20) }})</p>
+      </h4>
+      <HomeButton
+        class="refresh-btn"
+        type="secondary"
+        @click="refresh"
+        title="REFRESH"
+        padding="0 0.75rem"
+      >
+        <template #icon>
+          <RedoOutlined style="font-size: 1rem; color: white" />
+        </template>
+      </HomeButton>
     </div>
-    <hr class="stats-divider" />
 
-    <Stat
-      v-for="[title, value] in Object.entries(stats)"
-      :title="title"
-      :value="value"
-    />
-  </div>
+    <div class="stats">
+      <Stat
+        v-for="[title, value] in Object.entries(stats)"
+        :title="title"
+        :value="value"
+      />
+    </div>
+  </CustomCard>
 </template>
 <style scoped>
-.stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 2rem;
-  border: solid 1px lightslategray;
-  border-radius: 0.25rem;
-  background-color: white;
-  padding: 0.5rem 1.5rem;
-  align-items: center;
-}
-
 .stats-title {
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
-
-.stats-divider {
-  grid-column: span 2;
+.stats-title > p {
+  margin: 0;
 }
-
 .refresh {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
 }
-
-.refresh-btn {
-  padding: 0.18rem 0.5rem 0;
-}
-
-@media only screen and (max-width: 720px) {
-  .stats {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  .stat,
-  .stats-divider {
-    width: 100%;
-  }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  column-gap: 2rem;
+  row-gap: 0.5rem;
 }
 </style>
