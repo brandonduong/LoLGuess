@@ -57,10 +57,10 @@ const next = async () => {
   }
 };
 const prev = () => {
-  current.value--;
-  if (current.value < 0) {
+  if (current.value === 0 || current.value === 3) {
     router.push("/");
   }
+  current.value--;
 };
 async function getMatch() {
   if (auth.user) {
@@ -249,7 +249,7 @@ const verifiedGuess = ref<string[]>([]);
 const verifiedRank = ref<string>("");
 const verifiedRegion = ref<string>("");
 
-const prevButtonText = ["HOME", "REGIONS", "FORFEIT", ""];
+const prevButtonText = ["HOME", "REGIONS", "FORFEIT", "HOME"];
 const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY AGAIN"];
 
 const indicator = h(LoadingOutlined, {
@@ -329,7 +329,7 @@ const indicator = h(LoadingOutlined, {
     <HomeButton
       type="default"
       :title="prevButtonText[current]"
-      :active="current < steps.length - 1 && !loading"
+      :active="!loading"
       :onClick="prev"
       ><template #icon
         ><double-left-outlined
