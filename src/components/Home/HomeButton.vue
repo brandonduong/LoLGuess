@@ -108,6 +108,16 @@ function contentColor() {
   border: 0;
 }
 
+@keyframes fadeInFromNone {
+  0% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 .button-content {
   display: flex;
   padding: 1rem;
@@ -153,6 +163,7 @@ function contentColor() {
 
 .primary-content {
   background: linear-gradient(var(--color-dark-blue), var(--color-light-blue));
+  animation: fadeInFromNone 0.4s ease-out;
 }
 
 .secondary-content {
