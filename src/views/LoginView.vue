@@ -44,6 +44,7 @@ I18n.putVocabulariesForLanguage("en", {
   "Sign in": "LOGIN",
   "Confirmation Code": "CONFIRMATION CODE",
   "We Texted You": "EMAIL VERIFICATION CODE",
+  "Signing in": "LOGGING IN",
 });
 
 const oldAuthStatus = ref<string>(auth.authStatus);
