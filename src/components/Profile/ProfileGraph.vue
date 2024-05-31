@@ -17,24 +17,34 @@ const props = defineProps<{
 
 const selectOptions = ref<SelectProps["options"]>([
   {
-    value: "freeplay",
-    label: "Freeplay History",
+    label: "FREEPLAY",
+    options: [
+      {
+        value: "freeplay",
+        label: "Freeplay History",
+      },
+      {
+        value: "scores",
+        label: "Score Distribution",
+      },
+      {
+        value: "ranks",
+        label: "Rank Distribution",
+      },
+      {
+        value: "placements",
+        label: "Placement Distribution",
+      },
+    ],
   },
   {
-    value: "daily",
-    label: "Daily History",
-  },
-  {
-    value: "scores",
-    label: "Score Distribution",
-  },
-  {
-    value: "ranks",
-    label: "Rank Distribution",
-  },
-  {
-    value: "placements",
-    label: "Placement Distribution",
+    label: "DAILY",
+    options: [
+      {
+        value: "daily",
+        label: "Daily History",
+      },
+    ],
   },
 ]);
 const value = ref("freeplay");
