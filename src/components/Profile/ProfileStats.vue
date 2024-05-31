@@ -42,7 +42,7 @@ function refresh() {
 <template>
   <CustomCard style="align-items: normal; gap: 0.5rem">
     <div class="refresh">
-      <h4 class="stats-title">
+      <h4 class="stats-title gold">
         {{ pref.substring(0, 20) }}
         <p>({{ username.substring(0, 20) }})</p>
       </h4>
@@ -51,7 +51,7 @@ function refresh() {
         type="secondary"
         @click="refresh"
         title="REFRESH"
-        padding="0 0.75rem"
+        padding="0.25rem 0.75rem"
       >
         <template #icon>
           <RedoOutlined style="font-size: 1rem; color: white" />

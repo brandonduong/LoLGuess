@@ -101,19 +101,22 @@ function changeGraph(newOption: string) {
 </script>
 
 <template>
-  <CustomCard style="align-items: normal">
+  <CustomCard style="align-items: normal; justify-content: start">
     <CustomSelect
       :options="selectOptions"
       :value="value"
       @update-option="(newOption: string) => changeGraph(newOption)"
     />
-    <div v-if="value === 'freeplay' || value === 'daily'">
+    <div v-if="value === 'freeplay' || value === 'daily'" style="height: 100%">
       <HistoryGraph :guesses="graphGuesses" />
     </div>
-    <div v-else-if="value === 'scores'">
+    <div v-else-if="value === 'scores'" style="height: 100%">
       <DistributionGraphScores :scores="user.scores!.map(s => s as number)" />
     </div>
-    <div v-else-if="value === 'ranks' || value === 'placements'">
+    <div
+      v-else-if="value === 'ranks' || value === 'placements'"
+      style="height: 100%"
+    >
       <DistributionGraph2D
         :scores="distributionValues"
         :labels="distributionLabels"
