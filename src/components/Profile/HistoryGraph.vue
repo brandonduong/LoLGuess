@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { calculateScore } from "@/common/helper";
-import CustomLineGraph from "./CustomLineGraph.vue";
+import CustomLineGraph from "./CustomGraph.vue";
 import type { Guess } from "@/API";
 
 const props = defineProps<{
@@ -71,5 +71,5 @@ watch(
 );
 </script>
 <template>
-  <CustomLineGraph :data="data" />
+  <CustomLineGraph :data="data" type="Line" />
 </template>

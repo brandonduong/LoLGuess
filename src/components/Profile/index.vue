@@ -98,7 +98,10 @@ async function forceUpdate() {
       @getStaticProfileData="forceUpdate()"
       style="grid-column: 1 / -2"
     />
-    <ProfileGraph :guesses="(staticProfileGuesses as [Guess])" />
+    <ProfileGraph
+      :guesses="(staticProfileGuesses as [Guess])"
+      :user="staticProfileData!"
+    />
     <div class="history">
       <ProfileHistory :guesses="(staticProfileGuesses as [Guess])" />
     </div>

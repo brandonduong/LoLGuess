@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import type { Guess } from "@/API";
+import type { Guess, User } from "@/API";
 import CustomCard from "../CustomCard.vue";
 import CustomSelect from "./CustomSelect.vue";
 import HistoryGraph from "./HistoryGraph.vue";
+import DistributionGraphScores from "./DistributionGraphScores.vue";
 import type { SelectProps } from "ant-design-vue";
 
 const props = defineProps<{
   guesses: Guess[];
+  user: User;
 }>();
 
 //console.log(props.guesses);
@@ -22,7 +24,11 @@ const selectOptions = ref<SelectProps["options"]>([
     label: "Daily History",
   },
   {
-    value: "rank",
+    value: "scores",
+    label: "Score Distribution",
+  },
+  {
+    value: "ranks",
     label: "Rank Distribution",
   },
   {
@@ -42,7 +48,6 @@ function changeGraph(newOption: string) {
     case "daily":
       graphGuesses.value = props.guesses.filter((g) => g.mode === "daily");
       break;
-
     default:
       break;
   }
@@ -56,8 +61,11 @@ function changeGraph(newOption: string) {
       :value="value"
       @update-option="(newOption: string) => changeGraph(newOption)"
     />
-    <div>
+    <div v-if="value === 'freeplay' || value === 'daily'">
       <HistoryGraph :guesses="graphGuesses" />
+    </div>
+    <div v-else-if="value === 'scores'">
+      <DistributionGraphScores :scores="user.scores" />
     </div>
   </CustomCard>
 </template>

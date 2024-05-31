@@ -306,9 +306,13 @@ async function calculateStats(stats, placements, guessedRank, rank, ranks) {
     "Challenger",
   ];
   // Initialize scores, rankGuesses, placementGuesses
-  if (!copy.rankGuesses || !copy.rankGuesses[0].length) {
+  if (
+    !copy.rankGuesses ||
+    !copy.rankGuesses[0].length ||
+    (copy.scores && copy.scores.length < 101)
+  ) {
     const guesses = await guessesByDate(stats.id);
-    copy.scores = new Array(100).fill(0);
+    copy.scores = new Array(101).fill(0);
     copy.rankGuesses = new Array(10).fill(0).map((x) => new Array(10).fill(0));
     copy.placementGuesses = new Array(8)
       .fill(0)
@@ -324,7 +328,7 @@ async function calculateStats(stats, placements, guessedRank, rank, ranks) {
             guess.rank,
             guess.ranks
           )[0]
-        ) - 1
+        )
       ] += 1;
 
       // initialize rankGuesses
@@ -338,7 +342,7 @@ async function calculateStats(stats, placements, guessedRank, rank, ranks) {
       }
     }
   } else {
-    copy.scores[Math.round(score) - 1] += 1;
+    copy.scores[Math.round(score)] += 1;
     copy.rankGuesses[RANKS.indexOf(rank)][RANKS.indexOf(guessedRank)] += 1;
     for (let i = 0; i < placements.length; i++) {
       copy.placementGuesses[placements[i] - 1][i] += 1;

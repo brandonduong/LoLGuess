@@ -9,9 +9,19 @@ import {
   Title,
   Tooltip,
   Legend,
+  BarElement,
 } from "chart.js";
-import { Line } from "vue-chartjs";
-defineProps<{ data: ChartData<"line"> }>();
+import { Bar, Line } from "vue-chartjs";
+
+enum GraphType {
+  Line,
+  Bar,
+}
+
+defineProps<{
+  data: ChartData<"line"> | ChartData<"bar">;
+  type: keyof typeof GraphType;
+}>();
 
 Chart.register(
   CategoryScale,
@@ -20,7 +30,10 @@ Chart.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale
 );
 Chart.defaults.font.family = "spiegelregular";
 Chart.defaults.color = "rgb(240, 230, 210)";
@@ -53,5 +66,14 @@ const options = {
 };
 </script>
 <template>
-  <Line :data="data" :options="options" />
+  <Line
+    v-if="type === 'Line'"
+    :data="data as ChartData<'line'>"
+    :options="options"
+  />
+  <Bar
+    v-if="type === 'Bar'"
+    :data="data as ChartData<'bar'>"
+    :options="options"
+  />
 </template>
