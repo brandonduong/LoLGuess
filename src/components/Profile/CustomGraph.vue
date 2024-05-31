@@ -18,7 +18,7 @@ enum GraphType {
   Bar,
 }
 
-defineProps<{
+const props = defineProps<{
   data: ChartData<"line"> | ChartData<"bar">;
   type: keyof typeof GraphType;
 }>();
@@ -61,6 +61,11 @@ const options = {
         display: true,
         color: "#3c3c41",
       },
+    },
+  },
+  plugins: {
+    legend: {
+      display: props.type !== "Bar",
     },
   },
 };
