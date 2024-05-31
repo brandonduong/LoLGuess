@@ -96,6 +96,7 @@ async function forceUpdate() {
     <ProfileStats
       :staticProfileData="staticProfileData!"
       @getStaticProfileData="forceUpdate()"
+      style="grid-column: 1 / -2"
     />
     <ProfileGraph :guesses="(staticProfileGuesses as [Guess])" />
     <div class="history">
@@ -110,7 +111,7 @@ async function forceUpdate() {
 <style>
 .profile {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 1rem;
 }
 
