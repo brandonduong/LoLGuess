@@ -41,7 +41,15 @@ export const batchFetchUser = /* GraphQL */ `
       dailyMaxScore
       dailyCorrectPlacements
       dailyCorrectRanks
-      dailyScores
+      dailyScoresLow
+      dailyRankGuessesLow
+      dailyPlacementGuessesLow
+      dailyScoresHigh
+      dailyRankGuessesHigh
+      dailyPlacementGuessesHigh
+      dailyScoresAll
+      dailyRankGuessesAll
+      dailyPlacementGuessesAll
       createdAt
       updatedAt
     }
@@ -86,7 +94,15 @@ export const getUser = /* GraphQL */ `
       dailyMaxScore
       dailyCorrectPlacements
       dailyCorrectRanks
-      dailyScores
+      dailyScoresLow
+      dailyRankGuessesLow
+      dailyPlacementGuessesLow
+      dailyScoresHigh
+      dailyRankGuessesHigh
+      dailyPlacementGuessesHigh
+      dailyScoresAll
+      dailyRankGuessesAll
+      dailyPlacementGuessesAll
       createdAt
       updatedAt
     }
@@ -122,7 +138,15 @@ export const listUsers = /* GraphQL */ `
         dailyMaxScore
         dailyCorrectPlacements
         dailyCorrectRanks
-        dailyScores
+        dailyScoresLow
+        dailyRankGuessesLow
+        dailyPlacementGuessesLow
+        dailyScoresHigh
+        dailyRankGuessesHigh
+        dailyPlacementGuessesHigh
+        dailyScoresAll
+        dailyRankGuessesAll
+        dailyPlacementGuessesAll
         createdAt
         updatedAt
       }
@@ -168,7 +192,15 @@ export const usersByUsername = /* GraphQL */ `
         dailyMaxScore
         dailyCorrectPlacements
         dailyCorrectRanks
-        dailyScores
+        dailyScoresLow
+        dailyRankGuessesLow
+        dailyPlacementGuessesLow
+        dailyScoresHigh
+        dailyRankGuessesHigh
+        dailyPlacementGuessesHigh
+        dailyScoresAll
+        dailyRankGuessesAll
+        dailyPlacementGuessesAll
         createdAt
         updatedAt
       }

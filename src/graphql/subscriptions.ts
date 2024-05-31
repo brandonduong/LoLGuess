@@ -41,7 +41,15 @@ export const onCreateUser = /* GraphQL */ `
       dailyMaxScore
       dailyCorrectPlacements
       dailyCorrectRanks
-      dailyScores
+      dailyScoresLow
+      dailyRankGuessesLow
+      dailyPlacementGuessesLow
+      dailyScoresHigh
+      dailyRankGuessesHigh
+      dailyPlacementGuessesHigh
+      dailyScoresAll
+      dailyRankGuessesAll
+      dailyPlacementGuessesAll
       createdAt
       updatedAt
     }
@@ -86,7 +94,15 @@ export const onUpdateUser = /* GraphQL */ `
       dailyMaxScore
       dailyCorrectPlacements
       dailyCorrectRanks
-      dailyScores
+      dailyScoresLow
+      dailyRankGuessesLow
+      dailyPlacementGuessesLow
+      dailyScoresHigh
+      dailyRankGuessesHigh
+      dailyPlacementGuessesHigh
+      dailyScoresAll
+      dailyRankGuessesAll
+      dailyPlacementGuessesAll
       createdAt
       updatedAt
     }
@@ -131,7 +147,15 @@ export const onDeleteUser = /* GraphQL */ `
       dailyMaxScore
       dailyCorrectPlacements
       dailyCorrectRanks
-      dailyScores
+      dailyScoresLow
+      dailyRankGuessesLow
+      dailyPlacementGuessesLow
+      dailyScoresHigh
+      dailyRankGuessesHigh
+      dailyPlacementGuessesHigh
+      dailyScoresAll
+      dailyRankGuessesAll
+      dailyPlacementGuessesAll
       createdAt
       updatedAt
     }

@@ -17,7 +17,6 @@ Amplify Params - DO NOT EDIT */
 const express = require("express");
 const bodyParser = require("body-parser");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
-const CryptoJS = require("crypto-js");
 const node_fetch = require("node-fetch");
 const { Request } = node_fetch;
 const crypto = require("@aws-crypto/sha256-js");
@@ -61,15 +60,32 @@ async function getUser(sub) {
       getUser(id: $id) {
         id
         username
+        score
+        maxScore
         correctPlacements
         correctRanks
-        maxScore
-        score
         totalRanks
         unfinished
         totalGuesses
         averageCorrectPlacements
         averageScore
+        scores
+        rankGuesses
+        placementGuesses
+        dailyTotalGuesses
+        dailyScore
+        dailyMaxScore
+        dailyCorrectPlacements
+        dailyCorrectRanks
+        dailyScoresLow
+        dailyRankGuessesLow
+        dailyPlacementGuessesLow
+        dailyScoresHigh
+        dailyRankGuessesHigh
+        dailyPlacementGuessesHigh
+        dailyScoresAll
+        dailyRankGuessesAll
+        dailyPlacementGuessesAll
         createdAt
       }
     }

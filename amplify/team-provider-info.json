@@ -32,7 +32,7 @@
         },
         "getProfile": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getProfile-4133775945366f325a76-build.zip"
+          "s3Key": "amplify-builds/getProfile-477235516e5654523636-build.zip"
         },
         "updateLeaderboard": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
