@@ -80,7 +80,9 @@ a,
 button,
 .ant-checkbox-wrapper,
 input,
-.amplify-tabs-item {
+.amplify-tabs-item,
+.ant-select,
+.ant-select-item {
   cursor: url("/cursor-pointer.png"), pointer !important;
 }
 
