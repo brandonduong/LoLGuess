@@ -61,6 +61,14 @@ const options = {
         display: true,
         color: "#3c3c41",
       },
+      ticks: {
+        beginAtZero: true,
+        callback: function (value: number) {
+          if (value % 1 === 0) {
+            return value;
+          }
+        },
+      },
     },
   },
   plugins: {
