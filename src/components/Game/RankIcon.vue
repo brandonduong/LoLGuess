@@ -2,8 +2,8 @@
 withDefaults(
   defineProps<{
     rank: string;
-    width: string;
-    height: string;
+    width?: string;
+    height?: string;
   }>(),
   { width: "1.75rem", height: "1.75rem" }
 );

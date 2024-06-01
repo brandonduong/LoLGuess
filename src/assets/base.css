@@ -33,7 +33,7 @@
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
 
-  --color-border: rgb(60, 60, 65);
+  --color-border: #3c3c41;
   --color-border-hover: var(--vt-c-divider-light-1);
 
   --color-heading: var(--vt-c-text-light-1);
@@ -43,6 +43,7 @@
   --color-highlight-gold: rgb(200, 170, 110);
   --color-offwhite: rgb(240, 230, 210);
   --color-background-gray: #3c3c41;
+
   --color-background-highlight-gray: #5b5a56;
   --color-dark-blue: #084152;
   --color-light-blue: #2d9eca;

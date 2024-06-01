@@ -1,13 +1,13 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   title: string;
   value: string | number;
 }>();
 </script>
 <template>
   <div class="stat">
-    <h3>{{ title }}</h3>
-    <h4>{{ value }}</h4>
+    <h5>{{ title }}</h5>
+    <p class="number">{{ value }}</p>
   </div>
 </template>
 <style scoped>
@@ -18,10 +18,10 @@ const props = defineProps<{
   align-items: center;
 }
 
-.stat > h3 {
+.stat > h5 {
   margin: 0;
 }
-.stat > h4 {
+.stat > p {
   margin: 0;
   white-space: nowrap;
 }
