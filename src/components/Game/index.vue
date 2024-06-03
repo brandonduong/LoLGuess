@@ -244,8 +244,10 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY AGAIN"];
 
 <template>
   <div class="steps-content">
-    <h3 v-if="current <= 1 && !loading" class="gold">FREEPLAY</h3>
-    <p>Guess on a random match from the selected ranks and regions</p>
+    <div v-if="current <= 1 && !loading">
+      <h3 class="gold">FREEPLAY</h3>
+      <p>Guess on a random match from the selected ranks and regions</p>
+    </div>
 
     <CustomCard style="align-items: normal">
       <div v-if="!loading">
@@ -359,12 +361,6 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY AGAIN"];
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: center;
-}
-
-@media only screen and (max-width: 720px) {
-  .table-div {
-    overflow: auto;
-  }
 }
 
 .region-grid,

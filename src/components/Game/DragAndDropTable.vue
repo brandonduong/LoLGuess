@@ -153,26 +153,23 @@ function correctionStyle(placement: number) {
 }
 </script>
 <template>
-  <h4 class="table-description">
+  <h5>
     <span v-if="props.verifiedGuess.length !== 0">
-      Like guessing? Support on
-      <a class="ko-fi" href="https://ko-fi.com/brandonduong" target="_blank"
-        >Ko-fi</a
-      >
-      or visit the
-      <a class="ko-fi" @click="() => router.push('/supporters')">Supporters</a>
-      page!
+      LIKE GUESSING?
+      <p>
+        Support on
+        <a href="https://ko-fi.com/brandonduong" target="_blank">Ko-fi</a>
+        or visit the
+        <a @click="() => router.push('/supporters')">Supporters</a>
+        page!
+      </p>
     </span>
-    <span v-else> Guess how the lobby ended! </span>
-  </h4>
+    <span v-else
+      >GUESS THE PLACEMENTS AND RANK
+      <p>Click and drag teams to sort</p></span
+    >
+  </h5>
   <table class="table-header" v-if="!loading">
-    <h2 class="header">#</h2>
-    <h2 class="header"></h2>
-    <h2 class="header">Level</h2>
-    <h2 class="header">Traits</h2>
-    <h2 class="header">Augments</h2>
-    <h2 class="header">Units</h2>
-    <h2 class="header">Gold</h2>
     <div class="placements">
       <div
         v-for="placement in 8"
@@ -181,8 +178,10 @@ function correctionStyle(placement: number) {
             ? 'placement ' + correctionStyle(placement)
             : ``
         "
+        class="number"
       >
-        <h3
+        <h4
+          class="number"
           :class="
             props.verifiedGuess.length !== 0 && !checkIfCorrect(placement)
               ? `strike`
@@ -190,8 +189,8 @@ function correctionStyle(placement: number) {
           "
         >
           {{ placement }}
-        </h3>
-        <h3
+        </h4>
+        <h4
           class="arrow"
           v-if="props.verifiedGuess.length !== 0 && !checkIfCorrect(placement)"
         >
@@ -202,19 +201,19 @@ function correctionStyle(placement: number) {
               padding: 0 0.25rem 0 0.4rem;
             "
           />
-        </h3>
-        <h3 class="correction">
+        </h4>
+        <h4 class="correction number">
           {{
             props.verifiedGuess.length !== 0 && !checkIfCorrect(placement)
               ? `${verifiedGuess[placement - 1]}`
               : ""
           }}
-        </h3>
+        </h4>
       </div>
     </div>
     <Sortable
       :list="props.rankedMatch"
-      tag="tbody"
+      tag="table"
       item-key="name"
       class="draggable"
       :options="{
@@ -226,7 +225,7 @@ function correctionStyle(placement: number) {
       }"
       @end="onChange"
     >
-      <template #item="{ element }">
+      <template #item="{ element, index }">
         <tr
           :class="
             props.verifiedGuess.length === 0
@@ -234,16 +233,7 @@ function correctionStyle(placement: number) {
               : `draggable-row`
           "
         >
-          <DragOutlined
-            style="color: black; font-size: 1rem"
-            v-if="props.verifiedGuess.length === 0"
-            class="drag-icon"
-          />
-          <div v-else class="drag-icon"></div>
-          <h3><LevelIcons :level="element.level" /></h3>
-          <div class="mobile-gold">
-            <GoldIcons :goldLeft="element.gold_left" />
-          </div>
+          <LevelIcons :level="element.level" />
           <TraitIcons
             :staticTFTTraitData="staticTFTTraitData"
             :traits="element.traits"
@@ -253,16 +243,12 @@ function correctionStyle(placement: number) {
             :augments="element.augments"
             :augmentAmount="element.augmentNum"
           />
-          <h3>
-            <UnitIcons
-              :units="element.units"
-              :staticTFTUnitData="staticTFTUnitData"
-              :staticTFTItemData="staticTFTItemData"
-            />
-          </h3>
-          <div class="web-gold">
-            <GoldIcons :goldLeft="element.gold_left" />
-          </div>
+          <UnitIcons
+            :units="element.units"
+            :staticTFTUnitData="staticTFTUnitData"
+            :staticTFTItemData="staticTFTItemData"
+          />
+          <GoldIcons :goldLeft="element.gold_left" style="margin-left: auto" />
         </tr>
       </template>
     </Sortable>
@@ -274,9 +260,9 @@ function correctionStyle(placement: number) {
 }
 
 .table-header {
-  display: grid;
-  grid-template-columns: 0.15fr 0.05fr 0.15fr 0.2fr 0.3fr 1fr 0.15fr;
+  display: flex;
   column-gap: 1rem;
+  overflow: auto;
 }
 
 .table-header > h2 {
@@ -284,9 +270,7 @@ function correctionStyle(placement: number) {
 }
 
 .draggable {
-  grid-column: span 6;
-  display: grid;
-  row-gap: 0.5rem;
+  width: 100%;
 }
 
 .draggable-row > h3 {
@@ -298,10 +282,8 @@ function correctionStyle(placement: number) {
 }
 
 .draggable-row {
-  display: grid;
-  grid-template-columns: 0.05fr 0.15fr 0.2fr 0.3fr 1fr 0.15fr;
+  display: flex;
   align-items: center;
-  border: 1px solid lightslategray;
   column-gap: 1rem;
   user-select: none;
 }
@@ -314,7 +296,11 @@ function correctionStyle(placement: number) {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin: 0 0.75rem;
+  min-width: 75px;
+}
+
+.placements > div > h4 {
+  margin: 0;
 }
 
 .incorrect {
@@ -344,70 +330,19 @@ function correctionStyle(placement: number) {
 .placement {
   display: flex;
   justify-content: center;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   white-space: nowrap;
   padding: 0 0.5rem;
-}
-
-.placements > div > h3 {
-  margin: 0;
-  font-weight: bold;
-  font-size: 1.5rem;
-}
-
-.table-description {
-  text-decoration: underline;
-}
-
-.ko-fi {
-  font-weight: bold;
-  text-decoration: underline;
-  color: var(--theme-love);
+  align-items: center;
 }
 
 .dragging {
-  border-color: black;
-}
-
-.mobile-gold {
-  display: none;
+  border-color: var(--color-gold);
 }
 
 @media only screen and (max-width: 720px) {
   .dragging {
     border-width: 0.15rem;
-  }
-
-  .table-header {
-    column-gap: 0;
-  }
-
-  .placements {
-    margin: 0 0.5rem 0 0;
-  }
-
-  .placements > div > h3 {
-    line-height: 2rem;
-  }
-
-  .draggable-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 0 0.25rem;
-    gap: 0;
-  }
-
-  .header,
-  .drag-icon,
-  .arrow,
-  .strike,
-  .web-gold {
-    display: none;
-  }
-
-  .mobile-gold {
-    display: block;
   }
 }
 </style>

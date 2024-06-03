@@ -140,7 +140,6 @@ props.units.sort(sortByCostThenStar).forEach((unit, ind) => {
 <style scoped>
 .units {
   display: flex;
-  flex-wrap: wrap;
 }
 
 .unit {

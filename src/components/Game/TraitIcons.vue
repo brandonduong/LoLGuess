@@ -73,6 +73,8 @@ traitStyles.value.sort(function (a, b) {
 .traits {
   display: flex;
   flex-wrap: wrap;
+  min-width: 144px;
+  max-width: 144px;
   justify-content: center;
 }
 
