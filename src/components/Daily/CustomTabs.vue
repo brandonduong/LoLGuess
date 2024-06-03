@@ -1,5 +1,14 @@
 <script setup lang="ts">
-defineProps<{ options: string[]; optionTitles: string[]; option: string }>();
+withDefaults(
+  defineProps<{
+    options: string[];
+    optionTitles: string[];
+    option: string;
+    disabled: boolean;
+    highlight?: string[];
+  }>(),
+  { disabled: false }
+);
 const emit = defineEmits<{
   (e: "updateOption", newOption: string): void;
 }>();
@@ -12,17 +21,24 @@ function updateOption(o: string) {
   <div class="tabs">
     <div
       v-for="(o, ind) in options"
-      style="width: 100%"
+      :style="{ background: highlight?.includes(o) ? 'var(--color-gold)' : '' }"
       :class="option === o ? 'active-tab' : 'inactive-tab'"
-      @click="() => updateOption(o)"
+      @click="() => !disabled && updateOption(o)"
     >
-      <h5 class="tab">{{ optionTitles[ind] }}</h5>
+      <h5 class="tab">{{ optionTitles[ind] }}<slot :name="`icon-${ind}`" /></h5>
     </div>
   </div>
 </template>
 <style scoped>
 .tabs {
   display: flex;
+}
+
+.active-tab,
+.inactive-tab {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .inactive-tab {

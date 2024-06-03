@@ -7,7 +7,6 @@ import LevelIcons from "./LevelIcons.vue";
 import { onMounted, ref } from "vue";
 import http from "../../common/http-common";
 import { Sortable } from "sortablejs-vue3";
-import { DragOutlined, ArrowRightOutlined } from "@ant-design/icons-vue";
 import { useRouter } from "vue-router";
 const props = defineProps<{
   rankedMatch: Array<object>;
@@ -143,10 +142,7 @@ function correctionStyle(placement: number) {
   switch (Math.abs(placement - parseInt(props.verifiedGuess[placement - 1]))) {
     case 0:
       return "correct";
-    case 1:
-      return "yellow";
-    case 2:
-      return "orange";
+
     default:
       return "incorrect";
   }
@@ -180,31 +176,12 @@ function correctionStyle(placement: number) {
         "
         class="number"
       >
-        <h4
-          class="number"
-          :class="
-            props.verifiedGuess.length !== 0 && !checkIfCorrect(placement)
-              ? `strike`
-              : ``
-          "
-        >
+        <h4 v-if="props.verifiedGuess.length === 0" class="number">
           {{ placement }}
         </h4>
-        <h4
-          class="arrow"
-          v-if="props.verifiedGuess.length !== 0 && !checkIfCorrect(placement)"
-        >
-          <ArrowRightOutlined
-            style="
-              font-size: 1.25rem;
-              display: inline-block;
-              padding: 0 0.25rem 0 0.4rem;
-            "
-          />
-        </h4>
-        <h4 class="correction number">
+        <h4 v-else class="number">
           {{
-            props.verifiedGuess.length !== 0 && !checkIfCorrect(placement)
+            props.verifiedGuess.length !== 0
               ? `${verifiedGuess[placement - 1]}`
               : ""
           }}
@@ -255,30 +232,13 @@ function correctionStyle(placement: number) {
   </table>
 </template>
 <style scoped>
-.buttons {
-  margin-top: 35px;
-}
-
 .table-header {
   display: flex;
   column-gap: 1rem;
   overflow: auto;
 }
-
-.table-header > h2 {
-  margin: 0;
-}
-
 .draggable {
   width: 100%;
-}
-
-.draggable-row > h3 {
-  margin: 0;
-}
-
-.draggable-row > h3 > h3 {
-  margin: 0;
 }
 
 .draggable-row {
@@ -299,41 +259,20 @@ function correctionStyle(placement: number) {
   min-width: 75px;
 }
 
+.incorrect {
+  background-color: var(--color-dark-blue);
+}
+
+.correct {
+  background-color: var(--color-gold);
+}
+
 .placements > div > h4 {
   margin: 0;
 }
 
-.incorrect {
-  background-color: rgb(223, 88, 88);
-}
-
-.orange {
-  background-color: rgb(223, 169, 88);
-}
-
-.yellow {
-  background-color: rgb(238, 235, 69);
-}
-
-.correct {
-  background-color: rgb(115, 207, 115);
-}
-
-.strike {
-  text-decoration: line-through;
-}
-
-.correction {
-  text-decoration: none;
-}
-
 .placement {
-  display: flex;
-  justify-content: center;
   border-radius: 0.5rem;
-  white-space: nowrap;
-  padding: 0 0.5rem;
-  align-items: center;
 }
 
 .dragging {

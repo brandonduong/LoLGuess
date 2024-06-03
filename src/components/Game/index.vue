@@ -239,7 +239,7 @@ const verifiedRank = ref<string>("");
 const verifiedRegion = ref<string>("");
 
 const prevButtonText = ["HOME", "REGIONS", "FORFEIT", "HOME"];
-const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY AGAIN"];
+const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
 </script>
 
 <template>
@@ -279,16 +279,7 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY AGAIN"];
             :verifiedGuess="verifiedGuess"
             :selectedRanks="selectedRanks"
           />
-          <div
-            :style="{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              marginTop: '0.5rem',
-              paddingLeft: '0.75rem',
-            }"
-          >
+          <div style="margin-top: 1rem">
             <GuessRank
               v-if="current === 2 || current === 3"
               :selectedRanks="selectedRanks"

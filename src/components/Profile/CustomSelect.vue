@@ -2,7 +2,10 @@
 import type { SelectProps } from "ant-design-vue";
 import { CaretDownOutlined } from "@ant-design/icons-vue";
 import { ref } from "vue";
-const props = defineProps<{ options: SelectProps["options"]; value: string }>();
+const props = defineProps<{
+  options: SelectProps["options"];
+  value: string;
+}>();
 const emit = defineEmits<{ (e: "updateOption", newOption: string): void }>();
 function updateOption(newOption: string) {
   emit("updateOption", newOption);
@@ -30,7 +33,7 @@ const copy = ref(props.value);
         </h5>
       </template>
       <a-select-option
-        v-for="o in option.options"
+        v-for="(o, ind) in option.options"
         :value="o.value"
         :title="o.label"
         :class="{ 'custom-select-option': true }"
