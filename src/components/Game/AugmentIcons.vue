@@ -124,5 +124,6 @@ function checkIfImageExists(url: string, callback: Function) {
   margin: 0;
   text-align: start;
   color: var(--color-offwhite);
+  text-wrap: nowrap;
 }
 </style>
