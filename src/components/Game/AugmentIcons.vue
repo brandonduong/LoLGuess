@@ -35,13 +35,13 @@ props.augments.forEach((aug, ind) => {
   })[0];
 
   // Check if hero augment or normal augment, then get path to image
-  console.log(aug, augmentInfo);
+  // console.log(aug, augmentInfo);
 
   if (augmentInfo && augmentInfo.squareIconPath) {
     const path = augmentInfo.squareIconPath.split("/");
     const fileName = path[path.length - 1].toLowerCase();
     const augmentPath = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/maps/tft/icons/augments/hexcore/${fileName}`;
-    console.log(aug, augmentInfo, path, fileName);
+    // console.log(aug, augmentInfo, path, fileName);
 
     checkIfImageExists(augmentPath, (exists: boolean) => {
       if (exists) {

@@ -51,6 +51,30 @@ function sortByCostThenStar(a: APIUnit, b: APIUnit) {
   return a.rarity - b.rarity || a.tier - b.tier;
 }
 
+function getItemImage(item: string) {
+  const itemInfo = props.staticTFTItemData.filter((i) => {
+    return i.nameId === item;
+  })[0];
+
+  let completedPath;
+  if (itemInfo) {
+    const path = itemInfo.squareIconPath.toLowerCase().split("/");
+    const ind = path.indexOf("item_icons");
+    completedPath =
+      "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/maps/particles/tft/item_icons";
+    for (let i = ind + 1; i < path.length; i++) {
+      completedPath += `/${path[i]}`;
+    }
+  } else {
+    completedPath =
+      "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/placeholders/tft_item_unknown.png";
+  }
+  return {
+    path: completedPath,
+    title: itemInfo ? itemInfo.name : item,
+  };
+}
+
 props.units.sort(sortByCostThenStar).forEach((unit, ind) => {
   const unitInfo = props.staticTFTUnitData.filter((u) => {
     // For set 8.5 return u.character_id === unit.character_id;
@@ -62,24 +86,12 @@ props.units.sort(sortByCostThenStar).forEach((unit, ind) => {
   })[0];
   // console.log(unit, unitInfo);
 
+  const itemPaths: ItemStyle[] = [];
   if (unitInfo && unitInfo.character_record) {
-    const itemPaths: ItemStyle[] = [];
+    // Recent set
     // Get item paths
     unit.itemNames.forEach((item) => {
-      const itemInfo = props.staticTFTItemData.filter((i) => {
-        return i.nameId === item;
-      })[0];
-      //console.log(item, itemInfo);
-      const path = itemInfo.squareIconPath.toLowerCase().split("/");
-      const ind = path.indexOf("item_icons");
-      var completedPath = "";
-      for (let i = ind + 1; i < path.length; i++) {
-        completedPath += `/${path[i]}`;
-      }
-      itemPaths.push({
-        path: completedPath,
-        title: itemInfo.name,
-      });
+      itemPaths.push(getItemImage(item));
     });
 
     // Get unit path
@@ -96,10 +108,17 @@ props.units.sort(sortByCostThenStar).forEach((unit, ind) => {
       tier: unit.tier,
     });
   } else {
-    unitStyles.value.splice(ind, 1, {
-      path: "",
-      title: unit.character_id,
-      itemPaths: [],
+    // Past sets
+    unit.itemNames.forEach((item) => {
+      itemPaths.push(getItemImage(item));
+    });
+
+    const character_id = unit.character_id.toLowerCase();
+    const path = `${character_id}/hud/${character_id}_square.png`;
+    unitStyles.value.push({
+      path,
+      title: unitInfo ? unitInfo.character_record.display_name : character_id,
+      itemPaths: itemPaths,
       rarity: unit.rarity,
       tier: unit.tier,
     });
@@ -117,7 +136,7 @@ props.units.sort(sortByCostThenStar).forEach((unit, ind) => {
       </div>
       <img
         :class="`unit-icon rarity${unit.rarity}`"
-        :src="`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${unit.path}`"
+        :src="`https://raw.communitydragon.org/latest/game/assets/characters/${unit.path}`"
         :alt="unit.title"
         width="36"
         height="36"
@@ -127,7 +146,7 @@ props.units.sort(sortByCostThenStar).forEach((unit, ind) => {
         <img
           v-for="item in unit.itemPaths"
           class="item-icon"
-          :src="`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/maps/particles/tft/item_icons${item.path}`"
+          :src="item.path"
           :alt="item.title"
           width="12"
           height="12"
