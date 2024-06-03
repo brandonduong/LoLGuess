@@ -32,6 +32,7 @@ function updateOption(o: string) {
 <style scoped>
 .tabs {
   display: flex;
+  cursor: url("/cursor-pointer.png"), pointer !important;
 }
 
 .active-tab,

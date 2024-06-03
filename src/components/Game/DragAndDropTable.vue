@@ -128,15 +128,6 @@ function updateGuess() {
   );
 }
 
-function checkIfCorrect(placement: number) {
-  //console.log(props.verifiedGuess, placement);
-  if (placement.toString() !== props.verifiedGuess[placement - 1]) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
 function correctionStyle(placement: number) {
   // console.log(placement, props.verifiedGuess[placement - 1]);
   switch (Math.abs(placement - parseInt(props.verifiedGuess[placement - 1]))) {
@@ -202,7 +193,7 @@ function correctionStyle(placement: number) {
       }"
       @end="onChange"
     >
-      <template #item="{ element, index }">
+      <template #item="{ element }">
         <tr
           :class="
             props.verifiedGuess.length === 0
@@ -240,7 +231,7 @@ function correctionStyle(placement: number) {
 .draggable {
   width: 100%;
 }
-tr:nth-child(even) {
+tr:nth-child(odd) {
   background-color: var(--color-background-gray);
 }
 
@@ -278,13 +269,12 @@ tr:nth-child(even) {
   border-radius: 0.5rem;
 }
 
-.dragging {
-  border-color: var(--color-gold);
-}
-
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 1028px) {
+  .grab {
+    border: 1px solid transparent;
+  }
   .dragging {
-    border-width: 0.15rem;
+    border: 1px solid var(--color-gold);
   }
 }
 </style>

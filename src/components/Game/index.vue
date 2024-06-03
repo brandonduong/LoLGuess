@@ -288,14 +288,22 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
               :verifiedRank="verifiedRank"
               :loading="loading"
             />
-            <GuessScore
-              :selectedRank="selectedRank"
-              :selectedRanks="selectedRanks"
-              :verifiedRank="verifiedRank"
-              :verifiedGuess="verifiedGuess"
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                margin-top: 1rem;
+              "
               v-if="current === 3"
-            />
-            <GuessRegion :region="verifiedRegion" v-if="current === 3" />
+            >
+              <GuessRegion :region="verifiedRegion" />
+              <GuessScore
+                :selectedRank="selectedRank"
+                :selectedRanks="selectedRanks"
+                :verifiedRank="verifiedRank"
+                :verifiedGuess="verifiedGuess"
+              />
+            </div>
           </div>
         </div>
       </div>

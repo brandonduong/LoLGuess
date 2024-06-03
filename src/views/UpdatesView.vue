@@ -16,7 +16,7 @@ const updates = [
       "Daily mode with stats",
       "More stats and graphs for logged in users",
       "Fixed old replays",
-      "More accurrate champion icons used",
+      "More accurate champion icons used",
       "Fixed daily countdown timers",
       "Small details and bugs",
     ],
@@ -90,7 +90,7 @@ const updates = [
         <div style="display: flex; flex-direction: column; gap: 1rem">
           <CustomCard class="update" v-for="update in updates">
             <h5>{{ update.date }}</h5>
-            <p v-for="item in update.items">
+            <p v-for="item in update.items" class="update-item">
               {{ item }}
             </p>
           </CustomCard>
@@ -104,5 +104,9 @@ const updates = [
 .updates {
   text-align: center;
   padding: 1rem;
+}
+
+.update-item:nth-last-child(1) {
+  margin: 0;
 }
 </style>

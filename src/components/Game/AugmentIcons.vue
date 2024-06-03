@@ -126,4 +126,8 @@ function checkIfImageExists(url: string, callback: Function) {
   color: var(--color-offwhite);
   text-wrap: nowrap;
 }
+
+.augment-icon {
+  border-radius: 1rem;
+}
 </style>
