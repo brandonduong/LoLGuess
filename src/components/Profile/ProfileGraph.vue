@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import type { Guess, User } from "@/API";
 import CustomCard from "../CustomCard.vue";
+import CustomInfo from "./CustomInfo.vue";
 import CustomSelect from "./CustomSelect.vue";
 import HistoryGraph from "./HistoryGraph.vue";
 import DistributionGraphScores from "./DistributionGraphScores.vue";
@@ -49,6 +50,7 @@ const selectOptions = ref<SelectProps["options"]>([
 ]);
 const value = ref("freeplay");
 const graphGuesses = ref(props.guesses);
+const graphInfo = ref("Freeplay guess scores");
 
 const distributionValues = ref<number[][]>([]);
 const distributionLabels = ref<string[]>([]);
@@ -58,9 +60,11 @@ function changeGraph(newOption: string) {
   switch (newOption) {
     case "freeplay":
       graphGuesses.value = props.guesses.filter((g) => g.mode === undefined);
+      graphInfo.value = "Freeplay guess scores";
       break;
     case "daily":
       graphGuesses.value = props.guesses.filter((g) => g.mode === "daily");
+      graphInfo.value = "Daily guess scores";
       break;
     case "ranks":
       distributionValues.value = props.user.rankGuesses!.map(
@@ -78,6 +82,8 @@ function changeGraph(newOption: string) {
         "Grandmaster",
         "Challenger",
       ];
+      graphInfo.value =
+        "Number of times a rank was guessed, grouped by the match's actual rank";
       break;
     case "placements":
       distributionValues.value = props.user.placementGuesses!.map(
@@ -93,6 +99,8 @@ function changeGraph(newOption: string) {
         "7th",
         "8th",
       ];
+      graphInfo.value =
+        "Number of times a placement was guessed, grouped by the actual placement";
       break;
     default:
       break;
@@ -102,11 +110,19 @@ function changeGraph(newOption: string) {
 
 <template>
   <CustomCard style="align-items: normal; justify-content: start">
-    <CustomSelect
-      :options="selectOptions"
-      :value="value"
-      @update-option="(newOption: string) => changeGraph(newOption)"
-    />
+    <div style="display: flex; align-items: center; gap: 1rem">
+      <CustomSelect
+        :options="selectOptions"
+        :value="value"
+        @update-option="(newOption: string) => changeGraph(newOption)"
+        style="flex-grow: 1; padding: 0"
+      />
+      <CustomInfo
+        ><p style="margin: 0; color: var(--color-offwhite)">
+          {{ graphInfo }}
+        </p></CustomInfo
+      >
+    </div>
     <div v-if="value === 'freeplay' || value === 'daily'" style="height: 100%">
       <HistoryGraph :guesses="graphGuesses" />
     </div>

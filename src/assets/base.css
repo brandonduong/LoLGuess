@@ -83,7 +83,8 @@ button,
 input,
 .amplify-tabs-item,
 .ant-select,
-.ant-select-item {
+.ant-select-item,
+.ant-popover {
   cursor: url("/cursor-pointer.png"), pointer !important;
 }
 
