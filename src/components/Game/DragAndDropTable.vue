@@ -231,9 +231,6 @@ function correctionStyle(placement: number) {
 .draggable {
   width: 100%;
 }
-tr:nth-child(odd) {
-  background-color: var(--color-background-gray);
-}
 
 .draggable-row {
   display: flex;
