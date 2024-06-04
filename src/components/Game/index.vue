@@ -56,8 +56,12 @@ const next = async () => {
 const prev = () => {
   if (current.value === 0 || current.value === 3) {
     router.push("/");
+  } else if (current.value === 2) {
+    current.value = 0;
+    router.push("/play");
+  } else {
+    current.value--;
   }
-  current.value--;
 };
 async function getMatch() {
   if (auth.user) {
