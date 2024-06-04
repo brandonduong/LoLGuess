@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { calculateScore } from "@/common/helper";
+import { ArrowRightOutlined } from "@ant-design/icons-vue";
 import HomeButton from "../Home/HomeButton.vue";
+import RankIcon from "../Game/RankIcon.vue";
 
 interface DailyGuess {
   placements: string[];
@@ -52,35 +54,49 @@ const all = [...low, ...high];
     <HomeButton
       v-for="d in getDailyDates()"
       :onClick="() => router.push(`/daily/${d}/${option}`)"
-      class="daily-button"
       type="secondary"
-      :title="d"
     >
-      <div v-for="prev in [guessedBefore(d, option)]">
-        <div v-if="prev">
-          <p>
-            <span
-              v-for="(place, ind) in prev.placements.map((place) =>
-                parseInt(place)
-              )"
+      <div style="flex: 1; height: 100%">
+        <h5>{{ d }}</h5>
+        <div v-for="prev in [guessedBefore(d, option)]">
+          <div v-if="prev">
+            <p style="margin: 0">
+              <span
+                v-for="(place, ind) in prev.placements.map((place) =>
+                  parseInt(place)
+                )"
+              >
+                <span>{{ place }}</span>
+                <span v-if="ind != 7">, </span>
+              </span>
+            </p>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
             >
-              <span>{{ place }}</span>
-              <span v-if="ind != 7">, </span>
-            </span>
-          </p>
-          <p>
-            {{
-              calculateScore(
-                prev.placements,
-                prev.rank,
-                prev.verifiedRank,
-                option === "all" ? all : option === "high" ? high : low
-              ).join(" / ")
-            }}
-          </p>
-        </div>
-        <div v-else>
-          <p>---</p>
+              <RankIcon :rank="prev.rank" />
+              <p style="margin: 0"><arrow-right-outlined /></p>
+              <RankIcon :rank="prev.verifiedRank" />
+            </div>
+
+            <p style="margin: 0" class="number">
+              {{
+                calculateScore(
+                  prev.placements,
+                  prev.rank,
+                  prev.verifiedRank,
+                  option === "all" ? all : option === "high" ? high : low
+                )[2]
+              }}
+              %
+            </p>
+          </div>
+          <div v-else>
+            <p style="margin: 0">---</p>
+          </div>
         </div>
       </div>
     </HomeButton>
