@@ -39,6 +39,7 @@ export const createUser = /* GraphQL */ `
       scores
       rankGuesses
       placementGuesses
+      correctPlacementGuesses
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
@@ -47,12 +48,15 @@ export const createUser = /* GraphQL */ `
       dailyScoresLow
       dailyRankGuessesLow
       dailyPlacementGuessesLow
+      dailyCorrectPlacementGuessesLow
       dailyScoresHigh
       dailyRankGuessesHigh
       dailyPlacementGuessesHigh
+      dailyCorrectPlacementGuessesHigh
       dailyScoresAll
       dailyRankGuessesAll
       dailyPlacementGuessesAll
+      dailyCorrectPlacementGuessesAll
       createdAt
       updatedAt
     }
@@ -95,6 +99,7 @@ export const updateUser = /* GraphQL */ `
       scores
       rankGuesses
       placementGuesses
+      correctPlacementGuesses
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
@@ -103,12 +108,15 @@ export const updateUser = /* GraphQL */ `
       dailyScoresLow
       dailyRankGuessesLow
       dailyPlacementGuessesLow
+      dailyCorrectPlacementGuessesLow
       dailyScoresHigh
       dailyRankGuessesHigh
       dailyPlacementGuessesHigh
+      dailyCorrectPlacementGuessesHigh
       dailyScoresAll
       dailyRankGuessesAll
       dailyPlacementGuessesAll
+      dailyCorrectPlacementGuessesAll
       createdAt
       updatedAt
     }
@@ -151,6 +159,7 @@ export const deleteUser = /* GraphQL */ `
       scores
       rankGuesses
       placementGuesses
+      correctPlacementGuesses
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
@@ -159,12 +168,15 @@ export const deleteUser = /* GraphQL */ `
       dailyScoresLow
       dailyRankGuessesLow
       dailyPlacementGuessesLow
+      dailyCorrectPlacementGuessesLow
       dailyScoresHigh
       dailyRankGuessesHigh
       dailyPlacementGuessesHigh
+      dailyCorrectPlacementGuessesHigh
       dailyScoresAll
       dailyRankGuessesAll
       dailyPlacementGuessesAll
+      dailyCorrectPlacementGuessesAll
       createdAt
       updatedAt
     }

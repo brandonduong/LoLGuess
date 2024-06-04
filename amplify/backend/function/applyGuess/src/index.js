@@ -128,6 +128,7 @@ async function getUser(sub) {
         scores
         rankGuesses
         placementGuesses
+        correctPlacementGuesses
       }
     }
   `;
@@ -207,6 +208,7 @@ async function updateUserStats(user, stats) {
         scores
         rankGuesses
         placementGuesses
+        correctPlacementGuesses
       }
     }
   `;
@@ -226,6 +228,7 @@ async function updateUserStats(user, stats) {
       scores: stats.scores,
       rankGuesses: stats.rankGuesses,
       placementGuesses: stats.placementGuesses,
+      correctPlacementGuesses: stats.correctPlacementGuesses,
     },
   };
 
@@ -305,11 +308,13 @@ async function calculateStats(stats, placements, guessedRank, rank, ranks) {
     "Grandmaster",
     "Challenger",
   ];
-  // Initialize scores, rankGuesses, placementGuesses
+  // Initialize scores, rankGuesses, placementGuesses, correctPlacementGuesses
   if (
     !copy.rankGuesses ||
     !copy.rankGuesses[0].length ||
-    (copy.scores && copy.scores.length < 101)
+    (copy.scores && copy.scores.length < 101) ||
+    !copy.correctPlacementGuesses ||
+    (copy.correctPlacementGuesses && copy.correctPlacementGuesses.length < 18)
   ) {
     const guesses = await guessesByDate(stats.id);
     copy.scores = new Array(101).fill(0);
@@ -317,6 +322,7 @@ async function calculateStats(stats, placements, guessedRank, rank, ranks) {
     copy.placementGuesses = new Array(8)
       .fill(0)
       .map((x) => new Array(8).fill(0));
+    copy.correctPlacementGuesses = new Array(18).fill(0);
 
     for (const guess of guesses) {
       // initialize scores
@@ -337,15 +343,38 @@ async function calculateStats(stats, placements, guessedRank, rank, ranks) {
       ] += 1;
 
       // initialize placementGuesses
+      let correctPlacementsCount = 0;
       for (let i = 0; i < guess.placements.length; i++) {
         copy.placementGuesses[guess.placements[i] - 1][i] += 1;
+
+        if (parseInt(guess.placements[i]) === i + 1) {
+          correctPlacementsCount += 1;
+        }
+      }
+
+      // Initialize correctPlacementGuesses
+      if (guess.rank === guess.guessedRank) {
+        copy.correctPlacementGuesses[correctPlacementsCount + 9] += 1;
+      } else {
+        copy.correctPlacementGuesses[correctPlacementsCount] += 1;
       }
     }
   } else {
     copy.scores[Math.round(score)] += 1;
     copy.rankGuesses[RANKS.indexOf(rank)][RANKS.indexOf(guessedRank)] += 1;
+    let correctPlacementsCount = 0;
     for (let i = 0; i < placements.length; i++) {
       copy.placementGuesses[placements[i] - 1][i] += 1;
+      if (parseInt(placements[i]) === i + 1) {
+        correctPlacementsCount += 1;
+      }
+    }
+
+    // Increment correctPlacementGuesses
+    if (guess.rank === guess.guessedRank) {
+      copy.correctPlacementGuesses[correctPlacementsCount + 9] += 1;
+    } else {
+      copy.correctPlacementGuesses[correctPlacementsCount] += 1;
     }
   }
   copy.unfinished = copy.unfinished - 1;
@@ -392,7 +421,6 @@ export const handler = async (event) => {
   const ranks = rawSensitive.ranks;
   const unfinished = rawSensitive.unfinished;
   const totalGuesses = rawSensitive.totalGuesses;
-  console.log(rank, ranks, selectedRank);
   const region = rawSensitive.region;
   const regions = rawSensitive.regions;
   const matchId = rawSensitive.matchId;
