@@ -109,7 +109,9 @@ function changeGraph(newOption: string) {
 </script>
 
 <template>
-  <CustomCard style="align-items: normal; justify-content: start">
+  <CustomCard
+    style="align-items: normal; justify-content: start; min-height: 300px"
+  >
     <div style="display: flex; align-items: center; gap: 1rem">
       <CustomSelect
         :options="selectOptions"
