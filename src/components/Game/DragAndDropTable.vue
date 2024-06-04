@@ -14,45 +14,29 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(["updateSelectedGuess"]);
-
-interface StaticTrait {
-  trait_id: string;
-  icon_path: string;
-  display_name: string;
-}
-
-interface StaticAugment {
-  nameId: string;
-  squareIconPath: string;
-  name: string;
-}
-
-interface StaticUnit {
-  name: string;
-  character_record: {
-    character_id: string;
-    squareIconPath: string;
-    display_name: string;
-    path: string;
-  };
-}
-
-interface StaticItem {
-  name: string;
-  nameId: string;
-  squareIconPath: string;
-}
-
 interface SortableEvent {
   oldIndex: number;
   newIndex: number;
 }
+interface StaticData {
+  apiName: string;
+  icon: string;
+  name: string;
+  tileIcon: string;
+}
+interface StaticSetData {
+  champions: StaticData[];
+  traits: StaticData[];
+}
+interface StaticSetsData {
+  9: StaticSetData;
+  10: StaticSetData;
+  11: StaticSetData;
+}
 
 var loading = ref(true);
-var staticTFTTraitData = ref<StaticTrait[]>([]);
-var staticTFTAugmentData = ref<StaticAugment[]>([]);
-var staticTFTUnitData = ref<StaticUnit[]>([]);
-var staticTFTItemData = ref<StaticItem[]>([]);
+var staticTFTItemData = ref<StaticData[]>([]);
+var staticTFTSetsData = ref<StaticSetsData>();
 const router = useRouter();
 
 onMounted(async () => {
@@ -70,48 +54,24 @@ async function getStaticTFTData() {
     .toISOString()
     .split("T")[0];
   if (!staticData || JSON.parse(staticData).date !== today) {
-    await http.dragon
-      .get("/plugins/rcp-be-lol-game-data/global/default/v1/tfttraits.json")
-      .then((res) => {
-        staticTFTTraitData.value = res.data;
-      });
-
-    await http.dragon
-      .get("/plugins/rcp-be-lol-game-data/global/default/v1/tftitems.json")
-      .then((res) => {
-        staticTFTAugmentData.value = res.data;
-      });
+    await http.dragon.get("/cdragon/tft/en_us.json").then((res) => {
+      staticTFTItemData.value = res.data.items;
+      staticTFTSetsData.value = res.data.sets;
+    });
     //console.log(staticTFTAugmentData);
-
-    await http.dragon
-      .get("/plugins/rcp-be-lol-game-data/global/default/v1/tftchampions.json")
-      .then((res) => {
-        staticTFTUnitData.value = res.data;
-      });
-
-    await http.dragon
-      .get("/plugins/rcp-be-lol-game-data/global/default/v1/tftitems.json")
-      .then((res) => {
-        staticTFTItemData.value = res.data;
-      });
-
     localStorage.setItem(
       "staticTFTData",
       JSON.stringify({
-        trait: staticTFTTraitData.value,
-        augment: staticTFTAugmentData.value,
-        unit: staticTFTUnitData.value,
-        item: staticTFTItemData.value,
+        items: staticTFTItemData.value,
+        sets: staticTFTSetsData.value,
         date: today,
       })
     );
   } else {
     const parsed = JSON.parse(staticData);
     //console.log(parsed);
-    staticTFTTraitData.value = parsed.trait;
-    staticTFTAugmentData.value = parsed.augment;
-    staticTFTUnitData.value = parsed.unit;
-    staticTFTItemData.value = parsed.item;
+    staticTFTItemData.value = parsed.items;
+    staticTFTSetsData.value = parsed.sets;
   }
 }
 
@@ -203,17 +163,17 @@ function correctionStyle(placement: number) {
         >
           <LevelIcons :level="element.level" />
           <TraitIcons
-            :staticTFTTraitData="staticTFTTraitData"
+            :staticTFTSetsData="staticTFTSetsData!"
             :traits="element.traits"
           />
           <AugmentIcons
-            :staticTFTAugmentData="staticTFTAugmentData"
+            :staticTFTItemData="staticTFTItemData"
             :augments="element.augments"
             :augmentAmount="element.augmentNum"
           />
           <UnitIcons
             :units="element.units"
-            :staticTFTUnitData="staticTFTUnitData"
+            :staticTFTSetsData="staticTFTSetsData"
             :staticTFTItemData="staticTFTItemData"
           />
           <GoldIcons :goldLeft="element.gold_left" style="margin-left: auto" />

@@ -4,20 +4,20 @@ const updates = [
   {
     items: [
       "Better leaderboard categories",
-      "After guessing, reveal what round players died at",
-      "After guessing, reveal usernames?",
+      "After guessing, reveal what round players died at?",
       "More game modes",
+      "Daily mode",
     ],
     date: "FUTURE WORK",
   },
   {
     items: [
       "UI overhaul to not flashbang people's eyes and better user experience for PC and mobile",
-      "Daily mode with stats",
       "More stats and graphs for logged in users",
-      "Fixed old replays",
       "More accurate champion icons used",
       "Fixed daily countdown timers",
+      "Fixed unfound augments and items",
+      "Fixed old replays",
       "Small details and bugs",
     ],
     date: "05-28-2024",

@@ -58,7 +58,6 @@ const all = [...low, ...high];
 onMounted(async () => {
   loading.value = true;
   const prev = props.prev;
-  console.log("test", prev);
   if (prev) {
     loadPrev();
   } else {
@@ -160,9 +159,7 @@ async function next() {
   if (current.value === 0) {
     await guess();
   }
-
   loading.value = false;
-  current.value++;
 }
 </script>
 

@@ -24,7 +24,10 @@ const auth = useAuthenticator();
       <div class="description">
         <h5 class="gold subtitle">LOLGUESS</h5>
         <h2>TEAMFIGHT TACTICS PRACTICE TOOL</h2>
-        <p>Guess the placements and rank of a random match</p>
+        <p>
+          Guess the placements and rank of a random match to test your knowledge
+          on end-game team composition power.
+        </p>
         <CustomHR />
       </div>
     </div>
