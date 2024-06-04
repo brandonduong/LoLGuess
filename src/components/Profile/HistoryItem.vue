@@ -28,6 +28,10 @@ function updateScore() {
 }
 
 const reveal = ref<boolean>(false);
+
+function isValidReplay() {
+  return new Date(props.guess.createdAt) > new Date("2024-03-20")
+}
 </script>
 
 <template>
@@ -78,9 +82,8 @@ const reveal = ref<boolean>(false);
           title="REVEAL"
         ></HomeButton>
       </div>
-      <div>
+      <div v-if="props.guess.matchId && isValidReplay()">
         <HomeButton
-          v-if="props.guess.matchId"
           type="tertiary"
           @click="() => router.push(`/play/${props.guess.id}`)"
           title="REPLAY"
