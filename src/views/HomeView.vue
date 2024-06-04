@@ -11,11 +11,17 @@ import {
   QuestionCircleOutlined,
   HistoryOutlined,
   CoffeeOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons-vue";
 import IconButton from "@/components/Home/IconButton.vue";
+import { Auth } from "aws-amplify";
 
 const router = useRouter();
 const auth = useAuthenticator();
+function signout() {
+  Auth.signOut();
+  router.push("/login");
+}
 </script>
 
 <template>
@@ -116,6 +122,9 @@ const auth = useAuthenticator();
     <IconButton href="https://ko-fi.com/brandonduong"
       ><coffee-outlined style="color: var(--color-gold); font-size: 2.5rem"
     /></IconButton>
+    <IconButton :onClick="signout" v-if="auth.authStatus === 'authenticated'"
+      ><logout-outlined style="color: var(--color-gold); font-size: 2.5rem"
+    /></IconButton>
   </section>
 </template>
 
@@ -191,5 +200,6 @@ const auth = useAuthenticator();
   justify-content: center;
   align-items: center;
   padding: 1rem;
+  gap: 1rem;
 }
 </style>
