@@ -16,7 +16,7 @@ function updateRank(event: string) {
   emit("updateSelectedRank", event);
 }
 
-const value = ref("");
+const value = ref(props.selectedRank);
 </script>
 <template>
   <div class="rank-guess" style="flex-grow: 1">

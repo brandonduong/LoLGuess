@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import { ref, h } from "vue";
-import {
-  LoadingOutlined,
-  DoubleRightOutlined,
-  DoubleLeftOutlined,
-} from "@ant-design/icons-vue";
+import { ref } from "vue";
+import { DoubleRightOutlined, DoubleLeftOutlined } from "@ant-design/icons-vue";
 import http from "../../common/http-common";
-import GroupSettings from "./GroupSettings.vue";
 import DragAndDropTable from "./DragAndDropTable.vue";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
 import GuessRank from "./GuessRank.vue";

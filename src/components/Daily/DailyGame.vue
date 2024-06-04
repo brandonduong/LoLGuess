@@ -3,10 +3,13 @@ import DragAndDropTable from "../Game/DragAndDropTable.vue";
 import GuessRank from "../Game/GuessRank.vue";
 import GuessScore from "../Game/GuessScore.vue";
 import GuessRegion from "../Game/GuessRegion.vue";
-import { ref, watch, h, onMounted } from "vue";
-import { LoadingOutlined } from "@ant-design/icons-vue";
+import { ref, onMounted, watch } from "vue";
+import { DoubleRightOutlined, DoubleLeftOutlined } from "@ant-design/icons-vue";
 import http from "../../common/http-common";
 import { useRouter } from "vue-router";
+import HomeButton from "../Home/HomeButton.vue";
+import Loading from "../Loading.vue";
+import CustomCard from "../CustomCard.vue";
 interface DailyGuess {
   placements: string[];
   rankedMatch: object[];
@@ -25,13 +28,21 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: "updateHistory", guess: DailyGuess): void;
 }>();
+watch(
+  () => props.prev,
+  () => {
+    loadPrev();
+  }
+);
 
 const router = useRouter();
+
+const current = ref<number>(0);
 
 const rankedMatch = ref<object[]>([]);
 const selectedGuess = ref<string[]>([]);
 const selectedRanks = ref<string[]>([]);
-const selectedRank = ref<string>("");
+const selectedRank = ref<string>(props.prev ? props.prev.rank : "");
 
 const sensitive = ref<string>("");
 const loading = ref<boolean>(false);
@@ -49,19 +60,25 @@ onMounted(async () => {
   const prev = props.prev;
   console.log("test", prev);
   if (prev) {
-    // Load previous guess
-    verifiedGuess.value = prev.placements;
-    verifiedRank.value = prev.verifiedRank;
-    verifiedRegion.value = prev.region;
-    rankedMatch.value = prev.rankedMatch;
-    selectedRank.value = prev.rank;
-    selectedRanks.value =
-      prev.category === "all" ? all : prev.category === "high" ? high : low;
+    loadPrev();
   } else {
     await getDaily(props.date, props.category);
   }
   loading.value = false;
 });
+
+function loadPrev() {
+  // Load previous guess
+  const prev = props.prev!;
+  verifiedGuess.value = prev.placements;
+  verifiedRank.value = prev.verifiedRank;
+  verifiedRegion.value = prev.region;
+  rankedMatch.value = prev.rankedMatch;
+  selectedRank.value = prev.rank;
+  selectedRanks.value =
+    prev.category === "all" ? all : prev.category === "high" ? high : low;
+  current.value = 1;
+}
 
 async function getDaily(date: string, cat: string) {
   let url = "/getDaily?";
@@ -115,14 +132,7 @@ async function verifyGuess() {
     });
 }
 
-const indicator = h(LoadingOutlined, {
-  style: {
-    fontSize: "4rem",
-    margin: "5rem 0 4.5rem 0",
-    color: "lightslategray",
-  },
-  spin: true,
-});
+const buttonText = ["GUESS", "STATS"];
 
 function reset() {
   router.push("/daily");
@@ -144,10 +154,20 @@ async function guess() {
     region: verifiedRegion.value,
   });
 }
+
+async function next() {
+  loading.value = true;
+  if (current.value === 0) {
+    await guess();
+  }
+
+  loading.value = false;
+  current.value++;
+}
 </script>
 
 <template>
-  <div class="steps-content">
+  <CustomCard style="align-items: normal; margin-top: 1rem">
     <div v-if="!loading">
       <DragAndDropTable
         :rankedMatch="rankedMatch"
@@ -155,16 +175,7 @@ async function guess() {
         :verifiedGuess="verifiedGuess"
         :selectedRanks="selectedRanks"
       />
-      <div
-        :style="{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          marginTop: '0.5rem',
-          paddingLeft: '0.75rem',
-        }"
-      >
+      <div style="margin-top: 1rem">
         <GuessRank
           :selectedRanks="selectedRanks"
           @update-selected-rank="selectedRank = $event"
@@ -172,56 +183,60 @@ async function guess() {
           :verifiedRank="verifiedRank"
           :loading="loading"
         />
-        <GuessScore
-          :selectedRank="selectedRank"
-          :selectedRanks="selectedRanks"
-          :verifiedRank="verifiedRank"
-          :verifiedGuess="verifiedGuess"
-          v-if="verifiedGuess.length > 0"
-        />
-        <GuessRegion :region="verifiedRegion" v-if="verifiedGuess.length > 0" />
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+          "
+          v-if="current === 1"
+        >
+          <GuessRegion :region="verifiedRegion" />
+          <GuessScore
+            :selectedRank="selectedRank"
+            :selectedRanks="selectedRanks"
+            :verifiedRank="verifiedRank"
+            :verifiedGuess="verifiedGuess"
+          />
+        </div>
       </div>
     </div>
-    <div v-else><a-spin :indicator="indicator"></a-spin></div>
-  </div>
+    <div v-else><Loading /></div>
+  </CustomCard>
   <div class="steps-action">
-    <a-button @click="reset" class="action-btn">Previous</a-button>
-    <a-button
-      v-if="verifiedGuess.length === 0"
-      type="primary"
-      @click="guess"
-      class="action-btn"
-      :disabled="!selectedRank || loading"
-      >Guess</a-button
-    >
-    <a-button
-      v-else
-      type="primary"
-      @click="() => console.log('stats')"
-      class="action-btn"
-      :disabled="loading"
-      >Stats</a-button
-    >
+    <HomeButton
+      type="default"
+      title="ARCHIVE"
+      :active="!loading"
+      :onClick="reset"
+      ><template #icon
+        ><double-left-outlined
+          style="color: rgb(240, 230, 210); font-size: 1.75rem" /></template
+    ></HomeButton>
+    <HomeButton
+      :title="buttonText[current]"
+      :active="
+        ((selectedRank.length > 0 && current === 0) || current === 1) &&
+        !loading
+      "
+      :onClick="next"
+      ><template #iconRight
+        ><double-right-outlined
+          style="color: rgb(240, 230, 210); font-size: 1.75rem" /></template
+    ></HomeButton>
   </div>
 </template>
 <style scoped>
 .steps-content {
-  border: 1px solid lightslategray;
-  border-radius: 0.25rem;
-  background-color: white;
   text-align: center;
-  padding: 0.25rem 0.5rem 0.5rem;
+  padding: 1rem 0;
 }
 
 .steps-action {
-  margin-top: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-}
-
-.action-btn {
-  flex-basis: 50%;
+  padding: 1rem 0;
 }
 </style>
