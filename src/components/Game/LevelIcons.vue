@@ -10,7 +10,7 @@ const level = ref<number>(props.level);
 <template>
   <h5 class="level">
     {{ level }}
-    <img width="16" height="16" src="/lvl.png" />
+    <img width="20" height="18" src="/level.png" />
   </h5>
 </template>
 <style scoped>

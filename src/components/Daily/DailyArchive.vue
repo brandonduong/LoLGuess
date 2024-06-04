@@ -77,9 +77,13 @@ const all = [...low, ...high];
                 justify-content: center;
               "
             >
-              <RankIcon :rank="prev.rank" />
+              <RankIcon :rank="prev.rank" width="2.5rem" height="2.5rem" />
               <p style="margin: 0"><arrow-right-outlined /></p>
-              <RankIcon :rank="prev.verifiedRank" />
+              <RankIcon
+                :rank="prev.verifiedRank"
+                width="2.5rem"
+                height="2.5rem"
+              />
             </div>
 
             <p style="margin: 0" class="number">
@@ -106,7 +110,7 @@ const all = [...low, ...high];
 <style scoped>
 .daily-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
   padding: 1rem;
   gap: 1rem;
 }
