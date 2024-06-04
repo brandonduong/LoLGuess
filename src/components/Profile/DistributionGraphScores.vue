@@ -4,6 +4,8 @@ import CustomLineGraph from "./CustomGraph.vue";
 
 const props = defineProps<{
   scores: number[];
+  labels: string[];
+  label: string;
 }>();
 
 const data = ref(calculateData());
@@ -15,7 +17,7 @@ function calculateData() {
 
   // Initialize data for graph
   copy.forEach((x, ind) => {
-    labels.push(ind.toString());
+    labels.push(props.labels[ind]);
     scoreData.push(x);
   });
 
@@ -23,7 +25,7 @@ function calculateData() {
     labels: labels,
     datasets: [
       {
-        label: "Scores",
+        label: props.label,
         borderColor: "#2d9eca",
         backgroundColor: "#2d9eca",
         data: scoreData,

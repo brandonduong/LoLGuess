@@ -72,6 +72,7 @@ async function getUser(sub) {
         scores
         rankGuesses
         placementGuesses
+        correctPlacementGuesses
         dailyTotalGuesses
         dailyScore
         dailyMaxScore

@@ -17,7 +17,6 @@ function calculateData() {
     data: number[];
   }[] = [];
   const labels: string[] = [];
-
   for (let i = 0; i < copy.length; i++) {
     labels.push(props.labels[i]);
     const data: number[] = [];

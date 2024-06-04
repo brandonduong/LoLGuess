@@ -36,6 +36,14 @@ const selectOptions = ref<SelectProps["options"]>([
         value: "placements",
         label: "Placement Distribution",
       },
+      {
+        value: "incorrectRankGuesses",
+        label: "Incorrect Rank Guesses",
+      },
+      {
+        value: "correctRankGuesses",
+        label: "Correct Rank Guesses",
+      },
     ],
   },
   {
@@ -52,8 +60,9 @@ const value = ref("freeplay");
 const graphGuesses = ref(props.guesses);
 const graphInfo = ref("Freeplay guess scores");
 
-const distributionValues = ref<number[][]>([]);
+const distributionValues = ref<number[][] | number[]>([]);
 const distributionLabels = ref<string[]>([]);
+const distributionLabel = ref<string>();
 
 function changeGraph(newOption: string) {
   value.value = newOption;
@@ -83,7 +92,7 @@ function changeGraph(newOption: string) {
         "Challenger",
       ];
       graphInfo.value =
-        "Number of times a rank was guessed, grouped by the match's actual rank";
+        "Number of times rank X was guessed, grouped by the match's actual rank";
       break;
     case "placements":
       distributionValues.value = props.user.placementGuesses!.map(
@@ -100,7 +109,38 @@ function changeGraph(newOption: string) {
         "8th",
       ];
       graphInfo.value =
-        "Number of times a placement was guessed, grouped by the actual placement";
+        "Number of times placement X was guessed, grouped by the actual placement";
+      break;
+    case "scores":
+      distributionValues.value = props.user.scores!.map((s) => s as number);
+      distributionLabels.value = props.user.scores!.map((s, ind) =>
+        ind.toString()
+      );
+      distributionLabel.value = "# of occurences";
+      graphInfo.value =
+        "Number of times score X was achieved, up to the maximum of score 100";
+      break;
+    case "incorrectRankGuesses":
+      distributionValues.value = props.user
+        .correctPlacementGuesses!.map((s) => s as number)
+        .slice(0, 9);
+      distributionLabels.value = distributionValues.value.map((s, ind) =>
+        ind.toString()
+      );
+      distributionLabel.value = "# of occurences";
+      graphInfo.value =
+        "Number of guesses where the guessed rank was incorrect and X number of placements were correct";
+      break;
+    case "correctRankGuesses":
+      distributionValues.value = props.user
+        .correctPlacementGuesses!.map((s) => s as number)
+        .slice(9);
+      distributionLabels.value = distributionValues.value.map((s, ind) =>
+        ind.toString()
+      );
+      distributionLabel.value = "# of occurences";
+      graphInfo.value =
+        "Number of guesses where the guessed rank was correct and X number of placements were correct";
       break;
     default:
       break;
@@ -128,15 +168,26 @@ function changeGraph(newOption: string) {
     <div v-if="value === 'freeplay' || value === 'daily'" style="height: 100%">
       <HistoryGraph :guesses="graphGuesses" />
     </div>
-    <div v-else-if="value === 'scores'" style="height: 100%">
-      <DistributionGraphScores :scores="user.scores!.map(s => s as number)" />
+    <div
+      v-else-if="
+        value === 'scores' ||
+        value === 'incorrectRankGuesses' ||
+        value === 'correctRankGuesses'
+      "
+      style="height: 100%"
+    >
+      <DistributionGraphScores
+        :scores="distributionValues as number[]"
+        :labels="distributionLabels"
+        :label="distributionLabel!"
+      />
     </div>
     <div
       v-else-if="value === 'ranks' || value === 'placements'"
       style="height: 100%"
     >
       <DistributionGraph2D
-        :scores="distributionValues"
+        :scores="distributionValues as number[][]"
         :labels="distributionLabels"
       />
     </div>
