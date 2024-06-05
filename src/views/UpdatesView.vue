@@ -20,7 +20,7 @@ const updates = [
       "Fixed old replays",
       "Small details and bugs",
     ],
-    date: "05-28-2024",
+    date: "06-04-2024",
   },
   {
     items: [
