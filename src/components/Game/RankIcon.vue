@@ -1,20 +1,20 @@
 <script setup lang="ts">
-const props = defineProps<{
-  rank: string;
-}>();
+withDefaults(
+  defineProps<{
+    rank: string;
+    width?: string;
+    height?: string;
+  }>(),
+  { width: "1.75rem", height: "1.75rem" }
+);
 </script>
 <template>
-  <img
-    class="rank-icon"
-    :src="`/${rank.toLowerCase()}.png`"
-    :alt="rank"
-    :title="rank"
+  <div
+    :style="`background-image: url(/${rank.toLowerCase()}.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: ${width};
+    height: ${height};`"
   />
 </template>
-<style scoped>
-.rank-icon {
-  width: 1.75rem;
-  height: 1.75rem;
-  margin-top: -0.5rem;
-}
-</style>
+<style scoped></style>

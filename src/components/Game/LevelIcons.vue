@@ -8,21 +8,18 @@ const props = defineProps<{
 const level = ref<number>(props.level);
 </script>
 <template>
-  <h3 class="level">
+  <h5 class="level">
     {{ level }}
-    <img class="level-icon" width="16" height="16" src="/lvl.png" />
-  </h3>
+    <img width="20" height="18" src="/level.png" />
+  </h5>
 </template>
 <style scoped>
 .level {
-  font-size: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
   column-gap: 0.25rem;
-}
-
-.level-icon {
-  filter: contrast(1000%) invert(100%);
+  margin: 0;
+  width: 50px;
 }
 </style>

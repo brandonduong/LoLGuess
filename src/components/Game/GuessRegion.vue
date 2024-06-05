@@ -5,7 +5,10 @@ const props = defineProps<{
 </script>
 <template>
   <div class="region-div">
-    <h2 class="region">Region: {{ props.region }}</h2>
+    <p class="region">
+      Region:
+      <h4 style="display: inline-block; margin: 0">{{ props.region }}</h4>
+    </p>
   </div>
 </template>
 <style scoped>

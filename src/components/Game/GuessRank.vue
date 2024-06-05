@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { ArrowRightOutlined } from "@ant-design/icons-vue";
+import { ref } from "vue";
+import RankIcon from "./RankIcon.vue";
+import CustomTabs from "../Daily/CustomTabs.vue";
 
 const props = defineProps<{
   selectedRanks: string[];
@@ -15,76 +16,29 @@ function updateRank(event: string) {
   emit("updateSelectedRank", event);
 }
 
-function checkIfCorrect() {
-  return props.verifiedRank && props.verifiedRank === props.selectedRank;
-}
-
-function correctionStyle() {
-  const selectedInd = props.selectedRanks.indexOf(props.selectedRank);
-  const verifiedInd = props.selectedRanks.indexOf(props.verifiedRank);
-  switch (Math.abs(selectedInd - verifiedInd)) {
-    case 0:
-      return "correct";
-
-    case 1:
-      return "yellow";
-    case 2:
-      return "orange";
-    default:
-      return "incorrect";
-  }
-}
+const value = ref(props.selectedRank);
 </script>
 <template>
-  <div class="rank-guess">
-    <h2 class="rank-title">Rank:</h2>
-    <a-select
-      @change="updateRank"
-      placeholder="Guess Rank"
-      :dropdownMatchSelectWidth="false"
-      :hidden="props.verifiedRank.length !== 0"
-      :disabled="props.loading"
-      :loading="props.loading"
-      class="rank-select"
+  <div class="rank-guess" style="flex-grow: 1">
+    <CustomTabs
+      :options="props.selectedRanks"
+      :optionTitles="new Array(props.selectedRanks.length)"
+      :option="value"
+      @update-option="
+        (newOption) => {
+          value = newOption;
+          updateRank(newOption);
+        }
+      "
+      :disabled="props.verifiedRank.length > 0"
+      style="flex-grow: 1"
+      class="rank-tabs"
+      :highlight="[props.verifiedRank]"
     >
-      <a-select-option v-for="rank in props.selectedRanks" :value="rank">
-        <div class="option">
-          <h3>{{ rank }}</h3>
-          <img
-            class="rank-icon"
-            :src="`/${rank.toLowerCase()}.png`"
-            :alt="rank"
-            :title="rank"
-          />
-        </div>
-      </a-select-option>
-    </a-select>
-    <div v-if="props.verifiedRank" :class="'rank ' + correctionStyle()">
-      <div class="rank-div">
-        <h2 :class="checkIfCorrect() ? `original` : `original strike`">
-          {{ props.selectedRank }}
-        </h2>
-        <img
-          :class="checkIfCorrect() ? `rank-icon` : `rank-icon strike`"
-          :src="`/${props.selectedRank.toLowerCase()}.png`"
-          :alt="props.selectedRank"
-          :title="props.selectedRank"
-        />
-      </div>
-      <div class="rank-div" v-if="!checkIfCorrect()">
-        <h2 class="correction">
-          <ArrowRightOutlined
-            style="font-size: 1.25rem; display: inline-block"
-          />{{ `${props.verifiedRank}` }}
-        </h2>
-        <img
-          class="rank-icon"
-          :src="`/${props.verifiedRank.toLowerCase()}.png`"
-          :alt="props.verifiedRank"
-          :title="props.verifiedRank"
-        />
-      </div>
-    </div>
+      <template v-for="(r, ind) in props.selectedRanks" #[`icon-${ind}`]
+        ><div class="rank-div">
+          <RankIcon :rank="r" width="3rem" height="3rem" /></div></template
+    ></CustomTabs>
   </div>
 </template>
 <style scoped>
@@ -96,25 +50,6 @@ function correctionStyle() {
   flex-wrap: wrap;
 }
 
-.rank-title {
-  margin: 0;
-}
-
-.rank {
-  border-radius: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 0.5rem;
-}
-
-.rank-select {
-  border: 1px solid lightslategray;
-}
-
-div.rank-div > h2 {
-  margin: 0;
-}
-
 .rank-div {
   display: flex;
   align-items: center;
@@ -122,44 +57,10 @@ div.rank-div > h2 {
   column-gap: 0.5rem;
 }
 
-.original {
-  display: inline-block;
-}
-.correction {
-  display: inline-block;
-}
-
-.strike {
-  text-decoration: line-through;
-}
-
-.incorrect {
-  background-color: rgb(223, 88, 88);
-}
-
-.orange {
-  background-color: rgb(223, 169, 88);
-}
-
-.yellow {
-  background-color: rgb(238, 235, 69);
-}
-
-.correct {
-  background-color: rgb(115, 207, 115);
-}
-
-.rank-icon {
-  width: 1.75rem;
-  height: 1.75rem;
-}
-
-.option {
-  display: grid;
-  grid-template-columns: 1fr 0.25fr;
-  align-items: center;
-}
-.option > h3 {
-  margin: 0;
+@media only screen and (max-width: 1024px) {
+  .rank-tabs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+  }
 }
 </style>

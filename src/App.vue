@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
-import AccountHeader from "./components/AccountHeader.vue";
+import AccountHeader from "./components/Home/AccountHeader.vue";
 import { Authenticator } from "@aws-amplify/ui-vue";
 </script>
 
 <template>
   <AccountHeader />
-  <RouterView />
-  <Authenticator style="display: none" />
+  <div class="body-content">
+    <div class="app-body">
+      <RouterView />
+    </div>
+  </div>
+  <div style="display: none"><Authenticator /></div>
 </template>
 
 <style scoped>
@@ -31,5 +35,22 @@ nav a {
 
 nav a:first-of-type {
   border: 0;
+}
+
+.app-body {
+  max-width: 1280px;
+  padding: 0rem 2rem;
+  margin: auto;
+}
+
+.body-content {
+}
+
+@media only screen and (max-width: 720px) {
+  .app-body {
+    max-width: 1280px;
+    padding: 0rem 0;
+    margin: auto;
+  }
 }
 </style>

@@ -1,19 +1,13 @@
 <script setup lang="ts">
-import { h, onMounted, onUpdated, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { type User } from "../../API";
-import LeaderboardItem from "./LeaderboardItem.vue";
-import { LoadingOutlined } from "@ant-design/icons-vue";
-import { useAuthenticator } from "@aws-amplify/ui-vue";
 import http from "../../common/http-common";
 import { CaretDownOutlined } from "@ant-design/icons-vue";
 import Loading from "../Loading.vue";
-const auth = useAuthenticator();
-
-const current = ref<number>(1);
-
+import { roundToTwo } from "@/common/helper";
+import CustomCard from "../CustomCard.vue";
 // Watch variable sorted
 const sorted = ref<string>("byScore");
-const oldSorted = ref<string>("byScore");
 
 // For update countdown
 const nowToronto = new Date(
@@ -43,19 +37,17 @@ async function getLeaderboard() {
   let url = `/getLeaderboard?sort=${sorted.value}`;
 
   await http.api.get(url, header).then((res) => {
-    //console.log(res);
     leaderboard.value = res.data.users;
   });
 }
 
 onMounted(async () => {
   await update();
-  //console.log(leaderboard.value);
 });
 
-onUpdated(async () => {
-  if (oldSorted.value !== sorted.value) {
-    oldSorted.value = sorted.value;
+watch(sorted, async (sorted, oldSorted) => {
+  if (oldSorted !== sorted) {
+    oldSorted = sorted;
     await update();
   }
 });
@@ -98,137 +90,170 @@ const filters = [
   },
   {
     filter: "byCorrectPlacements",
-    title: "Cor. Placements",
+    title: "Correct Placements",
   },
   {
     filter: "byCorrectRanks",
-    title: "Cor. Ranks",
+    title: "Correct Ranks",
   },
   {
     filter: "byAverageScore",
-    title: "Avg. Score",
+    title: "Average Score",
   },
   {
     filter: "byAverageCorrectPlacements",
-    title: "Avg. Cor. Placements",
+    title: "Average Correct Placements",
   },
 ];
 </script>
 
 <template>
-  <h2>Leaderboard</h2>
-  <h3>Updates every day at 12 am (UTC)</h3>
+  <h3 class="gold">LEADERBOARD</h3>
+  <p>Updates every day at 12 am (UTC)</p>
   <div class="options">
     <div class="timer">
-      <h3>Updates in:</h3>
+      <h5>UPDATES IN:</h5>
       <a-statistic-countdown
         :value="timer"
-        @finish="update()"
-        valueStyle="font-size: 1.17em;"
+        :valueStyle="{
+          color: 'var(--color-offwhite)',
+          'line-height': '18pt',
+          'letter-spacing': '0.075em',
+          'font-size': '14pt',
+          'font-family': 'beaufort_for_lolbold',
+          'font-weight': 700,
+          'font-style': 'normal',
+        }"
       />
     </div>
     <div>
-      <h3>Minimum 10 Guesses</h3>
+      <h5 style="text-align: end">MINIMUM 10 GUESSES</h5>
     </div>
   </div>
-  <div class="table">
-    <div class="leaderboard-header">
-      <h3>Rank</h3>
-      <h3>Username</h3>
-      <div
-        v-for="filter in filters"
-        class="leaderboard-header-item"
-        @click="() => (sorted = filter.filter)"
-        :style="loading ? `pointer-events:none;` : ``"
-      >
-        <h3 :class="getLeaderboardHeaderClass(filter.filter)">
-          {{ filter.title }}
-        </h3>
-        <CaretDownOutlined
-          v-if="filter.filter === sorted"
-          style="font-size: 1.5rem; color: rgba(0, 0, 0, 0.85)"
-        />
-      </div>
-    </div>
-    <div v-if="!loading" class="leaderboard-items">
-      <LeaderboardItem
-        v-if="leaderboard && leaderboard.length > 0"
+  <CustomCard
+    style="overflow: hidden; overflow-x: auto; align-items: start; padding: 0"
+  >
+    <table class="table-leaderboard">
+      <tr>
+        <th><p>Rank</p></th>
+        <th><p>Username</p></th>
+        <th
+          v-for="filter in filters"
+          :style="loading ? `pointer-events:none;` : ``"
+          @click="() => (sorted = filter.filter)"
+        >
+          <div class="t-header" @click="() => (sorted = filter.filter)">
+            <a @click="() => (sorted = filter.filter)">
+              <p :class="getLeaderboardHeaderClass(filter.filter)">
+                {{ filter.title }}
+              </p>
+            </a>
+            <CaretDownOutlined
+              style="font-size: 1.5rem; color: var(--color-gold)"
+              :style="
+                filter.filter === sorted
+                  ? 'color: var(--color-gold)'
+                  : 'color: var(--color-offwhite)'
+              "
+            />
+          </div>
+        </th>
+      </tr>
+      <tr
+        v-if="!loading && leaderboard && leaderboard.length > 0"
         v-for="(user, index) in leaderboard"
-        :user="user"
-        :rank="100 * (current - 1) + index + 1"
-      />
-      <a-empty class="empty" v-else />
+      >
+        <td>
+          <p>{{ index + 1 }}</p>
+        </td>
+        <td>
+          <p>
+            <RouterLink :to="`/profile/${user.id}`">{{
+              user.username.split(" ")[0]
+            }}</RouterLink>
+          </p>
+        </td>
+        <td>
+          <p>{{ Math.round(user.score) }}</p>
+        </td>
+        <td>
+          <p>{{ user.correctPlacements }}</p>
+        </td>
+        <td>
+          <p>{{ user.correctRanks }}</p>
+        </td>
+        <td>
+          <p>{{ roundToTwo(user.averageScore) }}</p>
+        </td>
+        <td>
+          <p>{{ roundToTwo(user.averageCorrectPlacements) }}</p>
+        </td>
+      </tr>
+    </table>
+    <div class="loading" v-if="loading">
+      <Loading />
     </div>
-    <Loading v-else />
-  </div>
+  </CustomCard>
 </template>
 
 <style scoped>
-.pages {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-.leaderboard-header {
-  display: grid;
-  grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr 1fr 1.25fr;
-  justify-content: space-between;
-  column-gap: 1rem;
-  padding: 0.5rem;
-  align-items: center;
-  justify-items: center;
-  border-bottom: solid 1px lightslategray;
-  text-align: center;
-}
-
-.leaderboard-header > h3 {
-  margin: 0;
-  color: lightslategray;
-}
-
 .options {
   display: flex;
   justify-content: space-between;
 }
 
 .timer {
-  display: grid;
-  align-items: end;
-  grid-template-columns: auto auto;
-  column-gap: 0.5rem;
-  color: rgba(0, 0, 0, 0.85);
-}
-
-.table {
   display: flex;
-  flex-direction: column;
-  border: solid 1px lightslategray;
-  min-width: -webkit-min-content;
+  column-gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
-.filter {
-  cursor: pointer;
-  margin: 0;
+.t-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .selected {
   text-decoration: underline;
 }
 
-.leaderboard-header-item {
-  display: grid;
-  grid-template-columns: auto auto;
-  align-items: center;
+.loading {
+  width: 100%;
 }
 
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
+.filter,
+th > p {
+  margin: 0.5rem;
+  color: rgb(240, 230, 210);
 }
+
 .empty {
   padding: 2rem 0;
+}
+
+.selected {
+  color: var(--color-gold);
+}
+
+.table-leaderboard {
+  width: 100%;
+}
+
+td {
+  padding: 0.5rem;
+}
+
+td > p {
+  margin: 0;
+  color: rgb(240, 230, 210);
+}
+
+tr:nth-child(even) {
+  background-color: var(--color-background-gray);
+}
+
+.options > div > h5 {
+  margin: 0;
 }
 </style>

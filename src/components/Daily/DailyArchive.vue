@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import DailyButtons from "./DailyButtons.vue";
+import { useRouter } from "vue-router";
+import { calculateScore } from "@/common/helper";
+import { ArrowRightOutlined } from "@ant-design/icons-vue";
+import HomeButton from "../Home/HomeButton.vue";
+import RankIcon from "../Game/RankIcon.vue";
 
 interface DailyGuess {
   placements: string[];
@@ -12,11 +16,12 @@ interface DailyGuess {
 }
 
 defineProps<{
-  guessedBefore: (date: string, category: string) => void | DailyGuess;
+  guessedBefore: (date: string, category: string) => DailyGuess | null;
+  option: string;
 }>();
 
 function getDailyDates() {
-  const startOfDailies = new Date("03/21/2024"); // Only support most recent set
+  const startOfDailies = new Date("05/21/2024"); // Only support most recent set
   const dailies = [];
   const nowToronto = new Date(
     new Date().toLocaleString("en-US", {
@@ -29,24 +34,82 @@ function getDailyDates() {
     nowToronto.getUTCDate()
   );
   while (date >= startOfDailies) {
-    console.log(date, startOfDailies);
     dailies.push(date.toISOString().split("T")[0]);
     date = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
-    console.log(date);
   }
   return dailies;
 }
+
+const router = useRouter();
+
+const low = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
+const high = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
+const all = [...low, ...high];
 </script>
 
 <template>
-  <div v-for="d in getDailyDates()">
-    <h4 style="margin: 0">
-      <b>{{ d }}</b>
-    </h4>
-    <div class="buttons">
-      <DailyButtons :guessed-before="guessedBefore" :date="d" />
-    </div>
+  <div class="daily-grid">
+    <HomeButton
+      v-for="(d, ind) in getDailyDates()"
+      :onClick="() => router.push(`/daily/${d}/${option}`)"
+      :type="ind === 0 ? 'tertiary' : 'secondary'"
+    >
+      <div style="flex: 1; height: 100%">
+        <h5>{{ d }}</h5>
+        <div v-for="prev in [guessedBefore(d, option)]">
+          <div v-if="prev">
+            <p style="margin: 0">
+              <span
+                v-for="(place, ind) in prev.placements.map((place) =>
+                  parseInt(place)
+                )"
+              >
+                <span>{{ place }}</span>
+                <span v-if="ind != 7">, </span>
+              </span>
+            </p>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <RankIcon :rank="prev.rank" width="2.5rem" height="2.5rem" />
+              <p style="margin: 0"><arrow-right-outlined /></p>
+              <RankIcon
+                :rank="prev.verifiedRank"
+                width="2.5rem"
+                height="2.5rem"
+              />
+            </div>
+
+            <p style="margin: 0" class="number">
+              {{
+                calculateScore(
+                  prev.placements,
+                  prev.rank,
+                  prev.verifiedRank,
+                  option === "all" ? all : option === "high" ? high : low
+                )[2]
+              }}
+              %
+            </p>
+          </div>
+          <div v-else>
+            <p style="margin: 0">---</p>
+          </div>
+        </div>
+      </div>
+    </HomeButton>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.daily-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+  padding: 1rem;
+  gap: 1rem;
+}
+</style>

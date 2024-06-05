@@ -7,6 +7,7 @@ import ProfileStats from "./ProfileStats.vue";
 import ProfileHistory from "./ProfileHistory.vue";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
 import Loading from "../Loading.vue";
+import CustomCard from "../CustomCard.vue";
 const auth = useAuthenticator();
 
 const staticProfileGuesses = ref<(Guess | null)[]>([]);
@@ -96,23 +97,27 @@ async function forceUpdate() {
       :staticProfileData="staticProfileData!"
       @getStaticProfileData="forceUpdate()"
     />
-    <ProfileGraph :guesses="(staticProfileGuesses as [Guess])" />
-    <ProfileHistory :guesses="(staticProfileGuesses as [Guess])" />
+    <ProfileGraph
+      :guesses="(staticProfileGuesses as [Guess])"
+      :user="staticProfileData!"
+    />
+    <div class="history">
+      <ProfileHistory :guesses="(staticProfileGuesses as [Guess])" />
+    </div>
   </div>
-  <Loading v-else />
+  <CustomCard v-else>
+    <Loading />
+  </CustomCard>
 </template>
 
 <style>
 .profile {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 0.5rem;
-  row-gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1rem;
 }
-@media only screen and (max-width: 720px) {
-  .profile {
-    display: flex;
-    flex-direction: column;
-  }
+
+.history {
+  grid-column: 1 / -1;
 }
 </style>

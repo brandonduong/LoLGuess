@@ -1,217 +1,206 @@
 <script setup lang="ts">
-import { useAuthenticator } from "@aws-amplify/ui-vue";
 import { useRouter } from "vue-router";
-import HomeButton from "../components/Home/HomeButton.vue";
+import CustomHR from "../components/Home/CustomHR.vue";
+import HomeButton from "@/components/Home/HomeButton.vue";
+import { useAuthenticator } from "@aws-amplify/ui-vue";
+import {
+  HeartOutlined,
+  MenuOutlined,
+  UserOutlined,
+  CalendarOutlined,
+  QuestionCircleOutlined,
+  HistoryOutlined,
+  CoffeeOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons-vue";
+import IconButton from "@/components/Home/IconButton.vue";
+import { Auth } from "aws-amplify";
 
-const auth = useAuthenticator();
 const router = useRouter();
+const auth = useAuthenticator();
+function signout() {
+  Auth.signOut();
+  router.push("/login");
+}
 </script>
 
 <template>
-  <div class="login">
-    <div class="description">
-      <h1 class="logo">LoLGuess</h1>
-      <h4>
-        LoLGuess is a TFT practice tool designed for low and high elo players to
-        test their knowledge on end-game team composition power.
-      </h4>
-      <h6>
-        Play now to highroll in real life and awaken your Teamfight Tactics
-        skills forever.
-      </h6>
-      <hr class="divider" />
-    </div>
-
-    <div class="intro">
-      <div class="benefits">
-        <ul class="unordered">
-          <li>
-            <h3 class="unordered-section">Train Your Intuition</h3>
-            <span>
-              Study general unit, item, and team strength to faster assess the
-              power of your opponents and the tempo of your lobbies
-            </span>
-          </li>
-          <li>
-            <h3 class="unordered-section">Better Your Flex Play</h3>
-            <span>
-              Understand what makes a comp strong, and apply this knowledge to
-              more effectively play what you hit in creative, off-meta teams
-            </span>
-          </li>
-          <li>
-            <h3 class="unordered-section">Learn to Maximize your Highrolls</h3>
-            <span>
-              Study what comps win out over others to better your ability to
-              play for first when highrolling
-            </span>
-          </li>
-          <li>
-            <h3 class="unordered-section">Experience Different Environments</h3>
-            <span>
-              Quickly scout how different regions and ranks play the game to
-              stay on top of the meta
-            </span>
-          </li>
-        </ul>
-      </div>
-      <div class="buttons">
-        <a-badge-ribbon text="Fixed Set 11!" style="background-color: gray">
-          <HomeButton
-            title="Freeplay"
-            :onClick="() => router.push('/play')"
-            description="Guess rank and placements of a random lobby"
-          />
-        </a-badge-ribbon>
-
-        <HomeButton
-          title="Daily"
-          :onClick="() => router.push('/daily')"
-          description="Guess rank and placements of today's lobby"
-          disabled
-        />
-
-        <HomeButton
-          title="Profile"
-          :onClick="() => router.push(`/profile/${auth.user.attributes.sub}`)"
-          description="Share freeplay guess stats and guess history"
-          v-if="auth.authStatus === 'authenticated'"
-        />
-        <HomeButton
-          title="Login / Register"
-          :onClick="() => router.push(`/login`)"
-          description="Store freeplay guess stats, guess history, and compete on the leaderboard"
-          v-else
-        />
-
-        <HomeButton
-          title="Leaderboard"
-          :onClick="() => router.push(`/leaderboard`)"
-          description="Compete against other freeplay guessers"
-        />
-        <HomeButton
-          title="Supporters"
-          :onClick="() => router.push(`/supporters`)"
-          description="View our MANY great testimonials"
-        />
-        <HomeButton
-          title="Updates"
-          :onClick="() => router.push(`/updates`)"
-          description="New and future additions"
-        />
-        <HomeButton
-          title="Ko-fi"
-          href="https://ko-fi.com/brandonduong"
-          description="Help a guy with a lot of student debt"
-          class="kofi"
-        />
+  <section class="top-page">
+    <div class="home">
+      <div class="description">
+        <h5 class="gold subtitle">LOLGUESS</h5>
+        <h2>TEAMFIGHT TACTICS PRACTICE TOOL</h2>
+        <p>
+          Guess the placements and rank of a random match to test your knowledge
+          on end-game team composition power.
+        </p>
+        <CustomHR />
       </div>
     </div>
-  </div>
+    <div class="background-vid">
+      <video
+        src="/background-magic.mp4"
+        autoplay
+        loop
+        muted
+        playsinline
+        style="
+          object-fit: cover;
+          object-position: center center;
+          height: 100%;
+          width: 100%;
+          transform-origin: center center;
+        "
+      ></video>
+    </div>
+  </section>
+  <section class="bot-page">
+    <div class="home-buttons-grid">
+      <HomeButton
+        title="FREEPLAY"
+        :onClick="() => router.push('/play')"
+        description="Guess on a random lobby"
+        ><template #icon
+          ><question-circle-outlined
+            style="color: rgb(240, 230, 210); font-size: 2.5rem" /></template
+      ></HomeButton>
+      <HomeButton
+        title="DAILY"
+        :onClick="() => router.push('/daily')"
+        description="Guess on today's lobby"
+        :active="false"
+        ><template #icon
+          ><calendar-outlined
+            style="color: rgb(240, 230, 210); font-size: 2.5rem" /></template
+      ></HomeButton>
+      <HomeButton
+        title="LEADERBOARD"
+        :onClick="() => router.push('/leaderboard')"
+        description="Compete against others"
+        ><template #icon
+          ><menu-outlined
+            style="color: rgb(240, 230, 210); font-size: 2.5rem" /></template
+      ></HomeButton>
+
+      <HomeButton
+        v-if="auth.authStatus !== 'authenticated'"
+        title="LOGIN"
+        :onClick="() => router.push('/login')"
+        description="Store stats and history"
+        ><template #icon
+          ><user-outlined
+            style="color: rgb(240, 230, 210); font-size: 2.5rem" /></template
+      ></HomeButton>
+      <HomeButton
+        v-else
+        title="PROFILE"
+        :onClick="() => router.push(`/profile/${auth.user.attributes.sub}`)"
+        description="View stats and history"
+        ><template #icon
+          ><user-outlined
+            style="color: rgb(240, 230, 210); font-size: 2.5rem" /></template
+      ></HomeButton>
+      <HomeButton
+        title="SUPPORTERS"
+        :onClick="() => router.push('/supporters')"
+        description="Help keep everything running"
+        ><template #icon
+          ><heart-outlined
+            style="color: rgb(240, 230, 210); font-size: 2.5rem" /></template
+      ></HomeButton>
+      <HomeButton
+        title="UPDATES"
+        :onClick="() => router.push('/updates')"
+        description="New and future additions"
+        ><template #icon
+          ><history-outlined
+            style="color: rgb(240, 230, 210); font-size: 2.5rem" /></template
+      ></HomeButton>
+    </div>
+  </section>
+
+  <section class="footer">
+    <IconButton href="https://ko-fi.com/brandonduong"
+      ><coffee-outlined style="color: var(--color-gold); font-size: 2.5rem"
+    /></IconButton>
+    <IconButton :onClick="signout" v-if="auth.authStatus === 'authenticated'"
+      ><logout-outlined style="color: var(--color-gold); font-size: 2.5rem"
+    /></IconButton>
+  </section>
 </template>
 
 <style scoped>
-.logo {
-  display: block;
-  color: hsl(51, 100%, 50%);
-  font-size: 6.5rem;
-  line-height: 6.5rem;
-  text-shadow: 0 0 black;
-  margin: 0 0 1rem 0;
+.home {
   text-align: center;
+  display: flex;
+  justify-content: center;
+  padding: 5rem 0;
+  background-image: radial-gradient(
+    rgba(2, 11, 16, 0),
+    rgba(2, 11, 16, 0) 50%,
+    rgb(1, 10, 19),
+    rgb(1, 10, 19) 75%
+  );
+}
+
+.subtitle {
+  display: inline-block;
+}
+
+.subtitle::before {
+  right: 100%;
+  background-image: url("/decorator-left.png");
+}
+
+.subtitle::after {
+  left: 100%;
+  background-image: url("/decorator-right.png");
+}
+
+.subtitle::before,
+.subtitle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.75em;
+  height: 100%;
+  margin: 0px 0.375em;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
 .description {
-  text-align: center;
+  padding: 0 2.25rem;
+  flex: 0 0 50%;
 }
 
-.authenticator {
-  margin: auto;
+.description > p {
+  margin-bottom: 0.75rem;
 }
 
-.login {
-  display: flex;
-  flex-direction: column;
+.background-vid {
+  z-index: -1;
+  position: absolute;
   height: 100%;
-  padding: 1rem;
-  background: white;
-  border: 1px solid lightslategray;
-  border-radius: 0.25rem;
-  overflow-x: auto;
-  gap: 1rem;
-}
-
-.unordered {
-  color: rgba(0, 0, 0, 0.85);
-}
-
-.intro {
-  display: flex;
-  gap: 1rem;
-}
-
-.link {
-  font-weight: bold;
-  text-decoration: underline;
-  color: var(--theme-love);
-}
-
-.unordered > li {
-  margin: 0.75rem 0;
-}
-
-.guest {
   width: 100%;
-  background: hsl(51, 100%, 50%);
-  margin-top: 1rem;
-  color: black;
+  top: 0rem;
+  left: 0rem;
 }
 
-.buttons {
+.home-buttons-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  flex-basis: 50%;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 }
 
-.benefits {
-  flex-basis: 50%;
-  margin: auto;
-}
-
-.kofi {
-  grid-column: span 2;
-  background-color: #e0ade2;
-  border-color: #e0ade2;
-}
-
-.kofi:hover {
-  grid-column: span 2;
-  background-color: #edc7ee;
-  border-color: #edc7ee;
-}
-
-@media only screen and (max-width: 720px) {
-  .login {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .logo {
-    font-size: 4rem;
-  }
-
-  .unordered {
-    padding: 0 0 0 1.5rem;
-  }
-  .intro {
-    flex-direction: column-reverse;
-  }
-
-  .buttons {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
 }
 </style>

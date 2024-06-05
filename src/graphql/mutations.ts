@@ -39,12 +39,24 @@ export const createUser = /* GraphQL */ `
       scores
       rankGuesses
       placementGuesses
+      correctPlacementGuesses
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
       dailyCorrectPlacements
       dailyCorrectRanks
-      dailyScores
+      dailyScoresLow
+      dailyRankGuessesLow
+      dailyPlacementGuessesLow
+      dailyCorrectPlacementGuessesLow
+      dailyScoresHigh
+      dailyRankGuessesHigh
+      dailyPlacementGuessesHigh
+      dailyCorrectPlacementGuessesHigh
+      dailyScoresAll
+      dailyRankGuessesAll
+      dailyPlacementGuessesAll
+      dailyCorrectPlacementGuessesAll
       createdAt
       updatedAt
     }
@@ -87,12 +99,24 @@ export const updateUser = /* GraphQL */ `
       scores
       rankGuesses
       placementGuesses
+      correctPlacementGuesses
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
       dailyCorrectPlacements
       dailyCorrectRanks
-      dailyScores
+      dailyScoresLow
+      dailyRankGuessesLow
+      dailyPlacementGuessesLow
+      dailyCorrectPlacementGuessesLow
+      dailyScoresHigh
+      dailyRankGuessesHigh
+      dailyPlacementGuessesHigh
+      dailyCorrectPlacementGuessesHigh
+      dailyScoresAll
+      dailyRankGuessesAll
+      dailyPlacementGuessesAll
+      dailyCorrectPlacementGuessesAll
       createdAt
       updatedAt
     }
@@ -135,12 +159,24 @@ export const deleteUser = /* GraphQL */ `
       scores
       rankGuesses
       placementGuesses
+      correctPlacementGuesses
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
       dailyCorrectPlacements
       dailyCorrectRanks
-      dailyScores
+      dailyScoresLow
+      dailyRankGuessesLow
+      dailyPlacementGuessesLow
+      dailyCorrectPlacementGuessesLow
+      dailyScoresHigh
+      dailyRankGuessesHigh
+      dailyPlacementGuessesHigh
+      dailyCorrectPlacementGuessesHigh
+      dailyScoresAll
+      dailyRankGuessesAll
+      dailyPlacementGuessesAll
+      dailyCorrectPlacementGuessesAll
       createdAt
       updatedAt
     }

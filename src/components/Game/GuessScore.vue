@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { InfoCircleOutlined } from "@ant-design/icons-vue";
 import { calculateScore } from "../../common/helper";
+import CustomInfo from "../Profile/CustomInfo.vue";
 
 const props = defineProps<{
   verifiedRank: string;
@@ -19,29 +18,28 @@ const [scored, maxScore] = calculateScore(
 </script>
 <template>
   <div class="score-div">
-    <h2 class="score">Score: {{ `${scored}/${maxScore}` }}</h2>
-    <a-popover title="Scoring Information">
-      <template #content>
-        <div class="score-info">
-          <h4>
-            <b>Placements: </b>Guessing a player's placement gives points based
-            on how far the guess is. 8, 6, or 3 points are awarded if the guess
-            is off by 0, 1, or 2 positions.
+    <p class="score">
+      Score: ({{ Math.round(scored / maxScore * 100) }} %)
+      <h4 class="number" style="margin: 0; display: inline-block;">{{ `${scored} / ${maxScore}` }}</h4>
+    </p>
+    <CustomInfo>
+      <h5 class="gold">Placements:</h5>
+      <p style="color: var(--color-offwhite)">
+        Guessing a player's placement gives points based on how far the guess
+        is. 8, 6, or 3 points are awarded if the guess is off by 0, 1, or 2
+        positions.
+      </p>
 
-            <br />
-
-            <b>Rank: </b>Guessing the rank gives points based on how far the
-            guess is and how many ranks were included in the pool. A maximum 36,
-            27, or 13.5 points are awarded if the guess is off by 0, 1, or 2
-            positions. For every 1 rank that isn't included in the full pool of
-            10 ranks, those maximum points will decrease following the equation
-            (maximum * # of ranks in pool / 10). If the pool size is smaller
-            than 4, 0 points are awarded.
-          </h4>
-        </div>
-      </template>
-      <InfoCircleOutlined class="info" style="color: black" />
-    </a-popover>
+      <h5 class="gold">Rank:</h5>
+      <p style="color: var(--color-offwhite); margin: 0">
+        Guessing the rank gives points based on how far the guess is and how
+        many ranks were included in the pool. A maximum 36, 27, or 13.5 points
+        are awarded if the guess is off by 0, 1, or 2 positions. For every 1
+        rank that isn't included in the full pool of 10 ranks, those maximum
+        points will decrease following the equation (maximum * # of ranks in
+        pool / 10). If the pool size is smaller than 4, 0 points are awarded.
+      </p>
+    </CustomInfo>
   </div>
 </template>
 <style scoped>

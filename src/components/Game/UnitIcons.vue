@@ -12,14 +12,20 @@ interface ItemStyle {
   title: string;
 }
 
-interface StaticUnit {
+interface StaticData {
+  apiName: string;
+  icon: string;
   name: string;
-  character_record: {
-    character_id: string;
-    squareIconPath: string;
-    display_name: string;
-    path: string;
-  };
+  tileIcon: string;
+}
+interface StaticSetData {
+  champions: StaticData[];
+  traits: StaticData[];
+}
+interface StaticSetsData {
+  9: StaticSetData;
+  10: StaticSetData;
+  11: StaticSetData;
 }
 
 interface APIUnit {
@@ -28,12 +34,6 @@ interface APIUnit {
   itemNames: string[];
   rarity: number;
 }
-
-interface StaticItem {
-  name: string;
-  nameId: string;
-  squareIconPath: string;
-}
 </script>
 <script setup lang="ts">
 import { StarFilled } from "@ant-design/icons-vue";
@@ -41,8 +41,8 @@ import { ref } from "vue";
 
 const props = defineProps<{
   units: APIUnit[];
-  staticTFTUnitData: StaticUnit[];
-  staticTFTItemData: StaticItem[];
+  staticTFTItemData: StaticData[];
+  staticTFTSetsData: StaticSetsData;
 }>();
 
 const unitStyles = ref<UnitStyle[]>([]);
@@ -51,55 +51,60 @@ function sortByCostThenStar(a: APIUnit, b: APIUnit) {
   return a.rarity - b.rarity || a.tier - b.tier;
 }
 
-props.units.sort(sortByCostThenStar).forEach((unit, ind) => {
-  const unitInfo = props.staticTFTUnitData.filter((u) => {
-    // For set 8.5 return u.character_id === unit.character_id;
-    // For set 9, new return as some ids are messy (Ryze, Reksai)
+function getItemImage(item: string) {
+  const itemInfo = props.staticTFTItemData.filter((i) => {
+    return i.apiName === item;
+  })[0];
+  // console.log(item, itemInfo);
 
-    return u.character_record.path
-      .toLowerCase()
-      .includes(unit.character_id.toLowerCase());
+  let completedPath;
+  if (itemInfo) {
+    const path = itemInfo.icon.toLowerCase().split("/");
+    const ind = path.indexOf("item_icons");
+    completedPath =
+      "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons";
+    for (let i = ind + 1; i < path.length; i++) {
+      completedPath += `/${path[i]}`;
+    }
+    completedPath = `${completedPath.slice(0, completedPath.length - 4)}.png`;
+  } else {
+    completedPath =
+      "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/placeholders/tft_item_unknown.png";
+  }
+  return {
+    path: completedPath,
+    title: itemInfo ? itemInfo.name : item,
+  };
+}
+
+props.units.sort(sortByCostThenStar).forEach((unit) => {
+  // console.log(unit);
+  const setNum = unit.character_id.split("_")[0].slice(3);
+  const unitInfo = props.staticTFTSetsData[
+    parseInt(setNum) as keyof StaticSetsData
+  ].champions.filter((u) => {
+    return u.apiName === unit.character_id;
   })[0];
   // console.log(unit, unitInfo);
 
-  if (unitInfo && unitInfo.character_record) {
-    const itemPaths: ItemStyle[] = [];
+  const itemPaths: ItemStyle[] = [];
+  if (unitInfo) {
+    // Recent set
     // Get item paths
     unit.itemNames.forEach((item) => {
-      const itemInfo = props.staticTFTItemData.filter((i) => {
-        return i.nameId === item;
-      })[0];
-      //console.log(item, itemInfo);
-      const path = itemInfo.squareIconPath.toLowerCase().split("/");
-      const ind = path.indexOf("item_icons");
-      var completedPath = "";
-      for (let i = ind + 1; i < path.length; i++) {
-        completedPath += `/${path[i]}`;
-      }
-      itemPaths.push({
-        path: completedPath,
-        title: itemInfo.name,
-      });
+      itemPaths.push(getItemImage(item));
     });
 
-    // Get unit path
-    const path = unitInfo.character_record.squareIconPath
-      .toLowerCase()
-      .split("/");
+    // Get unit path sometimes in format tft11_yasuo_square.tft_set11.png or tft10_twitch_square.png
+    const pathParts = unitInfo.tileIcon.split("/");
+    const path = pathParts[pathParts.length - 1];
     unitStyles.value.push({
-      path: `${path[path.length - 3]}/${path[path.length - 2]}/${
-        path[path.length - 1]
-      }`,
-      title: unitInfo.character_record.display_name,
+      path: `${pathParts[pathParts.length - 3]}/hud/${path.slice(
+        0,
+        path.length - 4
+      )}`.toLowerCase(),
+      title: unitInfo.name,
       itemPaths: itemPaths,
-      rarity: unit.rarity,
-      tier: unit.tier,
-    });
-  } else {
-    unitStyles.value.splice(ind, 1, {
-      path: "",
-      title: unit.character_id,
-      itemPaths: [],
       rarity: unit.rarity,
       tier: unit.tier,
     });
@@ -117,7 +122,7 @@ props.units.sort(sortByCostThenStar).forEach((unit, ind) => {
       </div>
       <img
         :class="`unit-icon rarity${unit.rarity}`"
-        :src="`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${unit.path}`"
+        :src="`https://raw.communitydragon.org/latest/game/assets/characters/${unit.path}.png`"
         :alt="unit.title"
         width="36"
         height="36"
@@ -127,7 +132,7 @@ props.units.sort(sortByCostThenStar).forEach((unit, ind) => {
         <img
           v-for="item in unit.itemPaths"
           class="item-icon"
-          :src="`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/maps/particles/tft/item_icons${item.path}`"
+          :src="item.path"
           :alt="item.title"
           width="12"
           height="12"
@@ -140,7 +145,6 @@ props.units.sort(sortByCostThenStar).forEach((unit, ind) => {
 <style scoped>
 .units {
   display: flex;
-  flex-wrap: wrap;
 }
 
 .unit {

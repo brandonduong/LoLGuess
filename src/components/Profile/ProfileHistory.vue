@@ -2,17 +2,18 @@
 import { ref } from "vue";
 import type { Guess } from "@/API";
 import HistoryItem from "./HistoryItem.vue";
+import CustomCard from "../CustomCard.vue";
 
-const props = defineProps<{
+defineProps<{
   guesses: Guess[];
 }>();
 
 const current = ref<number>(1);
-const pageSize = ref<number>(5);
+const pageSize = ref<number>(10);
 </script>
 
 <template>
-  <div class="history">
+  <CustomCard style="padding: 0">
     <HistoryItem
       v-for="guess in guesses.slice(
         pageSize * (current - 1),
@@ -26,26 +27,33 @@ const pageSize = ref<number>(5);
         v-model:pageSize="pageSize"
         v-model:current="current"
         :total="guesses.length"
-        :defaultPageSize="5"
-      />
+        :defaultPageSize="10"
+        :showSizeChanger="false"
+      ></a-pagination>
     </div>
-  </div>
+  </CustomCard>
 </template>
 
-<style scoped>
-.history {
-  grid-column: span 2;
-  border: solid 1px lightslategray;
-  padding: 1rem;
-  display: grid;
-  row-gap: 0.5rem;
-  border-radius: 0.25rem;
-  background-color: white;
+<style>
+.pages {
+  padding: 1rem 0;
 }
 
-.pages {
-  display: flex;
-  justify-content: center;
-  padding-top: 0.25rem;
+.pages .ant-pagination-item,
+.pages .ant-pagination-jump-next,
+.pages .ant-pagination-jump-prev,
+.pages .ant-pagination-item-link {
+  background-color: var(--color-background-gray);
+  border: none;
+  font-family: "beaufort_for_lolmedium";
+}
+
+.pages .ant-pagination-item > a,
+.pages button.ant-pagination-item-link {
+  color: var(--color-offwhite);
+}
+
+.pages .ant-pagination-item-active > a {
+  color: var(--color-gold);
 }
 </style>

@@ -13,8 +13,8 @@ type User
   id: ID!
   username: String!
     @index(name: "usersByUsername", queryField: "usersByUsername")
-  # Freeplay stats
   guesses: [Guess] @hasMany
+  # Freeplay stats
   score: Float!
   maxScore: Float!
   correctPlacements: Int!
@@ -22,18 +22,34 @@ type User
   totalRanks: Int!
   unfinished: Int!
   totalGuesses: Int!
-  averageCorrectPlacements: Float!
-  averageScore: Float!
-  scores: [Int]
-  rankGuesses: [[Int]] # 2D array of rank guesses from iron to challenger
-  placementGuesses: [[Int]] # 2D array of placement guesses from first to eight
+  averageCorrectPlacements: Float! # TODO: REMOVE AS REDUNDANT
+  averageScore: Float! # TODO: REMOVE AS REDUNDANT
+  # Freeplay occurrences
+  scores: [Int] # 1D array of size 100 counting number of score occurrences
+  rankGuesses: [[Int]] # 2D 10 x 10 array of rank guesses from iron to challenger
+  placementGuesses: [[Int]] # 2D 8 x 8 array of placement guesses from first to eight
+  correctPlacementGuesses: [Int] # 1D array of size 18 counting number of times guessed 0, 1, 2, ... placements correctly separated by also correct rank or not
   # Daily stats
   dailyTotalGuesses: Int
   dailyScore: Float
   dailyMaxScore: Float
   dailyCorrectPlacements: Int
   dailyCorrectRanks: Int
-  dailyScores: [Float]
+  # Daily Low Elo occurrences
+  dailyScoresLow: [Int] # size 82
+  dailyRankGuessesLow: [[Int]] # size 5 x 5
+  dailyPlacementGuessesLow: [[Int]]
+  dailyCorrectPlacementGuessesLow: [Int]
+  # Daily High Elo occurrences
+  dailyScoresHigh: [Int] # size 82
+  dailyRankGuessesHigh: [[Int]] # size 5 x 5
+  dailyPlacementGuessesHigh: [[Int]]
+  dailyCorrectPlacementGuessesHigh: [Int]
+  # Daily All Elo occurrences
+  dailyScoresAll: [Int] # size 100
+  dailyRankGuessesAll: [[Int]] # size 10 x 10
+  dailyPlacementGuessesAll: [[Int]]
+  dailyCorrectPlacementGuessesAll: [Int]
 }
 
 type Guess
@@ -92,9 +108,9 @@ type Daily
   region: String!
   category: String! # low, high, all
   usernames: [String] # original usernames of players
-  patch: Int # patch number
+  patch: String # patch number
   set: Int # set number
-  datetimePlayed: Int # game_datetime
+  datetimePlayed: AWSTimestamp # game_datetime
   # Unauthorized user stats
   rankGuesses: [Int] # 1D array of rank guesses from iron to challenger
   placementGuesses: [[Int]] # 2D array of placement guesses from first to eight

@@ -1,8 +1,17 @@
 <script lang="ts">
-interface StaticTrait {
-  trait_id: string;
-  icon_path: string;
-  display_name: string;
+interface StaticData {
+  apiName: string;
+  icon: string;
+  name: string;
+}
+interface StaticSetData {
+  champions: StaticData[];
+  traits: StaticData[];
+}
+interface StaticSetsData {
+  9: StaticSetData;
+  10: StaticSetData;
+  11: StaticSetData;
 }
 
 interface APITrait {
@@ -24,23 +33,28 @@ import { ref } from "vue";
 
 const props = defineProps<{
   traits: APITrait[];
-  staticTFTTraitData: StaticTrait[];
+  staticTFTSetsData: StaticSetsData;
 }>();
 
 // Get trait icon styles
 const traitStyles = ref<TraitStyle[]>([]);
 props.traits.forEach((trait) => {
-  const traitInfo = props.staticTFTTraitData.filter((t) => {
-    return t.trait_id === trait.name && trait.tier_current > 0;
+  const setNum = trait.name.split("_")[0].slice(3);
+  const traitInfo = props.staticTFTSetsData[
+    parseInt(setNum) as keyof StaticSetsData
+  ].traits.filter((t) => {
+    return t.apiName === `TFT${trait.name.slice(3)}` && trait.tier_current > 0; // Always in format TFT11_...
   })[0];
+  // console.log(trait, traitInfo);
 
   // If trait is activated, get image
   if (traitInfo) {
-    const path = traitInfo.icon_path.split("/");
+    const pathParts = traitInfo.icon.split("/");
+    const path = pathParts[pathParts.length - 1].toLowerCase();
     traitStyles.value.push({
-      path: path[path.length - 1].toLowerCase(),
+      path: path.slice(0, path.length - 4),
       style: trait.style,
-      title: `${trait.num_units} ${traitInfo.display_name}`,
+      title: `${trait.num_units} ${traitInfo.name}`,
     });
   }
 });
@@ -60,7 +74,7 @@ traitStyles.value.sort(function (a, b) {
     <div v-for="trait in traitStyles" :class="`trait style${trait.style}`">
       <img
         class="trait-icon"
-        :src="`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/ux/traiticons/${trait.path}`"
+        :src="`https://raw.communitydragon.org/latest/game/assets/ux/traiticons/${trait.path}.png`"
         :alt="trait.path"
         width="16"
         height="16"
@@ -73,6 +87,8 @@ traitStyles.value.sort(function (a, b) {
 .traits {
   display: flex;
   flex-wrap: wrap;
+  min-width: 144px;
+  max-width: 144px;
   justify-content: center;
 }
 

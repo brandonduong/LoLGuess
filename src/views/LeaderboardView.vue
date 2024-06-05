@@ -10,15 +10,7 @@ import Leaderboard from "../components/Leaderboard/index.vue";
 
 <style>
 .leaderboard {
-  grid-column: span 2;
-  border: solid 1px lightslategray;
-  padding: 1rem;
-  border-radius: 0.25rem;
-  background-color: white;
-  overflow-x: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  padding: 1rem 0;
   text-align: center;
 }
 </style>

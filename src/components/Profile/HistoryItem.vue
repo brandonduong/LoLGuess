@@ -4,6 +4,7 @@ import type { Guess } from "@/API";
 import { calculateScore } from "@/common/helper";
 import RankIcon from "../Game/RankIcon.vue";
 import { useRouter } from "vue-router";
+import HomeButton from "../Home/HomeButton.vue";
 
 const props = defineProps<{
   guess: Guess;
@@ -32,89 +33,145 @@ const reveal = ref<boolean>(false);
 <template>
   <div class="history-item">
     <div class="date">
-      <h3>
+      <h5 style="margin: 0">
         {{
           new Date(guess.createdAt).toLocaleString("default", {
             month: "short",
             day: "numeric",
           })
         }}
-      </h3>
-      <h3>{{ score }} / {{ maxScore }}</h3>
+      </h5>
+      <p class="number" style="margin: 0">
+        {{ score }} / {{ maxScore }}
+        <p class="percentage" style="margin: 0;">
+          ({{ Math.round((score / maxScore) * 100) }} %)
+        </p>
+      </p>
     </div>
 
-    <div>
-      <h4
-        v-if="guess.regions"
-        class="regions"
-        :title="guess.regions.toString()"
-      >
-        {{ guess.regions.join(", ") }}
-      </h4>
-      <h3 v-else>N/A</h3>
+    <div class="regions">
+      <p v-for="region in guess.regions" style="margin: 0">
+        {{ region }}
+      </p>
+    </div>
+    <div class="ranks">
+      <RankIcon v-for="rank in guess.ranks" :rank="rank" />
     </div>
 
-    <div>
-      <h3 class="ranks">
-        <RankIcon v-for="rank in guess.ranks" :rank="rank" />
-      </h3>
-      <h3>{{ guess.placements.map((place) => parseInt(place)).join(", ") }}</h3>
-    </div>
-
-    <div class="reveal" v-if="reveal">
-      <h3>Guessed Rank: <RankIcon :rank="guess.guessedRank" /></h3>
-
-      <h3>
-        Rank:
-        <RankIcon :rank="guess.rank" />
-      </h3>
-    </div>
-    <div v-else>
-      <a-button type="default" @click="() => (reveal = !reveal)"
-        >Reveal</a-button
-      >
-      <a-button
-        v-if="props.guess.matchId"
-        type="primary"
-        @click="() => router.push(`/play/${props.guess.id}`)"
-        >Replay</a-button
-      >
+    <div class="history-buttons">
+      <div class="reveal" v-if="reveal">
+        <div style="display: flex; align-items: center;">
+          <RankIcon :rank="guess.guessedRank" />
+          <p style="margin: 0;">
+          ->
+          </p>
+          <RankIcon :rank="guess.rank" />
+        </div>
+        <p style="margin: 0">
+          {{ guess.placements.map((place) => parseInt(place)).join(", ") }}
+        </p>
+      </div>
+      <div v-else>
+        <HomeButton
+          type="secondary"
+          @click="() => (reveal = !reveal)"
+          title="REVEAL"
+        ></HomeButton>
+      </div>
+      <div v-if="props.guess.matchId">
+        <HomeButton
+          type="tertiary"
+          @click="() => router.push(`/play/${props.guess.id}`)"
+          title="REPLAY"
+        ></HomeButton>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
 .history-item {
-  display: grid;
-  grid-template-columns: auto 0.7fr 0.5fr auto;
-  border: solid 1px lightslategray;
-  padding: 0.5rem 1rem;
+  display: flex;
   align-items: center;
-  gap: 1rem;
+  width: 100%;
+  column-gap: 1rem;
+  justify-content: space-between;
+  padding: 1rem;
 }
 
-.history-item > h3 {
-  margin: 0;
+.history-item:nth-child(n + 1) {
+  border-bottom: 2px solid var(--color-border);
 }
 
-h4.regions {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin: 0;
+.regions,
+.ranks {
+  display: grid;
+  column-gap: 0.5rem;
 }
 
-@media only screen and (max-width: 720px) {
+.regions {
+  grid-template-columns: repeat(8, 1fr);
+  width: 300px;
+}
+
+.ranks {
+  grid-template-columns: repeat(5, 1fr);
+  width: 175px;
+}
+
+.history-buttons {
+  display: flex;
+  justify-content: end;
+  column-gap: 1rem;
+  min-width: 255px;
+}
+
+.reveal {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 1rem;
+  justify-content: center;
+  text-wrap: nowrap;
+}
+
+.date {
+  min-width: 140px;
+  text-wrap: nowrap;
+  text-align: start;
+}
+
+@media only screen and (max-width: 1028px) {
   .history-item {
-    display: flex;
     flex-direction: column;
-    text-align: center;
   }
 
-  .reveal,
+  .date > h5,
   .date {
+    text-align: center;
+    width: auto;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    width: 100%;
+    column-gap: 1rem;
+  }
+
+  .history-buttons {
+    margin-left: 0;
+    justify-content: space-between;
+  }
+
+  .ranks,
+  .regions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .percentage {
+    display: inline-block;
+    padding-left: 1rem;
   }
 }
 </style>

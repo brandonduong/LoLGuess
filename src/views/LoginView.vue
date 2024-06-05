@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { Authenticator, useAuthenticator } from "@aws-amplify/ui-vue";
-import { RouterView, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { ref, watchEffect } from "vue";
+import { Auth, I18n } from "aws-amplify";
 
 const auth = useAuthenticator();
 const router = useRouter();
+
+function signout() {
+  Auth.signOut();
+  router.push("/login");
+}
 
 const formFields = {
   signUp: {
@@ -27,6 +33,20 @@ const formFields = {
 };
 const signUpAttributes = ["preferred_username"];
 
+I18n.putVocabulariesForLanguage("en", {
+  "Sign In": "LOGIN", // Tab header
+  "Create Account": "REGISTER",
+  Username: "USERNAME",
+  Password: "PASSWORD",
+  "Display Name": "DISPLAY NAME",
+  Email: "EMAIL",
+  "Confirm Password": "CONFIRM PASSWORD",
+  "Sign in": "LOGIN",
+  "Confirmation Code": "CONFIRMATION CODE",
+  "We Texted You": "EMAIL VERIFICATION CODE",
+  "Signing in": "LOGGING IN",
+});
+
 const oldAuthStatus = ref<string>(auth.authStatus);
 
 watchEffect(() => {
@@ -43,80 +63,57 @@ watchEffect(() => {
 
 <template>
   <div class="login">
-    <div>
-      <h1 class="logo">LoLGuess</h1>
-      <h4 class="subtitle">
-        Login or register to track your guess history, overall stats, and to
-        show up on the leaderboard!
-      </h4>
-      <hr class="divider" />
+    <div style="display: flex; justify-content: center">
+      <div style="flex: 0 0 50%">
+        <h3 class="gold">LOGIN</h3>
+
+        <p class="subtitle">
+          Login or register to track your guess history, overall stats, share
+          your profile, and to show up on the leaderboard!
+        </p>
+      </div>
     </div>
-    <div
-      :class="auth.authStatus === 'authenticated' ? 'peng' : 'authenticator'"
-    >
-      <Authenticator
-        :formFields="formFields"
-        :signUpAttributes="signUpAttributes"
-      >
-        <template v-if="auth.authStatus === 'configuring'">
-          <button @click="auth.signOut">Loading...</button>
-        </template>
-      </Authenticator>
+    <div class="login-container" v-if="auth.authStatus !== 'authenticated'">
+      <div class="login-border">
+        <Authenticator
+          :formFields="formFields"
+          :signUpAttributes="signUpAttributes"
+        >
+          <template v-if="auth.authStatus === 'configuring'">
+            <button @click="auth.signOut">Loading...</button>
+          </template>
+        </Authenticator>
+      </div>
+    </div>
+    <div v-else>
+      <p>
+        Currently logged in as
+        <RouterLink :to="`/profile/${auth.user.attributes.sub}`">
+          {{
+            auth.user.signInUserSession.idToken.payload.preferred_username.substring(
+              0,
+              20
+            )
+          }}
+        </RouterLink>
+      </p>
     </div>
   </div>
 </template>
 
 <style scoped>
-.logo {
-  display: block;
-  color: hsl(51, 100%, 50%);
-  font-size: 6.5rem;
-  line-height: 6.5rem;
-  text-shadow: 0 0 black;
-  margin: 0 0 1rem 0;
-  text-align: center;
-}
-.authenticator {
-  margin: auto;
-}
-
 .login {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
   padding: 1rem;
-  background: white;
-  border: 1px solid lightslategray;
-  border-radius: 0.25rem;
-  overflow-x: auto;
-  gap: 1rem;
-  align-items: center;
-}
-
-.subtitle {
   text-align: center;
 }
 
-@media only screen and (max-width: 720px) {
-  .logo {
-    font-size: 4rem;
-  }
+.login-border {
+  border: solid 4px var(--color-gold);
 }
 
-.divider {
-  margin-left: 1.25rem;
-}
-.peng {
-  background-image: url("/peng.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 300px;
-  height: 300px;
-}
-
-.link {
-  font-weight: bold;
-  text-decoration: underline;
-  color: var(--theme-love);
+.login-container {
+  display: flex;
+  justify-content: center;
+  text-align: start;
 }
 </style>

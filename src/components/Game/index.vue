@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import { ref, h } from "vue";
-import { LoadingOutlined } from "@ant-design/icons-vue";
+import { ref } from "vue";
+import { DoubleRightOutlined, DoubleLeftOutlined } from "@ant-design/icons-vue";
 import http from "../../common/http-common";
-import GroupSettings from "./GroupSettings.vue";
 import DragAndDropTable from "./DragAndDropTable.vue";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
 import GuessRank from "./GuessRank.vue";
 import GuessScore from "./GuessScore.vue";
 import GuessRegion from "./GuessRegion.vue";
 import { useRouter } from "vue-router";
-const props = defineProps<{ guessId: string }>();
+import CustomCard from "../CustomCard.vue";
+import HomeButton from "../Home/HomeButton.vue";
+import Loading from "../Loading.vue";
+import FreeplaySettings from "./FreeplaySettings.vue";
+const props = defineProps<{ guessId?: string }>();
 
 const auth = useAuthenticator();
 const router = useRouter();
@@ -51,7 +54,14 @@ const next = async () => {
   }
 };
 const prev = () => {
-  current.value--;
+  if (current.value === 0 || current.value === 3) {
+    router.push("/");
+  } else if (current.value === 2) {
+    current.value = 0;
+    router.push("/play");
+  } else {
+    current.value--;
+  }
 };
 async function getMatch() {
   if (auth.user) {
@@ -185,19 +195,6 @@ async function verifyGuess() {
     });
 }
 
-const steps = [
-  {
-    title: "Regions",
-  },
-  {
-    title: "Ranks",
-  },
-  {
-    title: "Guess",
-  },
-  { title: "Results" },
-];
-
 const regions: string[] = [
   "BR",
   "EUNE",
@@ -240,40 +237,39 @@ const verifiedGuess = ref<string[]>([]);
 const verifiedRank = ref<string>("");
 const verifiedRegion = ref<string>("");
 
-const buttonText = ["Next", "Play", "Guess", "Play Again"];
-
-const indicator = h(LoadingOutlined, {
-  style: {
-    fontSize: "4rem",
-    margin: "5rem 0 4.5rem 0",
-    color: "lightslategray",
-  },
-  spin: true,
-});
+const prevButtonText = ["HOME", "REGIONS", "FORFEIT", "HOME"];
+const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
 </script>
 
 <template>
-  <div>
-    <div class="steps-content">
-      <h2 v-if="current <= 1 && !loading">Freeplay</h2>
+  <div class="steps-content">
+    <div v-if="current <= 1 && !loading">
+      <h3 class="gold">FREEPLAY</h3>
+      <p>Guess on a random match from the selected ranks and regions</p>
+    </div>
 
+    <CustomCard style="align-items: normal">
       <div v-if="!loading">
         <div v-if="current === 0">
-          <GroupSettings
-            :options="regions"
-            :selected-options="selectedRegions"
-            @update-selected-options="selectedRegions = $event"
-            description="Choose the regions to include when fetching a match"
-          />
+          <h5>REGIONS</h5>
+          <div class="region-grid">
+            <FreeplaySettings
+              :options="regions"
+              :selected-options="selectedRegions"
+              @update-options="(newOptions) => (selectedRegions = newOptions)"
+            />
+          </div>
         </div>
         <div v-if="current === 1">
-          <GroupSettings
-            :options="ranks"
-            :selected-options="selectedRanks"
-            @update-selected-options="selectedRanks = $event"
-            :icons="true"
-            description="Choose the ranks to include when fetching a match"
-          />
+          <h5>RANKS</h5>
+          <div class="rank-grid">
+            <FreeplaySettings
+              :options="ranks"
+              :selected-options="selectedRanks"
+              @update-options="(newOptions) => (selectedRanks = newOptions)"
+              :icons="true"
+            />
+          </div>
         </div>
         <div v-if="current === 2 || current === 3" class="table-div">
           <DragAndDropTable
@@ -282,16 +278,7 @@ const indicator = h(LoadingOutlined, {
             :verifiedGuess="verifiedGuess"
             :selectedRanks="selectedRanks"
           />
-          <div
-            :style="{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              marginTop: '0.5rem',
-              paddingLeft: '0.75rem',
-            }"
-          >
+          <div style="margin-top: 1rem">
             <GuessRank
               v-if="current === 2 || current === 3"
               :selectedRanks="selectedRanks"
@@ -300,58 +287,67 @@ const indicator = h(LoadingOutlined, {
               :verifiedRank="verifiedRank"
               :loading="loading"
             />
-            <GuessScore
-              :selectedRank="selectedRank"
-              :selectedRanks="selectedRanks"
-              :verifiedRank="verifiedRank"
-              :verifiedGuess="verifiedGuess"
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                margin-top: 1rem;
+              "
               v-if="current === 3"
-            />
-            <GuessRegion :region="verifiedRegion" v-if="current === 3" />
+            >
+              <GuessRegion :region="verifiedRegion" />
+              <GuessScore
+                :selectedRank="selectedRank"
+                :selectedRanks="selectedRanks"
+                :verifiedRank="verifiedRank"
+                :verifiedGuess="verifiedGuess"
+              />
+            </div>
           </div>
         </div>
       </div>
-      <div v-else><a-spin :indicator="indicator"></a-spin></div>
-    </div>
-    <div class="steps-action">
-      <a-button
-        :disabled="!(current > 0 && current < steps.length - 1) || loading"
-        @click="prev"
-        class="action-btn"
-        >Previous</a-button
-      >
-      <a-button
-        v-if="current < steps.length"
-        type="primary"
-        @click="next"
-        class="action-btn"
-        :disabled="
-          (selectedRegions.length === 0 && current === 0) ||
-          (selectedRanks.length === 0 && current === 1) ||
-          (current === 2 && !selectedRank) ||
-          loading
-        "
-        >{{ buttonText[current] }}</a-button
-      >
-    </div>
+      <div v-else><Loading /></div>
+    </CustomCard>
+  </div>
+  <div class="steps-action">
+    <HomeButton
+      type="default"
+      :title="prevButtonText[current]"
+      :active="!loading"
+      :onClick="prev"
+      ><template #icon
+        ><double-left-outlined
+          style="color: rgb(240, 230, 210); font-size: 1.75rem" /></template
+    ></HomeButton>
+    <HomeButton
+      :title="buttonText[current]"
+      :active="
+        ((selectedRegions.length > 0 && current === 0) ||
+          (selectedRanks.length > 0 && current === 1) ||
+          (current === 2 && selectedRank.length > 0) ||
+          current === 3) &&
+        !loading
+      "
+      :onClick="next"
+      ><template #iconRight
+        ><double-right-outlined
+          style="color: rgb(240, 230, 210); font-size: 1.75rem" /></template
+    ></HomeButton>
   </div>
 </template>
 
 <style scoped>
 .steps-content {
-  border: 1px solid lightslategray;
-  border-radius: 0.25rem;
-  background-color: white;
   text-align: center;
-  padding: 1rem 0.5rem 0.5rem;
+  padding: 1rem 0;
 }
 
 .steps-action {
-  margin-top: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  padding-bottom: 1rem;
 }
 
 .action-btn {
@@ -365,20 +361,29 @@ const indicator = h(LoadingOutlined, {
   align-items: center;
 }
 
-.step {
-  cursor: context-menu;
+.region-grid,
+.rank-grid {
+  display: grid;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
 
-.steps {
-  border: 1px solid lightslategray;
-  border-radius: 0.25rem;
-  padding: 0.5rem 1rem;
-  background-color: white;
+.region-grid {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
 }
 
-@media only screen and (max-width: 720px) {
-  .table-div {
-    overflow: auto;
+.rank-grid {
+  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+}
+
+@media only screen and (max-width: 1024px) {
+  .region-grid {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+
+  .rank-grid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   }
 }
 </style>

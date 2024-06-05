@@ -29,15 +29,26 @@
 
 /* semantic color variables for this project */
 :root {
-  --color-background: var(--vt-c-white);
+  --color-background: rgb(1, 10, 19);
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
 
-  --color-border: var(--vt-c-divider-light-2);
+  --color-border: #3c3c41;
   --color-border-hover: var(--vt-c-divider-light-1);
 
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
+
+  --color-gold: rgb(200, 155, 60);
+  --color-highlight-gold: rgb(200, 170, 110);
+  --color-offwhite: rgb(240, 230, 210);
+  --color-background-gray: #3c3c41;
+
+  --color-background-highlight-gray: #5b5a56;
+  --color-dark-blue: #084152;
+  --color-light-blue: #2d9eca;
+  --color-highlight-dark-blue: #094a63;
+  --color-highlight-light-blue: #56bde3;
 
   --section-gap: 160px;
 }
@@ -54,14 +65,157 @@
 body {
   min-height: 100vh;
   color: var(--color-text);
-  background: #f5f5f5;
-  transition: color 0.5s, background-color 0.5s;
+  background: var(--color-background);
   line-height: 1.6;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: url("/cursor.png"), default;
+}
+
+a,
+button,
+.ant-checkbox-wrapper,
+input,
+.amplify-tabs-item,
+.ant-select,
+.ant-select-item,
+.ant-popover {
+  cursor: url("/cursor-pointer.png"), pointer !important;
+}
+
+@font-face {
+  font-family: "beaufort_for_lolbold";
+  src: url("/fonts/beaufortforlol-bold-webfont.woff2") format("woff2"),
+    url("/fonts/beaufortforlol-bold-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "beaufort_for_lolbold_italic";
+  src: url("/fonts/beaufortforlol-bolditalic-webfont.woff2") format("woff2"),
+    url("/fonts/beaufortforlol-bolditalic-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "beaufort_for_lolmedium";
+  src: url("/fonts/beaufortforlol-medium-webfont.woff2") format("woff2"),
+    url("/fonts/beaufortforlol-medium-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "beaufort_for_lolmedium_italic";
+  src: url("/fonts/beaufortforlol-mediumitalic-webfont.woff2") format("woff2"),
+    url("/fonts/beaufortforlol-mediumitalic-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "spiegelbold";
+  src: url("/fonts/spiegel_tt_bold-webfont.woff2") format("woff2"),
+    url("/fonts/spiegel_tt_bold-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "spiegelregular";
+  src: url("/fonts/spiegel_tt_regular-webfont.woff2") format("woff2"),
+    url("/fonts/spiegel_tt_regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+h1 {
+  line-height: 42pt;
+  letter-spacing: 0.05em;
+  font-size: 40pt;
+  color: rgb(240, 230, 210);
+  font-family: "beaufort_for_lolbold";
+  font-weight: 700;
+  font-style: normal;
+  margin-bottom: 1.25rem;
+}
+
+h2 {
+  line-height: 32pt;
+  letter-spacing: 0.05em;
+  font-size: 28pt;
+  color: rgb(240, 230, 210);
+  font-family: "beaufort_for_lolbold";
+  font-weight: 700;
+  font-style: normal;
+}
+
+h3 {
+  line-height: 28pt;
+  letter-spacing: 0.05em;
+  font-size: 23pt;
+  color: rgb(240, 230, 210);
+  font-family: "beaufort_for_lolbold";
+  font-weight: 700;
+  font-style: normal;
+  margin-bottom: 0.75rem;
+}
+
+h4 {
+  line-height: 22pt;
+  letter-spacing: 0.05em;
+  font-size: 18pt;
+  color: rgb(240, 230, 210);
+  font-family: "beaufort_for_lolbold";
+  font-weight: 700;
+  font-style: normal;
+}
+
+h5 {
+  line-height: 18pt;
+  letter-spacing: 0.075em;
+  font-size: 14pt;
+  color: rgb(240, 230, 210);
+  font-family: "beaufort_for_lolbold";
+  font-weight: 700;
+  font-style: normal;
+  margin-bottom: 0.75rem;
+}
+
+.gold {
+  color: var(--color-gold);
+}
+
+p {
+  font-family: "spiegelregular";
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1rem;
+  line-height: 1.24;
+  letter-spacing: 0.01em;
+  color: rgb(160, 155, 140);
+}
+
+.number {
+  color: rgb(240, 230, 210);
+  font-family: "beaufort_for_lolmedium";
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  font-style: italic;
+}
+
+a {
+  color: var(--color-gold);
+}
+
+a:hover {
+  color: var(--color-highlight-gold);
 }

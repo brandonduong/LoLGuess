@@ -36,12 +36,24 @@ export const onCreateUser = /* GraphQL */ `
       scores
       rankGuesses
       placementGuesses
+      correctPlacementGuesses
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
       dailyCorrectPlacements
       dailyCorrectRanks
-      dailyScores
+      dailyScoresLow
+      dailyRankGuessesLow
+      dailyPlacementGuessesLow
+      dailyCorrectPlacementGuessesLow
+      dailyScoresHigh
+      dailyRankGuessesHigh
+      dailyPlacementGuessesHigh
+      dailyCorrectPlacementGuessesHigh
+      dailyScoresAll
+      dailyRankGuessesAll
+      dailyPlacementGuessesAll
+      dailyCorrectPlacementGuessesAll
       createdAt
       updatedAt
     }
@@ -81,12 +93,24 @@ export const onUpdateUser = /* GraphQL */ `
       scores
       rankGuesses
       placementGuesses
+      correctPlacementGuesses
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
       dailyCorrectPlacements
       dailyCorrectRanks
-      dailyScores
+      dailyScoresLow
+      dailyRankGuessesLow
+      dailyPlacementGuessesLow
+      dailyCorrectPlacementGuessesLow
+      dailyScoresHigh
+      dailyRankGuessesHigh
+      dailyPlacementGuessesHigh
+      dailyCorrectPlacementGuessesHigh
+      dailyScoresAll
+      dailyRankGuessesAll
+      dailyPlacementGuessesAll
+      dailyCorrectPlacementGuessesAll
       createdAt
       updatedAt
     }
@@ -126,12 +150,24 @@ export const onDeleteUser = /* GraphQL */ `
       scores
       rankGuesses
       placementGuesses
+      correctPlacementGuesses
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
       dailyCorrectPlacements
       dailyCorrectRanks
-      dailyScores
+      dailyScoresLow
+      dailyRankGuessesLow
+      dailyPlacementGuessesLow
+      dailyCorrectPlacementGuessesLow
+      dailyScoresHigh
+      dailyRankGuessesHigh
+      dailyPlacementGuessesHigh
+      dailyCorrectPlacementGuessesHigh
+      dailyScoresAll
+      dailyRankGuessesAll
+      dailyPlacementGuessesAll
+      dailyCorrectPlacementGuessesAll
       createdAt
       updatedAt
     }

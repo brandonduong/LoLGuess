@@ -3,6 +3,8 @@ import DailyGame from "./DailyGame.vue";
 import DailyArchive from "./DailyArchive.vue";
 import DailyButtons from "./DailyButtons.vue";
 import { ref, onMounted } from "vue";
+import CustomCard from "../CustomCard.vue";
+import CustomTabs from "./CustomTabs.vue";
 interface DailyGuess {
   placements: string[];
   rankedMatch: object[];
@@ -43,24 +45,11 @@ const updateUTC = Date.UTC(
 
 const timer = ref<number>(updateUTC);
 
-const now = new Date();
-const today = ref<string>(
-  new Date(now.getFullYear(), now.getMonth(), now.getDate())
-    .toISOString()
-    .split("T")[0]
-);
-
-function update() {
-  const now = new Date();
-  today.value = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-    .toISOString()
-    .split("T")[0];
-}
-
-function guessedBefore(date: string, category: string): DailyGuess | void {
-  return dailyHistory.value.find(
+function guessedBefore(date: string, category: string): DailyGuess | null {
+  const hist = dailyHistory.value.find(
     (d) => d.date === date && d.category === category
   );
+  return hist || null;
 }
 function updateHistory(guess: DailyGuess) {
   dailyHistory.value = [...dailyHistory.value, guess];
@@ -69,55 +58,49 @@ function updateHistory(guess: DailyGuess) {
     JSON.stringify(dailyHistory.value)
   );
 }
+
+const option = ref<string>("low");
 </script>
 <template>
   <div class="daily" v-if="!category">
-    <div>
+    <h3 class="gold">DAILY</h3>
+    <p>Updates every day at 12 am (UTC)</p>
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      "
+    >
+      <div class="timer">
+        <h5 style="margin: 0">UPDATES IN:</h5>
+        <a-statistic-countdown
+          :value="timer"
+          :valueStyle="{
+            color: 'var(--color-offwhite)',
+            'line-height': '18pt',
+            'letter-spacing': '0.075em',
+            'font-size': '14pt',
+            'font-family': 'beaufort_for_lolbold',
+            'font-weight': 700,
+            'font-style': 'normal',
+          }"
+        />
+      </div>
       <div>
-        <h2>Daily</h2>
-        <h3 style="margin: 0">Updates every day at 12 am (UTC)</h3>
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-          "
-        >
-          <div class="timer">
-            <h3>Updates in:</h3>
-            <a-statistic-countdown
-              :value="timer"
-              @finish="update()"
-              valueStyle="font-size: 1.17em;"
-            />
-          </div>
-          <h3>Set 11, All Regions</h3>
-        </div>
+        <h5 style="margin: 0; text-align: end">SET 11</h5>
       </div>
     </div>
-    <div class="archive">
-      <div class="buttons">
-        <div style="width: 100%">
-          <h3>
-            <b>Low Ranks</b>
-          </h3>
-          <h5>Iron, Bronze, Silver, Gold, Platinum</h5>
-        </div>
-        <div style="width: 100%">
-          <h3>
-            <b>High Ranks</b>
-          </h3>
-          <h5>Emerald, Diamond, Master, Grandmaster, Challenger</h5>
-        </div>
-        <div style="width: 100%">
-          <h3>
-            <b>All Ranks</b>
-          </h3>
-          <h5>Both Low and High</h5>
-        </div>
-      </div>
-      <DailyArchive :guessedBefore="guessedBefore" />
-    </div>
+
+    <CustomCard style="align-items: normal; padding: 0">
+      <CustomTabs
+        :options="['low', 'high', 'all']"
+        :optionTitles="['Low Ranks', 'High Ranks', 'All Ranks']"
+        :option="option"
+        @update-option="(newOption) => (option = newOption)"
+      />
+      <DailyArchive :guessed-before="guessedBefore" :option="option" />
+    </CustomCard>
   </div>
   <div v-else>
     <DailyGame
@@ -130,31 +113,13 @@ function updateHistory(guess: DailyGuess) {
 </template>
 <style>
 .daily {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 1rem;
-  background: white;
-  border: 1px solid lightslategray;
-  border-radius: 0.25rem;
-  overflow-x: auto;
+  padding: 1rem 0;
   text-align: center;
 }
 
 .timer {
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.buttons {
-  display: flex;
-  gap: 1rem;
-}
-
-.archive {
-  border: solid 1px lightslategray;
-  padding: 1rem;
+  column-gap: 0.5rem;
+  flex-wrap: wrap;
 }
 </style>
