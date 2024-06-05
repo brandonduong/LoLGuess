@@ -2,7 +2,11 @@
 import { InfoCircleOutlined } from "@ant-design/icons-vue";
 </script>
 <template>
-  <a-popover color="var(--color-background-gray)" placement="bottomRight">
+  <a-popover
+    color="var(--color-background-gray)"
+    placement="bottomRight"
+    overlayClassName="info"
+  >
     <template #content>
       <div style="max-width: 300px">
         <slot />
@@ -17,4 +21,8 @@ import { InfoCircleOutlined } from "@ant-design/icons-vue";
     />
   </a-popover>
 </template>
-<style></style>
+<style>
+.info > .ant-popover-content {
+  border: 4px solid var(--color-gold);
+}
+</style>

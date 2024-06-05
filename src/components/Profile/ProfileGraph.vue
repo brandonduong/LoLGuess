@@ -116,7 +116,7 @@ function changeGraph(newOption: string) {
       distributionLabels.value = props.user.scores!.map((s, ind) =>
         ind.toString()
       );
-      distributionLabel.value = "# of occurences";
+      distributionLabel.value = "# of occurrences";
       graphInfo.value =
         "Number of times score X was achieved, up to the maximum of score 100";
       break;
@@ -127,7 +127,7 @@ function changeGraph(newOption: string) {
       distributionLabels.value = distributionValues.value.map((s, ind) =>
         ind.toString()
       );
-      distributionLabel.value = "# of occurences";
+      distributionLabel.value = "# of occurrences";
       graphInfo.value =
         "Number of guesses where the guessed rank was incorrect and X number of placements were correct";
       break;
@@ -138,7 +138,7 @@ function changeGraph(newOption: string) {
       distributionLabels.value = distributionValues.value.map((s, ind) =>
         ind.toString()
       );
-      distributionLabel.value = "# of occurences";
+      distributionLabel.value = "# of occurrences";
       graphInfo.value =
         "Number of guesses where the guessed rank was correct and X number of placements were correct";
       break;
