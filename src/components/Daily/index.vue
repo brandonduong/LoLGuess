@@ -45,10 +45,11 @@ const updateUTC = Date.UTC(
 
 const timer = ref<number>(updateUTC);
 
-function guessedBefore(date: string, category: string): DailyGuess | void {
-  return dailyHistory.value.find(
+function guessedBefore(date: string, category: string): DailyGuess | null {
+  const hist = dailyHistory.value.find(
     (d) => d.date === date && d.category === category
   );
+  return hist || null;
 }
 function updateHistory(guess: DailyGuess) {
   dailyHistory.value = [...dailyHistory.value, guess];

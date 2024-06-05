@@ -16,7 +16,7 @@ interface DailyGuess {
 }
 
 defineProps<{
-  guessedBefore: (date: string, category: string) => void | DailyGuess;
+  guessedBefore: (date: string, category: string) => DailyGuess | null;
   option: string;
 }>();
 

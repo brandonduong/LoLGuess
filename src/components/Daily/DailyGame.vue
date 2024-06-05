@@ -23,7 +23,7 @@ interface DailyGuess {
 const props = defineProps<{
   date: string;
   category: string;
-  prev: DailyGuess | void;
+  prev: DailyGuess | null;
 }>();
 const emit = defineEmits<{
   (e: "updateHistory", guess: DailyGuess): void;
