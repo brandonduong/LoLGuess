@@ -34,10 +34,8 @@ function getDailyDates() {
     nowToronto.getUTCDate()
   );
   while (date >= startOfDailies) {
-    console.log(date, startOfDailies);
     dailies.push(date.toISOString().split("T")[0]);
     date = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
-    console.log(date);
   }
   return dailies;
 }
@@ -52,9 +50,9 @@ const all = [...low, ...high];
 <template>
   <div class="daily-grid">
     <HomeButton
-      v-for="d in getDailyDates()"
+      v-for="(d, ind) in getDailyDates()"
       :onClick="() => router.push(`/daily/${d}/${option}`)"
-      type="secondary"
+      :type="ind === 0 ? 'tertiary' : 'secondary'"
     >
       <div style="flex: 1; height: 100%">
         <h5>{{ d }}</h5>
@@ -110,7 +108,7 @@ const all = [...low, ...high];
 <style scoped>
 .daily-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
   padding: 1rem;
   gap: 1rem;
 }

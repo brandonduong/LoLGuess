@@ -45,7 +45,7 @@ props.traits.forEach((trait) => {
   ].traits.filter((t) => {
     return t.apiName === `TFT${trait.name.slice(3)}` && trait.tier_current > 0; // Always in format TFT11_...
   })[0];
-  console.log(trait, traitInfo);
+  // console.log(trait, traitInfo);
 
   // If trait is activated, get image
   if (traitInfo) {

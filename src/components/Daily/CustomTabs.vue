@@ -4,7 +4,7 @@ withDefaults(
     options: string[];
     optionTitles: string[];
     option: string;
-    disabled: boolean;
+    disabled?: boolean;
     highlight?: string[];
   }>(),
   { disabled: false }

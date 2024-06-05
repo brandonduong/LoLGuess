@@ -12,7 +12,7 @@ import CustomCard from "../CustomCard.vue";
 import HomeButton from "../Home/HomeButton.vue";
 import Loading from "../Loading.vue";
 import FreeplaySettings from "./FreeplaySettings.vue";
-const props = defineProps<{ guessId: string }>();
+const props = defineProps<{ guessId?: string }>();
 
 const auth = useAuthenticator();
 const router = useRouter();

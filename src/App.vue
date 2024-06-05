@@ -11,7 +11,7 @@ import { Authenticator } from "@aws-amplify/ui-vue";
       <RouterView />
     </div>
   </div>
-  <Authenticator style="display: none" />
+  <div style="display: none"><Authenticator /></div>
 </template>
 
 <style scoped>

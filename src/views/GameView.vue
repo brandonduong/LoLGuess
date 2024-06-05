@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Game from "../components/Game/index.vue";
-defineProps<{ guessId: string }>();
+defineProps<{ guessId?: string }>();
 </script>
 
 <template>

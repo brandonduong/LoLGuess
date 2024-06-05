@@ -11,6 +11,7 @@ import { useRouter } from "vue-router";
 const props = defineProps<{
   rankedMatch: Array<object>;
   verifiedGuess: string[];
+  selectedRanks: string[];
 }>();
 
 const emit = defineEmits(["updateSelectedGuess"]);
@@ -102,7 +103,7 @@ function correctionStyle(placement: number) {
 <template>
   <h5>
     <span v-if="props.verifiedGuess.length !== 0">
-      LIKE GUESSING?
+      THANKS FOR PLAYING
       <p>
         Support on
         <a href="https://ko-fi.com/brandonduong" target="_blank">Ko-fi</a>

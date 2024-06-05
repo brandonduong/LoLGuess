@@ -115,13 +115,15 @@ const filters = [
       <h5>UPDATES IN:</h5>
       <a-statistic-countdown
         :value="timer"
-        valueStyle="color: var(--color-offwhite);
-        line-height: 18pt;
-        letter-spacing: 0.075em;
-        font-size: 14pt;
-        font-family: 'beaufort_for_lolbold';
-        font-weight: 700;
-        font-style: normal;"
+        :valueStyle="{
+          color: 'var(--color-offwhite)',
+          'line-height': '18pt',
+          'letter-spacing': '0.075em',
+          'font-size': '14pt',
+          'font-family': 'beaufort_for_lolbold',
+          'font-weight': 700,
+          'font-style': 'normal',
+        }"
       />
     </div>
     <div>

@@ -1,11 +1,18 @@
 <script setup lang="ts">
+enum ButtonType {
+  primary,
+  secondary,
+  tertiary,
+  default,
+}
+
 const props = withDefaults(
   defineProps<{
     title?: string;
     description?: string;
     onClick?: () => void;
     href?: string;
-    type?: string;
+    type?: keyof typeof ButtonType;
     active?: boolean;
     justifyContent?: string;
     flexDirection?: string;
