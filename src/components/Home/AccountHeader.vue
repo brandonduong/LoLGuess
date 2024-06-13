@@ -85,7 +85,7 @@ const auth = useAuthenticator();
 }
 
 .peng {
-  background-image: url("/peng.png");
+  background-image: url("/peng.avif");
   background-repeat: no-repeat;
   background-size: cover;
   width: 36px;
