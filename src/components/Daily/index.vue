@@ -18,14 +18,19 @@ interface DailyGuess {
 defineProps<{ date: string; category: string }>();
 
 const dailyHistory = ref<DailyGuess[]>([]);
+const loading = ref(true);
+
 onMounted(() => {
+  loading.value = true;
   const hist = window.localStorage.getItem("dailyHistory");
+  console.log("hist");
   if (hist) {
     dailyHistory.value = JSON.parse(hist);
   } else {
     window.localStorage.setItem("dailyHistory", JSON.stringify([]));
     dailyHistory.value = [];
   }
+  loading.value = false;
 });
 
 // For update countdown
@@ -62,7 +67,7 @@ function updateHistory(guess: DailyGuess) {
 const option = ref<string>("low");
 </script>
 <template>
-  <div class="daily" v-if="!category">
+  <div class="daily" v-if="!category && !loading">
     <h3 class="gold">DAILY</h3>
     <p>Updates every day at 12 am (UTC)</p>
     <div
@@ -102,7 +107,7 @@ const option = ref<string>("low");
       <DailyArchive :guessed-before="guessedBefore" :option="option" />
     </CustomCard>
   </div>
-  <div v-else>
+  <div v-else-if="!loading">
     <DailyGame
       :date="date"
       :category="category"
