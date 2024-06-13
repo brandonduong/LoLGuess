@@ -68,7 +68,6 @@ function signout() {
         title="DAILY"
         :onClick="() => router.push('/daily')"
         description="Guess on today's lobby"
-        :active="false"
         ><template #icon
           ><calendar-outlined
             style="color: rgb(240, 230, 210); font-size: 2.5rem" /></template
