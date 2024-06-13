@@ -20,6 +20,9 @@ const router = useRouter();
 const loading = ref<boolean>(false);
 const current = ref<number>(props.guessId ? 2 : 0);
 
+const errorExplanation =
+  "Error finding ranked match. Please try again. This can happen rarely if 3 users did not play a ranked match within their past 10 games or if an entire rank is empty, such as Challenger at the start of a set.";
+
 // Replay
 if (props.guessId) {
   getReplay();
@@ -90,7 +93,7 @@ async function getMatch() {
         sensitive.value = res.data.sensitive;
       })
       .catch(() => {
-        alert("Error finding ranked match. Please try again.");
+        alert(errorExplanation);
         prev();
       });
     loading.value = false;
@@ -126,7 +129,7 @@ async function getMatchNoAuth() {
       verifiedRegion.value = res.data.region;
     })
     .catch(() => {
-      alert("Error finding ranked match. Please try again.");
+      alert(errorExplanation);
       prev();
     });
   loading.value = false;
@@ -153,7 +156,7 @@ async function getReplay() {
       verifiedRegion.value = res.data.region;
     })
     .catch(() => {
-      alert("Error finding ranked match. Please try again.");
+      alert(errorExplanation);
     });
   loading.value = false;
 }

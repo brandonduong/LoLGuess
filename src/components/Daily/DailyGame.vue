@@ -55,6 +55,9 @@ const low = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
 const high = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
 const all = [...low, ...high];
 
+const errorExplanation =
+  "Error finding ranked match. Please try again. This can happen rarely if 3 users did not play a ranked match within their past 10 games or if an entire rank is empty, such as Challenger at the start of a set.";
+
 onMounted(async () => {
   loading.value = true;
   const prev = props.prev;
@@ -98,7 +101,7 @@ async function getDaily(date: string, cat: string) {
       selectedRanks.value = cat === "all" ? all : cat === "high" ? high : low;
     })
     .catch((error) => {
-      alert("Error finding ranked match. Please try again.");
+      alert(errorExplanation);
     });
 }
 
