@@ -88,16 +88,9 @@ async function getDaily(date, category) {
   const getDaily = /* GraphQL */ `
     query GetDaily($date: ID!, $category: String!) {
       getDaily(date: $date, category: $category) {
-        date
         matchId
         rank
         region
-        category
-        rankGuesses
-        placementGuesses
-        perfects
-        score
-        usernames
         patch
       }
     }
@@ -248,14 +241,13 @@ app.get("/getDaily", async function (req, res) {
 
   // Get daily info
   const daily = await getDaily(date, category);
-  const { matchId, region, rank } = daily;
+  const { matchId, region, rank, patch } = daily;
   const dailyMatch = await getDailyMatch(matchId, region);
 
   const sensitive = {
     rank,
     region,
     matchId,
-    daily: true,
   };
 
   res.json({
@@ -264,6 +256,7 @@ app.get("/getDaily", async function (req, res) {
       JSON.stringify(sensitive),
       RIOT_TOKEN
     ).toString(),
+    patch,
   });
 });
 
