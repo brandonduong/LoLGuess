@@ -22,8 +22,8 @@ type User
   totalRanks: Int!
   unfinished: Int!
   totalGuesses: Int!
-  averageCorrectPlacements: Float! # TODO: REMOVE AS REDUNDANT
-  averageScore: Float! # TODO: REMOVE AS REDUNDANT
+  averageCorrectPlacements: Float!
+  averageScore: Float!
   # Freeplay occurrences
   scores: [Int] # 1D array of size 100 counting number of score occurrences
   rankGuesses: [[Int]] # 2D 10 x 10 array of rank guesses from iron to challenger
