@@ -360,12 +360,10 @@ export const getDaily = /* GraphQL */ `
       rankGuesses
       placementGuesses
       perfects
-      score
       scores
       loggedRankGuesses
       loggedPlacementGuesses
       loggedPerfects
-      loggedScore
       loggedScores
       createdAt
       updatedAt
@@ -402,12 +400,10 @@ export const listDailies = /* GraphQL */ `
         rankGuesses
         placementGuesses
         perfects
-        score
         scores
         loggedRankGuesses
         loggedPlacementGuesses
         loggedPerfects
-        loggedScore
         loggedScores
         createdAt
         updatedAt

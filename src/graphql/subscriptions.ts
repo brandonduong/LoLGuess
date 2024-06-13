@@ -290,12 +290,10 @@ export const onCreateDaily = /* GraphQL */ `
       rankGuesses
       placementGuesses
       perfects
-      score
       scores
       loggedRankGuesses
       loggedPlacementGuesses
       loggedPerfects
-      loggedScore
       loggedScores
       createdAt
       updatedAt
@@ -317,12 +315,10 @@ export const onUpdateDaily = /* GraphQL */ `
       rankGuesses
       placementGuesses
       perfects
-      score
       scores
       loggedRankGuesses
       loggedPlacementGuesses
       loggedPerfects
-      loggedScore
       loggedScores
       createdAt
       updatedAt
@@ -344,12 +340,10 @@ export const onDeleteDaily = /* GraphQL */ `
       rankGuesses
       placementGuesses
       perfects
-      score
       scores
       loggedRankGuesses
       loggedPlacementGuesses
       loggedPerfects
-      loggedScore
       loggedScores
       createdAt
       updatedAt
