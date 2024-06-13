@@ -115,13 +115,11 @@ type Daily
   rankGuesses: [Int] # 1D array of rank guesses from iron to challenger
   placementGuesses: [[Int]] # 2D array of placement guesses from first to eight
   perfects: Int # number of perfects
-  score: Int # total score
   scores: [Int] # 1D array of size 100 counting scores
   # Authorized user stats
   loggedRankGuesses: [Int]
   loggedPlacementGuesses: [[Int]]
   loggedPerfects: Int
-  loggedScore: Int
   loggedScores: [Int]
 }
 
