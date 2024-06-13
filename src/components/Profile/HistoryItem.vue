@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, onUpdated, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import type { Guess } from "@/API";
 import { calculateScore } from "@/common/helper";
 import RankIcon from "../Game/RankIcon.vue";
 import { useRouter } from "vue-router";
 import HomeButton from "../Home/HomeButton.vue";
+import { ArrowRightOutlined } from "@ant-design/icons-vue";
 
 const props = defineProps<{
   guess: Guess;
@@ -62,9 +63,7 @@ const reveal = ref<boolean>(false);
       <div class="reveal" v-if="reveal">
         <div style="display: flex; align-items: center;">
           <RankIcon :rank="guess.guessedRank" />
-          <p style="margin: 0;">
-          ->
-          </p>
+          <p style="margin: 0"><arrow-right-outlined /></p>
           <RankIcon :rank="guess.rank" />
         </div>
         <p style="margin: 0">
