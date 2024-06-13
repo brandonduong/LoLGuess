@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { type User } from "../../API";
 import Stat from "./Stat.vue";
 import { roundToTwo } from "../../common/helper";

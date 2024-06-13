@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { type User, type Guess } from "../../API";
 import http from "../../common/http-common";
 import ProfileGraph from "./ProfileGraph.vue";
@@ -38,6 +38,13 @@ async function getStaticProfileData() {
 onMounted(async () => {
   update();
 });
+
+watch(
+  () => props.sub,
+  () => {
+    update();
+  }
+);
 
 async function update() {
   loading.value = true;
@@ -96,10 +103,12 @@ async function forceUpdate() {
     <ProfileStats
       :staticProfileData="staticProfileData!"
       @getStaticProfileData="forceUpdate()"
+      :key="sub"
     />
     <ProfileGraph
       :guesses="(staticProfileGuesses as [Guess])"
       :user="staticProfileData!"
+      :key="sub"
     />
     <div class="history">
       <ProfileHistory :guesses="(staticProfileGuesses as [Guess])" />

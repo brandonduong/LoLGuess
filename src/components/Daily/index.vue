@@ -23,7 +23,6 @@ const loading = ref(true);
 onMounted(() => {
   loading.value = true;
   const hist = window.localStorage.getItem("dailyHistory");
-  console.log("hist");
   if (hist) {
     dailyHistory.value = JSON.parse(hist);
   } else {
