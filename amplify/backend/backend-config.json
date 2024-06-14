@@ -88,6 +88,22 @@
     }
   },
   "function": {
+    "applyDailyNoAuth": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "lolguessdatastore"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "applyGuess": {
       "build": true,
       "dependsOn": [

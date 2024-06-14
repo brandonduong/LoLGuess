@@ -55,12 +55,20 @@ app.post("/verifyAnyGuess", async function (req, res) {
   console.log("unencrypted", unencrypted);
   const rank = rawSensitive.rank;
   const region = rawSensitive.region;
-  const daily = rawSensitive.daily;
 
-  if (daily) {
-    console.log("daily, run ___ lambda function to update daily");
-  }
-
+  const inv = lambda
+    .invoke({
+      FunctionName: "applyDailyNoAuth-main",
+      Payload: JSON.stringify({
+        unencrypted,
+        selectedRank,
+        date: req.body.date,
+        category: req.body.category,
+      }), // pass params
+      InvocationType: "Event",
+    })
+    .promise();
+  await inv; // Fire and forget
   // Return answers
   res.json({
     unencrypted,
