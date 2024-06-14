@@ -247,7 +247,6 @@ app.get("/getDaily", async function (req, res) {
   const sensitive = {
     rank,
     region,
-    matchId,
   };
 
   res.json({
