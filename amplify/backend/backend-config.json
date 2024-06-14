@@ -264,6 +264,15 @@
     },
     "verifyAnyGuess": {
       "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "applyDailyNoAuth"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -292,6 +301,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_applyDailyNoAuth_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "applyDailyNoAuth"
+        }
+      ]
+    },
+    "AMPLIFY_function_applyDailyNoAuth_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "applyDailyNoAuth"
+        }
+      ]
+    },
     "AMPLIFY_function_applyGuess_deploymentBucketName": {
       "usedBy": [
         {

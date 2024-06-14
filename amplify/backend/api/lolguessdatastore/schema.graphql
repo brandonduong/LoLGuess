@@ -98,7 +98,7 @@ type Daily
   @model
   @auth(
     rules: [
-      { allow: public, operations: [read, update] }
+      { allow: public, operations: [read, update] } # TODO: REMOVE WHEN DEPLOY
       { allow: private, operations: [read], provider: iam }
     ]
   ) {

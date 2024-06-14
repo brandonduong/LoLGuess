@@ -3,7 +3,8 @@
     "api": {
       "lolguessdatastore": [
         "Query",
-        "Mutation"
+        "Mutation",
+        "Subscription"
       ]
     }
   },

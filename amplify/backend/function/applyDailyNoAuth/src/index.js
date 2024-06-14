@@ -10,7 +10,7 @@ import crypto from "@aws-crypto/sha256-js";
 import { defaultProvider } from "@aws-sdk/credential-provider-node";
 import { SignatureV4 } from "@aws-sdk/signature-v4";
 import { HttpRequest } from "@aws-sdk/protocol-http";
-import { default as fetch, Request } from "node-fetch";
+import { default as node_fetch, Request } from "node-fetch";
 
 const GRAPHQL_ENDPOINT =
   process.env.API_LOLGUESSDATASTORE_GRAPHQLAPIENDPOINTOUTPUT;
@@ -142,15 +142,17 @@ async function updateDaily(date, category, stats) {
     }
   `;
   const variables = {
-    date,
-    category,
-    rankGuesses: stats.rankGuesses,
-    placementGuesses: stats.placementGuesses,
-    perfects: stats.perfects,
-    scores: stats.scores,
+    input: {
+      date,
+      category,
+      rankGuesses: stats.rankGuesses,
+      placementGuesses: stats.placementGuesses,
+      perfects: stats.perfects,
+      scores: stats.scores,
+    },
   };
 
-  const res = await signAndRun(getDaily, variables);
+  const res = await signAndRun(updateDaily, variables);
   if (res.statusCode === 200) {
     console.log(res.body);
   } else {
@@ -194,19 +196,18 @@ export const handler = async (event) => {
   const stats = {
     rankGuesses,
     placementGuesses,
-    perfects: score === 100 ? perfects + 1 : perfects,
+    perfects: score === maxScore ? perfects + 1 : perfects,
     scores,
   };
 
   await updateDaily(date, category, stats);
 
   return {
-    statusCode,
     //  Uncomment below to enable CORS requests
     // headers: {
     //   "Access-Control-Allow-Origin": "*",
     //   "Access-Control-Allow-Headers": "*"
     // },
-    body: JSON.stringify(body),
+    body: JSON.stringify(event),
   };
 };
