@@ -174,7 +174,7 @@ function correctionStyle(placement: number) {
           />
           <UnitIcons
             :units="element.units"
-            :staticTFTSetsData="staticTFTSetsData"
+            :staticTFTSetsData="staticTFTSetsData!"
             :staticTFTItemData="staticTFTItemData"
           />
           <GoldIcons :goldLeft="element.gold_left" style="margin-left: auto" />
