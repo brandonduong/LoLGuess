@@ -92,6 +92,7 @@ async function getDaily(date, category) {
         rank
         region
         patch
+        usernames
       }
     }
   `;
@@ -192,16 +193,10 @@ async function getDailyMatch(matchId, region) {
     .catch((err) => console.log(err));
 
   rankedMatch = rankedMatch.map(
-    ({
-      augments,
-      level,
-      traits,
-      placement,
-      units,
-      gold_left,
-      puuid,
-      last_round,
-    }) => ({
+    (
+      { augments, level, traits, placement, units, gold_left, last_round },
+      ind
+    ) => ({
       augments,
       level,
       traits,
@@ -210,7 +205,7 @@ async function getDailyMatch(matchId, region) {
       gold_left,
       augmentNum:
         last_round >= 20 ? 3 : last_round >= 13 ? 2 : last_round >= 5 ? 1 : 0,
-      puuid: CryptoJS.AES.encrypt(`${puuid}`, RIOT_TOKEN).toString(),
+      order: ind, // to reveal usernames
       last_round: CryptoJS.AES.encrypt(`${last_round}`, RIOT_TOKEN).toString(),
     })
   );
@@ -241,7 +236,7 @@ app.get("/getDaily", async function (req, res) {
 
   // Get daily info
   const daily = await getDaily(date, category);
-  const { matchId, region, rank, patch } = daily;
+  const { matchId, region, rank, patch, usernames } = daily;
   const dailyMatch = await getDailyMatch(matchId, region);
 
   const sensitive = {
@@ -249,6 +244,7 @@ app.get("/getDaily", async function (req, res) {
     region,
     date,
     category,
+    usernames,
   };
 
   res.json({

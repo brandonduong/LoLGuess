@@ -57,10 +57,7 @@ app.post("/verifyAnyGuess", async function (req, res) {
     );
   });
   console.log("unencrypted", unencrypted);
-  const rank = rawSensitive.rank;
-  const region = rawSensitive.region;
-  const date = rawSensitive.date;
-  const category = rawSensitive.category;
+  const { rank, region, date, category, usernames } = rawSensitive;
 
   const inv = lambda
     .invoke({
@@ -80,6 +77,7 @@ app.post("/verifyAnyGuess", async function (req, res) {
     unencrypted,
     rank,
     region,
+    usernames,
   });
 });
 
