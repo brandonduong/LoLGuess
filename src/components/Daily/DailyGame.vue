@@ -202,7 +202,13 @@ async function next() {
         </div>
       </div>
       <div v-if="current === 2">
-        <StatsTable :rankedMatch="rankedMatch" :usernames="verifiedUsernames" />
+        <h5 style="margin: 0">STATS</h5>
+        <p>Click a team for more info!</p>
+        <StatsTable
+          :rankedMatch="rankedMatch"
+          :usernames="verifiedUsernames"
+          :verifiedGuess="verifiedGuess"
+        />
       </div>
     </div>
     <div v-else><Loading /></div>
