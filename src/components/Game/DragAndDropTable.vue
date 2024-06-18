@@ -222,5 +222,3 @@ function correctionStyle(placement: number) {
   }
 }
 </style>
-import type { StaticData, StaticSetsData } from "@/common/interfaces"; import
-type { StaticData, StaticSetsData } from "@/common/interfaces";
