@@ -7,11 +7,21 @@ import LevelIcons from "@/components/Game/LevelIcons.vue";
 import type { StaticData, StaticSetsData, Team } from "@/common/interfaces";
 import Username from "./Username.vue";
 import { store } from "@/common/store";
+import { onMounted, ref } from "vue";
+import http from "@/common/http-common";
 const props = defineProps<{
   rankedMatch: Team[];
   usernames: string[];
   verifiedGuess: string[];
+  category: string;
+  date: string;
 }>();
+
+const loading = ref<boolean>(true);
+
+onMounted(async () => {
+  await getStats();
+});
 
 const sortedMatch: Team[] = [];
 for (let i = 1; i < props.rankedMatch.length + 1; i++) {
@@ -20,6 +30,28 @@ for (let i = 1; i < props.rankedMatch.length + 1; i++) {
       props.verifiedGuess.findIndex((num) => parseInt(num) === i)
     ]
   );
+}
+
+async function getStats() {
+  let url = `/getDailyStats?date=${props.date}&category=${props.category}`;
+  //console.log(url);
+
+  const header = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+
+  loading.value = true;
+  await http.api
+    .get(url, header)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  loading.value = false;
 }
 </script>
 <template>

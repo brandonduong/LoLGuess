@@ -230,6 +230,8 @@ function prev() {
           :rankedMatch="rankedMatch"
           :usernames="verifiedUsernames"
           :verifiedGuess="verifiedGuess"
+          :date="date"
+          :category="category"
         />
       </div>
     </div>
