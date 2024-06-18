@@ -6,6 +6,7 @@ import GoldIcons from "@/components/Game/GoldIcons.vue";
 import LevelIcons from "@/components/Game/LevelIcons.vue";
 import type { StaticData, StaticSetsData, Team } from "@/common/interfaces";
 import Username from "./Username.vue";
+import { store } from "@/common/store";
 const props = defineProps<{
   rankedMatch: Team[];
   usernames: string[];
@@ -22,7 +23,7 @@ for (let i = 1; i < props.rankedMatch.length + 1; i++) {
 }
 </script>
 <template>
-  <div class="table-header">
+  <div class="table-header" v-if="!store.loading">
     <table class="draggable">
       <tr style="display: none">
         <th></th>

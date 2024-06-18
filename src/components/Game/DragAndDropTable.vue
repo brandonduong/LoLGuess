@@ -8,6 +8,7 @@ import { onMounted, ref } from "vue";
 import { Sortable } from "sortablejs-vue3";
 import { useRouter } from "vue-router";
 import type { Team } from "@/common/interfaces";
+import { store } from "@/common/store";
 const props = defineProps<{
   rankedMatch: Team[];
   verifiedGuess: string[];
@@ -67,7 +68,7 @@ function correctionStyle(placement: number) {
       <p>Click and drag teams to sort</p></span
     >
   </h5>
-  <table class="table-header">
+  <table class="table-header" v-if="!store.loading">
     <div class="placements">
       <div
         v-for="placement in 8"

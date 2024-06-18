@@ -6,6 +6,7 @@ import type { StaticData, StaticSetsData } from "./interfaces";
 export const store = reactive({
   staticTFTItemData: [] as StaticData[],
   staticTFTSetsData: {} as StaticSetsData,
+  loading: true,
   async getStaticTFTData() {
     const staticData = window.localStorage.getItem("staticTFTData");
     // Today in UTC with no time
@@ -18,6 +19,7 @@ export const store = reactive({
         this.staticTFTItemData = res.data.items;
         this.staticTFTSetsData = res.data.sets;
       });
+
       //console.log(staticTFTAugmentData);
       localStorage.setItem(
         "staticTFTData",
@@ -33,5 +35,6 @@ export const store = reactive({
       this.staticTFTItemData = parsed.items;
       this.staticTFTSetsData = parsed.sets;
     }
+    this.loading = false;
   },
 });
