@@ -398,14 +398,7 @@ export const handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
 
   const RIOT_TOKEN = process.env.RIOT_TOKEN;
-  const guess = event.guess;
-  console.log("guess", guess);
-  const unencrypted = [];
-  guess.forEach((g) => {
-    unencrypted.push(
-      CryptoJS.AES.decrypt(g, RIOT_TOKEN).toString(CryptoJS.enc.Utf8)
-    );
-  });
+  const unencrypted = event.unencrypted;
   console.log("unecrypted", unencrypted);
   const sensitive = event.sensitive;
   const rawSensitive = JSON.parse(

@@ -50,34 +50,49 @@ app.post("/verifyGuess", async function (req, res) {
       CryptoJS.AES.decrypt(g, RIOT_TOKEN).toString(CryptoJS.enc.Utf8)
     );
   });
-  console.log("unecrypted", unencrypted);
+  console.log("unencrypted", unencrypted);
   const sensitive = req.body.sensitive;
   const rawSensitive = JSON.parse(
     CryptoJS.AES.decrypt(sensitive, RIOT_TOKEN).toString(CryptoJS.enc.Utf8)
   );
   console.log(rawSensitive);
   const selectedRank = req.body.selectedRank;
-  console.log(process.env.FUNCTION_APPLYGUESS_NAME);
-
   const userSub = req.apiGateway.event.requestContext.authorizer.claims.sub;
-  const inv = lambda
-    .invoke({
-      FunctionName: "applyGuess-main",
-      Payload: JSON.stringify({ guess, sensitive, selectedRank, userSub }), // pass params
-      InvocationType: "Event",
-    })
-    .promise();
-  await inv; // Fire and forget
 
-  const rank = rawSensitive.rank;
-  const ranks = rawSensitive.ranks;
-  console.log(rank, ranks, selectedRank);
-  const region = rawSensitive.region;
-  res.json({
-    unencrypted,
-    rank,
-    region,
-  });
+  let response;
+  if (rawSensitive.mode === "freeplay") {
+    const inv = lambda
+      .invoke({
+        FunctionName: process.env.FUNCTION_APPLYGUESS_NAME,
+        Payload: JSON.stringify({
+          unencrypted,
+          sensitive,
+          selectedRank,
+          userSub,
+        }), // pass params
+        InvocationType: "Event",
+      })
+      .promise();
+    await inv; // Fire and forget
+    const { rank, ranks, region } = rawSensitive;
+    console.log(rank, ranks, selectedRank);
+    response = {
+      unencrypted,
+      rank,
+      region,
+    };
+  } else if (rawSensitive.mode === "daily") {
+    // TODO: invoke applyDaily
+    const { rank, region, usernames } = rawSensitive;
+    response = {
+      unencrypted,
+      rank,
+      region,
+      usernames,
+    };
+  }
+
+  res.json(response);
 });
 
 app.listen(3000, function () {

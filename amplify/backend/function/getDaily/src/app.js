@@ -245,6 +245,7 @@ app.get("/getDaily", async function (req, res) {
     date,
     category,
     usernames,
+    mode: "daily",
   };
 
   res.json({

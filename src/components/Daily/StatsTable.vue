@@ -71,6 +71,7 @@ for (let i = 1; i < props.rankedMatch.length + 1; i++) {
 .draggable-row > td {
   padding-top: 0;
   padding-bottom: 0;
+  padding-right: 0;
 }
 .draggable-row > td:nth-child(n + 2) {
   padding-left: 1rem;

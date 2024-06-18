@@ -372,7 +372,7 @@ app.get("/getMatch", async function (req, res) {
       region: ogRegion,
       regions: regions,
       matchId: matchId,
-      daily: false,
+      mode: "freeplay",
     };
 
     res.json({

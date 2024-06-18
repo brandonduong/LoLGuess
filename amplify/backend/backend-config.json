@@ -88,6 +88,22 @@
     }
   },
   "function": {
+    "applyDaily": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "lolguessdatastore"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "applyDailyNoAuth": {
       "build": true,
       "dependsOn": [
@@ -330,6 +346,22 @@
         {
           "category": "function",
           "resourceName": "applyDailyNoAuth"
+        }
+      ]
+    },
+    "AMPLIFY_function_applyDaily_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "applyDaily"
+        }
+      ]
+    },
+    "AMPLIFY_function_applyDaily_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "applyDaily"
         }
       ]
     },
