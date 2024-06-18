@@ -144,7 +144,16 @@ app.get("/getDailyStats", async function (req, res) {
     loggedScores,
   } = daily;
 
-  res.json({ daily });
+  res.json({
+    rankGuesses,
+    placementGuesses,
+    perfects,
+    scores,
+    loggedRankGuesses,
+    loggedPlacementGuesses,
+    loggedPerfects,
+    loggedScores,
+  });
 });
 
 app.listen(3000, function () {

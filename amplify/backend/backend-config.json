@@ -326,6 +326,13 @@
           ],
           "category": "function",
           "resourceName": "applyGuess"
+        },
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "applyDaily"
         }
       ],
       "providerPlugin": "awscloudformation",

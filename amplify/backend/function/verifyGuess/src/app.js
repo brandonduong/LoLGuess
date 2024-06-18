@@ -3,6 +3,7 @@
 	API_LOLGUESSDATASTORE_GRAPHQLAPIIDOUTPUT
 	API_LOLGUESSDATASTORE_GRAPHQLAPIKEYOUTPUT
 	ENV
+	FUNCTION_APPLYDAILY_NAME
 	FUNCTION_APPLYGUESS_NAME
 	REGION
 Amplify Params - DO NOT EDIT */ /*
@@ -84,6 +85,21 @@ app.post("/verifyGuess", async function (req, res) {
   } else if (rawSensitive.mode === "daily") {
     // TODO: invoke applyDaily
     const { rank, region, usernames } = rawSensitive;
+    const inv = lambda
+      .invoke({
+        FunctionName: process.env.FUNCTION_APPLYDAILY_NAME,
+        Payload: JSON.stringify({
+          unencrypted,
+          selectedRank,
+          rank,
+          date,
+          category,
+          userSub,
+        }), // pass params
+        InvocationType: "Event",
+      })
+      .promise();
+    await inv; // Fire and forget
     response = {
       unencrypted,
       rank,

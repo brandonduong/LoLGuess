@@ -11,7 +11,7 @@ type User
     ]
   ) {
   id: ID!
-  username: String!
+  username: String!  # nickname + unique username
     @index(name: "usersByUsername", queryField: "usersByUsername")
   guesses: [Guess] @hasMany
   # Freeplay stats
@@ -75,7 +75,28 @@ type Guess
   region: String
   regions: [String]
   matchId: String
-  mode: String # freeplay, daily
+}
+
+type DailyGuess
+  @model
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: private, operations: [read], provider: iam }
+    ]
+  ) {
+  date: ID! @primaryKey(sortKeyFields: ["category"])
+  category: String!
+  placements: [String!]!
+  guessedRank: String!
+  rank: String!
+  userGuessesId: ID!
+    @index(
+      name: "guessesByDate"
+      queryField: "guessesByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  createdAt: String!
 }
 
 type Leaderboard

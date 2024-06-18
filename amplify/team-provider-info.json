@@ -73,7 +73,7 @@
         },
         "getDailyStats": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getDailyStats-743258714e524a327978-build.zip"
+          "s3Key": "amplify-builds/getDailyStats-355a6d6c65314533467a-build.zip"
         },
         "applyDaily": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
