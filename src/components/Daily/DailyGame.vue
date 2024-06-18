@@ -12,6 +12,8 @@ import Loading from "../Loading.vue";
 import CustomCard from "../CustomCard.vue";
 import StatsTable from "./StatsTable.vue";
 import type { DailyGuess, Team } from "@/common/interfaces";
+import { useAuthenticator } from "@aws-amplify/ui-vue";
+const auth = useAuthenticator();
 
 const props = defineProps<{
   date: string;
@@ -101,12 +103,24 @@ async function getDaily(date: string, cat: string) {
 }
 
 async function verifyGuess() {
-  let url = "/verifyAnyGuess?";
-  const header = {
-    headers: {
-      "Content-type": "application/json",
-    },
-  };
+  let url, header;
+  if (auth.user) {
+    url = "/verifyGuess?";
+    header = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${auth.user.signInUserSession.idToken.jwtToken}`,
+      },
+    };
+  } else {
+    url = "/verifyAnyGuess?";
+    header = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+  }
+
   loading.value = true;
   await http.api
     .post(
