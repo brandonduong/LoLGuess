@@ -11,31 +11,9 @@ interface ItemStyle {
   path: string;
   title: string;
 }
-
-interface StaticData {
-  apiName: string;
-  icon: string;
-  name: string;
-  tileIcon: string;
-}
-interface StaticSetData {
-  champions: StaticData[];
-  traits: StaticData[];
-}
-interface StaticSetsData {
-  9: StaticSetData;
-  10: StaticSetData;
-  11: StaticSetData;
-}
-
-interface APIUnit {
-  character_id: string;
-  tier: number;
-  itemNames: string[];
-  rarity: number;
-}
 </script>
 <script setup lang="ts">
+import type { APIUnit, StaticData, StaticSetsData } from "@/common/interfaces";
 import { StarFilled } from "@ant-design/icons-vue";
 import { ref } from "vue";
 

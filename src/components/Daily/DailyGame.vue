@@ -10,15 +10,8 @@ import { useRouter } from "vue-router";
 import HomeButton from "../Home/HomeButton.vue";
 import Loading from "../Loading.vue";
 import CustomCard from "../CustomCard.vue";
-interface DailyGuess {
-  placements: string[];
-  rankedMatch: object[];
-  rank: string;
-  date: string;
-  category: string;
-  verifiedRank: string;
-  region: string;
-}
+import StatsTable from "./StatsTable.vue";
+import type { DailyGuess, Team } from "@/common/interfaces";
 
 const props = defineProps<{
   date: string;
@@ -39,7 +32,7 @@ const router = useRouter();
 
 const current = ref<number>(0);
 
-const rankedMatch = ref<object[]>([]);
+const rankedMatch = ref<Team[]>([]);
 const selectedGuess = ref<string[]>([]);
 const selectedRanks = ref<string[]>([]);
 const selectedRank = ref<string>(props.prev ? props.prev.rank : "");
@@ -50,6 +43,7 @@ const loading = ref<boolean>(false);
 const verifiedGuess = ref<string[]>([]);
 const verifiedRank = ref<string>("");
 const verifiedRegion = ref<string>("");
+const verifiedUsernames = ref<string[]>([]);
 
 const low = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
 const high = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
@@ -75,6 +69,7 @@ function loadPrev() {
   verifiedGuess.value = prev.placements;
   verifiedRank.value = prev.verifiedRank;
   verifiedRegion.value = prev.region;
+  verifiedUsernames.value = prev.usernames;
   rankedMatch.value = prev.rankedMatch;
   selectedRank.value = prev.rank;
   selectedRanks.value =
@@ -129,6 +124,7 @@ async function verifyGuess() {
       verifiedGuess.value = res.data.unencrypted;
       verifiedRank.value = res.data.rank;
       verifiedRegion.value = res.data.region;
+      verifiedUsernames.value = res.data.usernames;
 
       loading.value = false;
     });
@@ -154,6 +150,7 @@ async function guess() {
     rankedMatch: rankedMatch.value,
     verifiedRank: verifiedRank.value,
     region: verifiedRegion.value,
+    usernames: verifiedUsernames.value,
   });
 }
 
@@ -161,6 +158,8 @@ async function next() {
   loading.value = true;
   if (current.value === 0) {
     await guess();
+  } else if (current.value === 1) {
+    current.value++;
   }
   loading.value = false;
 }
@@ -169,36 +168,41 @@ async function next() {
 <template>
   <CustomCard style="align-items: normal; margin-top: 1rem">
     <div v-if="!loading">
-      <DragAndDropTable
-        :rankedMatch="rankedMatch"
-        @update-selected-guess="selectedGuess = $event"
-        :verifiedGuess="verifiedGuess"
-        :selectedRanks="selectedRanks"
-      />
-      <div style="margin-top: 1rem">
-        <GuessRank
+      <div v-if="current === 0 || current === 1">
+        <DragAndDropTable
+          :rankedMatch="rankedMatch"
+          @update-selected-guess="selectedGuess = $event"
+          :verifiedGuess="verifiedGuess"
           :selectedRanks="selectedRanks"
-          @update-selected-rank="selectedRank = $event"
-          :selectedRank="selectedRank"
-          :verifiedRank="verifiedRank"
-          :loading="loading"
         />
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1rem;
-          "
-          v-if="current === 1"
-        >
-          <GuessRegion :region="verifiedRegion" />
-          <GuessScore
-            :selectedRank="selectedRank"
+        <div style="margin-top: 1rem">
+          <GuessRank
             :selectedRanks="selectedRanks"
+            @update-selected-rank="selectedRank = $event"
+            :selectedRank="selectedRank"
             :verifiedRank="verifiedRank"
-            :verifiedGuess="verifiedGuess"
+            :loading="loading"
           />
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              margin-top: 1rem;
+            "
+            v-if="current === 1"
+          >
+            <GuessRegion :region="verifiedRegion" />
+            <GuessScore
+              :selectedRank="selectedRank"
+              :selectedRanks="selectedRanks"
+              :verifiedRank="verifiedRank"
+              :verifiedGuess="verifiedGuess"
+            />
+          </div>
         </div>
+      </div>
+      <div v-if="current === 2">
+        <StatsTable :rankedMatch="rankedMatch" :usernames="verifiedUsernames" />
       </div>
     </div>
     <div v-else><Loading /></div>

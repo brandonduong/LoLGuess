@@ -8,8 +8,9 @@ import { onMounted, ref } from "vue";
 import http from "../../common/http-common";
 import { Sortable } from "sortablejs-vue3";
 import { useRouter } from "vue-router";
+import type { StaticData, StaticSetsData, Team } from "@/common/interfaces";
 const props = defineProps<{
-  rankedMatch: Array<object>;
+  rankedMatch: Team[];
   verifiedGuess: string[];
   selectedRanks: string[];
 }>();
@@ -18,21 +19,6 @@ const emit = defineEmits(["updateSelectedGuess"]);
 interface SortableEvent {
   oldIndex: number;
   newIndex: number;
-}
-interface StaticData {
-  apiName: string;
-  icon: string;
-  name: string;
-  tileIcon: string;
-}
-interface StaticSetData {
-  champions: StaticData[];
-  traits: StaticData[];
-}
-interface StaticSetsData {
-  9: StaticSetData;
-  10: StaticSetData;
-  11: StaticSetData;
 }
 
 var loading = ref(true);
@@ -236,3 +222,5 @@ function correctionStyle(placement: number) {
   }
 }
 </style>
+import type { StaticData, StaticSetsData } from "@/common/interfaces"; import
+type { StaticData, StaticSetsData } from "@/common/interfaces";

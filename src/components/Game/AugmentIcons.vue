@@ -1,9 +1,4 @@
 <script lang="ts">
-interface StaticData {
-  apiName: string;
-  icon: string;
-  name: string;
-}
 interface AugmentStyle {
   path: string;
   title: string;
@@ -11,6 +6,7 @@ interface AugmentStyle {
 </script>
 
 <script setup lang="ts">
+import type { StaticData } from "@/common/interfaces";
 import { ref } from "vue";
 
 const props = defineProps<{

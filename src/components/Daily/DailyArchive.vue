@@ -4,16 +4,7 @@ import { calculateScore } from "@/common/helper";
 import { ArrowRightOutlined } from "@ant-design/icons-vue";
 import HomeButton from "../Home/HomeButton.vue";
 import RankIcon from "../Game/RankIcon.vue";
-
-interface DailyGuess {
-  placements: string[];
-  rankedMatch: object[];
-  rank: string;
-  date: string;
-  category: string;
-  verifiedRank: string;
-  region: string;
-}
+import type { DailyGuess } from "@/common/interfaces";
 
 defineProps<{
   guessedBefore: (date: string, category: string) => DailyGuess | null;

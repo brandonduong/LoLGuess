@@ -1,19 +1,10 @@
 <script setup lang="ts">
 import DailyGame from "./DailyGame.vue";
 import DailyArchive from "./DailyArchive.vue";
-import DailyButtons from "./DailyButtons.vue";
 import { ref, onMounted } from "vue";
 import CustomCard from "../CustomCard.vue";
 import CustomTabs from "./CustomTabs.vue";
-interface DailyGuess {
-  placements: string[];
-  rankedMatch: object[];
-  rank: string;
-  date: string;
-  category: string;
-  verifiedRank: string;
-  region: string;
-}
+import type { DailyGuess } from "@/common/interfaces";
 
 defineProps<{ date: string; category: string }>();
 

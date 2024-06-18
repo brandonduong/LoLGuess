@@ -1,26 +1,4 @@
 <script lang="ts">
-interface StaticData {
-  apiName: string;
-  icon: string;
-  name: string;
-}
-interface StaticSetData {
-  champions: StaticData[];
-  traits: StaticData[];
-}
-interface StaticSetsData {
-  9: StaticSetData;
-  10: StaticSetData;
-  11: StaticSetData;
-}
-
-interface APITrait {
-  name: string;
-  tier_current: number;
-  style: number;
-  num_units: number;
-}
-
 interface TraitStyle {
   path: string;
   style: number;
@@ -29,6 +7,7 @@ interface TraitStyle {
 </script>
 
 <script setup lang="ts">
+import type { APITrait, StaticSetsData } from "@/common/interfaces";
 import { ref } from "vue";
 
 const props = defineProps<{
