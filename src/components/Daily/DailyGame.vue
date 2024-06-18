@@ -130,11 +130,8 @@ async function verifyGuess() {
     });
 }
 
-const buttonText = ["GUESS", "STATS"];
-
-function reset() {
-  router.push("/daily");
-}
+const prevText = ["ARCHIVE", "ARCHIVE", "ATTEMPT"];
+const buttonText = ["GUESS", "STATS", "ARCHIVE"];
 
 async function guess() {
   // console.log(selectedGuess.value, selectedRank.value);
@@ -158,10 +155,21 @@ async function next() {
   loading.value = true;
   if (current.value === 0) {
     await guess();
-  } else if (current.value === 1) {
+  } else {
+    if (current.value === 2) {
+      router.push("/daily");
+    }
     current.value++;
   }
   loading.value = false;
+}
+
+function prev() {
+  if (current.value < 2) {
+    router.push("/daily");
+  } else {
+    current.value -= 1;
+  }
 }
 </script>
 
@@ -216,9 +224,9 @@ async function next() {
   <div class="steps-action">
     <HomeButton
       type="default"
-      title="ARCHIVE"
+      :title="prevText[current]"
       :active="!loading"
-      :onClick="reset"
+      :onClick="prev"
       ><template #icon
         ><double-left-outlined
           style="color: rgb(240, 230, 210); font-size: 1.75rem" /></template
@@ -226,8 +234,7 @@ async function next() {
     <HomeButton
       :title="buttonText[current]"
       :active="
-        ((selectedRank.length > 0 && current === 0) || current === 1) &&
-        !loading
+        ((selectedRank.length > 0 && current === 0) || current >= 1) && !loading
       "
       :onClick="next"
       ><template #iconRight
