@@ -17,8 +17,7 @@ const goldLeft = ref<number>(props.goldLeft);
 .gold {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: end;
   column-gap: 0.25rem;
-  padding-right: 0.5rem;
 }
 </style>
