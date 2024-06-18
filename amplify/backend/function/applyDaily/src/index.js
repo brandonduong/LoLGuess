@@ -271,6 +271,43 @@ function calculateCorrectPlacements(placements) {
   return correct;
 }
 
+async function createDailyGuess(
+  userSub,
+  date,
+  category,
+  unencrypted,
+  selectedRank,
+  rank
+) {
+  const query = /* GraphQL */ `
+    mutation CREATE_DAILYGUESS($input: CreateDailyGuessInput!) {
+      createDailyGuess(input: $input) {
+        date
+        category
+        placements
+        guessedRank
+        rank
+        userGuessesId
+      }
+    }
+  `;
+  const variables = {
+    input: {
+      date,
+      category,
+      placements: unencrypted,
+      guessedRank: selectedRank,
+      rank,
+      userGuessesId: userSub,
+    },
+  };
+  const res = await signAndRun(query, variables);
+  if (res.statusCode === 200) {
+    return res.body.data.createDailyGuess;
+  } else {
+    console.log(res.body.errors);
+  }
+}
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
@@ -412,6 +449,14 @@ export const handler = async (event) => {
     await updateUserStats(event.userSub, user);
 
     // create guess
+    await createDailyGuess(
+      event.userSub,
+      date,
+      category,
+      unencrypted,
+      selectedRank,
+      rank
+    );
   }
 
   return {
