@@ -91,7 +91,6 @@ app.post("/verifyGuess", async function (req, res) {
         Payload: JSON.stringify({
           unencrypted,
           selectedRank,
-          rank,
           date,
           category,
           userSub,

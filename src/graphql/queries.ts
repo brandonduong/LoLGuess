@@ -36,6 +36,20 @@ export const batchFetchUser = /* GraphQL */ `
       rankGuesses
       placementGuesses
       correctPlacementGuesses
+      dailyGuesses {
+        items {
+          date
+          category
+          placements
+          guessedRank
+          rank
+          userGuessesId
+          createdAt
+          updatedAt
+          userDailyGuessesId
+        }
+        nextToken
+      }
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
@@ -92,6 +106,20 @@ export const getUser = /* GraphQL */ `
       rankGuesses
       placementGuesses
       correctPlacementGuesses
+      dailyGuesses {
+        items {
+          date
+          category
+          placements
+          guessedRank
+          rank
+          userGuessesId
+          createdAt
+          updatedAt
+          userDailyGuessesId
+        }
+        nextToken
+      }
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
@@ -140,6 +168,9 @@ export const listUsers = /* GraphQL */ `
         rankGuesses
         placementGuesses
         correctPlacementGuesses
+        dailyGuesses {
+          nextToken
+        }
         dailyTotalGuesses
         dailyScore
         dailyMaxScore
@@ -198,6 +229,9 @@ export const usersByUsername = /* GraphQL */ `
         rankGuesses
         placementGuesses
         correctPlacementGuesses
+        dailyGuesses {
+          nextToken
+        }
         dailyTotalGuesses
         dailyScore
         dailyMaxScore
@@ -298,8 +332,12 @@ export const guessesByDate = /* GraphQL */ `
   }
 `;
 export const getDailyGuess = /* GraphQL */ `
-  query GetDailyGuess($date: ID!, $category: String!) {
-    getDailyGuess(date: $date, category: $category) {
+  query GetDailyGuess($date: ID!, $category: String!, $userGuessesId: ID!) {
+    getDailyGuess(
+      date: $date
+      category: $category
+      userGuessesId: $userGuessesId
+    ) {
       date
       category
       placements
@@ -308,13 +346,14 @@ export const getDailyGuess = /* GraphQL */ `
       userGuessesId
       createdAt
       updatedAt
+      userDailyGuessesId
     }
   }
 `;
 export const listDailyGuesses = /* GraphQL */ `
   query ListDailyGuesses(
     $date: ID
-    $category: ModelStringKeyConditionInput
+    $categoryUserGuessesId: ModelDailyGuessPrimaryCompositeKeyConditionInput
     $filter: ModelDailyGuessFilterInput
     $limit: Int
     $nextToken: String
@@ -322,7 +361,7 @@ export const listDailyGuesses = /* GraphQL */ `
   ) {
     listDailyGuesses(
       date: $date
-      category: $category
+      categoryUserGuessesId: $categoryUserGuessesId
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -337,6 +376,7 @@ export const listDailyGuesses = /* GraphQL */ `
         userGuessesId
         createdAt
         updatedAt
+        userDailyGuessesId
       }
       nextToken
     }
@@ -368,6 +408,7 @@ export const dailyGuessesByDate = /* GraphQL */ `
         userGuessesId
         createdAt
         updatedAt
+        userDailyGuessesId
       }
       nextToken
     }

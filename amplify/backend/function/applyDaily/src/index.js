@@ -160,6 +160,117 @@ async function updateDaily(date, category, stats) {
   }
 }
 
+async function getUser(sub) {
+  const query = /* GraphQL */ `
+    query GET_USER($id: ID!) {
+      getUser(id: $id) {
+        dailyTotalGuesses
+        dailyScore
+        dailyMaxScore
+        dailyCorrectPlacements
+        dailyCorrectRanks
+        dailyScoresLow
+        dailyRankGuessesLow
+        dailyPlacementGuessesLow
+        dailyCorrectPlacementGuessesLow
+        dailyScoresHigh
+        dailyRankGuessesHigh
+        dailyPlacementGuessesHigh
+        dailyCorrectPlacementGuessesHigh
+        dailyScoresAll
+        dailyRankGuessesAll
+        dailyPlacementGuessesAll
+        dailyCorrectPlacementGuessesAll
+      }
+    }
+  `;
+
+  const variables = {
+    id: sub,
+  };
+
+  const res = await signAndRun(query, variables);
+  if (res.statusCode === 200) {
+    return res.body.data.getUser;
+  } else {
+    console.log(res.body.errors);
+  }
+}
+
+async function updateUserStats(userSub, stats) {
+  const query = /* GraphQL */ `
+    mutation UPDATE_USER($input: UpdateUserInput!) {
+      updateUser(input: $input) {
+        dailyTotalGuesses
+        dailyScore
+        dailyMaxScore
+        dailyCorrectPlacements
+        dailyCorrectRanks
+        dailyScoresLow
+        dailyRankGuessesLow
+        dailyPlacementGuessesLow
+        dailyCorrectPlacementGuessesLow
+        dailyScoresHigh
+        dailyRankGuessesHigh
+        dailyPlacementGuessesHigh
+        dailyCorrectPlacementGuessesHigh
+        dailyScoresAll
+        dailyRankGuessesAll
+        dailyPlacementGuessesAll
+        dailyCorrectPlacementGuessesAll
+      }
+    }
+  `;
+
+  const variables = {
+    input: {
+      id: userSub,
+      ...stats,
+    },
+  };
+
+  const res = await signAndRun(query, variables);
+  if (res.statusCode === 200) {
+    console.log(res.body);
+  } else {
+    console.log(res.body.errors);
+  }
+}
+
+async function getUserDailyGuess(date, category) {
+  const query = /* GraphQL */ `
+    query GET_DAILYGUESS($date: ID!, $category: String!) {
+      getDailyGuess(date: $date, category: $category) {
+        date
+        category
+      }
+    }
+  `;
+
+  const variables = {
+    date,
+    category,
+  };
+
+  const res = await signAndRun(query, variables);
+  console.log(res);
+  if (res.statusCode === 200) {
+    return res.body.data.getDailyGuess;
+  } else {
+    console.log(res.body.errors);
+  }
+}
+
+function calculateCorrectPlacements(placements) {
+  var correct = 0;
+  for (let i = 0; i < placements.length; i++) {
+    if (parseInt(placements[i]) === i + 1) {
+      correct += 1;
+    }
+  }
+  return correct;
+}
+
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
@@ -171,50 +282,144 @@ export const handler = async (event) => {
   const date = event.date;
   const category = event.category;
 
-  const daily = await getDaily(date, category);
-  const {
-    loggedRankGuesses,
-    loggedPlacementGuesses,
-    loggedPerfects,
-    loggedScores,
-    rank,
-  } = daily;
+  // check if logged in user already made a guess before
+  if (!(await getUserDailyGuess())) {
+    const daily = await getDaily(date, category);
+    const {
+      loggedRankGuesses,
+      loggedPlacementGuesses,
+      loggedPerfects,
+      loggedScores,
+      rank,
+    } = daily;
 
-  const low = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
-  const high = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
-  const all = [...low, ...high];
-  const ranks = category === "low" ? low : category === "high" ? high : all;
+    const low = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
+    const high = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
+    const all = [...low, ...high];
+    const ranks = category === "low" ? low : category === "high" ? high : all;
 
-  const [score, maxScore] = calculateScore(
-    unencrypted,
-    selectedRank,
-    rank,
-    ranks
-  );
+    const [score, maxScore] = calculateScore(
+      unencrypted,
+      selectedRank,
+      rank,
+      ranks
+    );
 
-  // Calculate updated stats
-  loggedScores[Math.round(score)] += 1;
-  loggedRankGuesses[ranks.indexOf(selectedRank)] += 1;
-  for (let i = 0; i < unencrypted.length; i++) {
-    loggedPlacementGuesses[unencrypted[i] - 1][i] += 1;
+    // Calculate updated stats
+    loggedScores[Math.round(score)] += 1;
+    loggedRankGuesses[ranks.indexOf(selectedRank)] += 1;
+    for (let i = 0; i < unencrypted.length; i++) {
+      loggedPlacementGuesses[unencrypted[i] - 1][i] += 1;
+    }
+
+    const stats = {
+      loggedRankGuesses,
+      loggedPlacementGuesses,
+      loggedPerfects: score === maxScore ? loggedPerfects + 1 : loggedPerfects,
+      loggedScores,
+    };
+
+    await updateDaily(date, category, stats);
+
+    // Update user stats
+    let user = await getUser(event.userSub);
+    const capitalCategory =
+      category.charAt(0).toUpperCase() + category.slice(1);
+    // initialize stats
+    if (!user.dailyTotalGuesses) {
+      user = {
+        dailyTotalGuesses: 0,
+        dailyScore: 0,
+        dailyMaxScore: 0,
+        dailyCorrectPlacements: 0,
+        dailyCorrectRanks: 0,
+        dailyScoresLow: new Array(83).fill(0),
+        dailyRankGuessesLow: new Array(5)
+          .fill(0)
+          .map((x) => new Array(5).fill(0)),
+        dailyPlacementGuessesLow: new Array(8)
+          .fill(0)
+          .map((x) => new Array(8).fill(0)),
+        dailyCorrectPlacementGuessesLow: new Array(18).fill(0),
+        dailyScoresHigh: new Array(83).fill(0),
+        dailyRankGuessesHigh: new Array(5)
+          .fill(0)
+          .map((x) => new Array(5).fill(0)),
+        dailyPlacementGuessesHigh: new Array(8)
+          .fill(0)
+          .map((x) => new Array(8).fill(0)),
+        dailyCorrectPlacementGuessesHigh: new Array(18).fill(0),
+        dailyScoresAll: new Array(101).fill(0),
+        dailyRankGuessesAll: new Array(10)
+          .fill(0)
+          .map((x) => new Array(10).fill(0)),
+        dailyPlacementGuessesAll: new Array(8)
+          .fill(0)
+          .map((x) => new Array(8).fill(0)),
+        dailyCorrectPlacementGuessesAll: new Array(18).fill(0),
+      };
+    }
+    const copy = {
+      [`dailyScores${capitalCategory}`]: user[`dailyScores${capitalCategory}`],
+      [`dailyRankGuesses${capitalCategory}`]:
+        user[`dailyRankGuesses${capitalCategory}`],
+      [`dailyPlacementGuesses${capitalCategory}`]:
+        user[`dailyPlacementGuesses${capitalCategory}`],
+      [`dailyCorrectPlacementGuesses${capitalCategory}`]:
+        user[`dailyCorrectPlacementGuesses${capitalCategory}`],
+    };
+    copy[`dailyScores${capitalCategory}`][Math.round(score)] += 1;
+    copy[`dailyRankGuesses${capitalCategory}`][ranks.indexOf(rank)][
+      ranks.indexOf(selectedRank)
+    ] += 1;
+    let correctPlacementsCount = 0;
+    for (let i = 0; i < unencrypted.length; i++) {
+      copy[`dailyPlacementGuesses${capitalCategory}`][unencrypted[i] - 1][
+        i
+      ] += 1;
+      if (parseInt(unencrypted[i]) === i + 1) {
+        correctPlacementsCount += 1;
+      }
+    }
+
+    // Increment correctPlacementGuesses
+    if (rank === selectedRank) {
+      copy[`dailyCorrectPlacementGuesses${capitalCategory}`][
+        correctPlacementsCount + 9
+      ] += 1;
+    } else {
+      copy[`dailyCorrectPlacementGuesses${capitalCategory}`][
+        correctPlacementsCount
+      ] += 1;
+    }
+    user = {
+      ...user,
+      dailyTotalGuesses: user.dailyTotalGuesses + 1,
+      dailyScore: user.dailyScore + score,
+      dailyMaxScore: user.dailyMaxScore + maxScore,
+      dailyCorrectPlacements:
+        user.dailyCorrectPlacements + calculateCorrectPlacements(unencrypted),
+      dailyCorrectRanks:
+        user.dailyCorrectRanks + (rank === selectedRank ? 1 : 0),
+      [`dailyScores${capitalCategory}`]: copy[`dailyScores${capitalCategory}`],
+      [`dailyRankGuesses${capitalCategory}`]:
+        copy[`dailyRankGuesses${capitalCategory}`],
+      [`dailyPlacementGuesses${capitalCategory}`]:
+        copy[`dailyPlacementGuesses${capitalCategory}`],
+      [`dailyCorrectPlacementGuesses${capitalCategory}`]:
+        copy[`dailyCorrectPlacementGuesses${capitalCategory}`],
+    };
+    await updateUserStats(event.userSub, user);
+
+    // create guess
   }
 
-  const stats = {
-    loggedRankGuesses,
-    loggedPlacementGuesses,
-    loggedPerfects: score === maxScore ? loggedPerfects + 1 : loggedPerfects,
-    loggedScores,
-  };
-
-  await updateDaily(date, category, stats);
-
   return {
-    statusCode,
     //  Uncomment below to enable CORS requests
     // headers: {
     //   "Access-Control-Allow-Origin": "*",
     //   "Access-Control-Allow-Headers": "*"
     // },
-    body: JSON.stringify(body),
+    body: JSON.stringify(event),
   };
 };

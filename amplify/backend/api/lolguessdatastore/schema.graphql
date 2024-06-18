@@ -30,6 +30,7 @@ type User
   placementGuesses: [[Int]] # 2D 8 x 8 array of placement guesses from first to eight
   correctPlacementGuesses: [Int] # 1D array of size 18 counting number of times guessed 0, 1, 2, ... placements correctly separated by also correct rank or not
   # Daily stats
+  dailyGuesses: [DailyGuess] @hasMany
   dailyTotalGuesses: Int
   dailyScore: Float
   dailyMaxScore: Float
@@ -85,7 +86,7 @@ type DailyGuess
       { allow: private, operations: [read], provider: iam }
     ]
   ) {
-  date: ID! @primaryKey(sortKeyFields: ["category"])
+  date: ID! @primaryKey(sortKeyFields: ["category", "userGuessesId"])
   category: String!
   placements: [String!]!
   guessedRank: String!
