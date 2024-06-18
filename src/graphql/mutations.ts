@@ -22,7 +22,6 @@ export const createUser = /* GraphQL */ `
           region
           regions
           matchId
-          mode
           updatedAt
         }
         nextToken
@@ -82,7 +81,6 @@ export const updateUser = /* GraphQL */ `
           region
           regions
           matchId
-          mode
           updatedAt
         }
         nextToken
@@ -142,7 +140,6 @@ export const deleteUser = /* GraphQL */ `
           region
           regions
           matchId
-          mode
           updatedAt
         }
         nextToken
@@ -198,7 +195,6 @@ export const createGuess = /* GraphQL */ `
       region
       regions
       matchId
-      mode
       updatedAt
     }
   }
@@ -219,7 +215,6 @@ export const updateGuess = /* GraphQL */ `
       region
       regions
       matchId
-      mode
       updatedAt
     }
   }
@@ -240,7 +235,57 @@ export const deleteGuess = /* GraphQL */ `
       region
       regions
       matchId
-      mode
+      updatedAt
+    }
+  }
+`;
+export const createDailyGuess = /* GraphQL */ `
+  mutation CreateDailyGuess(
+    $input: CreateDailyGuessInput!
+    $condition: ModelDailyGuessConditionInput
+  ) {
+    createDailyGuess(input: $input, condition: $condition) {
+      date
+      category
+      placements
+      guessedRank
+      rank
+      userGuessesId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateDailyGuess = /* GraphQL */ `
+  mutation UpdateDailyGuess(
+    $input: UpdateDailyGuessInput!
+    $condition: ModelDailyGuessConditionInput
+  ) {
+    updateDailyGuess(input: $input, condition: $condition) {
+      date
+      category
+      placements
+      guessedRank
+      rank
+      userGuessesId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteDailyGuess = /* GraphQL */ `
+  mutation DeleteDailyGuess(
+    $input: DeleteDailyGuessInput!
+    $condition: ModelDailyGuessConditionInput
+  ) {
+    deleteDailyGuess(input: $input, condition: $condition) {
+      date
+      category
+      placements
+      guessedRank
+      rank
+      userGuessesId
+      createdAt
       updatedAt
     }
   }

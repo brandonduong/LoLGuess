@@ -19,7 +19,6 @@ export const batchFetchUser = /* GraphQL */ `
           region
           regions
           matchId
-          mode
           updatedAt
         }
         nextToken
@@ -76,7 +75,6 @@ export const getUser = /* GraphQL */ `
           region
           regions
           matchId
-          mode
           updatedAt
         }
         nextToken
@@ -237,7 +235,6 @@ export const getGuess = /* GraphQL */ `
       region
       regions
       matchId
-      mode
       updatedAt
     }
   }
@@ -260,7 +257,6 @@ export const listGuesses = /* GraphQL */ `
         region
         regions
         matchId
-        mode
         updatedAt
       }
       nextToken
@@ -295,7 +291,82 @@ export const guessesByDate = /* GraphQL */ `
         region
         regions
         matchId
-        mode
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getDailyGuess = /* GraphQL */ `
+  query GetDailyGuess($date: ID!, $category: String!) {
+    getDailyGuess(date: $date, category: $category) {
+      date
+      category
+      placements
+      guessedRank
+      rank
+      userGuessesId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listDailyGuesses = /* GraphQL */ `
+  query ListDailyGuesses(
+    $date: ID
+    $category: ModelStringKeyConditionInput
+    $filter: ModelDailyGuessFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listDailyGuesses(
+      date: $date
+      category: $category
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        date
+        category
+        placements
+        guessedRank
+        rank
+        userGuessesId
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const dailyGuessesByDate = /* GraphQL */ `
+  query DailyGuessesByDate(
+    $userGuessesId: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelDailyGuessFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    dailyGuessesByDate(
+      userGuessesId: $userGuessesId
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        date
+        category
+        placements
+        guessedRank
+        rank
+        userGuessesId
+        createdAt
         updatedAt
       }
       nextToken

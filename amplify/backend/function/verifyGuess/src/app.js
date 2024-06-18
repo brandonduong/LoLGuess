@@ -84,7 +84,7 @@ app.post("/verifyGuess", async function (req, res) {
     };
   } else if (rawSensitive.mode === "daily") {
     // TODO: invoke applyDaily
-    const { rank, region, usernames } = rawSensitive;
+    const { rank, region, usernames, date, category } = rawSensitive;
     const inv = lambda
       .invoke({
         FunctionName: process.env.FUNCTION_APPLYDAILY_NAME,

@@ -195,7 +195,6 @@ export type Guess = {
   region?: string | null,
   regions?: Array< string | null > | null,
   matchId?: string | null,
-  mode?: string | null,
   updatedAt: string,
 };
 
@@ -249,7 +248,6 @@ export type CreateGuessInput = {
   region?: string | null,
   regions?: Array< string | null > | null,
   matchId?: string | null,
-  mode?: string | null,
 };
 
 export type ModelGuessConditionInput = {
@@ -262,7 +260,6 @@ export type ModelGuessConditionInput = {
   region?: ModelStringInput | null,
   regions?: ModelStringInput | null,
   matchId?: ModelStringInput | null,
-  mode?: ModelStringInput | null,
   and?: Array< ModelGuessConditionInput | null > | null,
   or?: Array< ModelGuessConditionInput | null > | null,
   not?: ModelGuessConditionInput | null,
@@ -295,11 +292,58 @@ export type UpdateGuessInput = {
   region?: string | null,
   regions?: Array< string | null > | null,
   matchId?: string | null,
-  mode?: string | null,
 };
 
 export type DeleteGuessInput = {
   id: string,
+};
+
+export type CreateDailyGuessInput = {
+  date: string,
+  category: string,
+  placements: Array< string >,
+  guessedRank: string,
+  rank: string,
+  userGuessesId: string,
+  createdAt?: string | null,
+};
+
+export type ModelDailyGuessConditionInput = {
+  placements?: ModelStringInput | null,
+  guessedRank?: ModelStringInput | null,
+  rank?: ModelStringInput | null,
+  userGuessesId?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelDailyGuessConditionInput | null > | null,
+  or?: Array< ModelDailyGuessConditionInput | null > | null,
+  not?: ModelDailyGuessConditionInput | null,
+};
+
+export type DailyGuess = {
+  __typename: "DailyGuess",
+  date: string,
+  category: string,
+  placements: Array< string >,
+  guessedRank: string,
+  rank: string,
+  userGuessesId: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateDailyGuessInput = {
+  date: string,
+  category: string,
+  placements?: Array< string > | null,
+  guessedRank?: string | null,
+  rank?: string | null,
+  userGuessesId?: string | null,
+  createdAt?: string | null,
+};
+
+export type DeleteDailyGuessInput = {
+  date: string,
+  category: string,
 };
 
 export type CreateLeaderboardInput = {
@@ -497,7 +541,6 @@ export type ModelGuessFilterInput = {
   region?: ModelStringInput | null,
   regions?: ModelStringInput | null,
   matchId?: ModelStringInput | null,
-  mode?: ModelStringInput | null,
   and?: Array< ModelGuessFilterInput | null > | null,
   or?: Array< ModelGuessFilterInput | null > | null,
   not?: ModelGuessFilterInput | null,
@@ -511,6 +554,25 @@ export type ModelStringKeyConditionInput = {
   gt?: string | null,
   between?: Array< string | null > | null,
   beginsWith?: string | null,
+};
+
+export type ModelDailyGuessFilterInput = {
+  date?: ModelIDInput | null,
+  category?: ModelStringInput | null,
+  placements?: ModelStringInput | null,
+  guessedRank?: ModelStringInput | null,
+  rank?: ModelStringInput | null,
+  userGuessesId?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelDailyGuessFilterInput | null > | null,
+  or?: Array< ModelDailyGuessFilterInput | null > | null,
+  not?: ModelDailyGuessFilterInput | null,
+};
+
+export type ModelDailyGuessConnection = {
+  __typename: "ModelDailyGuessConnection",
+  items:  Array<DailyGuess | null >,
+  nextToken?: string | null,
 };
 
 export type ModelLeaderboardFilterInput = {
@@ -662,9 +724,20 @@ export type ModelSubscriptionGuessFilterInput = {
   region?: ModelSubscriptionStringInput | null,
   regions?: ModelSubscriptionStringInput | null,
   matchId?: ModelSubscriptionStringInput | null,
-  mode?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionGuessFilterInput | null > | null,
   or?: Array< ModelSubscriptionGuessFilterInput | null > | null,
+};
+
+export type ModelSubscriptionDailyGuessFilterInput = {
+  date?: ModelSubscriptionIDInput | null,
+  category?: ModelSubscriptionStringInput | null,
+  placements?: ModelSubscriptionStringInput | null,
+  guessedRank?: ModelSubscriptionStringInput | null,
+  rank?: ModelSubscriptionStringInput | null,
+  userGuessesId?: ModelSubscriptionIDInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionDailyGuessFilterInput | null > | null,
+  or?: Array< ModelSubscriptionDailyGuessFilterInput | null > | null,
 };
 
 export type ModelSubscriptionLeaderboardFilterInput = {
@@ -724,7 +797,6 @@ export type CreateUserMutation = {
         region?: string | null,
         regions?: Array< string | null > | null,
         matchId?: string | null,
-        mode?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -788,7 +860,6 @@ export type UpdateUserMutation = {
         region?: string | null,
         regions?: Array< string | null > | null,
         matchId?: string | null,
-        mode?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -852,7 +923,6 @@ export type DeleteUserMutation = {
         region?: string | null,
         regions?: Array< string | null > | null,
         matchId?: string | null,
-        mode?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -910,7 +980,6 @@ export type CreateGuessMutation = {
     region?: string | null,
     regions?: Array< string | null > | null,
     matchId?: string | null,
-    mode?: string | null,
     updatedAt: string,
   } | null,
 };
@@ -933,7 +1002,6 @@ export type UpdateGuessMutation = {
     region?: string | null,
     regions?: Array< string | null > | null,
     matchId?: string | null,
-    mode?: string | null,
     updatedAt: string,
   } | null,
 };
@@ -956,7 +1024,63 @@ export type DeleteGuessMutation = {
     region?: string | null,
     regions?: Array< string | null > | null,
     matchId?: string | null,
-    mode?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateDailyGuessMutationVariables = {
+  input: CreateDailyGuessInput,
+  condition?: ModelDailyGuessConditionInput | null,
+};
+
+export type CreateDailyGuessMutation = {
+  createDailyGuess?:  {
+    __typename: "DailyGuess",
+    date: string,
+    category: string,
+    placements: Array< string >,
+    guessedRank: string,
+    rank: string,
+    userGuessesId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateDailyGuessMutationVariables = {
+  input: UpdateDailyGuessInput,
+  condition?: ModelDailyGuessConditionInput | null,
+};
+
+export type UpdateDailyGuessMutation = {
+  updateDailyGuess?:  {
+    __typename: "DailyGuess",
+    date: string,
+    category: string,
+    placements: Array< string >,
+    guessedRank: string,
+    rank: string,
+    userGuessesId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteDailyGuessMutationVariables = {
+  input: DeleteDailyGuessInput,
+  condition?: ModelDailyGuessConditionInput | null,
+};
+
+export type DeleteDailyGuessMutation = {
+  deleteDailyGuess?:  {
+    __typename: "DailyGuess",
+    date: string,
+    category: string,
+    placements: Array< string >,
+    guessedRank: string,
+    rank: string,
+    userGuessesId: string,
+    createdAt: string,
     updatedAt: string,
   } | null,
 };
@@ -1131,7 +1255,6 @@ export type BatchFetchUserQuery = {
         region?: string | null,
         regions?: Array< string | null > | null,
         matchId?: string | null,
-        mode?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -1194,7 +1317,6 @@ export type GetUserQuery = {
         region?: string | null,
         regions?: Array< string | null > | null,
         matchId?: string | null,
-        mode?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -1361,7 +1483,6 @@ export type GetGuessQuery = {
     region?: string | null,
     regions?: Array< string | null > | null,
     matchId?: string | null,
-    mode?: string | null,
     updatedAt: string,
   } | null,
 };
@@ -1387,7 +1508,6 @@ export type ListGuessesQuery = {
       region?: string | null,
       regions?: Array< string | null > | null,
       matchId?: string | null,
-      mode?: string | null,
       updatedAt: string,
     } | null >,
     nextToken?: string | null,
@@ -1418,7 +1538,79 @@ export type GuessesByDateQuery = {
       region?: string | null,
       regions?: Array< string | null > | null,
       matchId?: string | null,
-      mode?: string | null,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetDailyGuessQueryVariables = {
+  date: string,
+  category: string,
+};
+
+export type GetDailyGuessQuery = {
+  getDailyGuess?:  {
+    __typename: "DailyGuess",
+    date: string,
+    category: string,
+    placements: Array< string >,
+    guessedRank: string,
+    rank: string,
+    userGuessesId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListDailyGuessesQueryVariables = {
+  date?: string | null,
+  category?: ModelStringKeyConditionInput | null,
+  filter?: ModelDailyGuessFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
+};
+
+export type ListDailyGuessesQuery = {
+  listDailyGuesses?:  {
+    __typename: "ModelDailyGuessConnection",
+    items:  Array< {
+      __typename: "DailyGuess",
+      date: string,
+      category: string,
+      placements: Array< string >,
+      guessedRank: string,
+      rank: string,
+      userGuessesId: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type DailyGuessesByDateQueryVariables = {
+  userGuessesId: string,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelDailyGuessFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type DailyGuessesByDateQuery = {
+  dailyGuessesByDate?:  {
+    __typename: "ModelDailyGuessConnection",
+    items:  Array< {
+      __typename: "DailyGuess",
+      date: string,
+      category: string,
+      placements: Array< string >,
+      guessedRank: string,
+      rank: string,
+      userGuessesId: string,
+      createdAt: string,
       updatedAt: string,
     } | null >,
     nextToken?: string | null,
@@ -1560,7 +1752,6 @@ export type OnCreateUserSubscription = {
         region?: string | null,
         regions?: Array< string | null > | null,
         matchId?: string | null,
-        mode?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -1623,7 +1814,6 @@ export type OnUpdateUserSubscription = {
         region?: string | null,
         regions?: Array< string | null > | null,
         matchId?: string | null,
-        mode?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -1686,7 +1876,6 @@ export type OnDeleteUserSubscription = {
         region?: string | null,
         regions?: Array< string | null > | null,
         matchId?: string | null,
-        mode?: string | null,
         updatedAt: string,
       } | null >,
       nextToken?: string | null,
@@ -1743,7 +1932,6 @@ export type OnCreateGuessSubscription = {
     region?: string | null,
     regions?: Array< string | null > | null,
     matchId?: string | null,
-    mode?: string | null,
     updatedAt: string,
   } | null,
 };
@@ -1765,7 +1953,6 @@ export type OnUpdateGuessSubscription = {
     region?: string | null,
     regions?: Array< string | null > | null,
     matchId?: string | null,
-    mode?: string | null,
     updatedAt: string,
   } | null,
 };
@@ -1787,7 +1974,60 @@ export type OnDeleteGuessSubscription = {
     region?: string | null,
     regions?: Array< string | null > | null,
     matchId?: string | null,
-    mode?: string | null,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateDailyGuessSubscriptionVariables = {
+  filter?: ModelSubscriptionDailyGuessFilterInput | null,
+};
+
+export type OnCreateDailyGuessSubscription = {
+  onCreateDailyGuess?:  {
+    __typename: "DailyGuess",
+    date: string,
+    category: string,
+    placements: Array< string >,
+    guessedRank: string,
+    rank: string,
+    userGuessesId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateDailyGuessSubscriptionVariables = {
+  filter?: ModelSubscriptionDailyGuessFilterInput | null,
+};
+
+export type OnUpdateDailyGuessSubscription = {
+  onUpdateDailyGuess?:  {
+    __typename: "DailyGuess",
+    date: string,
+    category: string,
+    placements: Array< string >,
+    guessedRank: string,
+    rank: string,
+    userGuessesId: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteDailyGuessSubscriptionVariables = {
+  filter?: ModelSubscriptionDailyGuessFilterInput | null,
+};
+
+export type OnDeleteDailyGuessSubscription = {
+  onDeleteDailyGuess?:  {
+    __typename: "DailyGuess",
+    date: string,
+    category: string,
+    placements: Array< string >,
+    guessedRank: string,
+    rank: string,
+    userGuessesId: string,
+    createdAt: string,
     updatedAt: string,
   } | null,
 };

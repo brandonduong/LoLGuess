@@ -19,7 +19,6 @@ export const onCreateUser = /* GraphQL */ `
           region
           regions
           matchId
-          mode
           updatedAt
         }
         nextToken
@@ -76,7 +75,6 @@ export const onUpdateUser = /* GraphQL */ `
           region
           regions
           matchId
-          mode
           updatedAt
         }
         nextToken
@@ -133,7 +131,6 @@ export const onDeleteUser = /* GraphQL */ `
           region
           regions
           matchId
-          mode
           updatedAt
         }
         nextToken
@@ -186,7 +183,6 @@ export const onCreateGuess = /* GraphQL */ `
       region
       regions
       matchId
-      mode
       updatedAt
     }
   }
@@ -204,7 +200,6 @@ export const onUpdateGuess = /* GraphQL */ `
       region
       regions
       matchId
-      mode
       updatedAt
     }
   }
@@ -222,7 +217,54 @@ export const onDeleteGuess = /* GraphQL */ `
       region
       regions
       matchId
-      mode
+      updatedAt
+    }
+  }
+`;
+export const onCreateDailyGuess = /* GraphQL */ `
+  subscription OnCreateDailyGuess(
+    $filter: ModelSubscriptionDailyGuessFilterInput
+  ) {
+    onCreateDailyGuess(filter: $filter) {
+      date
+      category
+      placements
+      guessedRank
+      rank
+      userGuessesId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateDailyGuess = /* GraphQL */ `
+  subscription OnUpdateDailyGuess(
+    $filter: ModelSubscriptionDailyGuessFilterInput
+  ) {
+    onUpdateDailyGuess(filter: $filter) {
+      date
+      category
+      placements
+      guessedRank
+      rank
+      userGuessesId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteDailyGuess = /* GraphQL */ `
+  subscription OnDeleteDailyGuess(
+    $filter: ModelSubscriptionDailyGuessFilterInput
+  ) {
+    onDeleteDailyGuess(filter: $filter) {
+      date
+      category
+      placements
+      guessedRank
+      rank
+      userGuessesId
+      createdAt
       updatedAt
     }
   }
