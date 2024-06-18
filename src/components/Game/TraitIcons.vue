@@ -8,18 +8,18 @@ interface TraitStyle {
 
 <script setup lang="ts">
 import type { APITrait, StaticSetsData } from "@/common/interfaces";
+import { store } from "@/common/store";
 import { ref } from "vue";
 
 const props = defineProps<{
   traits: APITrait[];
-  staticTFTSetsData: StaticSetsData;
 }>();
 
 // Get trait icon styles
 const traitStyles = ref<TraitStyle[]>([]);
 props.traits.forEach((trait) => {
   const setNum = trait.name.split("_")[0].slice(3);
-  const traitInfo = props.staticTFTSetsData[
+  const traitInfo = store.staticTFTSetsData[
     parseInt(setNum) as keyof StaticSetsData
   ].traits.filter((t) => {
     return t.apiName === `TFT${trait.name.slice(3)}` && trait.tier_current > 0; // Always in format TFT11_...

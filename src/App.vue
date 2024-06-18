@@ -2,6 +2,12 @@
 import { RouterView } from "vue-router";
 import AccountHeader from "./components/Home/AccountHeader.vue";
 import { Authenticator } from "@aws-amplify/ui-vue";
+import { onMounted } from "vue";
+import { store } from "@/common/store";
+
+onMounted(async () => {
+  await store.getStaticTFTData();
+});
 </script>
 
 <template>

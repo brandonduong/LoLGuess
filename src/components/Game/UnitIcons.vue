@@ -13,14 +13,13 @@ interface ItemStyle {
 }
 </script>
 <script setup lang="ts">
-import type { APIUnit, StaticData, StaticSetsData } from "@/common/interfaces";
+import type { APIUnit, StaticSetsData } from "@/common/interfaces";
+import { store } from "@/common/store";
 import { StarFilled } from "@ant-design/icons-vue";
 import { ref } from "vue";
 
 const props = defineProps<{
   units: APIUnit[];
-  staticTFTItemData: StaticData[];
-  staticTFTSetsData: StaticSetsData;
 }>();
 
 const unitStyles = ref<UnitStyle[]>([]);
@@ -30,7 +29,7 @@ function sortByCostThenStar(a: APIUnit, b: APIUnit) {
 }
 
 function getItemImage(item: string) {
-  const itemInfo = props.staticTFTItemData.filter((i) => {
+  const itemInfo = store.staticTFTItemData.filter((i) => {
     return i.apiName === item;
   })[0];
   // console.log(item, itemInfo);
@@ -58,7 +57,7 @@ function getItemImage(item: string) {
 props.units.sort(sortByCostThenStar).forEach((unit) => {
   // console.log(unit);
   const setNum = unit.character_id.split("_")[0].slice(3);
-  const unitInfo = props.staticTFTSetsData[
+  const unitInfo = store.staticTFTSetsData[
     parseInt(setNum) as keyof StaticSetsData
   ].champions.filter((u) => {
     return u.apiName === unit.character_id;
