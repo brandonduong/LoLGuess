@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import type { DailyGuess, Guess } from "@/API";
 import HistoryItem from "./HistoryItem.vue";
-defineProps<{
+const props = defineProps<{
   guesses: Guess[] | DailyGuess[];
   option: string;
 }>();
@@ -13,6 +13,13 @@ const pageSize = ref<number>(10);
 const low = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
 const high = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
 const all = [...low, ...high];
+
+watch(
+  () => props.option,
+  () => {
+    current.value = 1;
+  }
+);
 </script>
 
 <template>
