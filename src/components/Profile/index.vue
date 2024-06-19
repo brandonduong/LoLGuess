@@ -66,6 +66,7 @@ watch(
       :staticProfileData="staticProfileData!"
       @getStaticProfileData="getStaticProfileData()"
       :key="sub"
+      :option="option"
     />
     <ProfileGraph
       :guesses="staticProfileGuesses"

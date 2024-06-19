@@ -5,15 +5,18 @@ import { roundToTwo } from "../../common/helper";
 import { RedoOutlined } from "@ant-design/icons-vue";
 import CustomCard from "../CustomCard.vue";
 import HomeButton from "../Home/HomeButton.vue";
+import { ref, watch } from "vue";
 
 const emit = defineEmits(["getStaticProfileData"]);
 
 const props = defineProps<{
   staticProfileData: User;
+  option: string;
 }>();
 
 const [pref, username] = props.staticProfileData.username.split(" ");
-const stats = {
+
+const freeplayStats = {
   GUESSES: props.staticProfileData.totalGuesses,
   "FORFEIT GUESSES": props.staticProfileData.unfinished,
   SCORE: `${roundToTwo(props.staticProfileData.score)} / ${roundToTwo(
@@ -34,12 +37,39 @@ const stats = {
   ),
 };
 
+const dailyStats = {
+  GUESSES: props.staticProfileData.dailyTotalGuesses,
+  SCORE: `${roundToTwo(props.staticProfileData.dailyScore!)} / ${roundToTwo(
+    props.staticProfileData.dailyMaxScore!
+  )}`,
+  "AVG. SCORE": roundToTwo(
+    props.staticProfileData.dailyScore! /
+      props.staticProfileData.dailyTotalGuesses!
+  ),
+  "CORRECT PLACEMENTS": `${props.staticProfileData.dailyCorrectPlacements} /
+  ${props.staticProfileData.dailyTotalGuesses! * 8}`,
+  "AVG. CORRECT PLACEMENTS": roundToTwo(
+    props.staticProfileData.dailyCorrectPlacements! /
+      props.staticProfileData.dailyTotalGuesses!
+  ),
+  "CORRECT RANKS": props.staticProfileData.dailyCorrectRanks,
+};
+
+const stats = ref(props.option === "freeplay" ? freeplayStats : dailyStats);
+
 function refresh() {
   emit("getStaticProfileData");
 }
+
+watch(
+  () => props.option,
+  () => {
+    stats.value = props.option === "freeplay" ? freeplayStats : dailyStats;
+  }
+);
 </script>
 <template>
-  <CustomCard style="align-items: normal; gap: 0.5rem">
+  <CustomCard style="align-items: normal; gap: 0.5rem; justify-content: start">
     <div class="refresh">
       <h4 class="stats-title gold">
         {{ pref.substring(0, 20) }}
@@ -62,7 +92,7 @@ function refresh() {
       <Stat
         v-for="[title, value] in Object.entries(stats)"
         :title="title"
-        :value="value"
+        :value="value!"
       />
     </div>
   </CustomCard>
