@@ -2,15 +2,15 @@
 import { ref, watch } from "vue";
 import { calculateScore } from "@/common/helper";
 import CustomGraph from "./CustomGraph.vue";
-import type { Guess } from "@/API";
+import type { DailyGuess, Guess } from "@/API";
 
 const props = defineProps<{
-  guesses: Guess[];
+  guesses: Guess[] | DailyGuess[];
 }>();
 
 const data = ref(calculateData(props.guesses));
 
-function calculateData(newData: Guess[]) {
+function calculateData(newData: Guess[] | DailyGuess[]) {
   const copy = [...newData];
   const scoreData: number[] = [];
   const maxScoreData: number[] = [];
@@ -21,12 +21,27 @@ function calculateData(newData: Guess[]) {
     .sort((a, b) =>
       a.createdAt > b.createdAt ? 1 : a.createdAt < b.createdAt ? -1 : 0
     )
-    .forEach((x: Guess) => {
+    .forEach((x: Guess | DailyGuess) => {
+      let ranks;
+      if ("ranks" in x) {
+        ranks = x.ranks;
+      } else {
+        const low = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
+        const high = [
+          "Emerald",
+          "Diamond",
+          "Master",
+          "Grandmaster",
+          "Challenger",
+        ];
+        const all = [...low, ...high];
+        ranks = x.category === "low" ? low : x.category === "high" ? high : all;
+      }
       const [score, maxScore] = calculateScore(
         x.placements,
         x.guessedRank,
         x.rank,
-        x.ranks
+        ranks
       );
       labels.push(
         new Date(x.createdAt).toLocaleString("default", {

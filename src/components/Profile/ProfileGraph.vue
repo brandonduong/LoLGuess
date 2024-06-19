@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import type { Guess, User } from "@/API";
+import type { DailyGuess, Guess, User } from "@/API";
 import CustomCard from "../CustomCard.vue";
 import CustomInfo from "./CustomInfo.vue";
 import CustomSelect from "./CustomSelect.vue";
@@ -12,7 +12,13 @@ import type { SelectProps } from "ant-design-vue";
 const props = defineProps<{
   guesses: Guess[];
   user: User;
+  dailyGuesses: DailyGuess[];
 }>();
+
+const LOW = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
+const HIGH = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
+const ALL = [...LOW, ...HIGH];
+const PLACEMENTS = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"];
 
 //console.log(props.guesses);
 
@@ -53,11 +59,46 @@ const selectOptions = ref<SelectProps["options"]>([
         value: "daily",
         label: "Daily History",
       },
+      {
+        value: "dailyScoresLow",
+        label: "Score Distribution - Low",
+      },
+      {
+        value: "dailyScoresHigh",
+        label: "Score Distribution - High",
+      },
+      {
+        value: "dailyScoresAll",
+        label: "Score Distribution - All",
+      },
+      {
+        value: "dailyRankGuessesLow",
+        label: "Rank Distribution - Low",
+      },
+      {
+        value: "dailyRankGuessesHigh",
+        label: "Rank Distribution - High",
+      },
+      {
+        value: "dailyRankGuessesAll",
+        label: "Rank Distribution - All",
+      },
+      {
+        value: "dailyPlacementGuessesLow",
+        label: "Placement Distribution - Low",
+      },
+      {
+        value: "dailyPlacementGuessesHigh",
+        label: "Placement Distribution - High",
+      },
+      {
+        value: "dailyPlacementGuessesAll",
+        label: "Placement Distribution - All",
+      },
     ],
   },
 ]);
 const value = ref("freeplay");
-const graphGuesses = ref(props.guesses);
 const graphInfo = ref("Freeplay guess scores");
 
 const distributionValues = ref<number[][] | number[]>([]);
@@ -68,29 +109,16 @@ function changeGraph(newOption: string) {
   value.value = newOption;
   switch (newOption) {
     case "freeplay":
-      graphGuesses.value = props.guesses.filter((g) => g.mode === undefined);
       graphInfo.value = "Freeplay guess scores";
       break;
     case "daily":
-      graphGuesses.value = props.guesses.filter((g) => g.mode === "daily");
       graphInfo.value = "Daily guess scores";
       break;
     case "ranks":
       distributionValues.value = props.user.rankGuesses!.map(
         (r) => (r && r!.map((s) => s as number)) as number[]
       );
-      distributionLabels.value = [
-        "Iron",
-        "Bronze",
-        "Silver",
-        "Gold",
-        "Platinum",
-        "Emerald",
-        "Diamond",
-        "Master",
-        "Grandmaster",
-        "Challenger",
-      ];
+      distributionLabels.value = ALL;
       graphInfo.value =
         "Number of times rank X was guessed, grouped by the match's actual rank";
       break;
@@ -98,16 +126,7 @@ function changeGraph(newOption: string) {
       distributionValues.value = props.user.placementGuesses!.map(
         (r) => (r && r!.map((s) => s as number)) as number[]
       );
-      distributionLabels.value = [
-        "1st",
-        "2nd",
-        "3rd",
-        "4th",
-        "5th",
-        "6th",
-        "7th",
-        "8th",
-      ];
+      distributionLabels.value = PLACEMENTS;
       graphInfo.value =
         "Number of times placement X was guessed, grouped by the actual placement";
       break;
@@ -145,6 +164,43 @@ function changeGraph(newOption: string) {
     default:
       break;
   }
+
+  // Repetitive daily stats
+  if (
+    newOption === "dailyScoresLow" ||
+    newOption === "dailyScoresHigh" ||
+    newOption === "dailyScoresAll"
+  ) {
+    distributionValues.value = props.user[newOption]!.map((s) => s as number);
+    distributionLabels.value = props.user[newOption]!.map((s, ind) =>
+      ind.toString()
+    );
+    distributionLabel.value = "# of occurrences";
+    graphInfo.value =
+      "Number of times score X was achieved, up to the maximum of score 100";
+  } else if (
+    newOption === "dailyRankGuessesLow" ||
+    newOption === "dailyRankGuessesHigh" ||
+    newOption === "dailyRankGuessesAll"
+  ) {
+    distributionValues.value = props.user[newOption]!.map(
+      (r) => (r && r!.map((s) => s as number)) as number[]
+    );
+    distributionLabels.value = ALL;
+    graphInfo.value =
+      "Number of times rank X was guessed, grouped by the match's actual rank";
+  } else if (
+    newOption === "dailyPlacementGuessesLow" ||
+    newOption === "dailyPlacementGuessesHigh" ||
+    newOption === "dailyPlacementGuessesAll"
+  ) {
+    distributionValues.value = props.user[newOption]!.map(
+      (r) => (r && r!.map((s) => s as number)) as number[]
+    );
+    distributionLabels.value = PLACEMENTS;
+    graphInfo.value =
+      "Number of times placement X was guessed, grouped by the actual placement";
+  }
 }
 </script>
 
@@ -166,28 +222,36 @@ function changeGraph(newOption: string) {
       >
     </div>
     <div v-if="value === 'freeplay' || value === 'daily'" style="height: 100%">
-      <HistoryGraph :guesses="graphGuesses" />
+      <HistoryGraph
+        :guesses="value === 'freeplay' ? props.guesses : props.dailyGuesses"
+      />
     </div>
     <div
       v-else-if="
         value === 'scores' ||
         value === 'incorrectRankGuesses' ||
-        value === 'correctRankGuesses'
+        value === 'correctRankGuesses' ||
+        value.includes('dailyScores')
       "
       style="height: 100%"
     >
       <DistributionGraphScores
-        :scores="distributionValues as number[]"
+        :scores="(distributionValues as number[])"
         :labels="distributionLabels"
         :label="distributionLabel!"
       />
     </div>
     <div
-      v-else-if="value === 'ranks' || value === 'placements'"
+      v-else-if="
+        value === 'ranks' ||
+        value === 'placements' ||
+        value.includes('dailyRankGuesses') ||
+        value.includes('dailyPlacementGuesses')
+      "
       style="height: 100%"
     >
       <DistributionGraph2D
-        :scores="distributionValues as number[][]"
+        :scores="(distributionValues as number[][])"
         :labels="distributionLabels"
       />
     </div>

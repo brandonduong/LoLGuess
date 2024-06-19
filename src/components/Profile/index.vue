@@ -11,7 +11,6 @@ import {
 import ProfileGraph from "./ProfileGraph.vue";
 import ProfileStats from "./ProfileStats.vue";
 import ProfileHistory from "./ProfileHistory.vue";
-import ProfileDailyHistory from "./ProfiledailyHistory.vue";
 import Loading from "../Loading.vue";
 import CustomCard from "../CustomCard.vue";
 import type { GraphQLQuery } from "@aws-amplify/api";
@@ -70,6 +69,7 @@ watch(
     />
     <ProfileGraph
       :guesses="staticProfileGuesses"
+      :dailyGuesses="staticProfileDailyGuesses"
       :user="staticProfileData!"
       :key="sub"
     />
