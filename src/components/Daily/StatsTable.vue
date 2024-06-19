@@ -176,7 +176,7 @@ function changeGraph(newOption: string) {
         stats.value!.loggedPerfects!,
         stats.value!.perfects!,
       ];
-      distributionLabels.value = ["USER PERFECTS", "GUEST PERFECTS"];
+      distributionLabels.value = ["User Perfects", "Guest Perfects"];
       distributionLabel.value = "# of occurrences";
       graphInfo.value = "Number of times a perfect score was achieved";
       break;
