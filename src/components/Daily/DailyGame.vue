@@ -224,8 +224,6 @@ function prev() {
         </div>
       </div>
       <div v-if="current === 2">
-        <h5 style="margin: 0">STATS</h5>
-        <p>Click a team for more info!</p>
         <StatsTable
           :rankedMatch="rankedMatch"
           :usernames="verifiedUsernames"
