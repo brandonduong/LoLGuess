@@ -16,10 +16,12 @@ defineProps<{
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .stat > h5 {
   margin: 0;
+  text-align: start;
 }
 .stat > p {
   margin: 0;
