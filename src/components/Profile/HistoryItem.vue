@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import type { Guess } from "@/API";
 import { calculateScore } from "@/common/helper";
 import RankIcon from "../Game/RankIcon.vue";
 import { useRouter } from "vue-router";
@@ -8,7 +7,13 @@ import HomeButton from "../Home/HomeButton.vue";
 import { ArrowRightOutlined } from "@ant-design/icons-vue";
 
 const props = defineProps<{
-  guess: Guess;
+  placements: string[];
+  guessedRank: string;
+  rank: string;
+  ranks: string[];
+  createdAt: string;
+  regions?: string[];
+  replay?: string;
 }>();
 
 const score = ref<number>(0);
@@ -21,10 +26,10 @@ onMounted(() => {
 
 function updateScore() {
   [score.value, maxScore.value] = calculateScore(
-    props.guess.placements,
-    props.guess.guessedRank,
-    props.guess.rank,
-    props.guess.ranks
+    props.placements,
+    props.guessedRank,
+    props.rank,
+    props.ranks
   );
 }
 
@@ -36,7 +41,7 @@ const reveal = ref<boolean>(false);
     <div class="date">
       <h5 style="margin: 0">
         {{
-          new Date(guess.createdAt).toLocaleString("default", {
+          new Date(createdAt).toLocaleString("default", {
             month: "short",
             day: "numeric",
           })
@@ -50,24 +55,29 @@ const reveal = ref<boolean>(false);
       </p>
     </div>
 
-    <div class="regions">
-      <p v-for="region in guess.regions" style="margin: 0">
+    <div class="regions" v-if="regions">
+      <p v-for="region in regions" style="margin: 0">
         {{ region }}
       </p>
     </div>
+    <div class="mode" v-else>
+      <h5 style="margin: 0">
+        <slot name="mode"/>
+      </h5>
+    </div>
     <div class="ranks">
-      <RankIcon v-for="rank in guess.ranks" :rank="rank" />
+      <RankIcon v-for="rank in ranks" :rank="rank" />
     </div>
 
     <div class="history-buttons">
       <div class="reveal" v-if="reveal">
         <div style="display: flex; align-items: center;">
-          <RankIcon :rank="guess.guessedRank" />
+          <RankIcon :rank="guessedRank" />
           <p style="margin: 0"><arrow-right-outlined /></p>
-          <RankIcon :rank="guess.rank" />
+          <RankIcon :rank="rank" />
         </div>
         <p style="margin: 0">
-          {{ guess.placements.map((place) => parseInt(place)).join(", ") }}
+          {{ placements.map((place) => parseInt(place)).join(", ") }}
         </p>
       </div>
       <div v-else>
@@ -77,10 +87,10 @@ const reveal = ref<boolean>(false);
           title="REVEAL"
         ></HomeButton>
       </div>
-      <div v-if="props.guess.matchId">
+      <div v-if="props.replay">
         <HomeButton
           type="tertiary"
-          @click="() => router.push(`/play/${props.guess.id}`)"
+          @click="() => router.push(props.replay!)"
           title="REPLAY"
         ></HomeButton>
       </div>
@@ -108,7 +118,7 @@ const reveal = ref<boolean>(false);
   column-gap: 0.5rem;
 }
 
-.regions {
+.regions, .mode {
   grid-template-columns: repeat(8, 1fr);
   width: 300px;
 }

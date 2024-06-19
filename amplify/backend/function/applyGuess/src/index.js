@@ -371,7 +371,7 @@ async function calculateStats(stats, placements, guessedRank, rank, ranks) {
     }
 
     // Increment correctPlacementGuesses
-    if (guess.rank === guess.guessedRank) {
+    if (rank === guessedRank) {
       copy.correctPlacementGuesses[correctPlacementsCount + 9] += 1;
     } else {
       copy.correctPlacementGuesses[correctPlacementsCount] += 1;

@@ -1,117 +1,95 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
-import { type User, type Guess } from "../../API";
-import http from "../../common/http-common";
+import {
+  type User,
+  type Guess,
+  type GetUserQuery,
+  type GuessesByDateQuery,
+  type DailyGuessesByDateQuery,
+  type DailyGuess,
+} from "../../API";
 import ProfileGraph from "./ProfileGraph.vue";
 import ProfileStats from "./ProfileStats.vue";
 import ProfileHistory from "./ProfileHistory.vue";
-import { useAuthenticator } from "@aws-amplify/ui-vue";
+import ProfileDailyHistory from "./ProfiledailyHistory.vue";
 import Loading from "../Loading.vue";
 import CustomCard from "../CustomCard.vue";
-const auth = useAuthenticator();
+import type { GraphQLQuery } from "@aws-amplify/api";
+import { API } from "aws-amplify";
+import { dailyGuessesByDate, getUser, guessesByDate } from "@/graphql/queries";
+import CustomTabs from "../Daily/CustomTabs.vue";
 
-const staticProfileGuesses = ref<(Guess | null)[]>([]);
+const staticProfileGuesses = ref<Guess[]>([]);
+const staticProfileDailyGuesses = ref<DailyGuess[]>([]);
 const staticProfileData = ref<User>();
 const loading = ref<boolean>(true);
 const props = defineProps<{ sub: string }>();
+const option = ref<string>("freeplay");
 
 async function getStaticProfileData() {
-  const header = {
-    headers: {
-      "Content-type": "application/json",
-    },
-  };
-  let url = `/getProfile?sub=${props.sub}`;
+  loading.value = true;
+  const stats = API.graphql<GraphQLQuery<GetUserQuery>>({
+    query: getUser,
+    variables: { id: props.sub },
+  });
+  const guesses = API.graphql<GraphQLQuery<GuessesByDateQuery>>({
+    query: guessesByDate,
+    variables: { userGuessesId: props.sub, sortDirection: "DESC", limit: 50 },
+  });
+  const dailyGuesses = API.graphql<GraphQLQuery<DailyGuessesByDateQuery>>({
+    query: dailyGuessesByDate,
+    variables: { userGuessesId: props.sub, sortDirection: "DESC", limit: 50 },
+  });
 
-  await http.api
-    .get(url, header)
-    .then((res) => {
-      //console.log(res);
-      staticProfileData.value = res.data.user;
-      staticProfileGuesses.value = res.data.guesses.items;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  staticProfileData.value = (await stats).data.getUser;
+  staticProfileGuesses.value = (await guesses).data.guessesByDate.items;
+  staticProfileDailyGuesses.value = (
+    await dailyGuesses
+  ).data.dailyGuessesByDate.items;
+  loading.value = false;
 }
 
 onMounted(async () => {
-  update();
+  getStaticProfileData();
 });
 
 watch(
   () => props.sub,
   () => {
-    update();
+    getStaticProfileData();
   }
 );
-
-async function update() {
-  loading.value = true;
-  // If looking at own profile put in cache
-  if (auth.user && auth.user.attributes.sub === props.sub) {
-    const staticData = window.localStorage.getItem("staticProfileData");
-    const staticGuesses = window.localStorage.getItem("staticProfileGuesses");
-
-    // Must check staticData.id in case someone has 2 accounts
-    if (
-      staticData &&
-      staticGuesses &&
-      JSON.parse(staticData).id === auth.user.attributes.sub
-    ) {
-      staticProfileData.value = JSON.parse(staticData);
-      staticProfileGuesses.value = JSON.parse(staticGuesses);
-    } else {
-      await getStaticProfileData().then(() => {
-        localStorage.setItem(
-          "staticProfileData",
-          JSON.stringify(staticProfileData.value)
-        );
-        localStorage.setItem(
-          "staticProfileGuesses",
-          JSON.stringify(staticProfileGuesses.value)
-        );
-      });
-    }
-  } else {
-    await getStaticProfileData();
-  }
-  //console.log(staticProfileData.value);
-  //console.log(staticProfileGuesses.value);
-
-  loading.value = false;
-}
-
-async function forceUpdate() {
-  loading.value = true;
-  await getStaticProfileData().then(() => {
-    localStorage.setItem(
-      "staticProfileData",
-      JSON.stringify(staticProfileData.value)
-    );
-    localStorage.setItem(
-      "staticProfileGuesses",
-      JSON.stringify(staticProfileGuesses.value)
-    );
-  });
-  loading.value = false;
-}
 </script>
 
 <template>
   <div v-if="!loading" class="profile">
     <ProfileStats
       :staticProfileData="staticProfileData!"
-      @getStaticProfileData="forceUpdate()"
+      @getStaticProfileData="getStaticProfileData()"
       :key="sub"
     />
     <ProfileGraph
-      :guesses="(staticProfileGuesses as [Guess])"
+      :guesses="staticProfileGuesses"
       :user="staticProfileData!"
       :key="sub"
     />
     <div class="history">
-      <ProfileHistory :guesses="(staticProfileGuesses as [Guess])" />
+      <CustomCard style="padding: 0">
+        <CustomTabs
+          :options="['freeplay', 'daily']"
+          :optionTitles="['Freeplay', 'Daily']"
+          :option="option"
+          @update-option="(newOption) => (option = newOption)"
+        />
+        <ProfileHistory
+          :guesses="
+            option === 'freeplay'
+              ? staticProfileGuesses
+              : staticProfileDailyGuesses
+          "
+          :option="option"
+        />
+      </CustomCard>
     </div>
   </div>
   <CustomCard v-else>

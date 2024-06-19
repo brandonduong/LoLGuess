@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import type { DailyGuess, Guess } from "@/API";
+import type { DailyGuess } from "@/API";
 import HistoryItem from "./HistoryItem.vue";
 defineProps<{
-  guesses: Guess[] | DailyGuess[];
-  option: string;
+  guesses: DailyGuess[];
 }>();
 
 const current = ref<number>(1);
@@ -17,19 +16,7 @@ const all = [...low, ...high];
 
 <template>
   <HistoryItem
-    v-if="option === 'freeplay'"
-    v-for="guess in (guesses as Guess[]).slice(pageSize * (current - 1), pageSize * current)"
-    :placements="guess.placements"
-    :guessedRank="guess.guessedRank"
-    :rank="guess.rank"
-    :ranks="guess.ranks"
-    :createdAt="guess.createdAt"
-    :regions="(guess.regions as string[])"
-    :replay="guess.matchId ? `/play/${guess.id}` : ''"
-  />
-  <HistoryItem
-    v-else
-    v-for="guess in (guesses as DailyGuess[]).slice(pageSize * (current - 1), pageSize * current)"
+    v-for="guess in guesses.slice(pageSize * (current - 1), pageSize * current)"
     :placements="guess.placements"
     :guessedRank="guess.guessedRank"
     :rank="guess.rank"
@@ -37,20 +24,9 @@ const all = [...low, ...high];
       guess.category === 'low' ? low : guess.category === 'high' ? high : all
     "
     :createdAt="guess.createdAt"
-    :replay="`/daily/${guess.date}/${guess.category}`"
-    ><template #mode>
-      {{ `${guess.date} ${guess.category.toUpperCase()}` }}
-    </template>
-  </HistoryItem>
-  <div class="pages">
-    <a-pagination
-      v-model:pageSize="pageSize"
-      v-model:current="current"
-      :total="guesses.length"
-      :defaultPageSize="10"
-      :showSizeChanger="false"
-    ></a-pagination>
-  </div>
+    :regions="[`${guess.date} ${guess.category}`]"
+    :key="current"
+  />
 </template>
 
 <style>

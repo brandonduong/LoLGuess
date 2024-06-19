@@ -33,6 +33,7 @@ function updateOption(o: string) {
 .tabs {
   display: flex;
   cursor: url("/cursor-pointer.png"), pointer !important;
+  width: 100%;
 }
 
 .active-tab,
