@@ -6,7 +6,6 @@ import { RedoOutlined } from "@ant-design/icons-vue";
 import CustomCard from "../CustomCard.vue";
 import HomeButton from "../Home/HomeButton.vue";
 import { ref, watch } from "vue";
-import CustomTabs from "../Daily/CustomTabs.vue";
 import CustomSelect from "./CustomSelect.vue";
 import type { SelectProps } from "ant-design-vue";
 
