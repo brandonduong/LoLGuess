@@ -72,8 +72,8 @@ function updateOption(o: string) {
   border-left: 2px solid var(--color-gold);
 }
 
-.active-tab:nth-child(-n + 2),
-.inactive-tab:nth-child(-n + 2) {
+.active-tab:nth-last-child(n + 2),
+.inactive-tab:nth-last-child(n + 2) {
   border-right: 2px solid var(--color-gold);
 }
 </style>

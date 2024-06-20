@@ -45,7 +45,7 @@
         "getReplay": {
           "riotToken": "RGAPI-93f6e6ae-05ec-4b2c-8f35-8f5de9548a91",
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getReplay-2f4645445042364f7757-build.zip"
+          "s3Key": "amplify-builds/getReplay-7338364477594b726363-build.zip"
         },
         "getMatchId": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",

@@ -77,6 +77,7 @@ function loadPrev() {
   selectedRank.value = prev.rank;
   selectedRanks.value =
     prev.category === "all" ? ALL : prev.category === "high" ? HIGH : LOW;
+  verifiedLastRounds.value = prev.lastRounds;
   datetimePlayed.value = prev.datetimePlayed;
   patch.value = prev.patch;
   current.value = 1;

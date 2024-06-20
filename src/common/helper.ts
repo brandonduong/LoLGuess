@@ -45,6 +45,7 @@ export function roundToTwo(round: number) {
 }
 
 export function extractPatch(patch: string) {
-  const parts = patch.split(" ");
-  return parts[parts.length - 1];
+  const parts = patch.split("/");
+  const num = parts[parts.length - 1];
+  return `Patch ${num.slice(0, num.length - 1)}`;
 }
