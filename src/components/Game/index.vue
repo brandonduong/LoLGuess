@@ -12,6 +12,7 @@ import CustomCard from "../CustomCard.vue";
 import HomeButton from "../Home/HomeButton.vue";
 import Loading from "../Loading.vue";
 import FreeplaySettings from "./FreeplaySettings.vue";
+import type { Team } from "@/common/interfaces";
 const props = defineProps<{ guessId?: string }>();
 
 const auth = useAuthenticator();
@@ -233,7 +234,7 @@ const selectedRegions = ref<string[]>([]);
 const selectedRanks = ref<string[]>([]);
 const selectedGuess = ref<string[]>([]);
 const selectedRank = ref<string>("");
-const rankedMatch = ref<object[]>([]);
+const rankedMatch = ref<Team[]>([]);
 const encryptedRank = ref<string>("");
 const sensitive = ref<string>("");
 const verifiedGuess = ref<string[]>([]);
@@ -295,6 +296,7 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
                 display: flex;
                 justify-content: space-between;
                 margin-top: 1rem;
+                flex-wrap: wrap;
               "
               v-if="current === 3"
             >
