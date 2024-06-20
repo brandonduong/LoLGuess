@@ -37,6 +37,7 @@ interface Team {
   last_round: number;
 }
 interface DailyGuess {
+  datetimePlayed: number;
   placements: string[];
   rankedMatch: Team[];
   rank: string;
@@ -46,6 +47,7 @@ interface DailyGuess {
   region: string;
   usernames: string[];
   lastRounds: number[];
+  patch: string;
 }
 
 export type {

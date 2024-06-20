@@ -13,6 +13,7 @@ import HomeButton from "../Home/HomeButton.vue";
 import Loading from "../Loading.vue";
 import FreeplaySettings from "./FreeplaySettings.vue";
 import type { Team } from "@/common/interfaces";
+import { extractPatch } from "@/common/helper";
 const props = defineProps<{ guessId?: string }>();
 
 const auth = useAuthenticator();
@@ -92,6 +93,8 @@ async function getMatch() {
         //console.log(res);
         rankedMatch.value = res.data.rankedMatch;
         sensitive.value = res.data.sensitive;
+        patch.value = res.data.patch;
+        datetimePlayed.value = res.data.datetimePlayed;
       })
       .catch(() => {
         alert(errorExplanation);
@@ -128,6 +131,8 @@ async function getMatchNoAuth() {
       encryptedRank.value = res.data.rank;
       // selectedRanks.value = res.data.ranks;
       verifiedRegion.value = res.data.region;
+      patch.value = res.data.patch;
+      datetimePlayed.value = res.data.datetimePlayed;
     })
     .catch(() => {
       alert(errorExplanation);
@@ -155,6 +160,8 @@ async function getReplay() {
       encryptedRank.value = res.data.rank;
       selectedRanks.value = res.data.ranks;
       verifiedRegion.value = res.data.region;
+      patch.value = res.data.patch;
+      datetimePlayed.value = res.data.datetimePlayed;
     })
     .catch(() => {
       alert(errorExplanation);
@@ -241,6 +248,9 @@ const selectedRank = ref<string>("");
 const rankedMatch = ref<Team[]>([]);
 const encryptedRank = ref<string>("");
 const sensitive = ref<string>("");
+const datetimePlayed = ref<number>(-1);
+const patch = ref<string>("");
+
 const verifiedGuess = ref<string[]>([]);
 const verifiedRank = ref<string>("");
 const verifiedRegion = ref<string>("");
@@ -314,6 +324,10 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
                 :verifiedGuess="verifiedGuess"
               />
             </div>
+          </div>
+          <div class="info-row">
+            <p>{{ new Date(datetimePlayed).toUTCString() }}</p>
+            <h5>{{ extractPatch(patch) }}</h5>
           </div>
         </div>
       </div>
@@ -396,5 +410,17 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
   .rank-grid {
     grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   }
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.info-row > h5,
+.info-row > p {
+  margin-bottom: 0;
+  margin-top: 1rem;
 }
 </style>

@@ -59,8 +59,7 @@ function updateHistory(guess: DailyGuess) {
   );
 }
 
-const option = ref<string>("low");
-const auth = useAuthenticator();
+const option = ref<string>("all");
 
 async function loadGuesses() {
   console.log("test");

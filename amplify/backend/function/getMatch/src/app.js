@@ -160,6 +160,7 @@ app.get("/getMatch", async function (req, res) {
   var tries = 0;
   var ogRegion;
   var rankDivision;
+  let patch, datetimePlayed;
   while (!foundRanked && tries < 3) {
     try {
       // Get random region
@@ -319,6 +320,8 @@ app.get("/getMatch", async function (req, res) {
             if (res.data.info.queue_id === 1100) {
               console.log("found ranked match");
               rankedMatch = res.data.info.participants;
+              patch = res.data.info.game_version;
+              datetimePlayed = res.data.info.game_datetime;
               matchId = matches[i];
               foundRanked = true;
             }
@@ -383,6 +386,8 @@ app.get("/getMatch", async function (req, res) {
         JSON.stringify(sensitive),
         RIOT_TOKEN
       ).toString(),
+      patch,
+      datetimePlayed,
     });
   }
 });

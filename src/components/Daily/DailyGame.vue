@@ -14,6 +14,7 @@ import StatsTable from "./StatsTable.vue";
 import type { DailyGuess, Team } from "@/common/interfaces";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
 import { ALL, HIGH, LOW } from "@/common/constants";
+import { extractPatch } from "@/common/helper";
 const auth = useAuthenticator();
 
 const props = defineProps<{
@@ -39,6 +40,8 @@ const rankedMatch = ref<Team[]>([]);
 const selectedGuess = ref<string[]>([]);
 const selectedRanks = ref<string[]>([]);
 const selectedRank = ref<string>(props.prev ? props.prev.rank : "");
+const datetimePlayed = ref<number>(-1);
+const patch = ref<string>("");
 
 const sensitive = ref<string>("");
 const loading = ref<boolean>(false);
@@ -74,6 +77,8 @@ function loadPrev() {
   selectedRank.value = prev.rank;
   selectedRanks.value =
     prev.category === "all" ? ALL : prev.category === "high" ? HIGH : LOW;
+  datetimePlayed.value = prev.datetimePlayed;
+  patch.value = prev.patch;
   current.value = 1;
 }
 
@@ -94,6 +99,8 @@ async function getDaily(date: string, cat: string) {
       rankedMatch.value = res.data.dailyMatch;
       sensitive.value = res.data.sensitive;
       selectedRanks.value = cat === "all" ? ALL : cat === "high" ? HIGH : LOW;
+      patch.value = res.data.patch;
+      datetimePlayed.value = res.data.datetimePlayed;
     })
     .catch((error) => {
       alert(errorExplanation);
@@ -190,6 +197,8 @@ async function guess() {
     region: verifiedRegion.value,
     usernames: verifiedUsernames.value,
     lastRounds: verifiedLastRounds.value,
+    patch: patch.value,
+    datetimePlayed: datetimePlayed.value,
   });
 }
 
@@ -262,6 +271,10 @@ function prev() {
           :category="category"
         />
       </div>
+      <div class="info-row">
+        <p>{{ new Date(datetimePlayed).toUTCString() }}</p>
+        <h5>{{ extractPatch(patch) }}</h5>
+      </div>
     </div>
     <div v-else><Loading /></div>
   </CustomCard>
@@ -299,5 +312,17 @@ function prev() {
   align-items: center;
   flex-wrap: wrap;
   padding: 1rem 0;
+}
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0 1rem;
+}
+.info-row > h5,
+.info-row > p {
+  margin-bottom: 0;
+  margin-top: 1rem;
 }
 </style>

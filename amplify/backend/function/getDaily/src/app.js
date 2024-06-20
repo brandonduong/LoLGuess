@@ -93,6 +93,7 @@ async function getDaily(date, category) {
         region
         patch
         usernames
+        datetimePlayed
       }
     }
   `;
@@ -236,7 +237,7 @@ app.get("/getDaily", async function (req, res) {
 
   // Get daily info
   const daily = await getDaily(date, category);
-  const { matchId, region, rank, patch, usernames } = daily;
+  const { matchId, region, rank, patch, usernames, datetimePlayed } = daily;
   const [dailyMatch, lastRounds] = await getDailyMatch(matchId, region);
 
   const sensitive = {
@@ -256,6 +257,7 @@ app.get("/getDaily", async function (req, res) {
       RIOT_TOKEN
     ).toString(),
     patch,
+    datetimePlayed,
   });
 });
 

@@ -43,3 +43,8 @@ export function calculateScore(
 export function roundToTwo(round: number) {
   return Math.round(round * 100) / 100;
 }
+
+export function extractPatch(patch: string) {
+  const parts = patch.split(" ");
+  return parts[parts.length - 1];
+}
