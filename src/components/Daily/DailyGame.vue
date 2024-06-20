@@ -47,6 +47,7 @@ const verifiedGuess = ref<string[]>([]);
 const verifiedRank = ref<string>("");
 const verifiedRegion = ref<string>("");
 const verifiedUsernames = ref<string[]>([]);
+const verifiedLastRounds = ref<number[]>([]);
 
 const errorExplanation =
   "Error finding ranked match. Please try again. This can happen rarely if 3 users did not play a ranked match within their past 10 games or if an entire rank is empty, such as Challenger at the start of a set.";
@@ -135,6 +136,7 @@ async function verifyGuess() {
       verifiedRank.value = res.data.rank;
       verifiedRegion.value = res.data.region;
       verifiedUsernames.value = res.data.usernames;
+      verifiedLastRounds.value = res.data.lastRounds;
       // if user already made a guess on this daily, load in their guess instead
       if ("guessedRank" in res.data) {
         alert("Previous guess found. Guess was not submitted.");
@@ -187,6 +189,7 @@ async function guess() {
     verifiedRank: verifiedRank.value,
     region: verifiedRegion.value,
     usernames: verifiedUsernames.value,
+    lastRounds: verifiedLastRounds.value,
   });
 }
 
@@ -221,6 +224,7 @@ function prev() {
           @update-selected-guess="selectedGuess = $event"
           :verifiedGuess="verifiedGuess"
           :selectedRanks="selectedRanks"
+          :verifiedLastRounds="verifiedLastRounds"
         />
         <div style="margin-top: 1rem">
           <GuessRank

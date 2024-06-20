@@ -4,11 +4,18 @@ const updates = [
   {
     items: [
       "Better leaderboard categories",
-      "After guessing, reveal what round players died at?",
       "More game modes",
-      "Daily mode",
+      "Pagination for leaderboard and guess history",
     ],
     date: "FUTURE WORK",
+  },
+  {
+    items: [
+      "Daily mode with stats",
+      "Optimized fetching profiles",
+      "After guessing, reveal what round players died at",
+    ],
+    date: "06-21-2024",
   },
   {
     items: [

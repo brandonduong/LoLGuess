@@ -4,7 +4,7 @@ import AugmentIcons from "@/components/Game/AugmentIcons.vue";
 import UnitIcons from "@/components/Game/UnitIcons.vue";
 import GoldIcons from "@/components/Game/GoldIcons.vue";
 import LevelIcons from "@/components/Game/LevelIcons.vue";
-import type { StaticData, StaticSetsData, Team } from "@/common/interfaces";
+import type { Team } from "@/common/interfaces";
 import Username from "./Username.vue";
 import { store } from "@/common/store";
 import { onMounted, ref } from "vue";
@@ -15,8 +15,6 @@ import type { SelectProps } from "ant-design-vue";
 import type { Daily } from "@/API";
 import DistributionGraphScores from "../Profile/DistributionGraphScores.vue";
 import DistributionGraph2D from "../Profile/DistributionGraph2D.vue";
-import Stat from "../Profile/Stat.vue";
-import { stat } from "fs";
 import { ALL, HIGH, LOW, PLACEMENTS } from "@/common/constants";
 import {
   OCCURRENCES_LABEL,

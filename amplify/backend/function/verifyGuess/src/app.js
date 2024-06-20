@@ -177,7 +177,8 @@ app.post("/verifyGuess", async function (req, res) {
     };
   } else if (rawSensitive.mode === "daily") {
     // Check if user already has a guess for this daily
-    const { rank, region, usernames, date, category } = rawSensitive;
+    const { rank, region, usernames, date, category, lastRounds } =
+      rawSensitive;
     const dailyGuess = await getUserDailyGuess(date, category, userSub);
     if (!dailyGuess) {
       // Create DailyGuess, update user and daily stats
@@ -200,6 +201,7 @@ app.post("/verifyGuess", async function (req, res) {
         rank,
         region,
         usernames,
+        lastRounds,
       };
     } else {
       const { placements, guessedRank } = dailyGuess;
@@ -209,6 +211,7 @@ app.post("/verifyGuess", async function (req, res) {
         rank,
         region,
         usernames,
+        lastRounds,
         guessedRank,
         placements,
       };

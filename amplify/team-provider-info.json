@@ -24,7 +24,7 @@
         },
         "verifyGuess": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/verifyGuess-314d625250326e697277-build.zip"
+          "s3Key": "amplify-builds/verifyGuess-377542356d2f784a4564-build.zip"
         },
         "lolguesssignup": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
@@ -57,11 +57,11 @@
         },
         "getDaily": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getDaily-2f6d736771452b314136-build.zip"
+          "s3Key": "amplify-builds/getDaily-64526c7347706d317a4e-build.zip"
         },
         "verifyAnyGuess": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/verifyAnyGuess-5159644432553873522b-build.zip"
+          "s3Key": "amplify-builds/verifyAnyGuess-7271556f57503233356d-build.zip"
         },
         "applyGuess": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",

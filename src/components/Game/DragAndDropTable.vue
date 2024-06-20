@@ -13,6 +13,7 @@ const props = defineProps<{
   rankedMatch: Team[];
   verifiedGuess: string[];
   selectedRanks: string[];
+  verifiedLastRounds?: number[];
 }>();
 
 const emit = defineEmits(["updateSelectedGuess"]);
@@ -49,6 +50,23 @@ function correctionStyle(placement: number) {
     default:
       return "incorrect";
   }
+}
+
+function convertToRounds(lastRound: number) {
+  let stage = 1;
+  let round = 1;
+  while (lastRound > 1) {
+    lastRound -= 1;
+    round += 1;
+
+    if ((stage === 1 && round === 5) || round === 8) {
+      // 4 rounds in stage 1, 7 rounds in stage > 1
+      stage += 1;
+      round = 1;
+    }
+  }
+
+  return `${stage} - ${round}`;
 }
 </script>
 <template>
@@ -88,6 +106,11 @@ function correctionStyle(placement: number) {
               ? `${verifiedGuess[placement - 1]}`
               : ""
           }}
+          <div v-if="verifiedLastRounds">
+            <p style="margin: 0; color: var(--color-offwhite)">
+              {{ convertToRounds(verifiedLastRounds[placement - 1]) }}
+            </p>
+          </div>
         </h4>
       </div>
     </div>
@@ -106,7 +129,7 @@ function correctionStyle(placement: number) {
       }"
       @end="onChange"
     >
-      <template #item="{ element }">
+      <template #item="{ element, index }">
         <tr
           :class="
             props.verifiedGuess.length === 0
@@ -121,6 +144,7 @@ function correctionStyle(placement: number) {
             :augmentAmount="element.augmentNum"
           />
           <UnitIcons :units="element.units" />
+
           <GoldIcons :goldLeft="element.gold_left" style="margin-left: auto" />
         </tr>
       </template>
@@ -160,7 +184,7 @@ function correctionStyle(placement: number) {
 }
 
 .correct {
-  background-color: var(--color-gold);
+  background-color: var(--color-light-blue);
 }
 
 .placements > div > h4 {

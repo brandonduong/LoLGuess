@@ -19,5 +19,6 @@ const goldLeft = ref<number>(props.goldLeft);
   align-items: center;
   justify-content: end;
   column-gap: 0.25rem;
+  width: 55px;
 }
 </style>

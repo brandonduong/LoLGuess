@@ -44,6 +44,7 @@ interface DailyGuess {
   verifiedRank: string;
   region: string;
   usernames: string[];
+  lastRounds: number[];
 }
 
 export type {

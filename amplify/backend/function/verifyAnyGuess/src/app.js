@@ -57,7 +57,7 @@ app.post("/verifyAnyGuess", async function (req, res) {
     );
   });
   console.log("unencrypted", unencrypted);
-  const { rank, region, date, category, usernames } = rawSensitive;
+  const { rank, region, date, category, usernames, lastRounds } = rawSensitive;
 
   const inv = lambda
     .invoke({
@@ -78,6 +78,7 @@ app.post("/verifyAnyGuess", async function (req, res) {
     rank,
     region,
     usernames,
+    lastRounds,
   });
 });
 
