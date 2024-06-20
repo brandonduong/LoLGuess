@@ -34,6 +34,7 @@ function getReplayUrl(guess: DailyGuess | Guess) {
         ? HIGH
         : ALL
     "
+    :key="guess.createdAt"
     :createdAt="guess.createdAt"
     :regions="'regions' in guess ? (guess.regions as string[]) : undefined"
     :replay="getReplayUrl(guess)"
