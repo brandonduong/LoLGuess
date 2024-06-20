@@ -337,6 +337,7 @@ app.get("/getMatch", async function (req, res) {
     });
   } else {
     // Remove info that would allow someone to cheat
+    const lastRounds = rankedMatch.map(({ last_round }) => last_round);
     rankedMatch = rankedMatch.map(
       ({
         augments,
@@ -373,6 +374,7 @@ app.get("/getMatch", async function (req, res) {
       regions: regions,
       matchId: matchId,
       mode: "freeplay",
+      lastRounds,
     };
 
     res.json({

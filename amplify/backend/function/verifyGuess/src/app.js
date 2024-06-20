@@ -168,12 +168,13 @@ app.post("/verifyGuess", async function (req, res) {
       })
       .promise();
     await inv; // Fire and forget
-    const { rank, ranks, region } = rawSensitive;
+    const { rank, ranks, region, lastRounds } = rawSensitive;
     console.log(rank, ranks, selectedRank);
     response = {
       unencrypted,
       rank,
       region,
+      lastRounds,
     };
   } else if (rawSensitive.mode === "daily") {
     // Check if user already has a guess for this daily

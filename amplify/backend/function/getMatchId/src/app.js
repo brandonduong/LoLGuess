@@ -239,6 +239,7 @@ app.get("/getMatchId", async function (req, res) {
         gold_left,
         augmentNum:
           last_round >= 20 ? 3 : last_round >= 13 ? 2 : last_round >= 5 ? 1 : 0,
+        last_round,
       })
     );
 

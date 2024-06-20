@@ -166,8 +166,11 @@ function verifyReplay() {
   verifiedGuess.value = rankedMatch.value.map((p: any) =>
     p.placement.toString()
   );
-  //console.log(verifiedGuess);
+  // console.log(rankedMatch);
   verifiedRank.value = encryptedRank.value;
+  verifiedLastRounds.value = rankedMatch.value.map(
+    ({ last_round }) => last_round
+  );
 }
 
 async function verifyGuess() {
@@ -195,6 +198,7 @@ async function verifyGuess() {
       verifiedGuess.value = res.data.unencrypted;
       verifiedRank.value = res.data.rank;
       verifiedRegion.value = res.data.region;
+      verifiedLastRounds.value = res.data.lastRounds;
       loading.value = false;
     });
 }
@@ -240,6 +244,7 @@ const sensitive = ref<string>("");
 const verifiedGuess = ref<string[]>([]);
 const verifiedRank = ref<string>("");
 const verifiedRegion = ref<string>("");
+const verifiedLastRounds = ref<number[]>([]);
 
 const prevButtonText = ["HOME", "REGIONS", "FORFEIT", "HOME"];
 const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
@@ -281,6 +286,7 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
             @update-selected-guess="selectedGuess = $event"
             :verifiedGuess="verifiedGuess"
             :selectedRanks="selectedRanks"
+            :verifiedLastRounds="verifiedLastRounds"
           />
           <div style="margin-top: 1rem">
             <GuessRank

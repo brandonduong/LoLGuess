@@ -34,6 +34,7 @@ interface Team {
   units: APIUnit[];
   gold_left: number;
   placement: string;
+  last_round: number;
 }
 interface DailyGuess {
   placements: string[];
