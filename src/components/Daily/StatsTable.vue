@@ -27,6 +27,7 @@ const props = defineProps<{
 
 const loading = ref<boolean>(true);
 const stats = ref<Daily>();
+const expanded = ref<number>(-1);
 
 onMounted(async () => {
   await getStats();
@@ -106,12 +107,17 @@ const selectOptions = ref<SelectProps["options"]>([
 ]);
 const LOW = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
 const HIGH = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
-const ALL = [...LOW, ...HIGH];
+const RANKS =
+  props.category === "all"
+    ? [...LOW, ...HIGH]
+    : props.category === "low"
+    ? LOW
+    : HIGH;
 const PLACEMENTS = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"];
 const value = ref("loggedRanks");
 const graphInfo = ref("");
 const distributionValues = ref<number[][] | number[]>([]);
-const distributionLabels = ref<string[]>(ALL);
+const distributionLabels = ref<string[]>(RANKS);
 const distributionLabel = ref<string>("# of occurrences");
 
 function changeGraph(newOption: string) {
@@ -121,7 +127,7 @@ function changeGraph(newOption: string) {
       distributionValues.value = stats.value!.rankGuesses!.map(
         (r) => r as number
       );
-      distributionLabels.value = ALL;
+      distributionLabels.value = RANKS;
       distributionLabel.value = "# of occurrences";
       graphInfo.value =
         "Number of times rank X was guessed, grouped by the match's actual rank";
@@ -147,7 +153,7 @@ function changeGraph(newOption: string) {
       distributionValues.value = stats.value!.loggedRankGuesses!.map(
         (r) => r as number
       );
-      distributionLabels.value = ALL;
+      distributionLabels.value = RANKS;
       distributionLabel.value = "# of occurrences";
       graphInfo.value =
         "Number of times rank X was guessed, grouped by the match's actual rank";
@@ -185,67 +191,105 @@ function changeGraph(newOption: string) {
 </script>
 <template>
   <h5 style="margin: 0">STATS</h5>
-  <p>Teams are displayed in correct order below!</p>
+  <p>Click a team for more info!</p>
   <div class="table-header" v-if="!store.loading">
     <table class="draggable">
       <tr style="display: none">
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
+        <th v-for="_ in [...Array(6).keys()]"></th>
       </tr>
-      <tr v-for="team in sortedMatch" :key="team.order" class="draggable-row">
-        <td>
-          <Username :username="usernames[team.order]" />
-        </td>
-        <td>
-          <LevelIcons :level="team.level" />
-        </td>
-        <td>
-          <TraitIcons :traits="team.traits" />
-        </td>
-        <td>
-          <AugmentIcons
-            :augments="team.augments"
-            :augmentAmount="team.augmentNum"
-          />
-        </td>
-        <td>
-          <UnitIcons :units="team.units" />
-        </td>
-        <td>
-          <GoldIcons :goldLeft="team.gold_left" style="margin-left: auto" />
-        </td>
-      </tr>
+      <template v-for="(team, ind) in sortedMatch" :key="team.order">
+        <tr
+          class="draggable-row"
+          @click="() => (expanded === ind ? (expanded = -1) : (expanded = ind))"
+          :style="
+            expanded === ind
+              ? {
+                  background: 'var(--color-background-gray)',
+                }
+              : {}
+          "
+        >
+          <td>
+            <Username :username="usernames[team.order]" />
+          </td>
+          <td>
+            <LevelIcons :level="team.level" />
+          </td>
+          <td>
+            <TraitIcons :traits="team.traits" />
+          </td>
+          <td>
+            <AugmentIcons
+              :augments="team.augments"
+              :augmentAmount="team.augmentNum"
+            />
+          </td>
+          <td>
+            <UnitIcons :units="team.units" />
+          </td>
+          <td>
+            <GoldIcons :goldLeft="team.gold_left" style="margin-left: auto" />
+          </td>
+        </tr>
+        <tr
+          v-if="expanded === ind"
+          :style="
+            expanded === ind
+              ? { borderBottom: '2px solid var(--color-background-gray)' }
+              : {}
+          "
+        >
+          <td colspan="6" v-if="stats">
+            <div class="expanded">
+              <div
+                v-for="{title, guesses} in [{title:'USER GUESSES', guesses: stats.loggedPlacementGuesses!},
+                 {title:'GUEST GUESSES',guesses: stats.placementGuesses!}]"
+                style="flex-basis: 50%"
+              >
+                <h5>{{ title }}</h5>
+                <div>
+                  <DistributionGraphScores
+                    :scores="guesses[ind]!.map((r) => (r as number))"
+                    :labels="PLACEMENTS"
+                    label="# of occurrences"
+                  />
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </template>
     </table>
   </div>
-  <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1rem">
-    <CustomSelect
-      :options="selectOptions"
-      :value="value"
-      @update-option="(newOption: string) => changeGraph(newOption)"
-      style="flex-grow: 1; padding: 0"
-    />
-    <CustomInfo
-      ><p style="margin: 0; color: var(--color-offwhite)">
-        {{ graphInfo }}
-      </p></CustomInfo
+  <div style="padding: 0 1rem">
+    <div
+      style="display: flex; align-items: center; gap: 1rem; margin-top: 1rem"
     >
-  </div>
-  <div style="min-height: 300px">
-    <DistributionGraph2D
-      v-if="value.includes('lacementGuesses')"
-      :scores="(distributionValues as number[][])"
-      :labels="distributionLabels"
-    />
-    <DistributionGraphScores
-      v-else
-      :scores="(distributionValues as number[])"
-      :labels="distributionLabels"
-      :label="distributionLabel!"
-    />
+      <CustomSelect
+        :options="selectOptions"
+        :value="value"
+        @update-option="(newOption: string) => changeGraph(newOption)"
+        style="flex-grow: 1; padding: 0"
+      />
+      <CustomInfo
+        ><p style="margin: 0; color: var(--color-offwhite)">
+          {{ graphInfo }}
+        </p></CustomInfo
+      >
+    </div>
+    <div style="min-height: 250px">
+      <DistributionGraph2D
+        v-if="value.includes('lacementGuesses')"
+        :scores="(distributionValues as number[][])"
+        :labels="distributionLabels"
+      />
+      <DistributionGraphScores
+        v-else
+        :scores="(distributionValues as number[])"
+        :labels="distributionLabels"
+        :label="distributionLabel!"
+      />
+    </div>
   </div>
 </template>
 <style scoped>
@@ -260,7 +304,22 @@ function changeGraph(newOption: string) {
   padding-bottom: 0;
   padding-right: 0;
 }
-.draggable-row > td:nth-child(n + 2) {
+.draggable-row > td:nth-child(n + 1) {
+  padding-right: 1rem;
+}
+.draggable-row > td:first-child {
   padding-left: 1rem;
+}
+.draggable-row:hover {
+  background: var(--color-background-gray);
+}
+.draggable-row {
+  transition: all 200ms;
+}
+.expanded {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
 }
 </style>

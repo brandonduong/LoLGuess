@@ -144,7 +144,7 @@ async function verifyGuess() {
     });
 }
 
-const prevText = ["ARCHIVE", "ARCHIVE", "ATTEMPT"];
+const prevText = ["ARCHIVE", "ARCHIVE", "GUESS"];
 const buttonText = ["GUESS", "STATS", "ARCHIVE"];
 
 async function guess() {
@@ -188,9 +188,9 @@ function prev() {
 </script>
 
 <template>
-  <CustomCard style="align-items: normal; margin-top: 1rem">
+  <CustomCard style="align-items: normal; margin-top: 1rem; padding: 1rem 0">
     <div v-if="!loading">
-      <div v-if="current === 0 || current === 1">
+      <div v-if="current === 0 || current === 1" style="padding: 0 1rem">
         <DragAndDropTable
           :rankedMatch="rankedMatch"
           @update-selected-guess="selectedGuess = $event"
@@ -210,6 +210,7 @@ function prev() {
               display: flex;
               justify-content: space-between;
               margin-top: 1rem;
+              flex-wrap: wrap;
             "
             v-if="current === 1"
           >
