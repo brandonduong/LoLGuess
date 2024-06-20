@@ -23,7 +23,7 @@ const staticProfileDailyGuesses = ref<DailyGuess[]>([]);
 const staticProfileData = ref<User>();
 const loading = ref<boolean>(true);
 const props = defineProps<{ sub: string }>();
-const option = ref<string>("freeplay");
+const option = ref<string>("all");
 
 async function getStaticProfileData() {
   loading.value = true;
