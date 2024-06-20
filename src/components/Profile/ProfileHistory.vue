@@ -1,17 +1,14 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import type { DailyGuess, Guess } from "@/API";
 import HistoryItem from "./HistoryItem.vue";
-const props = defineProps<{
+import { ALL, HIGH, LOW } from "@/common/constants";
+defineProps<{
   guesses: (Guess | DailyGuess)[];
 }>();
 
 const current = ref<number>(1);
 const pageSize = ref<number>(10);
-
-const low = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
-const high = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
-const all = [...low, ...high];
 
 function getReplayUrl(guess: DailyGuess | Guess) {
   if ("id" in guess && "matchId" in guess) {
@@ -32,10 +29,10 @@ function getReplayUrl(guess: DailyGuess | Guess) {
       'ranks' in guess
         ? guess.ranks
         : guess.category === 'low'
-        ? low
+        ? LOW
         : guess.category === 'high'
-        ? high
-        : all
+        ? HIGH
+        : ALL
     "
     :createdAt="guess.createdAt"
     :regions="'regions' in guess ? (guess.regions as string[]) : undefined"

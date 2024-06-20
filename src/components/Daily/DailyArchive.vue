@@ -5,6 +5,7 @@ import { ArrowRightOutlined } from "@ant-design/icons-vue";
 import HomeButton from "../Home/HomeButton.vue";
 import RankIcon from "../Game/RankIcon.vue";
 import type { DailyGuess } from "@/common/interfaces";
+import { ALL, HIGH, LOW } from "@/common/constants";
 
 defineProps<{
   guessedBefore: (date: string, category: string) => DailyGuess | null;
@@ -12,7 +13,7 @@ defineProps<{
 }>();
 
 function getDailyDates() {
-  const startOfDailies = new Date("06/11/2024"); // Only support most recent set
+  const startOfDailies = new Date("06/19/2024"); // Only support most recent set
   const dailies = [];
   const nowToronto = new Date(
     new Date().toLocaleString("en-US", {
@@ -32,10 +33,6 @@ function getDailyDates() {
 }
 
 const router = useRouter();
-
-const low = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
-const high = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
-const all = [...low, ...high];
 </script>
 
 <template>
@@ -81,7 +78,7 @@ const all = [...low, ...high];
                   prev.placements,
                   prev.rank,
                   prev.verifiedRank,
-                  option === "all" ? all : option === "high" ? high : low
+                  option === "all" ? ALL : option === "high" ? HIGH : LOW
                 )[2]
               }}
               %

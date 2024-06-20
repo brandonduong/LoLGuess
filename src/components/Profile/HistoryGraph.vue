@@ -3,6 +3,7 @@ import { ref, watch } from "vue";
 import { calculateScore } from "@/common/helper";
 import CustomGraph from "./CustomGraph.vue";
 import type { DailyGuess, Guess } from "@/API";
+import { ALL, HIGH, LOW } from "@/common/constants";
 
 const props = defineProps<{
   guesses: Guess[] | DailyGuess[];
@@ -26,16 +27,7 @@ function calculateData(newData: Guess[] | DailyGuess[]) {
       if ("ranks" in x) {
         ranks = x.ranks;
       } else {
-        const low = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
-        const high = [
-          "Emerald",
-          "Diamond",
-          "Master",
-          "Grandmaster",
-          "Challenger",
-        ];
-        const all = [...low, ...high];
-        ranks = x.category === "low" ? low : x.category === "high" ? high : all;
+        ranks = x.category === "low" ? LOW : x.category === "high" ? HIGH : ALL;
       }
       const [score, maxScore] = calculateScore(
         x.placements,

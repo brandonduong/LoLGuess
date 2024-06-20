@@ -8,17 +8,21 @@ import HistoryGraph from "./HistoryGraph.vue";
 import DistributionGraphScores from "./DistributionGraphScores.vue";
 import DistributionGraph2D from "./DistributionGraph2D.vue";
 import type { SelectProps } from "ant-design-vue";
+import { ALL, PLACEMENTS } from "@/common/constants";
+import {
+  CORRECT_RANK_INFO,
+  INCORRECT_RANK_INFO,
+  OCCURRENCES_LABEL,
+  PLACEMENT_INFO,
+  RANK_INFO,
+  SCORE_INFO,
+} from "@/common/statConstants";
 
 const props = defineProps<{
   guesses: Guess[];
   user: User;
   dailyGuesses: DailyGuess[];
 }>();
-
-const LOW = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
-const HIGH = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
-const ALL = [...LOW, ...HIGH];
-const PLACEMENTS = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"];
 
 //console.log(props.guesses);
 
@@ -103,7 +107,7 @@ const graphInfo = ref("Freeplay guess scores");
 
 const distributionValues = ref<number[][] | number[]>([]);
 const distributionLabels = ref<string[]>([]);
-const distributionLabel = ref<string>();
+const distributionLabel = ref<string>(OCCURRENCES_LABEL);
 
 function changeGraph(newOption: string) {
   value.value = newOption;
@@ -119,25 +123,21 @@ function changeGraph(newOption: string) {
         (r) => (r && r!.map((s) => s as number)) as number[]
       );
       distributionLabels.value = ALL;
-      graphInfo.value =
-        "Number of times rank X was guessed, grouped by the match's actual rank";
+      graphInfo.value = RANK_INFO;
       break;
     case "placements":
       distributionValues.value = props.user.placementGuesses!.map(
         (r) => (r && r!.map((s) => s as number)) as number[]
       );
       distributionLabels.value = PLACEMENTS;
-      graphInfo.value =
-        "Number of times placement X was guessed, grouped by the actual placement";
+      graphInfo.value = PLACEMENT_INFO;
       break;
     case "scores":
       distributionValues.value = props.user.scores!.map((s) => s as number);
       distributionLabels.value = props.user.scores!.map((s, ind) =>
         ind.toString()
       );
-      distributionLabel.value = "# of occurrences";
-      graphInfo.value =
-        "Number of times score X was achieved, up to the maximum of score 100";
+      graphInfo.value = SCORE_INFO;
       break;
     case "incorrectRankGuesses":
       distributionValues.value = props.user
@@ -146,9 +146,7 @@ function changeGraph(newOption: string) {
       distributionLabels.value = distributionValues.value.map((s, ind) =>
         ind.toString()
       );
-      distributionLabel.value = "# of occurrences";
-      graphInfo.value =
-        "Number of guesses where the guessed rank was incorrect and X number of placements were correct";
+      graphInfo.value = INCORRECT_RANK_INFO;
       break;
     case "correctRankGuesses":
       distributionValues.value = props.user
@@ -157,9 +155,7 @@ function changeGraph(newOption: string) {
       distributionLabels.value = distributionValues.value.map((s, ind) =>
         ind.toString()
       );
-      distributionLabel.value = "# of occurrences";
-      graphInfo.value =
-        "Number of guesses where the guessed rank was correct and X number of placements were correct";
+      graphInfo.value = CORRECT_RANK_INFO;
       break;
     default:
       break;
@@ -175,9 +171,7 @@ function changeGraph(newOption: string) {
     distributionLabels.value = props.user[newOption]!.map((s, ind) =>
       ind.toString()
     );
-    distributionLabel.value = "# of occurrences";
-    graphInfo.value =
-      "Number of times score X was achieved, up to the maximum of score 100";
+    graphInfo.value = SCORE_INFO;
   } else if (
     newOption === "dailyRankGuessesLow" ||
     newOption === "dailyRankGuessesHigh" ||
@@ -187,8 +181,7 @@ function changeGraph(newOption: string) {
       (r) => (r && r!.map((s) => s as number)) as number[]
     );
     distributionLabels.value = ALL;
-    graphInfo.value =
-      "Number of times rank X was guessed, grouped by the match's actual rank";
+    graphInfo.value = RANK_INFO;
   } else if (
     newOption === "dailyPlacementGuessesLow" ||
     newOption === "dailyPlacementGuessesHigh" ||
@@ -198,8 +191,7 @@ function changeGraph(newOption: string) {
       (r) => (r && r!.map((s) => s as number)) as number[]
     );
     distributionLabels.value = PLACEMENTS;
-    graphInfo.value =
-      "Number of times placement X was guessed, grouped by the actual placement";
+    graphInfo.value = PLACEMENT_INFO;
   }
 }
 </script>

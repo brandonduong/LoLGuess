@@ -13,6 +13,7 @@ import CustomCard from "../CustomCard.vue";
 import StatsTable from "./StatsTable.vue";
 import type { DailyGuess, Team } from "@/common/interfaces";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
+import { ALL, HIGH, LOW } from "@/common/constants";
 const auth = useAuthenticator();
 
 const props = defineProps<{
@@ -47,10 +48,6 @@ const verifiedRank = ref<string>("");
 const verifiedRegion = ref<string>("");
 const verifiedUsernames = ref<string[]>([]);
 
-const low = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
-const high = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
-const all = [...low, ...high];
-
 const errorExplanation =
   "Error finding ranked match. Please try again. This can happen rarely if 3 users did not play a ranked match within their past 10 games or if an entire rank is empty, such as Challenger at the start of a set.";
 
@@ -75,7 +72,7 @@ function loadPrev() {
   rankedMatch.value = prev.rankedMatch;
   selectedRank.value = prev.rank;
   selectedRanks.value =
-    prev.category === "all" ? all : prev.category === "high" ? high : low;
+    prev.category === "all" ? ALL : prev.category === "high" ? HIGH : LOW;
   current.value = 1;
 }
 
@@ -95,7 +92,7 @@ async function getDaily(date: string, cat: string) {
       //console.log(res);
       rankedMatch.value = res.data.dailyMatch;
       sensitive.value = res.data.sensitive;
-      selectedRanks.value = cat === "all" ? all : cat === "high" ? high : low;
+      selectedRanks.value = cat === "all" ? ALL : cat === "high" ? HIGH : LOW;
     })
     .catch((error) => {
       alert(errorExplanation);

@@ -12,11 +12,19 @@ import http from "@/common/http-common";
 import CustomSelect from "../Profile/CustomSelect.vue";
 import CustomInfo from "../Profile/CustomInfo.vue";
 import type { SelectProps } from "ant-design-vue";
-import { Daily } from "@/API";
+import type { Daily } from "@/API";
 import DistributionGraphScores from "../Profile/DistributionGraphScores.vue";
 import DistributionGraph2D from "../Profile/DistributionGraph2D.vue";
 import Stat from "../Profile/Stat.vue";
 import { stat } from "fs";
+import { ALL, HIGH, LOW, PLACEMENTS } from "@/common/constants";
+import {
+  OCCURRENCES_LABEL,
+  PERFECT_INFO,
+  PLACEMENT_INFO,
+  RANK_INFO,
+  SCORE_INFO,
+} from "@/common/statConstants";
 const props = defineProps<{
   rankedMatch: Team[];
   usernames: string[];
@@ -105,20 +113,13 @@ const selectOptions = ref<SelectProps["options"]>([
     ],
   },
 ]);
-const LOW = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
-const HIGH = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
 const RANKS =
-  props.category === "all"
-    ? [...LOW, ...HIGH]
-    : props.category === "low"
-    ? LOW
-    : HIGH;
-const PLACEMENTS = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"];
+  props.category === "all" ? ALL : props.category === "low" ? LOW : HIGH;
 const value = ref("loggedRanks");
 const graphInfo = ref("");
 const distributionValues = ref<number[][] | number[]>([]);
 const distributionLabels = ref<string[]>(RANKS);
-const distributionLabel = ref<string>("# of occurrences");
+const distributionLabel = ref<string>(OCCURRENCES_LABEL);
 
 function changeGraph(newOption: string) {
   value.value = newOption;
@@ -128,43 +129,35 @@ function changeGraph(newOption: string) {
         (r) => r as number
       );
       distributionLabels.value = RANKS;
-      distributionLabel.value = "# of occurrences";
-      graphInfo.value =
-        "Number of times rank X was guessed, grouped by the match's actual rank";
+      graphInfo.value = RANK_INFO;
       break;
     case "placementGuesses":
       distributionValues.value = stats.value!.placementGuesses!.map(
         (r) => (r && r!.map((s) => s as number)) as number[]
       );
       distributionLabels.value = PLACEMENTS;
-      graphInfo.value =
-        "Number of times placement X was guessed, grouped by the actual placement";
+      graphInfo.value = PLACEMENT_INFO;
       break;
     case "scores":
       distributionValues.value = stats.value!.scores!.map((s) => s as number);
       distributionLabels.value = stats.value!.scores!.map((s, ind) =>
         ind.toString()
       );
-      distributionLabel.value = "# of occurrences";
-      graphInfo.value =
-        "Number of times score X was achieved, up to the maximum of score 100";
+      graphInfo.value = SCORE_INFO;
       break;
     case "loggedRanks":
       distributionValues.value = stats.value!.loggedRankGuesses!.map(
         (r) => r as number
       );
       distributionLabels.value = RANKS;
-      distributionLabel.value = "# of occurrences";
-      graphInfo.value =
-        "Number of times rank X was guessed, grouped by the match's actual rank";
+      graphInfo.value = RANK_INFO;
       break;
     case "loggedPlacementGuesses":
       distributionValues.value = stats.value!.loggedPlacementGuesses!.map(
         (r) => (r && r!.map((s) => s as number)) as number[]
       );
       distributionLabels.value = PLACEMENTS;
-      graphInfo.value =
-        "Number of times placement X was guessed, grouped by the actual placement";
+      graphInfo.value = PLACEMENT_INFO;
       break;
     case "loggedScores":
       distributionValues.value = stats.value!.loggedScores!.map(
@@ -173,9 +166,7 @@ function changeGraph(newOption: string) {
       distributionLabels.value = stats.value!.loggedScores!.map((s, ind) =>
         ind.toString()
       );
-      distributionLabel.value = "# of occurrences";
-      graphInfo.value =
-        "Number of times score X was achieved, up to the maximum of score 100";
+      graphInfo.value = SCORE_INFO;
       break;
     case "perfects":
       distributionValues.value = [
@@ -183,8 +174,7 @@ function changeGraph(newOption: string) {
         stats.value!.perfects!,
       ];
       distributionLabels.value = ["User Perfects", "Guest Perfects"];
-      distributionLabel.value = "# of occurrences";
-      graphInfo.value = "Number of times a perfect score was achieved";
+      graphInfo.value = PERFECT_INFO;
       break;
   }
 }
