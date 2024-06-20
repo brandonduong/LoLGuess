@@ -89,8 +89,8 @@ const option = ref<string>("low");
 
     <CustomCard style="align-items: normal; padding: 0">
       <CustomTabs
-        :options="['low', 'high', 'all']"
-        :optionTitles="['Low Ranks', 'High Ranks', 'All Ranks']"
+        :options="['all', 'low', 'high']"
+        :optionTitles="['All Ranks', 'Low Ranks', 'High Ranks']"
         :option="option"
         @update-option="(newOption) => (option = newOption)"
       />

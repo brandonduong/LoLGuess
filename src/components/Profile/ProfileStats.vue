@@ -6,14 +6,17 @@ import { RedoOutlined } from "@ant-design/icons-vue";
 import CustomCard from "../CustomCard.vue";
 import HomeButton from "../Home/HomeButton.vue";
 import { ref, watch } from "vue";
+import CustomTabs from "../Daily/CustomTabs.vue";
+import CustomSelect from "./CustomSelect.vue";
+import type { SelectProps } from "ant-design-vue";
 
 const emit = defineEmits(["getStaticProfileData"]);
 
 const props = defineProps<{
   staticProfileData: User;
-  option: string;
 }>();
 
+const option = ref<string>("freeplay");
 const [pref, username] = props.staticProfileData.username.split(" ");
 
 const freeplayStats = {
@@ -55,18 +58,31 @@ const dailyStats = {
   "CORRECT RANKS": props.staticProfileData.dailyCorrectRanks,
 };
 
-const stats = ref(props.option === "freeplay" ? freeplayStats : dailyStats);
+const stats = ref(option.value === "freeplay" ? freeplayStats : dailyStats);
 
 function refresh() {
   emit("getStaticProfileData");
 }
 
-watch(
-  () => props.option,
-  () => {
-    stats.value = props.option === "freeplay" ? freeplayStats : dailyStats;
-  }
-);
+watch(option, () => {
+  stats.value = option.value === "freeplay" ? freeplayStats : dailyStats;
+});
+
+const selectOptions = ref<SelectProps["options"]>([
+  {
+    label: "MODES",
+    options: [
+      {
+        value: "freeplay",
+        label: "Freeplay Stats",
+      },
+      {
+        value: "daily",
+        label: "Daily Stats",
+      },
+    ],
+  },
+]);
 </script>
 <template>
   <CustomCard style="align-items: normal; gap: 0.5rem; justify-content: start">
@@ -87,6 +103,12 @@ watch(
         </template>
       </HomeButton>
     </div>
+
+    <CustomSelect
+      :options="selectOptions"
+      :value="option"
+      @update-option="(newOption) => (option = newOption)"
+    />
 
     <div class="stats">
       <Stat

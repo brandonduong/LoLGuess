@@ -66,7 +66,6 @@ watch(
       :staticProfileData="staticProfileData!"
       @getStaticProfileData="getStaticProfileData()"
       :key="sub"
-      :option="option"
     />
     <ProfileGraph
       :guesses="staticProfileGuesses"
@@ -77,18 +76,26 @@ watch(
     <div class="history">
       <CustomCard style="padding: 0">
         <CustomTabs
-          :options="['freeplay', 'daily']"
-          :optionTitles="['Freeplay', 'Daily']"
+          :options="['all', 'freeplay', 'daily']"
+          :optionTitles="['All', 'Freeplay', 'Daily']"
           :option="option"
           @update-option="(newOption) => (option = newOption)"
         />
         <ProfileHistory
           :guesses="
-            option === 'freeplay'
+            option === 'all'
+              ? [...staticProfileGuesses, ...staticProfileDailyGuesses].sort(
+                  (a, b) =>
+                    a.createdAt >= b.createdAt
+                      ? -1
+                      : a.createdAt <= b.createdAt
+                      ? 1
+                      : 0
+                )
+              : option === 'freeplay'
               ? staticProfileGuesses
               : staticProfileDailyGuesses
           "
-          :option="option"
         />
       </CustomCard>
     </div>

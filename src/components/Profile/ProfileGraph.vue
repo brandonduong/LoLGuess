@@ -208,7 +208,14 @@ function changeGraph(newOption: string) {
   <CustomCard
     style="align-items: normal; justify-content: start; min-height: 300px"
   >
-    <div style="display: flex; align-items: center; gap: 1rem">
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+      "
+    >
       <CustomSelect
         :options="selectOptions"
         :value="value"

@@ -3,8 +3,7 @@ import { ref, watch } from "vue";
 import type { DailyGuess, Guess } from "@/API";
 import HistoryItem from "./HistoryItem.vue";
 const props = defineProps<{
-  guesses: Guess[] | DailyGuess[];
-  option: string;
+  guesses: (Guess | DailyGuess)[];
 }>();
 
 const current = ref<number>(1);
@@ -14,41 +13,37 @@ const low = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
 const high = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
 const all = [...low, ...high];
 
-watch(
-  () => props.option,
-  () => {
-    current.value = 1;
+function getReplayUrl(guess: DailyGuess | Guess) {
+  if ("id" in guess && "matchId" in guess) {
+    return `/play/${guess.id}`;
+  } else if ("date" in guess && "category" in guess) {
+    return `/daily/${guess.date}/${guess.category}`;
   }
-);
+}
 </script>
 
 <template>
   <HistoryItem
-    v-if="option === 'freeplay'"
-    v-for="guess in (guesses as Guess[]).slice(pageSize * (current - 1), pageSize * current)"
-    :placements="guess.placements"
-    :guessedRank="guess.guessedRank"
-    :rank="guess.rank"
-    :ranks="guess.ranks"
-    :createdAt="guess.createdAt"
-    :regions="(guess.regions as string[])"
-    :replay="guess.matchId ? `/play/${guess.id}` : ''"
-  />
-  <HistoryItem
-    v-else
-    v-for="guess in (guesses as DailyGuess[]).slice(pageSize * (current - 1), pageSize * current)"
+    v-for="guess in guesses.slice(pageSize * (current - 1), pageSize * current)"
     :placements="guess.placements"
     :guessedRank="guess.guessedRank"
     :rank="guess.rank"
     :ranks="
-      guess.category === 'low' ? low : guess.category === 'high' ? high : all
+      'ranks' in guess
+        ? guess.ranks
+        : guess.category === 'low'
+        ? low
+        : guess.category === 'high'
+        ? high
+        : all
     "
     :createdAt="guess.createdAt"
-    :replay="`/daily/${guess.date}/${guess.category}`"
-    ><template #mode>
+    :regions="'regions' in guess ? (guess.regions as string[]) : undefined"
+    :replay="getReplayUrl(guess)"
+    ><template #mode v-if="'date' in guess">
       {{ `${guess.date} ${guess.category.toUpperCase()}` }}
-    </template>
-  </HistoryItem>
+    </template></HistoryItem
+  >
   <div class="pages">
     <a-pagination
       v-model:pageSize="pageSize"
