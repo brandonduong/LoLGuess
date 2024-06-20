@@ -24,7 +24,7 @@
         },
         "verifyGuess": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/verifyGuess-7a2f645354556b42482b-build.zip"
+          "s3Key": "amplify-builds/verifyGuess-314d625250326e697277-build.zip"
         },
         "lolguesssignup": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
@@ -77,7 +77,7 @@
         },
         "applyDaily": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/applyDaily-66574d364d53774b4c37-build.zip"
+          "s3Key": "amplify-builds/applyDaily-63665162337163454147-build.zip"
         }
       },
       "api": {

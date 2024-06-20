@@ -98,7 +98,6 @@ async function getDaily(date: string, cat: string) {
       alert(errorExplanation);
     });
 }
-
 async function verifyGuess() {
   let url, header;
   if (auth.user) {
@@ -136,6 +135,35 @@ async function verifyGuess() {
       verifiedRank.value = res.data.rank;
       verifiedRegion.value = res.data.region;
       verifiedUsernames.value = res.data.usernames;
+      // if user already made a guess on this daily, load in their guess instead
+      if ("guessedRank" in res.data) {
+        alert("Previous guess found. Guess was not submitted.");
+        selectedRank.value = res.data.guessedRank;
+        const placements = res.data.placements; // prev guess placements
+
+        // copy rankedMatch but in order of current guess
+        const copy = [];
+        for (let i = 0; i < selectedGuess.value.length; i++) {
+          copy.push(
+            rankedMatch.value.find(
+              (m) => m.placement === selectedGuess.value[i]
+            )
+          );
+        }
+        console.log(rankedMatch, copy, res.data.unencrypted, placements);
+
+        const oldCopy = [];
+        // reorder copy to old guess
+        for (let i = 0; i < placements.length; i++) {
+          oldCopy.push(
+            copy[
+              res.data.unencrypted.findIndex((m: string) => m === placements[i])
+            ]
+          );
+        }
+        rankedMatch.value = oldCopy as Team[];
+        console.log(rankedMatch.value);
+      }
 
       loading.value = false;
     });

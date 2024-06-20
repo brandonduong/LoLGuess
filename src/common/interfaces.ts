@@ -33,6 +33,7 @@ interface Team {
   augmentNum: number;
   units: APIUnit[];
   gold_left: number;
+  placement: string;
 }
 interface DailyGuess {
   placements: string[];

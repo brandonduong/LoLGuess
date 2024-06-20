@@ -5,10 +5,15 @@ import { ref, onMounted } from "vue";
 import CustomCard from "../CustomCard.vue";
 import CustomTabs from "./CustomTabs.vue";
 import type { DailyGuess } from "@/common/interfaces";
+import HomeButton from "../Home/HomeButton.vue";
+import { RedoOutlined } from "@ant-design/icons-vue";
+import CustomInfo from "../Profile/CustomInfo.vue";
+import { useAuthenticator } from "@aws-amplify/ui-vue";
+import Loading from "../Loading.vue";
 
 defineProps<{ date: string; category: string }>();
 
-const dailyHistory = ref<DailyGuess[]>([]);
+const dailyHistory = ref<any[]>([]);
 const loading = ref(true);
 
 onMounted(() => {
@@ -55,9 +60,14 @@ function updateHistory(guess: DailyGuess) {
 }
 
 const option = ref<string>("low");
+const auth = useAuthenticator();
+
+async function loadGuesses() {
+  console.log("test");
+}
 </script>
 <template>
-  <div class="daily" v-if="!category && !loading">
+  <div class="daily" v-if="!category">
     <h3 class="gold">DAILY</h3>
     <p>Updates every day at 12 am (UTC)</p>
     <div
@@ -82,19 +92,36 @@ const option = ref<string>("low");
           }"
         />
       </div>
-      <div>
-        <h5 style="margin: 0; text-align: end">SET 11</h5>
+      <div style="display: flex; gap: 0.5rem; align-items: center">
+        <CustomInfo
+          ><p style="margin: 0; color: var(--color-offwhite)">
+            Upload or download your daily guess history
+          </p></CustomInfo
+        >
+        <HomeButton
+          type="secondary"
+          @click="loadGuesses"
+          title="LOAD"
+          padding="0 0.75rem"
+        >
+          <template #icon>
+            <RedoOutlined style="font-size: 1rem; color: white" />
+          </template>
+        </HomeButton>
       </div>
     </div>
 
     <CustomCard style="align-items: normal; padding: 0">
-      <CustomTabs
-        :options="['all', 'low', 'high']"
-        :optionTitles="['All Ranks', 'Low Ranks', 'High Ranks']"
-        :option="option"
-        @update-option="(newOption) => (option = newOption)"
-      />
-      <DailyArchive :guessed-before="guessedBefore" :option="option" />
+      <div v-if="!loading">
+        <CustomTabs
+          :options="['all', 'low', 'high']"
+          :optionTitles="['All Ranks', 'Low Ranks', 'High Ranks']"
+          :option="option"
+          @update-option="(newOption) => (option = newOption)"
+        />
+        <DailyArchive :guessed-before="guessedBefore" :option="option" />
+      </div>
+      <div v-else><Loading /></div>
     </CustomCard>
   </div>
   <div v-else-if="!loading">
