@@ -1,24 +1,24 @@
 <script setup lang="ts">
 import DailyGame from "./DailyGame.vue";
 import DailyArchive from "./DailyArchive.vue";
-import DailyButtons from "./DailyButtons.vue";
 import { ref, onMounted } from "vue";
 import CustomCard from "../CustomCard.vue";
 import CustomTabs from "./CustomTabs.vue";
-interface DailyGuess {
-  placements: string[];
-  rankedMatch: object[];
-  rank: string;
-  date: string;
-  category: string;
-  verifiedRank: string;
-  region: string;
-}
-
+import type { DailyGuess } from "@/common/interfaces";
+import HomeButton from "../Home/HomeButton.vue";
+import { DownloadOutlined, UploadOutlined } from "@ant-design/icons-vue";
+import CustomInfo from "../Profile/CustomInfo.vue";
+import Loading from "../Loading.vue";
+import { downloadBlob } from "@/common/helper";
+import { csv2json, json2csv } from "json-2-csv";
 defineProps<{ date: string; category: string }>();
 
 const dailyHistory = ref<DailyGuess[]>([]);
+const loading = ref(true);
+const file = ref<InstanceType<typeof HTMLInputElement> | null>(null);
+
 onMounted(() => {
+  loading.value = true;
   const hist = window.localStorage.getItem("dailyHistory");
   if (hist) {
     dailyHistory.value = JSON.parse(hist);
@@ -26,6 +26,7 @@ onMounted(() => {
     window.localStorage.setItem("dailyHistory", JSON.stringify([]));
     dailyHistory.value = [];
   }
+  loading.value = false;
 });
 
 // For update countdown
@@ -59,7 +60,29 @@ function updateHistory(guess: DailyGuess) {
   );
 }
 
-const option = ref<string>("low");
+const option = ref<string>("all");
+
+function downloadGuesses() {
+  downloadBlob(
+    json2csv(dailyHistory.value),
+    "dailyHistory",
+    "text/csv;charset=utf-8;"
+  );
+}
+
+function uploadGuesses(e: Event) {
+  const file = (e.target as HTMLInputElement).files![0];
+  let reader = new FileReader();
+  reader.onload = function () {
+    const hist = csv2json(reader.result as string) as DailyGuess[];
+    dailyHistory.value = hist;
+    window.localStorage.setItem(
+      "dailyHistory",
+      JSON.stringify(dailyHistory.value)
+    );
+  };
+  reader.readAsText(file);
+}
 </script>
 <template>
   <div class="daily" v-if="!category">
@@ -87,22 +110,56 @@ const option = ref<string>("low");
           }"
         />
       </div>
-      <div>
-        <h5 style="margin: 0; text-align: end">SET 11</h5>
+      <div style="display: flex; gap: 0.5rem; align-items: center">
+        <CustomInfo
+          ><p style="margin: 0; color: var(--color-offwhite)">
+            Upload or download your guess history
+          </p></CustomInfo
+        >
+        <input
+          type="file"
+          ref="file"
+          style="display: none"
+          @change="(e) => uploadGuesses(e)"
+          accept=".csv"
+        />
+        <HomeButton
+          type="secondary"
+          title="UPLOAD"
+          padding="0 0.75rem"
+          @click="file!.click()"
+        >
+          <template #icon>
+            <UploadOutlined style="font-size: 1rem; color: white" />
+          </template>
+        </HomeButton>
+        <HomeButton
+          type="secondary"
+          @click="downloadGuesses"
+          title="DOWNLOAD"
+          padding="0 0.75rem"
+        >
+          <template #icon>
+            <DownloadOutlined style="font-size: 1rem; color: white" />
+          </template>
+        </HomeButton>
       </div>
     </div>
 
     <CustomCard style="align-items: normal; padding: 0">
-      <CustomTabs
-        :options="['low', 'high', 'all']"
-        :optionTitles="['Low Ranks', 'High Ranks', 'All Ranks']"
-        :option="option"
-        @update-option="(newOption) => (option = newOption)"
-      />
-      <DailyArchive :guessed-before="guessedBefore" :option="option" />
+      <div v-if="!loading">
+        <CustomTabs
+          :options="['all', 'low', 'high']"
+          :optionTitles="['All Ranks', 'Low Ranks', 'High Ranks']"
+          :option="option"
+          @update-option="(newOption) => (option = newOption)"
+        />
+        <DailyArchive :guessed-before="guessedBefore" :option="option" />
+      </div>
+      <div v-else><Loading /></div>
     </CustomCard>
   </div>
-  <div v-else>
+  <div v-else-if="!loading">
     <DailyGame
       :date="date"
       :category="category"

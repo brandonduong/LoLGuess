@@ -19,12 +19,12 @@
       "function": {
         "getMatch": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getMatch-586c4161722f766f764d-build.zip",
+          "s3Key": "amplify-builds/getMatch-7663305048676f356971-build.zip",
           "riotApi": "RGAPI-f686f51b-c501-4613-bd6f-3f6c5a2036af"
         },
         "verifyGuess": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/verifyGuess-524d4443505164354c61-build.zip"
+          "s3Key": "amplify-builds/verifyGuess-436f6b76466a75324873-build.zip"
         },
         "lolguesssignup": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
@@ -45,27 +45,39 @@
         "getReplay": {
           "riotToken": "RGAPI-93f6e6ae-05ec-4b2c-8f35-8f5de9548a91",
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getReplay-6e3467563665442f5153-build.zip"
+          "s3Key": "amplify-builds/getReplay-7338364477594b726363-build.zip"
         },
         "getMatchId": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getMatchId-6770557472454b66324b-build.zip"
+          "s3Key": "amplify-builds/getMatchId-466f6236723754777569-build.zip"
         },
         "generateDailies": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/generateDailies-4c365671387332724e65-build.zip"
+          "s3Key": "amplify-builds/generateDailies-67346d62746b48554250-build.zip"
         },
         "getDaily": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/getDaily-725732436e376c667a37-build.zip"
+          "s3Key": "amplify-builds/getDaily-427748694d64654e5a4d-build.zip"
         },
         "verifyAnyGuess": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/verifyAnyGuess-4668775a627a6c676632-build.zip"
+          "s3Key": "amplify-builds/verifyAnyGuess-7271556f57503233356d-build.zip"
         },
         "applyGuess": {
           "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
-          "s3Key": "amplify-builds/applyGuess-4b6d61526c6c77383968-build.zip"
+          "s3Key": "amplify-builds/applyGuess-736f4b57535436384854-build.zip"
+        },
+        "applyDailyNoAuth": {
+          "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
+          "s3Key": "amplify-builds/applyDailyNoAuth-583150734950624e7031-build.zip"
+        },
+        "getDailyStats": {
+          "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
+          "s3Key": "amplify-builds/getDailyStats-355a6d6c65314533467a-build.zip"
+        },
+        "applyDaily": {
+          "deploymentBucketName": "amplify-lolguess-main-211951-deployment",
+          "s3Key": "amplify-builds/applyDaily-63665162337163454147-build.zip"
         }
       },
       "api": {

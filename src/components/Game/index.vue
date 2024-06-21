@@ -12,6 +12,8 @@ import CustomCard from "../CustomCard.vue";
 import HomeButton from "../Home/HomeButton.vue";
 import Loading from "../Loading.vue";
 import FreeplaySettings from "./FreeplaySettings.vue";
+import type { Team } from "@/common/interfaces";
+import { extractPatch } from "@/common/helper";
 const props = defineProps<{ guessId?: string }>();
 
 const auth = useAuthenticator();
@@ -19,6 +21,9 @@ const router = useRouter();
 
 const loading = ref<boolean>(false);
 const current = ref<number>(props.guessId ? 2 : 0);
+
+const errorExplanation =
+  "Error finding ranked match. Please try again. This can happen rarely if 3 users did not play a ranked match within their past 10 games or if an entire rank is empty, such as Challenger at the start of a set.";
 
 // Replay
 if (props.guessId) {
@@ -88,9 +93,11 @@ async function getMatch() {
         //console.log(res);
         rankedMatch.value = res.data.rankedMatch;
         sensitive.value = res.data.sensitive;
+        patch.value = res.data.patch;
+        datetimePlayed.value = res.data.datetimePlayed;
       })
       .catch(() => {
-        alert("Error finding ranked match. Please try again.");
+        alert(errorExplanation);
         prev();
       });
     loading.value = false;
@@ -124,9 +131,11 @@ async function getMatchNoAuth() {
       encryptedRank.value = res.data.rank;
       // selectedRanks.value = res.data.ranks;
       verifiedRegion.value = res.data.region;
+      patch.value = res.data.patch;
+      datetimePlayed.value = res.data.datetimePlayed;
     })
     .catch(() => {
-      alert("Error finding ranked match. Please try again.");
+      alert(errorExplanation);
       prev();
     });
   loading.value = false;
@@ -151,9 +160,11 @@ async function getReplay() {
       encryptedRank.value = res.data.rank;
       selectedRanks.value = res.data.ranks;
       verifiedRegion.value = res.data.region;
+      patch.value = res.data.patch;
+      datetimePlayed.value = res.data.datetimePlayed;
     })
     .catch(() => {
-      alert("Error finding ranked match. Please try again.");
+      alert(errorExplanation);
     });
   loading.value = false;
 }
@@ -162,8 +173,11 @@ function verifyReplay() {
   verifiedGuess.value = rankedMatch.value.map((p: any) =>
     p.placement.toString()
   );
-  //console.log(verifiedGuess);
+  // console.log(rankedMatch);
   verifiedRank.value = encryptedRank.value;
+  verifiedLastRounds.value = rankedMatch.value.map(
+    ({ last_round }) => last_round
+  );
 }
 
 async function verifyGuess() {
@@ -191,6 +205,7 @@ async function verifyGuess() {
       verifiedGuess.value = res.data.unencrypted;
       verifiedRank.value = res.data.rank;
       verifiedRegion.value = res.data.region;
+      verifiedLastRounds.value = res.data.lastRounds;
       loading.value = false;
     });
 }
@@ -230,12 +245,16 @@ const selectedRegions = ref<string[]>([]);
 const selectedRanks = ref<string[]>([]);
 const selectedGuess = ref<string[]>([]);
 const selectedRank = ref<string>("");
-const rankedMatch = ref<object[]>([]);
+const rankedMatch = ref<Team[]>([]);
 const encryptedRank = ref<string>("");
 const sensitive = ref<string>("");
+const datetimePlayed = ref<number>(-1);
+const patch = ref<string>("");
+
 const verifiedGuess = ref<string[]>([]);
 const verifiedRank = ref<string>("");
 const verifiedRegion = ref<string>("");
+const verifiedLastRounds = ref<number[]>([]);
 
 const prevButtonText = ["HOME", "REGIONS", "FORFEIT", "HOME"];
 const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
@@ -277,6 +296,7 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
             @update-selected-guess="selectedGuess = $event"
             :verifiedGuess="verifiedGuess"
             :selectedRanks="selectedRanks"
+            :verifiedLastRounds="verifiedLastRounds"
           />
           <div style="margin-top: 1rem">
             <GuessRank
@@ -292,6 +312,7 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
                 display: flex;
                 justify-content: space-between;
                 margin-top: 1rem;
+                flex-wrap: wrap;
               "
               v-if="current === 3"
             >
@@ -304,6 +325,10 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
               />
             </div>
           </div>
+          <div class="info-row">
+            <p>{{ new Date(datetimePlayed).toUTCString() }}</p>
+            <h5>{{ extractPatch(patch) }}</h5>
+          </div>
         </div>
       </div>
       <div v-else><Loading /></div>
@@ -315,6 +340,8 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
       :title="prevButtonText[current]"
       :active="!loading"
       :onClick="prev"
+      class="action-btn"
+      justifyContent="center"
       ><template #icon
         ><double-left-outlined
           style="color: rgb(240, 230, 210); font-size: 1.75rem" /></template
@@ -329,6 +356,8 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
         !loading
       "
       :onClick="next"
+      class="action-btn"
+      justifyContent="center"
       ><template #iconRight
         ><double-right-outlined
           style="color: rgb(240, 230, 210); font-size: 1.75rem" /></template
@@ -343,15 +372,10 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
 }
 
 .steps-action {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   padding-bottom: 1rem;
-}
-
-.action-btn {
-  flex-basis: 50%;
+  gap: 1rem;
 }
 
 .extra {
@@ -385,5 +409,16 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
   .rank-grid {
     grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   }
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.info-row > h5,
+.info-row > p {
+  margin-bottom: 0;
 }
 </style>

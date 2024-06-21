@@ -23,14 +23,14 @@ const [scored, maxScore] = calculateScore(
       <h4 class="number" style="margin: 0; display: inline-block;">{{ `${scored} / ${maxScore}` }}</h4>
     </p>
     <CustomInfo>
-      <h5 class="gold">Placements:</h5>
+      <h5 class="gold">Placements</h5>
       <p style="color: var(--color-offwhite)">
         Guessing a player's placement gives points based on how far the guess
         is. 8, 6, or 3 points are awarded if the guess is off by 0, 1, or 2
         positions.
       </p>
 
-      <h5 class="gold">Rank:</h5>
+      <h5 class="gold">Rank</h5>
       <p style="color: var(--color-offwhite); margin: 0">
         Guessing the rank gives points based on how far the guess is and how
         many ranks were included in the pool. A maximum 36, 27, or 13.5 points

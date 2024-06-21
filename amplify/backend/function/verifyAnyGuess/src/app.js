@@ -1,4 +1,8 @@
-/*
+/* Amplify Params - DO NOT EDIT
+	ENV
+	FUNCTION_APPLYDAILYNOAUTH_NAME
+	REGION
+Amplify Params - DO NOT EDIT */ /*
 Copyright 2017 - 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
     http://aws.amazon.com/apache2.0/
@@ -53,19 +57,28 @@ app.post("/verifyAnyGuess", async function (req, res) {
     );
   });
   console.log("unencrypted", unencrypted);
-  const rank = rawSensitive.rank;
-  const region = rawSensitive.region;
-  const daily = rawSensitive.daily;
+  const { rank, region, date, category, usernames, lastRounds } = rawSensitive;
 
-  if (daily) {
-    console.log("daily, run ___ lambda function to update daily");
-  }
-
+  const inv = lambda
+    .invoke({
+      FunctionName: "applyDailyNoAuth-main",
+      Payload: JSON.stringify({
+        unencrypted,
+        selectedRank,
+        date,
+        category,
+      }), // pass params
+      InvocationType: "Event",
+    })
+    .promise();
+  await inv; // Fire and forget
   // Return answers
   res.json({
     unencrypted,
     rank,
     region,
+    usernames,
+    lastRounds,
   });
 });
 

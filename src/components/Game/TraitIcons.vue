@@ -1,26 +1,4 @@
 <script lang="ts">
-interface StaticData {
-  apiName: string;
-  icon: string;
-  name: string;
-}
-interface StaticSetData {
-  champions: StaticData[];
-  traits: StaticData[];
-}
-interface StaticSetsData {
-  9: StaticSetData;
-  10: StaticSetData;
-  11: StaticSetData;
-}
-
-interface APITrait {
-  name: string;
-  tier_current: number;
-  style: number;
-  num_units: number;
-}
-
 interface TraitStyle {
   path: string;
   style: number;
@@ -29,18 +7,19 @@ interface TraitStyle {
 </script>
 
 <script setup lang="ts">
+import type { APITrait, StaticSetsData } from "@/common/interfaces";
+import { store } from "@/common/store";
 import { ref } from "vue";
 
 const props = defineProps<{
   traits: APITrait[];
-  staticTFTSetsData: StaticSetsData;
 }>();
 
 // Get trait icon styles
 const traitStyles = ref<TraitStyle[]>([]);
 props.traits.forEach((trait) => {
   const setNum = trait.name.split("_")[0].slice(3);
-  const traitInfo = props.staticTFTSetsData[
+  const traitInfo = store.staticTFTSetsData[
     parseInt(setNum) as keyof StaticSetsData
   ].traits.filter((t) => {
     return t.apiName === `TFT${trait.name.slice(3)}` && trait.tier_current > 0; // Always in format TFT11_...

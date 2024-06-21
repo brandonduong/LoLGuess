@@ -23,6 +23,20 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "applyDaily": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "applyDailyNoAuth": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "applyGuess": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -39,6 +53,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "getDaily": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "getDailyStats": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",

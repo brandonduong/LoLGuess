@@ -11,38 +11,15 @@ interface ItemStyle {
   path: string;
   title: string;
 }
-
-interface StaticData {
-  apiName: string;
-  icon: string;
-  name: string;
-  tileIcon: string;
-}
-interface StaticSetData {
-  champions: StaticData[];
-  traits: StaticData[];
-}
-interface StaticSetsData {
-  9: StaticSetData;
-  10: StaticSetData;
-  11: StaticSetData;
-}
-
-interface APIUnit {
-  character_id: string;
-  tier: number;
-  itemNames: string[];
-  rarity: number;
-}
 </script>
 <script setup lang="ts">
+import type { APIUnit, StaticSetsData } from "@/common/interfaces";
+import { store } from "@/common/store";
 import { StarFilled } from "@ant-design/icons-vue";
 import { ref } from "vue";
 
 const props = defineProps<{
   units: APIUnit[];
-  staticTFTItemData: StaticData[];
-  staticTFTSetsData: StaticSetsData;
 }>();
 
 const unitStyles = ref<UnitStyle[]>([]);
@@ -52,20 +29,17 @@ function sortByCostThenStar(a: APIUnit, b: APIUnit) {
 }
 
 function getItemImage(item: string) {
-  const itemInfo = props.staticTFTItemData.filter((i) => {
+  const itemInfo = store.staticTFTItemData.filter((i) => {
     return i.apiName === item;
   })[0];
   // console.log(item, itemInfo);
 
   let completedPath;
   if (itemInfo) {
-    const path = itemInfo.icon.toLowerCase().split("/");
-    const ind = path.indexOf("item_icons");
+    const path = itemInfo.icon.toLowerCase().split("item_icons");
     completedPath =
       "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons";
-    for (let i = ind + 1; i < path.length; i++) {
-      completedPath += `/${path[i]}`;
-    }
+    completedPath += `/${path[1]}`;
     completedPath = `${completedPath.slice(0, completedPath.length - 4)}.png`;
   } else {
     completedPath =
@@ -80,11 +54,11 @@ function getItemImage(item: string) {
 props.units.sort(sortByCostThenStar).forEach((unit) => {
   // console.log(unit);
   const setNum = unit.character_id.split("_")[0].slice(3);
-  const unitInfo = props.staticTFTSetsData[
+  const unitInfo = store.staticTFTSetsData[
     parseInt(setNum) as keyof StaticSetsData
-  ].champions.filter((u) => {
+  ].champions.find((u) => {
     return u.apiName === unit.character_id;
-  })[0];
+  });
   // console.log(unit, unitInfo);
 
   const itemPaths: ItemStyle[] = [];

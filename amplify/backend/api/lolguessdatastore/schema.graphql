@@ -11,7 +11,7 @@ type User
     ]
   ) {
   id: ID!
-  username: String!
+  username: String!  # nickname + unique username
     @index(name: "usersByUsername", queryField: "usersByUsername")
   guesses: [Guess] @hasMany
   # Freeplay stats
@@ -22,14 +22,15 @@ type User
   totalRanks: Int!
   unfinished: Int!
   totalGuesses: Int!
-  averageCorrectPlacements: Float! # TODO: REMOVE AS REDUNDANT
-  averageScore: Float! # TODO: REMOVE AS REDUNDANT
+  averageCorrectPlacements: Float!
+  averageScore: Float!
   # Freeplay occurrences
   scores: [Int] # 1D array of size 100 counting number of score occurrences
   rankGuesses: [[Int]] # 2D 10 x 10 array of rank guesses from iron to challenger
   placementGuesses: [[Int]] # 2D 8 x 8 array of placement guesses from first to eight
   correctPlacementGuesses: [Int] # 1D array of size 18 counting number of times guessed 0, 1, 2, ... placements correctly separated by also correct rank or not
   # Daily stats
+  dailyGuesses: [DailyGuess] @hasMany
   dailyTotalGuesses: Int
   dailyScore: Float
   dailyMaxScore: Float
@@ -75,7 +76,28 @@ type Guess
   region: String
   regions: [String]
   matchId: String
-  mode: String # freeplay, daily
+}
+
+type DailyGuess
+  @model
+  @auth(
+    rules: [
+      { allow: public, operations: [read] }
+      { allow: private, operations: [read], provider: iam }
+    ]
+  ) {
+  date: ID! @primaryKey(sortKeyFields: ["category", "userGuessesId"])
+  category: String!
+  placements: [String!]!
+  guessedRank: String!
+  rank: String!
+  userGuessesId: ID!
+    @index(
+      name: "dailyGuessesByDate"
+      queryField: "dailyGuessesByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  createdAt: String!
 }
 
 type Leaderboard
@@ -98,7 +120,7 @@ type Daily
   @model
   @auth(
     rules: [
-      { allow: public, operations: [read, update] }
+      { allow: public, operations: [read, update] } # TODO: REMOVE WHEN DEPLOY
       { allow: private, operations: [read], provider: iam }
     ]
   ) {
@@ -115,13 +137,11 @@ type Daily
   rankGuesses: [Int] # 1D array of rank guesses from iron to challenger
   placementGuesses: [[Int]] # 2D array of placement guesses from first to eight
   perfects: Int # number of perfects
-  score: Int # total score
   scores: [Int] # 1D array of size 100 counting scores
   # Authorized user stats
   loggedRankGuesses: [Int]
   loggedPlacementGuesses: [[Int]]
   loggedPerfects: Int
-  loggedScore: Int
   loggedScores: [Int]
 }
 

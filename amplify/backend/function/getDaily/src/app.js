@@ -88,17 +88,12 @@ async function getDaily(date, category) {
   const getDaily = /* GraphQL */ `
     query GetDaily($date: ID!, $category: String!) {
       getDaily(date: $date, category: $category) {
-        date
         matchId
         rank
         region
-        category
-        rankGuesses
-        placementGuesses
-        perfects
-        score
-        usernames
         patch
+        usernames
+        datetimePlayed
       }
     }
   `;
@@ -198,17 +193,12 @@ async function getDailyMatch(matchId, region) {
     })
     .catch((err) => console.log(err));
 
+  const lastRounds = rankedMatch.map(({ last_round }) => last_round);
   rankedMatch = rankedMatch.map(
-    ({
-      augments,
-      level,
-      traits,
-      placement,
-      units,
-      gold_left,
-      puuid,
-      last_round,
-    }) => ({
+    (
+      { augments, level, traits, placement, units, gold_left, last_round },
+      ind
+    ) => ({
       augments,
       level,
       traits,
@@ -217,12 +207,11 @@ async function getDailyMatch(matchId, region) {
       gold_left,
       augmentNum:
         last_round >= 20 ? 3 : last_round >= 13 ? 2 : last_round >= 5 ? 1 : 0,
-      puuid: CryptoJS.AES.encrypt(`${puuid}`, RIOT_TOKEN).toString(),
-      last_round: CryptoJS.AES.encrypt(`${last_round}`, RIOT_TOKEN).toString(),
+      order: ind, // to reveal usernames
     })
   );
 
-  return rankedMatch;
+  return [rankedMatch, lastRounds];
 }
 
 // declare a new express app
@@ -248,14 +237,17 @@ app.get("/getDaily", async function (req, res) {
 
   // Get daily info
   const daily = await getDaily(date, category);
-  const { matchId, region, rank } = daily;
-  const dailyMatch = await getDailyMatch(matchId, region);
+  const { matchId, region, rank, patch, usernames, datetimePlayed } = daily;
+  const [dailyMatch, lastRounds] = await getDailyMatch(matchId, region);
 
   const sensitive = {
     rank,
     region,
-    matchId,
-    daily: true,
+    date,
+    category,
+    usernames,
+    mode: "daily",
+    lastRounds,
   };
 
   res.json({
@@ -264,6 +256,8 @@ app.get("/getDaily", async function (req, res) {
       JSON.stringify(sensitive),
       RIOT_TOKEN
     ).toString(),
+    patch,
+    datetimePlayed,
   });
 });
 

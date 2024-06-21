@@ -10,15 +10,12 @@ import { useRouter } from "vue-router";
 import HomeButton from "../Home/HomeButton.vue";
 import Loading from "../Loading.vue";
 import CustomCard from "../CustomCard.vue";
-interface DailyGuess {
-  placements: string[];
-  rankedMatch: object[];
-  rank: string;
-  date: string;
-  category: string;
-  verifiedRank: string;
-  region: string;
-}
+import StatsTable from "./StatsTable.vue";
+import type { DailyGuess, Team } from "@/common/interfaces";
+import { useAuthenticator } from "@aws-amplify/ui-vue";
+import { ALL, HIGH, LOW } from "@/common/constants";
+import { extractPatch } from "@/common/helper";
+const auth = useAuthenticator();
 
 const props = defineProps<{
   date: string;
@@ -39,10 +36,12 @@ const router = useRouter();
 
 const current = ref<number>(0);
 
-const rankedMatch = ref<object[]>([]);
+const rankedMatch = ref<Team[]>([]);
 const selectedGuess = ref<string[]>([]);
 const selectedRanks = ref<string[]>([]);
 const selectedRank = ref<string>(props.prev ? props.prev.rank : "");
+const datetimePlayed = ref<number>(-1);
+const patch = ref<string>("");
 
 const sensitive = ref<string>("");
 const loading = ref<boolean>(false);
@@ -50,10 +49,11 @@ const loading = ref<boolean>(false);
 const verifiedGuess = ref<string[]>([]);
 const verifiedRank = ref<string>("");
 const verifiedRegion = ref<string>("");
+const verifiedUsernames = ref<string[]>([]);
+const verifiedLastRounds = ref<number[]>([]);
 
-const low = ["Iron", "Bronze", "Silver", "Gold", "Platinum"];
-const high = ["Emerald", "Diamond", "Master", "Grandmaster", "Challenger"];
-const all = [...low, ...high];
+const errorExplanation =
+  "Error finding ranked match. Please try again. This can happen rarely if 3 users did not play a ranked match within their past 10 games or if an entire rank is empty, such as Challenger at the start of a set.";
 
 onMounted(async () => {
   loading.value = true;
@@ -72,10 +72,14 @@ function loadPrev() {
   verifiedGuess.value = prev.placements;
   verifiedRank.value = prev.verifiedRank;
   verifiedRegion.value = prev.region;
+  verifiedUsernames.value = prev.usernames;
   rankedMatch.value = prev.rankedMatch;
   selectedRank.value = prev.rank;
   selectedRanks.value =
-    prev.category === "all" ? all : prev.category === "high" ? high : low;
+    prev.category === "all" ? ALL : prev.category === "high" ? HIGH : LOW;
+  verifiedLastRounds.value = prev.lastRounds;
+  datetimePlayed.value = prev.datetimePlayed;
+  patch.value = prev.patch;
   current.value = 1;
 }
 
@@ -95,20 +99,33 @@ async function getDaily(date: string, cat: string) {
       //console.log(res);
       rankedMatch.value = res.data.dailyMatch;
       sensitive.value = res.data.sensitive;
-      selectedRanks.value = cat === "all" ? all : cat === "high" ? high : low;
+      selectedRanks.value = cat === "all" ? ALL : cat === "high" ? HIGH : LOW;
+      patch.value = res.data.patch;
+      datetimePlayed.value = res.data.datetimePlayed;
     })
     .catch((error) => {
-      alert("Error finding ranked match. Please try again.");
+      alert(errorExplanation);
     });
 }
-
 async function verifyGuess() {
-  let url = "/verifyAnyGuess?";
-  const header = {
-    headers: {
-      "Content-type": "application/json",
-    },
-  };
+  let url, header;
+  if (auth.user) {
+    url = "/verifyGuess?";
+    header = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${auth.user.signInUserSession.idToken.jwtToken}`,
+      },
+    };
+  } else {
+    url = "/verifyAnyGuess?";
+    header = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+  }
+
   loading.value = true;
   await http.api
     .post(
@@ -126,16 +143,44 @@ async function verifyGuess() {
       verifiedGuess.value = res.data.unencrypted;
       verifiedRank.value = res.data.rank;
       verifiedRegion.value = res.data.region;
+      verifiedUsernames.value = res.data.usernames;
+      verifiedLastRounds.value = res.data.lastRounds;
+      // if user already made a guess on this daily, load in their guess instead
+      if ("guessedRank" in res.data) {
+        alert("Previous guess found. Guess was not submitted.");
+        selectedRank.value = res.data.guessedRank;
+        const placements = res.data.placements; // prev guess placements
+
+        // copy rankedMatch but in order of current guess
+        const copy = [];
+        for (let i = 0; i < selectedGuess.value.length; i++) {
+          copy.push(
+            rankedMatch.value.find(
+              (m) => m.placement === selectedGuess.value[i]
+            )
+          );
+        }
+        // console.log(rankedMatch, copy, res.data.unencrypted, placements);
+
+        const oldCopy = [];
+        // reorder copy to old guess
+        for (let i = 0; i < placements.length; i++) {
+          oldCopy.push(
+            copy[
+              res.data.unencrypted.findIndex((m: string) => m === placements[i])
+            ]
+          );
+        }
+        rankedMatch.value = oldCopy as Team[];
+        console.log(rankedMatch.value);
+      }
 
       loading.value = false;
     });
 }
 
-const buttonText = ["GUESS", "STATS"];
-
-function reset() {
-  router.push("/daily");
-}
+const prevText = ["DAILY", "DAILY", "GUESS"];
+const buttonText = ["GUESS", "STATS", "DAILY"];
 
 async function guess() {
   // console.log(selectedGuess.value, selectedRank.value);
@@ -151,6 +196,10 @@ async function guess() {
     rankedMatch: rankedMatch.value,
     verifiedRank: verifiedRank.value,
     region: verifiedRegion.value,
+    usernames: verifiedUsernames.value,
+    lastRounds: verifiedLastRounds.value,
+    patch: patch.value,
+    datetimePlayed: datetimePlayed.value,
   });
 }
 
@@ -158,44 +207,75 @@ async function next() {
   loading.value = true;
   if (current.value === 0) {
     await guess();
+  } else {
+    if (current.value === 2) {
+      router.push("/daily");
+    }
+    current.value++;
   }
   loading.value = false;
+}
+
+function prev() {
+  if (current.value < 2) {
+    router.push("/daily");
+  } else {
+    current.value -= 1;
+  }
 }
 </script>
 
 <template>
-  <CustomCard style="align-items: normal; margin-top: 1rem">
+  <CustomCard style="align-items: normal; margin-top: 1rem; padding: 1rem 0">
     <div v-if="!loading">
-      <DragAndDropTable
-        :rankedMatch="rankedMatch"
-        @update-selected-guess="selectedGuess = $event"
-        :verifiedGuess="verifiedGuess"
-        :selectedRanks="selectedRanks"
-      />
-      <div style="margin-top: 1rem">
-        <GuessRank
+      <div v-if="current === 0 || current === 1" style="padding: 0 1rem">
+        <DragAndDropTable
+          :rankedMatch="rankedMatch"
+          @update-selected-guess="selectedGuess = $event"
+          :verifiedGuess="verifiedGuess"
           :selectedRanks="selectedRanks"
-          @update-selected-rank="selectedRank = $event"
-          :selectedRank="selectedRank"
-          :verifiedRank="verifiedRank"
-          :loading="loading"
+          :verifiedLastRounds="verifiedLastRounds"
         />
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1rem;
-          "
-          v-if="current === 1"
-        >
-          <GuessRegion :region="verifiedRegion" />
-          <GuessScore
-            :selectedRank="selectedRank"
+        <div style="margin-top: 1rem">
+          <GuessRank
             :selectedRanks="selectedRanks"
+            @update-selected-rank="selectedRank = $event"
+            :selectedRank="selectedRank"
             :verifiedRank="verifiedRank"
-            :verifiedGuess="verifiedGuess"
+            :loading="loading"
           />
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              margin-top: 1rem;
+              flex-wrap: wrap;
+            "
+            v-if="current === 1"
+          >
+            <GuessRegion :region="verifiedRegion" />
+            <GuessScore
+              :selectedRank="selectedRank"
+              :selectedRanks="selectedRanks"
+              :verifiedRank="verifiedRank"
+              :verifiedGuess="verifiedGuess"
+            />
+          </div>
         </div>
+      </div>
+      <div v-if="current === 2">
+        <StatsTable
+          :rankedMatch="rankedMatch"
+          :usernames="verifiedUsernames"
+          :verifiedGuess="verifiedGuess"
+          :verifiedRank="verifiedRank"
+          :date="date"
+          :category="category"
+        />
+      </div>
+      <div class="info-row">
+        <p>{{ new Date(datetimePlayed).toUTCString() }}</p>
+        <h5>{{ extractPatch(patch) }}</h5>
       </div>
     </div>
     <div v-else><Loading /></div>
@@ -203,9 +283,10 @@ async function next() {
   <div class="steps-action">
     <HomeButton
       type="default"
-      title="ARCHIVE"
+      :title="prevText[current]"
       :active="!loading"
-      :onClick="reset"
+      :onClick="prev"
+      justifyContent="center"
       ><template #icon
         ><double-left-outlined
           style="color: rgb(240, 230, 210); font-size: 1.75rem" /></template
@@ -213,10 +294,10 @@ async function next() {
     <HomeButton
       :title="buttonText[current]"
       :active="
-        ((selectedRank.length > 0 && current === 0) || current === 1) &&
-        !loading
+        ((selectedRank.length > 0 && current === 0) || current >= 1) && !loading
       "
       :onClick="next"
+      justifyContent="center"
       ><template #iconRight
         ><double-right-outlined
           style="color: rgb(240, 230, 210); font-size: 1.75rem" /></template
@@ -230,10 +311,20 @@ async function next() {
 }
 
 .steps-action {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  padding: 1rem 0;
+  gap: 1rem;
+}
+.info-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   flex-wrap: wrap;
-  padding: 1rem 0;
+  align-items: center;
+  padding: 0 1rem;
+}
+.info-row > h5,
+.info-row > p {
+  margin-bottom: 0;
 }
 </style>

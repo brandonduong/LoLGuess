@@ -88,6 +88,38 @@
     }
   },
   "function": {
+    "applyDaily": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "lolguessdatastore"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "applyDailyNoAuth": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "lolguessdatastore"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "applyGuess": {
       "build": true,
       "dependsOn": [
@@ -121,6 +153,22 @@
       "service": "Lambda"
     },
     "getDaily": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "lolguessdatastore"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getDailyStats": {
       "build": true,
       "dependsOn": [
         {
@@ -248,6 +296,15 @@
     },
     "verifyAnyGuess": {
       "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "applyDailyNoAuth"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -269,6 +326,13 @@
           ],
           "category": "function",
           "resourceName": "applyGuess"
+        },
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "applyDaily"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -276,6 +340,38 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_applyDailyNoAuth_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "applyDailyNoAuth"
+        }
+      ]
+    },
+    "AMPLIFY_function_applyDailyNoAuth_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "applyDailyNoAuth"
+        }
+      ]
+    },
+    "AMPLIFY_function_applyDaily_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "applyDaily"
+        }
+      ]
+    },
+    "AMPLIFY_function_applyDaily_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "applyDaily"
+        }
+      ]
+    },
     "AMPLIFY_function_applyGuess_deploymentBucketName": {
       "usedBy": [
         {
@@ -305,6 +401,22 @@
         {
           "category": "function",
           "resourceName": "generateDailies"
+        }
+      ]
+    },
+    "AMPLIFY_function_getDailyStats_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getDailyStats"
+        }
+      ]
+    },
+    "AMPLIFY_function_getDailyStats_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getDailyStats"
         }
       ]
     },

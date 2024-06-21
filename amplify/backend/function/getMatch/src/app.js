@@ -160,6 +160,7 @@ app.get("/getMatch", async function (req, res) {
   var tries = 0;
   var ogRegion;
   var rankDivision;
+  let patch, datetimePlayed;
   while (!foundRanked && tries < 3) {
     try {
       // Get random region
@@ -319,6 +320,8 @@ app.get("/getMatch", async function (req, res) {
             if (res.data.info.queue_id === 1100) {
               console.log("found ranked match");
               rankedMatch = res.data.info.participants;
+              patch = res.data.info.game_version;
+              datetimePlayed = res.data.info.game_datetime;
               matchId = matches[i];
               foundRanked = true;
             }
@@ -337,6 +340,7 @@ app.get("/getMatch", async function (req, res) {
     });
   } else {
     // Remove info that would allow someone to cheat
+    const lastRounds = rankedMatch.map(({ last_round }) => last_round);
     rankedMatch = rankedMatch.map(
       ({
         augments,
@@ -372,7 +376,8 @@ app.get("/getMatch", async function (req, res) {
       region: ogRegion,
       regions: regions,
       matchId: matchId,
-      daily: false,
+      mode: "freeplay",
+      lastRounds,
     };
 
     res.json({
@@ -381,6 +386,8 @@ app.get("/getMatch", async function (req, res) {
         JSON.stringify(sensitive),
         RIOT_TOKEN
       ).toString(),
+      patch,
+      datetimePlayed,
     });
   }
 });

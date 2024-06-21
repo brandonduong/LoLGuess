@@ -43,3 +43,27 @@ export function calculateScore(
 export function roundToTwo(round: number) {
   return Math.round(round * 100) / 100;
 }
+
+export function extractPatch(patch: string) {
+  const parts = patch.split("/");
+  const num = parts[parts.length - 1];
+  return `Patch ${num.slice(0, num.length - 1)}`;
+}
+
+export function downloadBlob(
+  content: string,
+  filename: string,
+  contentType: string
+) {
+  // Create a blob
+  var blob = new Blob([content], { type: contentType });
+  var url = URL.createObjectURL(blob);
+
+  // Create a link to download it
+  var pom = document.createElement("a");
+  pom.href = url;
+  pom.setAttribute("download", filename);
+  pom.click();
+}
+
+export function getFileData() {}

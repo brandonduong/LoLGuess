@@ -23,6 +23,7 @@ const copy = ref(props.value);
     :dropdownStyle="{
       backgroundColor: 'var(--color-background-gray)',
     }"
+    :listHeight="512"
     ><template #suffixIcon
       ><caret-down-outlined class="select-suffix"
     /></template>

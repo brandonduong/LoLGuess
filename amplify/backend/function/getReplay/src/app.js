@@ -175,6 +175,7 @@ app.get("/getReplay", async function (req, res) {
   // Get match info from riot api
   console.log(baseRegionalUrl + matchUrl);
   var rankedMatch = {};
+  let patch, datetimePlayed;
   await axios
     .get(baseRegionalUrl + matchUrl, {
       headers,
@@ -183,6 +184,8 @@ app.get("/getReplay", async function (req, res) {
       // console.log(res.data);
       if (res.data.info.queue_id === 1100) {
         rankedMatch = res.data.info.participants;
+        patch = res.data.info.game_version;
+        datetimePlayed = res.data.info.game_datetime;
       }
     })
     .catch((err) => console.log(err));
@@ -197,10 +200,18 @@ app.get("/getReplay", async function (req, res) {
       gold_left,
       augmentNum:
         last_round >= 20 ? 3 : last_round >= 13 ? 2 : last_round >= 5 ? 1 : 0,
+      last_round,
     })
   );
 
-  res.json({ rankedMatch, rank, region: guess.region, ranks: guess.ranks });
+  res.json({
+    rankedMatch,
+    rank,
+    region: guess.region,
+    ranks: guess.ranks,
+    patch,
+    datetimePlayed,
+  });
 });
 
 app.listen(3000, function () {

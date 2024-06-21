@@ -1,9 +1,4 @@
 <script lang="ts">
-interface StaticData {
-  apiName: string;
-  icon: string;
-  name: string;
-}
 interface AugmentStyle {
   path: string;
   title: string;
@@ -11,11 +6,11 @@ interface AugmentStyle {
 </script>
 
 <script setup lang="ts">
+import { store } from "@/common/store";
 import { ref } from "vue";
 
 const props = defineProps<{
   augments: string[];
-  staticTFTItemData: StaticData[];
   augmentAmount: number;
 }>();
 
@@ -27,7 +22,7 @@ const augmentStyles = ref<AugmentStyle[]>([
   defaultStyles,
 ]);
 props.augments.forEach((aug, ind) => {
-  var augmentInfo = props.staticTFTItemData.filter((a) => {
+  var augmentInfo = store.staticTFTItemData.filter((a) => {
     // For set 8.5 return a.nameId === aug;
     // For set 9, new return as some ids are messy (Galio Carry Augment / Winds of War)
     return a.apiName === aug;

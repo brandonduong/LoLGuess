@@ -4,7 +4,10 @@ defineProps<{ route: string; text: string }>();
 const r = useRoute();
 
 function getActive(link: string) {
-  return r.fullPath == link ? `link active` : `link`;
+  if (link === "/") {
+    return r.fullPath === link ? `link active` : "link";
+  }
+  return r.fullPath.includes(link) ? `link active` : `link`;
 }
 </script>
 <template>
@@ -25,6 +28,7 @@ function getActive(link: string) {
   display: flex;
   align-items: center;
   padding: 0 0.5rem;
+  user-select: none;
 }
 
 .active {

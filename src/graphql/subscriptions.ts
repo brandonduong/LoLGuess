@@ -19,7 +19,6 @@ export const onCreateUser = /* GraphQL */ `
           region
           regions
           matchId
-          mode
           updatedAt
         }
         nextToken
@@ -37,6 +36,20 @@ export const onCreateUser = /* GraphQL */ `
       rankGuesses
       placementGuesses
       correctPlacementGuesses
+      dailyGuesses {
+        items {
+          date
+          category
+          placements
+          guessedRank
+          rank
+          userGuessesId
+          createdAt
+          updatedAt
+          userDailyGuessesId
+        }
+        nextToken
+      }
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
@@ -76,7 +89,6 @@ export const onUpdateUser = /* GraphQL */ `
           region
           regions
           matchId
-          mode
           updatedAt
         }
         nextToken
@@ -94,6 +106,20 @@ export const onUpdateUser = /* GraphQL */ `
       rankGuesses
       placementGuesses
       correctPlacementGuesses
+      dailyGuesses {
+        items {
+          date
+          category
+          placements
+          guessedRank
+          rank
+          userGuessesId
+          createdAt
+          updatedAt
+          userDailyGuessesId
+        }
+        nextToken
+      }
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
@@ -133,7 +159,6 @@ export const onDeleteUser = /* GraphQL */ `
           region
           regions
           matchId
-          mode
           updatedAt
         }
         nextToken
@@ -151,6 +176,20 @@ export const onDeleteUser = /* GraphQL */ `
       rankGuesses
       placementGuesses
       correctPlacementGuesses
+      dailyGuesses {
+        items {
+          date
+          category
+          placements
+          guessedRank
+          rank
+          userGuessesId
+          createdAt
+          updatedAt
+          userDailyGuessesId
+        }
+        nextToken
+      }
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
@@ -186,7 +225,6 @@ export const onCreateGuess = /* GraphQL */ `
       region
       regions
       matchId
-      mode
       updatedAt
     }
   }
@@ -204,7 +242,6 @@ export const onUpdateGuess = /* GraphQL */ `
       region
       regions
       matchId
-      mode
       updatedAt
     }
   }
@@ -222,8 +259,58 @@ export const onDeleteGuess = /* GraphQL */ `
       region
       regions
       matchId
-      mode
       updatedAt
+    }
+  }
+`;
+export const onCreateDailyGuess = /* GraphQL */ `
+  subscription OnCreateDailyGuess(
+    $filter: ModelSubscriptionDailyGuessFilterInput
+  ) {
+    onCreateDailyGuess(filter: $filter) {
+      date
+      category
+      placements
+      guessedRank
+      rank
+      userGuessesId
+      createdAt
+      updatedAt
+      userDailyGuessesId
+    }
+  }
+`;
+export const onUpdateDailyGuess = /* GraphQL */ `
+  subscription OnUpdateDailyGuess(
+    $filter: ModelSubscriptionDailyGuessFilterInput
+  ) {
+    onUpdateDailyGuess(filter: $filter) {
+      date
+      category
+      placements
+      guessedRank
+      rank
+      userGuessesId
+      createdAt
+      updatedAt
+      userDailyGuessesId
+    }
+  }
+`;
+export const onDeleteDailyGuess = /* GraphQL */ `
+  subscription OnDeleteDailyGuess(
+    $filter: ModelSubscriptionDailyGuessFilterInput
+  ) {
+    onDeleteDailyGuess(filter: $filter) {
+      date
+      category
+      placements
+      guessedRank
+      rank
+      userGuessesId
+      createdAt
+      updatedAt
+      userDailyGuessesId
     }
   }
 `;
@@ -290,12 +377,10 @@ export const onCreateDaily = /* GraphQL */ `
       rankGuesses
       placementGuesses
       perfects
-      score
       scores
       loggedRankGuesses
       loggedPlacementGuesses
       loggedPerfects
-      loggedScore
       loggedScores
       createdAt
       updatedAt
@@ -317,12 +402,10 @@ export const onUpdateDaily = /* GraphQL */ `
       rankGuesses
       placementGuesses
       perfects
-      score
       scores
       loggedRankGuesses
       loggedPlacementGuesses
       loggedPerfects
-      loggedScore
       loggedScores
       createdAt
       updatedAt
@@ -344,12 +427,10 @@ export const onDeleteDaily = /* GraphQL */ `
       rankGuesses
       placementGuesses
       perfects
-      score
       scores
       loggedRankGuesses
       loggedPlacementGuesses
       loggedPerfects
-      loggedScore
       loggedScores
       createdAt
       updatedAt

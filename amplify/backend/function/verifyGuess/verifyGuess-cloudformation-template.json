@@ -31,6 +31,10 @@
     "functionapplyGuessName": {
       "Type": "String",
       "Default": "functionapplyGuessName"
+    },
+    "functionapplyDailyName": {
+      "Type": "String",
+      "Default": "functionapplyDailyName"
     }
   },
   "Conditions": {
@@ -97,6 +101,9 @@
             },
             "FUNCTION_APPLYGUESS_NAME": {
               "Ref": "functionapplyGuessName"
+            },
+            "FUNCTION_APPLYDAILY_NAME": {
+              "Ref": "functionapplyDailyName"
             }
           }
         },
@@ -285,6 +292,41 @@
                       ":function:",
                       {
                         "Ref": "functionapplyGuessName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Create*",
+                "lambda:Put*",
+                "lambda:Add*",
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*",
+                "lambda:Update*",
+                "lambda:Delete*",
+                "lambda:Remove*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:lambda:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":function:",
+                      {
+                        "Ref": "functionapplyDailyName"
                       }
                     ]
                   ]

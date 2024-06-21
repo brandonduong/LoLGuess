@@ -19,7 +19,6 @@ export const batchFetchUser = /* GraphQL */ `
           region
           regions
           matchId
-          mode
           updatedAt
         }
         nextToken
@@ -37,6 +36,20 @@ export const batchFetchUser = /* GraphQL */ `
       rankGuesses
       placementGuesses
       correctPlacementGuesses
+      dailyGuesses {
+        items {
+          date
+          category
+          placements
+          guessedRank
+          rank
+          userGuessesId
+          createdAt
+          updatedAt
+          userDailyGuessesId
+        }
+        nextToken
+      }
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
@@ -76,7 +89,6 @@ export const getUser = /* GraphQL */ `
           region
           regions
           matchId
-          mode
           updatedAt
         }
         nextToken
@@ -94,6 +106,20 @@ export const getUser = /* GraphQL */ `
       rankGuesses
       placementGuesses
       correctPlacementGuesses
+      dailyGuesses {
+        items {
+          date
+          category
+          placements
+          guessedRank
+          rank
+          userGuessesId
+          createdAt
+          updatedAt
+          userDailyGuessesId
+        }
+        nextToken
+      }
       dailyTotalGuesses
       dailyScore
       dailyMaxScore
@@ -142,6 +168,9 @@ export const listUsers = /* GraphQL */ `
         rankGuesses
         placementGuesses
         correctPlacementGuesses
+        dailyGuesses {
+          nextToken
+        }
         dailyTotalGuesses
         dailyScore
         dailyMaxScore
@@ -200,6 +229,9 @@ export const usersByUsername = /* GraphQL */ `
         rankGuesses
         placementGuesses
         correctPlacementGuesses
+        dailyGuesses {
+          nextToken
+        }
         dailyTotalGuesses
         dailyScore
         dailyMaxScore
@@ -237,7 +269,6 @@ export const getGuess = /* GraphQL */ `
       region
       regions
       matchId
-      mode
       updatedAt
     }
   }
@@ -260,7 +291,6 @@ export const listGuesses = /* GraphQL */ `
         region
         regions
         matchId
-        mode
         updatedAt
       }
       nextToken
@@ -295,8 +325,90 @@ export const guessesByDate = /* GraphQL */ `
         region
         regions
         matchId
-        mode
         updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getDailyGuess = /* GraphQL */ `
+  query GetDailyGuess($date: ID!, $category: String!, $userGuessesId: ID!) {
+    getDailyGuess(
+      date: $date
+      category: $category
+      userGuessesId: $userGuessesId
+    ) {
+      date
+      category
+      placements
+      guessedRank
+      rank
+      userGuessesId
+      createdAt
+      updatedAt
+      userDailyGuessesId
+    }
+  }
+`;
+export const listDailyGuesses = /* GraphQL */ `
+  query ListDailyGuesses(
+    $date: ID
+    $categoryUserGuessesId: ModelDailyGuessPrimaryCompositeKeyConditionInput
+    $filter: ModelDailyGuessFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listDailyGuesses(
+      date: $date
+      categoryUserGuessesId: $categoryUserGuessesId
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        date
+        category
+        placements
+        guessedRank
+        rank
+        userGuessesId
+        createdAt
+        updatedAt
+        userDailyGuessesId
+      }
+      nextToken
+    }
+  }
+`;
+export const dailyGuessesByDate = /* GraphQL */ `
+  query DailyGuessesByDate(
+    $userGuessesId: ID!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelDailyGuessFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    dailyGuessesByDate(
+      userGuessesId: $userGuessesId
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        date
+        category
+        placements
+        guessedRank
+        rank
+        userGuessesId
+        createdAt
+        updatedAt
+        userDailyGuessesId
       }
       nextToken
     }
@@ -360,12 +472,10 @@ export const getDaily = /* GraphQL */ `
       rankGuesses
       placementGuesses
       perfects
-      score
       scores
       loggedRankGuesses
       loggedPlacementGuesses
       loggedPerfects
-      loggedScore
       loggedScores
       createdAt
       updatedAt
@@ -402,12 +512,10 @@ export const listDailies = /* GraphQL */ `
         rankGuesses
         placementGuesses
         perfects
-        score
         scores
         loggedRankGuesses
         loggedPlacementGuesses
         loggedPerfects
-        loggedScore
         loggedScores
         createdAt
         updatedAt

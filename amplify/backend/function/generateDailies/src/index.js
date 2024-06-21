@@ -85,23 +85,30 @@ async function createDaily(
         rank
         region
         category
-        rankGuesses
-        placementGuesses
-        perfects
-        score
         usernames
         patch
         set
         datetimePlayed
+        rankGuesses
+        placementGuesses
+        perfects
+        scores
+        loggedRankGuesses
+        loggedPlacementGuesses
+        loggedPerfects
+        loggedScores
       }
     }
   `;
 
-  var numRanks;
+  let numRanks;
+  let maxScore;
   if (category === "all") {
     numRanks = 10;
+    maxScore = 100;
   } else {
     numRanks = 5;
+    maxScore = 82;
   }
 
   // Today in UTC with no time
@@ -120,14 +127,18 @@ async function createDaily(
       rank,
       region,
       category,
-      rankGuesses: Array(numRanks).fill(0),
-      placementGuesses: Array(8).fill(Array(8).fill(0)),
-      perfects: 0,
-      score: 0,
       usernames,
       patch,
       set,
       datetimePlayed,
+      rankGuesses: Array(numRanks).fill(0),
+      placementGuesses: Array(8).fill(Array(8).fill(0)),
+      perfects: 0,
+      scores: new Array(maxScore + 1).fill(0),
+      loggedRankGuesses: Array(numRanks).fill(0),
+      loggedPlacementGuesses: Array(8).fill(Array(8).fill(0)),
+      loggedPerfects: 0,
+      loggedScores: new Array(maxScore + 1).fill(0),
     },
   };
   console.log(variables);

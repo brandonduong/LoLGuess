@@ -18,7 +18,7 @@ const auth = useAuthenticator();
         <div class="account-header-links">
           <AccountHeaderLink route="" text="HOME" />
           <AccountHeaderLink route="play" text="FREEPLAY" />
-          <!--<AccountHeaderLink route="daily" text="DAILY" />-->
+          <AccountHeaderLink route="daily" text="DAILY" />
           <AccountHeaderLink route="leaderboard" text="LEADERBOARD" />
           <AccountHeaderLink route="supporters" text="SUPPORTERS" />
           <AccountHeaderLink route="updates" text="UPDATES" />
@@ -85,7 +85,7 @@ const auth = useAuthenticator();
 }
 
 .peng {
-  background-image: url("/peng.png");
+  background-image: url("/peng.avif");
   background-repeat: no-repeat;
   background-size: cover;
   width: 36px;

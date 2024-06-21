@@ -1,4 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
+const GameView = () => import("../views/GameView.vue");
+const LeaderboardView = () => import("../views/LeaderboardView.vue");
+const ProfileView = () => import("../views/ProfileView.vue");
+const SupportersView = () => import("../views/SupportersView.vue");
+const HomeView = () => import("../views/HomeView.vue");
+const DailyView = () => import("../views/DailyView.vue");
+const LoginView = () => import("../views/LoginView.vue");
+const UpdatesView = () => import("../views/UpdatesView.vue");
+const NotFoundView = () => import("../views/NotFoundView.vue");
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -6,12 +15,12 @@ const router = createRouter({
     {
       path: "/play",
       name: "play",
-      component: () => import("../views/GameView.vue"),
+      component: GameView,
     },
     {
       path: "/play/:guessId",
       name: "replay",
-      component: () => import("../views/GameView.vue"),
+      component: GameView,
       props: true,
     },
     {
@@ -20,49 +29,48 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import("../views/LeaderboardView.vue"),
+      component: LeaderboardView,
     },
     {
       path: "/profile/:sub",
       name: "profile",
-      component: () => import("../views/ProfileView.vue"),
+      component: ProfileView,
       props: true,
     },
     {
       path: "/supporters",
       name: "supporters",
-      component: () => import("../views/SupportersView.vue"),
+      component: SupportersView,
     },
     {
       path: "/",
       name: "home",
       alias: "/",
-      component: () => import("../views/HomeView.vue"),
+      component: HomeView,
     },
     {
       path: "/login",
       name: "login",
-      component: () => import("../views/LoginView.vue"),
+      component: LoginView,
     },
     {
       path: "/updates",
       name: "updates",
-      component: () => import("../views/UpdatesView.vue"),
+      component: UpdatesView,
     },
-    /*
     {
       path: "/daily/:date?/:category?",
       name: "daily",
-      component: () => import("../views/DailyView.vue"),
+      component: DailyView,
       props: true,
-    },*/
+    },
     {
       path: "/404",
-      component: () => import("../views/NotFoundView.vue"),
+      component: NotFoundView,
     },
     {
       path: "/:pathMatch(.*)*",
-      component: () => import("../views/NotFoundView.vue"),
+      component: NotFoundView,
     },
   ],
 });

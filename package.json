@@ -15,6 +15,7 @@
     "ant-design-vue": "^3.2.20",
     "aws-amplify": "^5.2.0",
     "chart.js": "^4.3.0",
+    "json-2-csv": "^5.5.1",
     "sortablejs": "^1.15.0",
     "sortablejs-vue3": "^1.2.9",
     "vue": "^3.2.47",

@@ -3,6 +3,7 @@
 	API_LOLGUESSDATASTORE_GRAPHQLAPIIDOUTPUT
 	API_LOLGUESSDATASTORE_GRAPHQLAPIKEYOUTPUT
 	ENV
+	FUNCTION_APPLYDAILY_NAME
 	FUNCTION_APPLYGUESS_NAME
 	REGION
 Amplify Params - DO NOT EDIT */ /*
@@ -18,6 +19,67 @@ const bodyParser = require("body-parser");
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 const CryptoJS = require("crypto-js");
 
+const node_fetch = require("node-fetch");
+const { Request } = node_fetch;
+const crypto = require("@aws-crypto/sha256-js");
+const provider = require("@aws-sdk/credential-provider-node");
+const { defaultProvider } = provider;
+const signature = require("@aws-sdk/signature-v4");
+const { SignatureV4 } = signature;
+const protocol = require("@aws-sdk/protocol-http");
+const { HttpRequest } = protocol;
+
+const { Sha256 } = crypto;
+const GRAPHQL_ENDPOINT =
+  process.env.API_LOLGUESSDATASTORE_GRAPHQLAPIENDPOINTOUTPUT;
+const AWS_REGION = process.env.AWS_REGION || "us-east-1";
+
+const endpoint = new URL(GRAPHQL_ENDPOINT);
+
+const signer = new SignatureV4({
+  credentials: defaultProvider(),
+  region: AWS_REGION,
+  service: "appsync",
+  sha256: Sha256,
+});
+
+async function signAndRun(query, variables) {
+  const requestToBeSigned = new HttpRequest({
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      host: endpoint.host,
+    },
+    hostname: endpoint.host,
+    body: JSON.stringify({ query, variables }),
+    path: endpoint.pathname,
+  });
+
+  const signed = await signer.sign(requestToBeSigned);
+  const request = new Request(endpoint, signed);
+
+  let statusCode = 200;
+  let body;
+  let response;
+
+  try {
+    response = await node_fetch(request);
+    body = await response.json();
+    console.log(body);
+    if (body.errors) statusCode = 400;
+  } catch (error) {
+    statusCode = 500;
+    body = {
+      errors: [
+        {
+          message: error.message,
+        },
+      ],
+    };
+  }
+  return { statusCode, body };
+}
+
 var aws = require("aws-sdk");
 var lambda = new aws.Lambda({
   region: "us-east-1", //change to your region
@@ -26,6 +88,38 @@ var lambda = new aws.Lambda({
 const app = express();
 app.use(bodyParser.json());
 app.use(awsServerlessExpressMiddleware.eventContext());
+
+async function getUserDailyGuess(date, category, userSub) {
+  const query = /* GraphQL */ `
+    query GET_DAILYGUESS($date: ID!, $category: String!, $userGuessesId: ID!) {
+      getDailyGuess(
+        date: $date
+        category: $category
+        userGuessesId: $userGuessesId
+      ) {
+        date
+        category
+        userGuessesId
+        placements
+        guessedRank
+      }
+    }
+  `;
+
+  const variables = {
+    date,
+    category,
+    userGuessesId: userSub,
+  };
+
+  const res = await signAndRun(query, variables);
+  console.log(res);
+  if (res.statusCode === 200) {
+    return res.body.data.getDailyGuess;
+  } else {
+    console.log(res.body.errors);
+  }
+}
 
 // Enable CORS for all methods
 app.use(function (req, res, next) {
@@ -50,34 +144,82 @@ app.post("/verifyGuess", async function (req, res) {
       CryptoJS.AES.decrypt(g, RIOT_TOKEN).toString(CryptoJS.enc.Utf8)
     );
   });
-  console.log("unecrypted", unencrypted);
+  console.log("unencrypted", unencrypted);
   const sensitive = req.body.sensitive;
   const rawSensitive = JSON.parse(
     CryptoJS.AES.decrypt(sensitive, RIOT_TOKEN).toString(CryptoJS.enc.Utf8)
   );
   console.log(rawSensitive);
   const selectedRank = req.body.selectedRank;
-  console.log(process.env.FUNCTION_APPLYGUESS_NAME);
-
   const userSub = req.apiGateway.event.requestContext.authorizer.claims.sub;
-  const inv = lambda
-    .invoke({
-      FunctionName: "applyGuess-main",
-      Payload: JSON.stringify({ guess, sensitive, selectedRank, userSub }), // pass params
-      InvocationType: "Event",
-    })
-    .promise();
-  await inv; // Fire and forget
 
-  const rank = rawSensitive.rank;
-  const ranks = rawSensitive.ranks;
-  console.log(rank, ranks, selectedRank);
-  const region = rawSensitive.region;
-  res.json({
-    unencrypted,
-    rank,
-    region,
-  });
+  let response;
+  if (rawSensitive.mode === "freeplay") {
+    const inv = lambda
+      .invoke({
+        FunctionName: process.env.FUNCTION_APPLYGUESS_NAME,
+        Payload: JSON.stringify({
+          unencrypted,
+          sensitive,
+          selectedRank,
+          userSub,
+        }), // pass params
+        InvocationType: "Event",
+      })
+      .promise();
+    await inv; // Fire and forget
+    const { rank, ranks, region, lastRounds } = rawSensitive;
+    console.log(rank, ranks, selectedRank);
+    response = {
+      unencrypted,
+      rank,
+      region,
+      lastRounds,
+    };
+  } else if (rawSensitive.mode === "daily") {
+    // Check if user already has a guess for this daily
+    const { rank, region, usernames, date, category, lastRounds } =
+      rawSensitive;
+    const dailyGuess = await getUserDailyGuess(date, category, userSub);
+    if (!dailyGuess) {
+      // Create DailyGuess, update user and daily stats
+      const inv = lambda
+        .invoke({
+          FunctionName: process.env.FUNCTION_APPLYDAILY_NAME,
+          Payload: JSON.stringify({
+            unencrypted,
+            selectedRank,
+            date,
+            category,
+            userSub,
+          }), // pass params
+          InvocationType: "Event",
+        })
+        .promise();
+      await inv; // Fire and forget
+      response = {
+        unencrypted,
+        rank,
+        region,
+        usernames,
+        lastRounds,
+      };
+    } else {
+      const { placements, guessedRank } = dailyGuess;
+      // return original guess instead
+      response = {
+        unencrypted,
+        rank,
+        region,
+        usernames,
+        lastRounds,
+        guessedRank,
+        placements,
+      };
+    }
+  }
+
+  res.json(response);
 });
 
 app.listen(3000, function () {

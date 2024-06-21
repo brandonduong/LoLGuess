@@ -5,13 +5,15 @@ import UnitIcons from "./UnitIcons.vue";
 import GoldIcons from "./GoldIcons.vue";
 import LevelIcons from "./LevelIcons.vue";
 import { onMounted, ref } from "vue";
-import http from "../../common/http-common";
 import { Sortable } from "sortablejs-vue3";
 import { useRouter } from "vue-router";
+import type { Team } from "@/common/interfaces";
+import { store } from "@/common/store";
 const props = defineProps<{
-  rankedMatch: Array<object>;
+  rankedMatch: Team[];
   verifiedGuess: string[];
   selectedRanks: string[];
+  verifiedLastRounds?: number[];
 }>();
 
 const emit = defineEmits(["updateSelectedGuess"]);
@@ -19,62 +21,12 @@ interface SortableEvent {
   oldIndex: number;
   newIndex: number;
 }
-interface StaticData {
-  apiName: string;
-  icon: string;
-  name: string;
-  tileIcon: string;
-}
-interface StaticSetData {
-  champions: StaticData[];
-  traits: StaticData[];
-}
-interface StaticSetsData {
-  9: StaticSetData;
-  10: StaticSetData;
-  11: StaticSetData;
-}
 
-var loading = ref(true);
-var staticTFTItemData = ref<StaticData[]>([]);
-var staticTFTSetsData = ref<StaticSetsData>();
 const router = useRouter();
 
 onMounted(async () => {
-  await getStaticTFTData().then(() => {
-    loading.value = false;
-  });
   updateGuess();
 });
-
-async function getStaticTFTData() {
-  const staticData = window.localStorage.getItem("staticTFTData");
-  // Today in UTC with no time
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-    .toISOString()
-    .split("T")[0];
-  if (!staticData || JSON.parse(staticData).date !== today) {
-    await http.dragon.get("/cdragon/tft/en_us.json").then((res) => {
-      staticTFTItemData.value = res.data.items;
-      staticTFTSetsData.value = res.data.sets;
-    });
-    //console.log(staticTFTAugmentData);
-    localStorage.setItem(
-      "staticTFTData",
-      JSON.stringify({
-        items: staticTFTItemData.value,
-        sets: staticTFTSetsData.value,
-        date: today,
-      })
-    );
-  } else {
-    const parsed = JSON.parse(staticData);
-    //console.log(parsed);
-    staticTFTItemData.value = parsed.items;
-    staticTFTSetsData.value = parsed.sets;
-  }
-}
 
 function onChange(event: SortableEvent) {
   const item = props.rankedMatch.splice(event.oldIndex, 1)[0];
@@ -94,10 +46,33 @@ function correctionStyle(placement: number) {
   switch (Math.abs(placement - parseInt(props.verifiedGuess[placement - 1]))) {
     case 0:
       return "correct";
+    case 1:
+      return "partial";
 
     default:
       return "incorrect";
   }
+}
+
+function convertToRounds(lastRound: number) {
+  let stage = 1;
+  let round = 1;
+  while (lastRound > 1) {
+    lastRound -= 1;
+    round += 1;
+
+    if ((stage === 1 && round === 5) || round === 8) {
+      // 4 rounds in stage 1, 7 rounds in stage > 1
+      stage += 1;
+      round = 1;
+    }
+  }
+
+  return `${stage} - ${round}`;
+}
+
+function getRound(lastRounds: number[], placement: number) {
+  return lastRounds.sort((a, b) => (a > b ? -1 : a < b ? 1 : 0))[placement - 1];
 }
 </script>
 <template>
@@ -117,7 +92,7 @@ function correctionStyle(placement: number) {
       <p>Click and drag teams to sort</p></span
     >
   </h5>
-  <table class="table-header" v-if="!loading">
+  <table class="table-header" v-if="!store.loading">
     <div class="placements">
       <div
         v-for="placement in 8"
@@ -137,9 +112,22 @@ function correctionStyle(placement: number) {
               ? `${verifiedGuess[placement - 1]}`
               : ""
           }}
+          <div v-if="verifiedLastRounds">
+            <p style="margin: 0; color: var(--color-offwhite)">
+              {{
+                convertToRounds(
+                  getRound(
+                    verifiedLastRounds,
+                    parseInt(verifiedGuess[placement - 1])
+                  )
+                )
+              }}
+            </p>
+          </div>
         </h4>
       </div>
     </div>
+
     <Sortable
       :list="props.rankedMatch"
       tag="table"
@@ -154,7 +142,7 @@ function correctionStyle(placement: number) {
       }"
       @end="onChange"
     >
-      <template #item="{ element }">
+      <template #item="{ element, index }">
         <tr
           :class="
             props.verifiedGuess.length === 0
@@ -163,20 +151,13 @@ function correctionStyle(placement: number) {
           "
         >
           <LevelIcons :level="element.level" />
-          <TraitIcons
-            :staticTFTSetsData="staticTFTSetsData!"
-            :traits="element.traits"
-          />
+          <TraitIcons :traits="element.traits" />
           <AugmentIcons
-            :staticTFTItemData="staticTFTItemData"
             :augments="element.augments"
             :augmentAmount="element.augmentNum"
           />
-          <UnitIcons
-            :units="element.units"
-            :staticTFTSetsData="staticTFTSetsData"
-            :staticTFTItemData="staticTFTItemData"
-          />
+          <UnitIcons :units="element.units" />
+
           <GoldIcons :goldLeft="element.gold_left" style="margin-left: auto" />
         </tr>
       </template>
@@ -213,6 +194,10 @@ function correctionStyle(placement: number) {
 
 .incorrect {
   background-color: var(--color-dark-blue);
+}
+
+.partial {
+  background-color: var(--color-light-blue);
 }
 
 .correct {

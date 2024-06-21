@@ -1,37 +1,56 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import type { Guess } from "@/API";
+import type { DailyGuess, Guess } from "@/API";
 import HistoryItem from "./HistoryItem.vue";
-import CustomCard from "../CustomCard.vue";
-
+import { ALL, HIGH, LOW } from "@/common/constants";
 defineProps<{
-  guesses: Guess[];
+  guesses: (Guess | DailyGuess)[];
 }>();
 
 const current = ref<number>(1);
 const pageSize = ref<number>(10);
+
+function getReplayUrl(guess: DailyGuess | Guess) {
+  if ("id" in guess && "matchId" in guess) {
+    return `/play/${guess.id}`;
+  } else if ("date" in guess && "category" in guess) {
+    return `/daily/${guess.date}/${guess.category}`;
+  }
+}
 </script>
 
 <template>
-  <CustomCard style="padding: 0">
-    <HistoryItem
-      v-for="guess in guesses.slice(
-        pageSize * (current - 1),
-        pageSize * current
-      )"
-      :guess="guess"
-      :key="current"
-    />
-    <div class="pages">
-      <a-pagination
-        v-model:pageSize="pageSize"
-        v-model:current="current"
-        :total="guesses.length"
-        :defaultPageSize="10"
-        :showSizeChanger="false"
-      ></a-pagination>
-    </div>
-  </CustomCard>
+  <HistoryItem
+    v-for="guess in guesses.slice(pageSize * (current - 1), pageSize * current)"
+    :placements="guess.placements"
+    :guessedRank="guess.guessedRank"
+    :rank="guess.rank"
+    :ranks="
+      'ranks' in guess
+        ? guess.ranks
+        : guess.category === 'low'
+        ? LOW
+        : guess.category === 'high'
+        ? HIGH
+        : ALL
+    "
+    :key="guess.createdAt"
+    :createdAt="guess.createdAt"
+    :regions="'regions' in guess ? (guess.regions as string[]) : undefined"
+    :replay="getReplayUrl(guess)"
+    ><template #mode v-if="'date' in guess">
+      {{ `${guess.date} ${guess.category.toUpperCase()}` }}
+    </template></HistoryItem
+  >
+  <div class="pages">
+    <a-pagination
+      v-model:pageSize="pageSize"
+      v-model:current="current"
+      :total="guesses.length"
+      :defaultPageSize="10"
+      :showSizeChanger="false"
+    ></a-pagination>
+  </div>
 </template>
 
 <style>

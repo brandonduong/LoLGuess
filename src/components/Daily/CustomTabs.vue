@@ -33,6 +33,7 @@ function updateOption(o: string) {
 .tabs {
   display: flex;
   cursor: url("/cursor-pointer.png"), pointer !important;
+  width: 100%;
 }
 
 .active-tab,
@@ -64,5 +65,23 @@ function updateOption(o: string) {
 .tab {
   padding: 0.5rem;
   margin: 0;
+}
+.active-tab:nth-child(n + 2),
+.inactive-tab:nth-child(n + 2) {
+  border-left: 2px solid var(--color-gold);
+}
+
+.active-tab:nth-last-child(n + 2),
+.inactive-tab:nth-last-child(n + 2) {
+  border-right: 2px solid var(--color-gold);
+}
+
+@media only screen and (max-width: 1024px) {
+  .active-tab:nth-child(n + 2),
+  .inactive-tab:nth-child(n + 2),
+  .active-tab:nth-last-child(n + 2),
+  .inactive-tab:nth-last-child(n + 2) {
+    border: none;
+  }
 }
 </style>
