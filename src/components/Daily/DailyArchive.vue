@@ -39,7 +39,7 @@ function getDailyDates(start: Date, end: Date) {
 
 const router = useRouter();
 const sets = {
-  SET11: { start: new Date("06/10/2024"), end: today },
+  SET11: { start: new Date("06/16/2024"), end: today },
   // SET10: { start: new Date("06/05/2024"), end: new Date("06/09/2024") },
 };
 </script>
