@@ -52,6 +52,7 @@ const sets = {
         v-for="(d, ind) in getDailyDates(value.start, value.end)"
         :onClick="() => router.push(`/daily/${d}/${option}`)"
         :type="ind === 0 ? 'tertiary' : 'secondary'"
+        class="daily-button"
       >
         <div style="flex: 1; height: 100%">
           <h5>{{ d }}</h5>
@@ -111,5 +112,8 @@ const sets = {
   grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
   padding: 1rem;
   gap: 1rem;
+}
+.daily-button:nth-child(1) {
+  grid-column: 1/-1;
 }
 </style>

@@ -72,6 +72,73 @@ export const batchFetchUser = /* GraphQL */ `
     }
   }
 `;
+export const getDaily = /* GraphQL */ `
+  query GetDaily($date: ID!, $category: String!) {
+    getDaily(date: $date, category: $category) {
+      date
+      matchId
+      rank
+      region
+      category
+      usernames
+      patch
+      set
+      datetimePlayed
+      rankGuesses
+      placementGuesses
+      perfects
+      scores
+      loggedRankGuesses
+      loggedPlacementGuesses
+      loggedPerfects
+      loggedScores
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listDailies = /* GraphQL */ `
+  query ListDailies(
+    $date: ID
+    $category: ModelStringKeyConditionInput
+    $filter: ModelDailyFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listDailies(
+      date: $date
+      category: $category
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        date
+        matchId
+        rank
+        region
+        category
+        usernames
+        patch
+        set
+        datetimePlayed
+        rankGuesses
+        placementGuesses
+        perfects
+        scores
+        loggedRankGuesses
+        loggedPlacementGuesses
+        loggedPerfects
+        loggedScores
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
@@ -450,73 +517,6 @@ export const listLeaderboards = /* GraphQL */ `
         byAverageCorrectPlacements
         byAverageScore
         date
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getDaily = /* GraphQL */ `
-  query GetDaily($date: ID!, $category: String!) {
-    getDaily(date: $date, category: $category) {
-      date
-      matchId
-      rank
-      region
-      category
-      usernames
-      patch
-      set
-      datetimePlayed
-      rankGuesses
-      placementGuesses
-      perfects
-      scores
-      loggedRankGuesses
-      loggedPlacementGuesses
-      loggedPerfects
-      loggedScores
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listDailies = /* GraphQL */ `
-  query ListDailies(
-    $date: ID
-    $category: ModelStringKeyConditionInput
-    $filter: ModelDailyFilterInput
-    $limit: Int
-    $nextToken: String
-    $sortDirection: ModelSortDirection
-  ) {
-    listDailies(
-      date: $date
-      category: $category
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
-      items {
-        date
-        matchId
-        rank
-        region
-        category
-        usernames
-        patch
-        set
-        datetimePlayed
-        rankGuesses
-        placementGuesses
-        perfects
-        scores
-        loggedRankGuesses
-        loggedPlacementGuesses
-        loggedPerfects
-        loggedScores
         createdAt
         updatedAt
       }
