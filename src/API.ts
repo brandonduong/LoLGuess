@@ -466,11 +466,6 @@ export type Daily = {
   updatedAt: string,
 };
 
-export type DeleteDailyInput = {
-  date: string,
-  category: string,
-};
-
 export type UpdateDailyInput = {
   date: string,
   matchId?: string | null,
@@ -489,6 +484,56 @@ export type UpdateDailyInput = {
   loggedPlacementGuesses?: Array< Array< number | null > | null > | null,
   loggedPerfects?: number | null,
   loggedScores?: Array< number | null > | null,
+};
+
+export type DeleteDailyInput = {
+  date: string,
+  category: string,
+};
+
+export type ModelStringKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
+export type ModelDailyFilterInput = {
+  date?: ModelIDInput | null,
+  matchId?: ModelStringInput | null,
+  rank?: ModelStringInput | null,
+  region?: ModelStringInput | null,
+  category?: ModelStringInput | null,
+  usernames?: ModelStringInput | null,
+  patch?: ModelStringInput | null,
+  set?: ModelIntInput | null,
+  datetimePlayed?: ModelIntInput | null,
+  rankGuesses?: ModelIntInput | null,
+  placementGuesses?: ModelIntInput | null,
+  perfects?: ModelIntInput | null,
+  scores?: ModelIntInput | null,
+  loggedRankGuesses?: ModelIntInput | null,
+  loggedPlacementGuesses?: ModelIntInput | null,
+  loggedPerfects?: ModelIntInput | null,
+  loggedScores?: ModelIntInput | null,
+  and?: Array< ModelDailyFilterInput | null > | null,
+  or?: Array< ModelDailyFilterInput | null > | null,
+  not?: ModelDailyFilterInput | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
+export type ModelDailyConnection = {
+  __typename: "ModelDailyConnection",
+  items:  Array<Daily | null >,
+  nextToken?: string | null,
 };
 
 export type ModelUserFilterInput = {
@@ -535,12 +580,6 @@ export type ModelUserConnection = {
   nextToken?: string | null,
 };
 
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
-}
-
-
 export type ModelGuessFilterInput = {
   id?: ModelIDInput | null,
   placements?: ModelStringInput | null,
@@ -555,16 +594,6 @@ export type ModelGuessFilterInput = {
   and?: Array< ModelGuessFilterInput | null > | null,
   or?: Array< ModelGuessFilterInput | null > | null,
   not?: ModelGuessFilterInput | null,
-};
-
-export type ModelStringKeyConditionInput = {
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
 };
 
 export type ModelDailyGuessPrimaryCompositeKeyConditionInput = {
@@ -614,33 +643,68 @@ export type ModelLeaderboardConnection = {
   nextToken?: string | null,
 };
 
-export type ModelDailyFilterInput = {
-  date?: ModelIDInput | null,
-  matchId?: ModelStringInput | null,
-  rank?: ModelStringInput | null,
-  region?: ModelStringInput | null,
-  category?: ModelStringInput | null,
-  usernames?: ModelStringInput | null,
-  patch?: ModelStringInput | null,
-  set?: ModelIntInput | null,
-  datetimePlayed?: ModelIntInput | null,
-  rankGuesses?: ModelIntInput | null,
-  placementGuesses?: ModelIntInput | null,
-  perfects?: ModelIntInput | null,
-  scores?: ModelIntInput | null,
-  loggedRankGuesses?: ModelIntInput | null,
-  loggedPlacementGuesses?: ModelIntInput | null,
-  loggedPerfects?: ModelIntInput | null,
-  loggedScores?: ModelIntInput | null,
-  and?: Array< ModelDailyFilterInput | null > | null,
-  or?: Array< ModelDailyFilterInput | null > | null,
-  not?: ModelDailyFilterInput | null,
+export type ModelSubscriptionDailyFilterInput = {
+  date?: ModelSubscriptionIDInput | null,
+  matchId?: ModelSubscriptionStringInput | null,
+  rank?: ModelSubscriptionStringInput | null,
+  region?: ModelSubscriptionStringInput | null,
+  category?: ModelSubscriptionStringInput | null,
+  usernames?: ModelSubscriptionStringInput | null,
+  patch?: ModelSubscriptionStringInput | null,
+  set?: ModelSubscriptionIntInput | null,
+  datetimePlayed?: ModelSubscriptionIntInput | null,
+  rankGuesses?: ModelSubscriptionIntInput | null,
+  placementGuesses?: ModelSubscriptionIntInput | null,
+  perfects?: ModelSubscriptionIntInput | null,
+  scores?: ModelSubscriptionIntInput | null,
+  loggedRankGuesses?: ModelSubscriptionIntInput | null,
+  loggedPlacementGuesses?: ModelSubscriptionIntInput | null,
+  loggedPerfects?: ModelSubscriptionIntInput | null,
+  loggedScores?: ModelSubscriptionIntInput | null,
+  and?: Array< ModelSubscriptionDailyFilterInput | null > | null,
+  or?: Array< ModelSubscriptionDailyFilterInput | null > | null,
 };
 
-export type ModelDailyConnection = {
-  __typename: "ModelDailyConnection",
-  items:  Array<Daily | null >,
-  nextToken?: string | null,
+export type ModelSubscriptionIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  in?: Array< string | null > | null,
+  notIn?: Array< string | null > | null,
+};
+
+export type ModelSubscriptionStringInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  in?: Array< string | null > | null,
+  notIn?: Array< string | null > | null,
+};
+
+export type ModelSubscriptionIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  in?: Array< number | null > | null,
+  notIn?: Array< number | null > | null,
 };
 
 export type ModelSubscriptionUserFilterInput = {
@@ -680,49 +744,7 @@ export type ModelSubscriptionUserFilterInput = {
   or?: Array< ModelSubscriptionUserFilterInput | null > | null,
 };
 
-export type ModelSubscriptionIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  in?: Array< string | null > | null,
-  notIn?: Array< string | null > | null,
-};
-
-export type ModelSubscriptionStringInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  in?: Array< string | null > | null,
-  notIn?: Array< string | null > | null,
-};
-
 export type ModelSubscriptionFloatInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  in?: Array< number | null > | null,
-  notIn?: Array< number | null > | null,
-};
-
-export type ModelSubscriptionIntInput = {
   ne?: number | null,
   eq?: number | null,
   le?: number | null,
@@ -770,28 +792,6 @@ export type ModelSubscriptionLeaderboardFilterInput = {
   date?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionLeaderboardFilterInput | null > | null,
   or?: Array< ModelSubscriptionLeaderboardFilterInput | null > | null,
-};
-
-export type ModelSubscriptionDailyFilterInput = {
-  date?: ModelSubscriptionIDInput | null,
-  matchId?: ModelSubscriptionStringInput | null,
-  rank?: ModelSubscriptionStringInput | null,
-  region?: ModelSubscriptionStringInput | null,
-  category?: ModelSubscriptionStringInput | null,
-  usernames?: ModelSubscriptionStringInput | null,
-  patch?: ModelSubscriptionStringInput | null,
-  set?: ModelSubscriptionIntInput | null,
-  datetimePlayed?: ModelSubscriptionIntInput | null,
-  rankGuesses?: ModelSubscriptionIntInput | null,
-  placementGuesses?: ModelSubscriptionIntInput | null,
-  perfects?: ModelSubscriptionIntInput | null,
-  scores?: ModelSubscriptionIntInput | null,
-  loggedRankGuesses?: ModelSubscriptionIntInput | null,
-  loggedPlacementGuesses?: ModelSubscriptionIntInput | null,
-  loggedPerfects?: ModelSubscriptionIntInput | null,
-  loggedScores?: ModelSubscriptionIntInput | null,
-  and?: Array< ModelSubscriptionDailyFilterInput | null > | null,
-  or?: Array< ModelSubscriptionDailyFilterInput | null > | null,
 };
 
 export type CreateUserMutationVariables = {
@@ -1244,13 +1244,13 @@ export type CreateDailyMutation = {
   } | null,
 };
 
-export type DeleteDailyMutationVariables = {
-  input: DeleteDailyInput,
+export type UpdateDailyMutationVariables = {
+  input: UpdateDailyInput,
   condition?: ModelDailyConditionInput | null,
 };
 
-export type DeleteDailyMutation = {
-  deleteDaily?:  {
+export type UpdateDailyMutation = {
+  updateDaily?:  {
     __typename: "Daily",
     date: string,
     matchId: string,
@@ -1274,13 +1274,13 @@ export type DeleteDailyMutation = {
   } | null,
 };
 
-export type UpdateDailyMutationVariables = {
-  input: UpdateDailyInput,
+export type DeleteDailyMutationVariables = {
+  input: DeleteDailyInput,
   condition?: ModelDailyConditionInput | null,
 };
 
-export type UpdateDailyMutation = {
-  updateDaily?:  {
+export type DeleteDailyMutation = {
+  deleteDaily?:  {
     __typename: "Daily",
     date: string,
     matchId: string,
@@ -1380,6 +1380,74 @@ export type BatchFetchUserQuery = {
     createdAt: string,
     updatedAt: string,
   } | null > | null,
+};
+
+export type GetDailyQueryVariables = {
+  date: string,
+  category: string,
+};
+
+export type GetDailyQuery = {
+  getDaily?:  {
+    __typename: "Daily",
+    date: string,
+    matchId: string,
+    rank: string,
+    region: string,
+    category: string,
+    usernames?: Array< string | null > | null,
+    patch?: string | null,
+    set?: number | null,
+    datetimePlayed?: number | null,
+    rankGuesses?: Array< number | null > | null,
+    placementGuesses?: Array< Array< number | null > | null > | null,
+    perfects?: number | null,
+    scores?: Array< number | null > | null,
+    loggedRankGuesses?: Array< number | null > | null,
+    loggedPlacementGuesses?: Array< Array< number | null > | null > | null,
+    loggedPerfects?: number | null,
+    loggedScores?: Array< number | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListDailiesQueryVariables = {
+  date?: string | null,
+  category?: ModelStringKeyConditionInput | null,
+  filter?: ModelDailyFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
+};
+
+export type ListDailiesQuery = {
+  listDailies?:  {
+    __typename: "ModelDailyConnection",
+    items:  Array< {
+      __typename: "Daily",
+      date: string,
+      matchId: string,
+      rank: string,
+      region: string,
+      category: string,
+      usernames?: Array< string | null > | null,
+      patch?: string | null,
+      set?: number | null,
+      datetimePlayed?: number | null,
+      rankGuesses?: Array< number | null > | null,
+      placementGuesses?: Array< Array< number | null > | null > | null,
+      perfects?: number | null,
+      scores?: Array< number | null > | null,
+      loggedRankGuesses?: Array< number | null > | null,
+      loggedPlacementGuesses?: Array< Array< number | null > | null > | null,
+      loggedPerfects?: number | null,
+      loggedScores?: Array< number | null > | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
 };
 
 export type GetUserQueryVariables = {
@@ -1777,13 +1845,12 @@ export type ListLeaderboardsQuery = {
   } | null,
 };
 
-export type GetDailyQueryVariables = {
-  date: string,
-  category: string,
+export type OnCreateDailySubscriptionVariables = {
+  filter?: ModelSubscriptionDailyFilterInput | null,
 };
 
-export type GetDailyQuery = {
-  getDaily?:  {
+export type OnCreateDailySubscription = {
+  onCreateDaily?:  {
     __typename: "Daily",
     date: string,
     matchId: string,
@@ -1807,41 +1874,61 @@ export type GetDailyQuery = {
   } | null,
 };
 
-export type ListDailiesQueryVariables = {
-  date?: string | null,
-  category?: ModelStringKeyConditionInput | null,
-  filter?: ModelDailyFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  sortDirection?: ModelSortDirection | null,
+export type OnUpdateDailySubscriptionVariables = {
+  filter?: ModelSubscriptionDailyFilterInput | null,
 };
 
-export type ListDailiesQuery = {
-  listDailies?:  {
-    __typename: "ModelDailyConnection",
-    items:  Array< {
-      __typename: "Daily",
-      date: string,
-      matchId: string,
-      rank: string,
-      region: string,
-      category: string,
-      usernames?: Array< string | null > | null,
-      patch?: string | null,
-      set?: number | null,
-      datetimePlayed?: number | null,
-      rankGuesses?: Array< number | null > | null,
-      placementGuesses?: Array< Array< number | null > | null > | null,
-      perfects?: number | null,
-      scores?: Array< number | null > | null,
-      loggedRankGuesses?: Array< number | null > | null,
-      loggedPlacementGuesses?: Array< Array< number | null > | null > | null,
-      loggedPerfects?: number | null,
-      loggedScores?: Array< number | null > | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
+export type OnUpdateDailySubscription = {
+  onUpdateDaily?:  {
+    __typename: "Daily",
+    date: string,
+    matchId: string,
+    rank: string,
+    region: string,
+    category: string,
+    usernames?: Array< string | null > | null,
+    patch?: string | null,
+    set?: number | null,
+    datetimePlayed?: number | null,
+    rankGuesses?: Array< number | null > | null,
+    placementGuesses?: Array< Array< number | null > | null > | null,
+    perfects?: number | null,
+    scores?: Array< number | null > | null,
+    loggedRankGuesses?: Array< number | null > | null,
+    loggedPlacementGuesses?: Array< Array< number | null > | null > | null,
+    loggedPerfects?: number | null,
+    loggedScores?: Array< number | null > | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteDailySubscriptionVariables = {
+  filter?: ModelSubscriptionDailyFilterInput | null,
+};
+
+export type OnDeleteDailySubscription = {
+  onDeleteDaily?:  {
+    __typename: "Daily",
+    date: string,
+    matchId: string,
+    rank: string,
+    region: string,
+    category: string,
+    usernames?: Array< string | null > | null,
+    patch?: string | null,
+    set?: number | null,
+    datetimePlayed?: number | null,
+    rankGuesses?: Array< number | null > | null,
+    placementGuesses?: Array< Array< number | null > | null > | null,
+    perfects?: number | null,
+    scores?: Array< number | null > | null,
+    loggedRankGuesses?: Array< number | null > | null,
+    loggedPlacementGuesses?: Array< Array< number | null > | null > | null,
+    loggedPerfects?: number | null,
+    loggedScores?: Array< number | null > | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -2248,93 +2335,6 @@ export type OnDeleteLeaderboardSubscription = {
     byAverageCorrectPlacements?: Array< string | null > | null,
     byAverageScore?: Array< string | null > | null,
     date: string,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnCreateDailySubscriptionVariables = {
-  filter?: ModelSubscriptionDailyFilterInput | null,
-};
-
-export type OnCreateDailySubscription = {
-  onCreateDaily?:  {
-    __typename: "Daily",
-    date: string,
-    matchId: string,
-    rank: string,
-    region: string,
-    category: string,
-    usernames?: Array< string | null > | null,
-    patch?: string | null,
-    set?: number | null,
-    datetimePlayed?: number | null,
-    rankGuesses?: Array< number | null > | null,
-    placementGuesses?: Array< Array< number | null > | null > | null,
-    perfects?: number | null,
-    scores?: Array< number | null > | null,
-    loggedRankGuesses?: Array< number | null > | null,
-    loggedPlacementGuesses?: Array< Array< number | null > | null > | null,
-    loggedPerfects?: number | null,
-    loggedScores?: Array< number | null > | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateDailySubscriptionVariables = {
-  filter?: ModelSubscriptionDailyFilterInput | null,
-};
-
-export type OnUpdateDailySubscription = {
-  onUpdateDaily?:  {
-    __typename: "Daily",
-    date: string,
-    matchId: string,
-    rank: string,
-    region: string,
-    category: string,
-    usernames?: Array< string | null > | null,
-    patch?: string | null,
-    set?: number | null,
-    datetimePlayed?: number | null,
-    rankGuesses?: Array< number | null > | null,
-    placementGuesses?: Array< Array< number | null > | null > | null,
-    perfects?: number | null,
-    scores?: Array< number | null > | null,
-    loggedRankGuesses?: Array< number | null > | null,
-    loggedPlacementGuesses?: Array< Array< number | null > | null > | null,
-    loggedPerfects?: number | null,
-    loggedScores?: Array< number | null > | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteDailySubscriptionVariables = {
-  filter?: ModelSubscriptionDailyFilterInput | null,
-};
-
-export type OnDeleteDailySubscription = {
-  onDeleteDaily?:  {
-    __typename: "Daily",
-    date: string,
-    matchId: string,
-    rank: string,
-    region: string,
-    category: string,
-    usernames?: Array< string | null > | null,
-    patch?: string | null,
-    set?: number | null,
-    datetimePlayed?: number | null,
-    rankGuesses?: Array< number | null > | null,
-    placementGuesses?: Array< Array< number | null > | null > | null,
-    perfects?: number | null,
-    scores?: Array< number | null > | null,
-    loggedRankGuesses?: Array< number | null > | null,
-    loggedPlacementGuesses?: Array< Array< number | null > | null > | null,
-    loggedPerfects?: number | null,
-    loggedScores?: Array< number | null > | null,
     createdAt: string,
     updatedAt: string,
   } | null,

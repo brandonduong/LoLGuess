@@ -2,6 +2,81 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateDaily = /* GraphQL */ `
+  subscription OnCreateDaily($filter: ModelSubscriptionDailyFilterInput) {
+    onCreateDaily(filter: $filter) {
+      date
+      matchId
+      rank
+      region
+      category
+      usernames
+      patch
+      set
+      datetimePlayed
+      rankGuesses
+      placementGuesses
+      perfects
+      scores
+      loggedRankGuesses
+      loggedPlacementGuesses
+      loggedPerfects
+      loggedScores
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateDaily = /* GraphQL */ `
+  subscription OnUpdateDaily($filter: ModelSubscriptionDailyFilterInput) {
+    onUpdateDaily(filter: $filter) {
+      date
+      matchId
+      rank
+      region
+      category
+      usernames
+      patch
+      set
+      datetimePlayed
+      rankGuesses
+      placementGuesses
+      perfects
+      scores
+      loggedRankGuesses
+      loggedPlacementGuesses
+      loggedPerfects
+      loggedScores
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteDaily = /* GraphQL */ `
+  subscription OnDeleteDaily($filter: ModelSubscriptionDailyFilterInput) {
+    onDeleteDaily(filter: $filter) {
+      date
+      matchId
+      rank
+      region
+      category
+      usernames
+      patch
+      set
+      datetimePlayed
+      rankGuesses
+      placementGuesses
+      perfects
+      scores
+      loggedRankGuesses
+      loggedPlacementGuesses
+      loggedPerfects
+      loggedScores
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
     onCreateUser(filter: $filter) {
@@ -357,81 +432,6 @@ export const onDeleteLeaderboard = /* GraphQL */ `
       byAverageCorrectPlacements
       byAverageScore
       date
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateDaily = /* GraphQL */ `
-  subscription OnCreateDaily($filter: ModelSubscriptionDailyFilterInput) {
-    onCreateDaily(filter: $filter) {
-      date
-      matchId
-      rank
-      region
-      category
-      usernames
-      patch
-      set
-      datetimePlayed
-      rankGuesses
-      placementGuesses
-      perfects
-      scores
-      loggedRankGuesses
-      loggedPlacementGuesses
-      loggedPerfects
-      loggedScores
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateDaily = /* GraphQL */ `
-  subscription OnUpdateDaily($filter: ModelSubscriptionDailyFilterInput) {
-    onUpdateDaily(filter: $filter) {
-      date
-      matchId
-      rank
-      region
-      category
-      usernames
-      patch
-      set
-      datetimePlayed
-      rankGuesses
-      placementGuesses
-      perfects
-      scores
-      loggedRankGuesses
-      loggedPlacementGuesses
-      loggedPerfects
-      loggedScores
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteDaily = /* GraphQL */ `
-  subscription OnDeleteDaily($filter: ModelSubscriptionDailyFilterInput) {
-    onDeleteDaily(filter: $filter) {
-      date
-      matchId
-      rank
-      region
-      category
-      usernames
-      patch
-      set
-      datetimePlayed
-      rankGuesses
-      placementGuesses
-      perfects
-      scores
-      loggedRankGuesses
-      loggedPlacementGuesses
-      loggedPerfects
-      loggedScores
       createdAt
       updatedAt
     }
