@@ -46,6 +46,8 @@ function correctionStyle(placement: number) {
   switch (Math.abs(placement - parseInt(props.verifiedGuess[placement - 1]))) {
     case 0:
       return "correct";
+    case 1:
+      return "partial";
 
     default:
       return "incorrect";
@@ -194,8 +196,12 @@ function getRound(lastRounds: number[], placement: number) {
   background-color: var(--color-dark-blue);
 }
 
-.correct {
+.partial {
   background-color: var(--color-light-blue);
+}
+
+.correct {
+  background-color: var(--color-gold);
 }
 
 .placements > div > h4 {
