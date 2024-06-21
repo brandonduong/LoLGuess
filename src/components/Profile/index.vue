@@ -30,14 +30,17 @@ async function getStaticProfileData() {
   const stats = API.graphql<GraphQLQuery<GetUserQuery>>({
     query: getUser,
     variables: { id: props.sub },
+    authMode: "API_KEY",
   });
   const guesses = API.graphql<GraphQLQuery<GuessesByDateQuery>>({
     query: guessesByDate,
     variables: { userGuessesId: props.sub, sortDirection: "DESC", limit: 50 },
+    authMode: "API_KEY",
   });
   const dailyGuesses = API.graphql<GraphQLQuery<DailyGuessesByDateQuery>>({
     query: dailyGuessesByDate,
     variables: { userGuessesId: props.sub, sortDirection: "DESC", limit: 50 },
+    authMode: "API_KEY",
   });
 
   staticProfileData.value = (await stats).data.getUser;
@@ -47,6 +50,24 @@ async function getStaticProfileData() {
   ).data.dailyGuessesByDate.items;
   loading.value = false;
 }
+
+/*async function getStaticProfileData() {
+  loading.value = true;
+  const header = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+  let url = `/getProfile?sub=${props.sub}`;
+
+  await http.api.get(url, header).then((res) => {
+    staticProfileData.value = res.data.getUser;
+    staticProfileGuesses.value = res.data.guesses.items;
+    staticProfileDailyGuesses.value = res.data.dailyGuesses.items;
+  });
+
+  loading.value = false;
+} */
 
 onMounted(async () => {
   getStaticProfileData();

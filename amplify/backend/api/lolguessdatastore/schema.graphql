@@ -6,7 +6,7 @@ type User
   @model
   @auth(
     rules: [
-      { allow: public, operations: [read] }
+      { allow: public, operations: [read], provider: apiKey }
       { allow: private, operations: [read], provider: iam }
     ]
   ) {
@@ -57,7 +57,7 @@ type Guess
   @model
   @auth(
     rules: [
-      { allow: public, operations: [read] }
+      { allow: public, operations: [read], provider: apiKey }
       { allow: private, operations: [read], provider: iam }
     ]
   ) {
@@ -82,7 +82,7 @@ type DailyGuess
   @model
   @auth(
     rules: [
-      { allow: public, operations: [read] }
+      { allow: public, operations: [read], provider: apiKey }
       { allow: private, operations: [read], provider: iam }
     ]
   ) {
@@ -104,7 +104,7 @@ type Leaderboard
   @model
   @auth(
     rules: [
-      { allow: public, operations: [read] }
+      { allow: public, operations: [read], provider: apiKey }
       { allow: private, operations: [read], provider: iam }
     ]
   ) {
