@@ -6,7 +6,7 @@ import CustomCard from "../CustomCard.vue";
 import CustomTabs from "./CustomTabs.vue";
 import type { DailyGuess } from "@/common/interfaces";
 import HomeButton from "../Home/HomeButton.vue";
-import { RedoOutlined } from "@ant-design/icons-vue";
+import { DownloadOutlined, UploadOutlined } from "@ant-design/icons-vue";
 import CustomInfo from "../Profile/CustomInfo.vue";
 import Loading from "../Loading.vue";
 import { downloadBlob } from "@/common/helper";
@@ -130,7 +130,7 @@ function uploadGuesses(e: Event) {
           @click="file!.click()"
         >
           <template #icon>
-            <RedoOutlined style="font-size: 1rem; color: white" />
+            <UploadOutlined style="font-size: 1rem; color: white" />
           </template>
         </HomeButton>
         <HomeButton
@@ -140,7 +140,7 @@ function uploadGuesses(e: Event) {
           padding="0 0.75rem"
         >
           <template #icon>
-            <RedoOutlined style="font-size: 1rem; color: white" />
+            <DownloadOutlined style="font-size: 1rem; color: white" />
           </template>
         </HomeButton>
       </div>
