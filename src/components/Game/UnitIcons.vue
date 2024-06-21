@@ -36,13 +36,10 @@ function getItemImage(item: string) {
 
   let completedPath;
   if (itemInfo) {
-    const path = itemInfo.icon.toLowerCase().split("/");
-    const ind = path.indexOf("item_icons");
+    const path = itemInfo.icon.toLowerCase().split("item_icons");
     completedPath =
       "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons";
-    for (let i = ind + 1; i < path.length; i++) {
-      completedPath += `/${path[i]}`;
-    }
+    completedPath += `/${path[1]}`;
     completedPath = `${completedPath.slice(0, completedPath.length - 4)}.png`;
   } else {
     completedPath =
@@ -59,9 +56,9 @@ props.units.sort(sortByCostThenStar).forEach((unit) => {
   const setNum = unit.character_id.split("_")[0].slice(3);
   const unitInfo = store.staticTFTSetsData[
     parseInt(setNum) as keyof StaticSetsData
-  ].champions.filter((u) => {
+  ].champions.find((u) => {
     return u.apiName === unit.character_id;
-  })[0];
+  });
   // console.log(unit, unitInfo);
 
   const itemPaths: ItemStyle[] = [];
