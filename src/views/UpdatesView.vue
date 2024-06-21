@@ -12,7 +12,11 @@ const updates = [
   {
     items: [
       "Daily mode with stats",
-      "Optimized fetching profiles",
+      "Daily stat tracking and history for logged in users",
+      "Import and export daily guess history for all users",
+      "Optimized backend for fetching profiles",
+      "Optimized frontend for fetching unit and item icons in table",
+      "Show what datetime and patch the match was played on",
       "After guessing, reveal what round players died at",
     ],
     date: "06-21-2024",
