@@ -27,6 +27,7 @@ const props = defineProps<{
   rankedMatch: Team[];
   usernames: string[];
   verifiedGuess: string[];
+  verifiedRank: string;
   category: string;
   date: string;
 }>();
@@ -118,9 +119,11 @@ const graphInfo = ref("");
 const distributionValues = ref<number[][] | number[]>([]);
 const distributionLabels = ref<string[]>(RANKS);
 const distributionLabel = ref<string>(OCCURRENCES_LABEL);
+const highlight = ref<number>(-1);
 
 function changeGraph(newOption: string) {
   value.value = newOption;
+  highlight.value = -1;
   switch (newOption) {
     case "ranks":
       distributionValues.value = stats.value!.rankGuesses!.map(
@@ -128,6 +131,7 @@ function changeGraph(newOption: string) {
       );
       distributionLabels.value = RANKS;
       graphInfo.value = RANK_INFO;
+      highlight.value = RANKS.indexOf(props.verifiedRank);
       break;
     case "placementGuesses":
       distributionValues.value = stats.value!.placementGuesses!.map(
@@ -149,6 +153,7 @@ function changeGraph(newOption: string) {
       );
       distributionLabels.value = RANKS;
       graphInfo.value = RANK_INFO;
+      highlight.value = RANKS.indexOf(props.verifiedRank);
       break;
     case "loggedPlacementGuesses":
       distributionValues.value = stats.value!.loggedPlacementGuesses!.map(
@@ -240,6 +245,7 @@ function changeGraph(newOption: string) {
                     :scores="guesses[ind]!.map((r) => (r as number))"
                     :labels="PLACEMENTS"
                     label="# of occurrences"
+                    :highlight="ind"
                   />
                 </div>
               </div>
@@ -276,6 +282,7 @@ function changeGraph(newOption: string) {
         :scores="(distributionValues as number[])"
         :labels="distributionLabels"
         :label="distributionLabel!"
+        :highlight="highlight"
       />
     </div>
   </div>
