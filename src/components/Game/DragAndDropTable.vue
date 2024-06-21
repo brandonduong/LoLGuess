@@ -68,6 +68,10 @@ function convertToRounds(lastRound: number) {
 
   return `${stage} - ${round}`;
 }
+
+function getRound(lastRounds: number[], placement: number) {
+  return lastRounds.sort((a, b) => (a > b ? -1 : a < b ? 1 : 0))[placement - 1];
+}
 </script>
 <template>
   <h5>
@@ -108,7 +112,14 @@ function convertToRounds(lastRound: number) {
           }}
           <div v-if="verifiedLastRounds">
             <p style="margin: 0; color: var(--color-offwhite)">
-              {{ convertToRounds(verifiedLastRounds[placement - 1]) }}
+              {{
+                convertToRounds(
+                  getRound(
+                    verifiedLastRounds,
+                    parseInt(verifiedGuess[placement - 1])
+                  )
+                )
+              }}
             </p>
           </div>
         </h4>
