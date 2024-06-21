@@ -18,7 +18,17 @@ const auth = useAuthenticator();
         <div class="account-header-links">
           <AccountHeaderLink route="" text="HOME" />
           <AccountHeaderLink route="play" text="FREEPLAY" />
-          <AccountHeaderLink route="daily" text="DAILY" />
+          <AccountHeaderLink
+            route="daily"
+            text="DAILY"
+            style="
+              background-image: linear-gradient(
+                var(--color-background),
+                80%,
+                var(--color-gold)
+              );
+            "
+          />
           <AccountHeaderLink route="leaderboard" text="LEADERBOARD" />
           <AccountHeaderLink route="supporters" text="SUPPORTERS" />
           <AccountHeaderLink route="updates" text="UPDATES" />
