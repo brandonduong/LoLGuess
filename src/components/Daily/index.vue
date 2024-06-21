@@ -8,13 +8,14 @@ import type { DailyGuess } from "@/common/interfaces";
 import HomeButton from "../Home/HomeButton.vue";
 import { RedoOutlined } from "@ant-design/icons-vue";
 import CustomInfo from "../Profile/CustomInfo.vue";
-import { useAuthenticator } from "@aws-amplify/ui-vue";
 import Loading from "../Loading.vue";
-
+import { downloadBlob } from "@/common/helper";
+import { csv2json, json2csv } from "json-2-csv";
 defineProps<{ date: string; category: string }>();
 
-const dailyHistory = ref<any[]>([]);
+const dailyHistory = ref<DailyGuess[]>([]);
 const loading = ref(true);
+const file = ref<InstanceType<typeof HTMLInputElement> | null>(null);
 
 onMounted(() => {
   loading.value = true;
@@ -61,8 +62,26 @@ function updateHistory(guess: DailyGuess) {
 
 const option = ref<string>("all");
 
-async function loadGuesses() {
-  console.log("test");
+function downloadGuesses() {
+  downloadBlob(
+    json2csv(dailyHistory.value),
+    "dailyHistory",
+    "text/csv;charset=utf-8;"
+  );
+}
+
+function uploadGuesses(e: Event) {
+  const file = (e.target as HTMLInputElement).files![0];
+  let reader = new FileReader();
+  reader.onload = function () {
+    const hist = csv2json(reader.result as string) as DailyGuess[];
+    dailyHistory.value = hist;
+    window.localStorage.setItem(
+      "dailyHistory",
+      JSON.stringify(dailyHistory.value)
+    );
+  };
+  reader.readAsText(file);
 }
 </script>
 <template>
@@ -94,13 +113,30 @@ async function loadGuesses() {
       <div style="display: flex; gap: 0.5rem; align-items: center">
         <CustomInfo
           ><p style="margin: 0; color: var(--color-offwhite)">
-            Upload or download your daily guess history
+            Upload or download your guess history
           </p></CustomInfo
         >
+        <input
+          type="file"
+          ref="file"
+          style="display: none"
+          @change="(e) => uploadGuesses(e)"
+          accept=".csv"
+        />
         <HomeButton
           type="secondary"
-          @click="loadGuesses"
-          title="LOAD"
+          title="UPLOAD"
+          padding="0 0.75rem"
+          @click="file!.click()"
+        >
+          <template #icon>
+            <RedoOutlined style="font-size: 1rem; color: white" />
+          </template>
+        </HomeButton>
+        <HomeButton
+          type="secondary"
+          @click="downloadGuesses"
+          title="DOWNLOAD"
           padding="0 0.75rem"
         >
           <template #icon>
