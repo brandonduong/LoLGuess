@@ -27,7 +27,17 @@ const formFields = {
     email: {
       order: 3,
       label: "Email",
-      placeholder: "Enter your Email",
+      placeholder: "Enter your email",
+    },
+    password: {
+      label: "PASSWORD",
+      placeholder: "Enter your password",
+      order: 4,
+    },
+    confirm_password: {
+      label: "CONFIRM PASSWORD",
+      placeholder: "Please confirm your password",
+      order: 5,
     },
   },
 };
