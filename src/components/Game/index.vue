@@ -420,6 +420,5 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
 .info-row > h5,
 .info-row > p {
   margin-bottom: 0;
-  margin-top: 1rem;
 }
 </style>

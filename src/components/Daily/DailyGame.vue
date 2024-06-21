@@ -326,6 +326,5 @@ function prev() {
 .info-row > h5,
 .info-row > p {
   margin-bottom: 0;
-  margin-top: 1rem;
 }
 </style>
