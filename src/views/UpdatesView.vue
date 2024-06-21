@@ -5,7 +5,7 @@ const updates = [
     items: [
       "Better leaderboard categories",
       "More game modes",
-      "Pagination for leaderboard and guess history",
+      "Unlimited pagination for leaderboard and guess history",
     ],
     date: "FUTURE WORK",
   },
