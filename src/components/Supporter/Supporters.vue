@@ -2,18 +2,11 @@
 import CustomCard from "@/components/CustomCard.vue";
 const supporters = [
   {
-    name: "THTupy",
-    msg: "Thanks for all the support!",
-    value: "1",
-    id: "3763a9f9-3f45-4346-b131-68ade2f98515",
-    date: "06-22-2023",
-  },
-  {
     name: "Ninjakat2000",
     msg: "Hey there cutie ;)",
-    value: "33",
+    value: "36",
     id: "321b054c-7caf-40d9-ae32-0f1b3816d4fa",
-    date: "06-23-2023",
+    date: "05-23-2024",
   },
   {
     name: "tikutikutikuwa",
@@ -21,6 +14,13 @@ const supporters = [
     value: "3",
     id: "",
     date: "12-23-2023",
+  },
+  {
+    name: "THTupy",
+    msg: "Thanks for all the support!",
+    value: "1",
+    id: "3763a9f9-3f45-4346-b131-68ade2f98515",
+    date: "06-22-2023",
   },
 ];
 </script>
