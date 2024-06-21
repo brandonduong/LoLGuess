@@ -160,7 +160,7 @@ async function verifyGuess() {
             )
           );
         }
-        console.log(rankedMatch, copy, res.data.unencrypted, placements);
+        // console.log(rankedMatch, copy, res.data.unencrypted, placements);
 
         const oldCopy = [];
         // reorder copy to old guess
@@ -179,8 +179,8 @@ async function verifyGuess() {
     });
 }
 
-const prevText = ["ARCHIVE", "ARCHIVE", "GUESS"];
-const buttonText = ["GUESS", "STATS", "ARCHIVE"];
+const prevText = ["DAILY", "DAILY", "GUESS"];
+const buttonText = ["GUESS", "STATS", "DAILY"];
 
 async function guess() {
   // console.log(selectedGuess.value, selectedRank.value);
@@ -268,6 +268,7 @@ function prev() {
           :rankedMatch="rankedMatch"
           :usernames="verifiedUsernames"
           :verifiedGuess="verifiedGuess"
+          :verifiedRank="verifiedRank"
           :date="date"
           :category="category"
         />
@@ -285,6 +286,7 @@ function prev() {
       :title="prevText[current]"
       :active="!loading"
       :onClick="prev"
+      justifyContent="center"
       ><template #icon
         ><double-left-outlined
           style="color: rgb(240, 230, 210); font-size: 1.75rem" /></template
@@ -295,6 +297,7 @@ function prev() {
         ((selectedRank.length > 0 && current === 0) || current >= 1) && !loading
       "
       :onClick="next"
+      justifyContent="center"
       ><template #iconRight
         ><double-right-outlined
           style="color: rgb(240, 230, 210); font-size: 1.75rem" /></template
@@ -308,11 +311,10 @@ function prev() {
 }
 
 .steps-action {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   padding: 1rem 0;
+  gap: 1rem;
 }
 .info-row {
   display: flex;

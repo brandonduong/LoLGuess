@@ -340,6 +340,8 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
       :title="prevButtonText[current]"
       :active="!loading"
       :onClick="prev"
+      class="action-btn"
+      justifyContent="center"
       ><template #icon
         ><double-left-outlined
           style="color: rgb(240, 230, 210); font-size: 1.75rem" /></template
@@ -354,6 +356,8 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
         !loading
       "
       :onClick="next"
+      class="action-btn"
+      justifyContent="center"
       ><template #iconRight
         ><double-right-outlined
           style="color: rgb(240, 230, 210); font-size: 1.75rem" /></template
@@ -368,15 +372,10 @@ const buttonText = ["RANKS", "PLAY", "GUESS", "PLAY"];
 }
 
 .steps-action {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   padding-bottom: 1rem;
-}
-
-.action-btn {
-  flex-basis: 50%;
+  gap: 1rem;
 }
 
 .extra {
