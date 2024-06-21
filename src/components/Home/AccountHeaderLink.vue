@@ -28,6 +28,7 @@ function getActive(link: string) {
   display: flex;
   align-items: center;
   padding: 0 0.5rem;
+  user-select: none;
 }
 
 .active {
