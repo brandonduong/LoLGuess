@@ -172,7 +172,8 @@ async function verifyGuess() {
           );
         }
         rankedMatch.value = oldCopy as Team[];
-        console.log(rankedMatch.value);
+        verifiedGuess.value = placements;
+        // console.log(rankedMatch.value);
       }
 
       loading.value = false;
