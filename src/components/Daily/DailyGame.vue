@@ -38,7 +38,9 @@ const current = ref<number>(0);
 
 const rankedMatch = ref<Team[]>([]);
 const selectedGuess = ref<string[]>([]);
-const selectedRanks = ref<string[]>([]);
+const selectedRanks = ref<string[]>(
+  props.category === "all" ? ALL : props.category === "high" ? HIGH : LOW
+);
 const selectedRank = ref<string>(props.prev ? props.prev.rank : "");
 const datetimePlayed = ref<number>(-1);
 const patch = ref<string>("");
@@ -62,6 +64,11 @@ onMounted(async () => {
     loadPrev();
   } else {
     await getDaily(props.date, props.category);
+    if (auth.user) {
+      selectedGuess.value = rankedMatch.value.map((r) => r.placement);
+      selectedRank.value = selectedRanks.value[0];
+      await guess();
+    }
   }
   loading.value = false;
 });
@@ -99,7 +106,6 @@ async function getDaily(date: string, cat: string) {
       //console.log(res);
       rankedMatch.value = res.data.dailyMatch;
       sensitive.value = res.data.sensitive;
-      selectedRanks.value = cat === "all" ? ALL : cat === "high" ? HIGH : LOW;
       patch.value = res.data.patch;
       datetimePlayed.value = res.data.datetimePlayed;
     })
@@ -147,7 +153,7 @@ async function verifyGuess() {
       verifiedLastRounds.value = res.data.lastRounds;
       // if user already made a guess on this daily, load in their guess instead
       if ("guessedRank" in res.data) {
-        alert("Previous guess found. Guess was not submitted.");
+        alert("Previous guess found.");
         selectedRank.value = res.data.guessedRank;
         const placements = res.data.placements; // prev guess placements
 
