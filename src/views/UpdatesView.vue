@@ -11,6 +11,12 @@ const updates = [
   },
   {
     items: [
+      "Fixed logged in users fetching their own old daily guess incorrectly",
+    ],
+    date: "06-25-2024",
+  },
+  {
+    items: [
       "Daily mode with stats",
       "Daily stat tracking and history for logged in users",
       "Import and export daily guess history for all users",
