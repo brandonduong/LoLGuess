@@ -12,6 +12,7 @@ const updates = [
   {
     items: [
       "Fixed logged in users fetching their own old daily guess incorrectly",
+      "Logged in users have guesses automatically saved and shared between devices",
     ],
     date: "06-25-2024",
   },
