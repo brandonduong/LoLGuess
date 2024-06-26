@@ -11,13 +11,23 @@ import CustomInfo from "../Profile/CustomInfo.vue";
 import Loading from "../Loading.vue";
 import { downloadBlob } from "@/common/helper";
 import { csv2json, json2csv } from "json-2-csv";
+import { useAuthenticator } from "@aws-amplify/ui-vue";
+import type { GraphQLQuery } from "@aws-amplify/api";
+import { API } from "aws-amplify";
+import { dailyGuessesByDate } from "@/graphql/queries";
+import type {
+  DailyGuessesByDateQuery,
+  DailyGuess as APIDailyGuess,
+} from "@/API";
 defineProps<{ date: string; category: string }>();
+const auth = useAuthenticator();
 
 const dailyHistory = ref<DailyGuess[]>([]);
+const storedHistory = ref<APIDailyGuess[]>([]); // For signed in users only
 const loading = ref(true);
 const file = ref<InstanceType<typeof HTMLInputElement> | null>(null);
 
-onMounted(() => {
+onMounted(async () => {
   loading.value = true;
   const hist = window.localStorage.getItem("dailyHistory");
   if (hist) {
@@ -25,6 +35,19 @@ onMounted(() => {
   } else {
     window.localStorage.setItem("dailyHistory", JSON.stringify([]));
     dailyHistory.value = [];
+  }
+
+  if (auth.user) {
+    const dailyGuesses = API.graphql<GraphQLQuery<DailyGuessesByDateQuery>>({
+      query: dailyGuessesByDate,
+      variables: {
+        userGuessesId: auth.user.attributes.sub,
+        sortDirection: "DESC",
+      },
+      authMode: "API_KEY",
+    });
+    storedHistory.value = (await dailyGuesses).data.dailyGuessesByDate
+      .items as APIDailyGuess[];
   }
   loading.value = false;
 });
@@ -52,6 +75,31 @@ function guessedBefore(date: string, category: string): DailyGuess | null {
   );
   return hist || null;
 }
+
+function getArchiveItems(
+  date: string,
+  category: string
+): {
+  rank: string;
+  verifiedRank: string;
+  placements: string[];
+} | null {
+  const local = dailyHistory.value.find(
+    (d) => d.date === date && d.category === category
+  );
+  const stored = storedHistory.value.find(
+    (d) => d.date === date && d.category === category
+  );
+  if (local) {
+    const { rank, verifiedRank, placements } = local;
+    return { rank, verifiedRank, placements };
+  } else if (stored) {
+    const { guessedRank, rank, placements } = stored;
+    return { rank: guessedRank, verifiedRank: rank, placements };
+  }
+  return null;
+}
+
 function updateHistory(guess: DailyGuess) {
   dailyHistory.value = [...dailyHistory.value, guess];
   window.localStorage.setItem(
@@ -154,7 +202,7 @@ function uploadGuesses(e: Event) {
           :option="option"
           @update-option="(newOption) => (option = newOption)"
         />
-        <DailyArchive :guessed-before="guessedBefore" :option="option" />
+        <DailyArchive :getArchiveItems="getArchiveItems" :option="option" />
       </div>
       <div v-else><Loading /></div>
     </CustomCard>
