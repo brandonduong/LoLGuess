@@ -4,11 +4,16 @@ import { calculateScore } from "@/common/helper";
 import { ArrowRightOutlined } from "@ant-design/icons-vue";
 import HomeButton from "../Home/HomeButton.vue";
 import RankIcon from "../Game/RankIcon.vue";
-import type { DailyGuess } from "@/common/interfaces";
 import { ALL, HIGH, LOW } from "@/common/constants";
 
+interface ArchiveItem {
+  rank: string;
+  verifiedRank: string;
+  placements: string[];
+}
+
 defineProps<{
-  guessedBefore: (date: string, category: string) => DailyGuess | null;
+  getArchiveItems: (date: string, category: string) => ArchiveItem | null;
   option: string;
 }>();
 
@@ -56,7 +61,7 @@ const sets = {
       >
         <div style="flex: 1; height: 100%">
           <h5>{{ d }}</h5>
-          <div v-for="prev in [guessedBefore(d, option)]">
+          <div v-for="prev in [getArchiveItems(d, option)]">
             <div v-if="prev">
               <p style="margin: 0">
                 <span

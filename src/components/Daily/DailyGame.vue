@@ -169,7 +169,6 @@ async function verifyGuess() {
       verifiedLastRounds.value = res.data.lastRounds;
       // if user already made a guess on this daily, load in their guess instead
       if ("guessedRank" in res.data) {
-        alert("Previous guess found.");
         selectedRank.value = res.data.guessedRank;
         const placements = res.data.placements; // prev guess placements
 
