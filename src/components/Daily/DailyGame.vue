@@ -15,6 +15,10 @@ import type { DailyGuess, Team } from "@/common/interfaces";
 import { useAuthenticator } from "@aws-amplify/ui-vue";
 import { ALL, HIGH, LOW } from "@/common/constants";
 import { extractPatch } from "@/common/helper";
+import type { GraphQLQuery } from "@aws-amplify/api";
+import { API } from "aws-amplify";
+import { getDailyGuess } from "@/graphql/queries";
+import type { GetDailyGuessQuery } from "@/API";
 const auth = useAuthenticator();
 
 const props = defineProps<{
@@ -65,9 +69,21 @@ onMounted(async () => {
   } else {
     await getDaily(props.date, props.category);
     if (auth.user) {
-      selectedGuess.value = rankedMatch.value.map((r) => r.placement);
-      selectedRank.value = selectedRanks.value[0];
-      await guess();
+      const dailyGuess = API.graphql<GraphQLQuery<GetDailyGuessQuery>>({
+        query: getDailyGuess,
+        variables: {
+          userGuessesId: auth.user.attributes.sub,
+          date: props.date,
+          category: props.category,
+        },
+        authMode: "API_KEY",
+      });
+      if ((await dailyGuess).data.getDailyGuess) {
+        selectedGuess.value = rankedMatch.value.map((r) => r.placement);
+        selectedRank.value = selectedRanks.value[0];
+
+        await guess();
+      }
     }
   }
   loading.value = false;
